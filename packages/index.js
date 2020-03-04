@@ -8,11 +8,11 @@
 // packages / index.js
 
 // 导入单个组件
-import BoBoNpmPluginTest from './textarea/index'
+import FormDesigner from './FormDesigner/index'
 
 // 以数组的结构保存组件，便于遍历
 const components = [
-    BoBoNpmPluginTest
+    FormDesigner
 ]
 
 // 定义 install 方法
