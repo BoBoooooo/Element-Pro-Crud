@@ -12,23 +12,9 @@
 </template>
 
 <script>
-  export default {
-    name:'BoBoNpmPluginTest',
-    components: {
-
-    },
-    data () {
-      return {
-
-      };
-    },
-    computed: {
-
-    },
-    methods: {
-
-    },
-  }
+export default {
+  name: 'Test',
+};
 </script>
 
 <style lang='scss' scoped>

@@ -1,8 +1,8 @@
 {
   "name": "bobo-npm-plugin",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "first npm test",
-  "main": "lib/bobo-npm-plugin-test.umd.min.js",
+  "main": "lib/plugin.umd.min.js",
   "private": false,
   "license": "MIT",
   "keyword": "test",
@@ -11,7 +11,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name bobo-npm-plugin-test --dest lib packages/index.js"
+    "lib": "vue-cli-service build --target lib --name plugin --dest lib packages/index.js"
   },
   "dependencies": {
     "@riophae/vue-treeselect": "^0.3.0",

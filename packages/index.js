@@ -8,11 +8,13 @@
 // packages / index.js
 
 // 导入单个组件
-import FormDesigner from './FormDesigner/index';
+import FormDesigner from './FormDesigner';
+import Test from './test';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
   FormDesigner,
+  Test,
 ];
 
 // 定义 install 方法

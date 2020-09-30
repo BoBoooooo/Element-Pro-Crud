@@ -6,11 +6,12 @@
  */
 
 // 导入组件，组件必须声明 name
-import FormDesigner from './src/FormDesigner.vue'
+import FormDesigner from './src/FormDesigner.vue';
 
 // 为组件添加 install 方法，用于按需引入
+// eslint-disable-next-line func-names
 FormDesigner.install = function (Vue) {
-    Vue.component(FormDesigner.name, FormDesigner)
-}
+  Vue.component(FormDesigner.name, FormDesigner);
+};
 
-export default FormDesigner
+export default FormDesigner;
