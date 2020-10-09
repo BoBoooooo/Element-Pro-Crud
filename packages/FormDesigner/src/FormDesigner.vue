@@ -1,10 +1,10 @@
 <!--
-.file 动态表单设计器
-      依赖jsoneditor、vue-awesome、vuedraggable、clipboard、
-.author ytyang
-.copyright NanJing Anshare Tech .Com
-.createDate 2018年11月15日16:11:09
+ * @file: 表单设计器
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月30 17:26:55
 -->
+
 <template>
   <div>
     <!-- 对话框内动态表单 -->

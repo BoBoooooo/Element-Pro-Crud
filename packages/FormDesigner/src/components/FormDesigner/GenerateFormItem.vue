@@ -1,9 +1,10 @@
 <!--
-@file 动态表单最小粒度元素生成
-@author ytyang
-@copyright NanJing Anshare Tech .Com
-@createDate 2018年11月15日10:17:01
+ * @file: 根据Json生成表单具体组件
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月30 17:26:55
 -->
+
 <template>
   <el-form-item :prop="widget.type == 'button'?undefined:widget.model"
                 :label-width="labelWidth">

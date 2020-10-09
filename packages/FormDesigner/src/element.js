@@ -1,8 +1,10 @@
-/**
- * @file vue-cli3安装vue-cli-plugin-element插件时会自动生成本文件
- * @copyright NanJing Anshare Tech .Com
- * @createDate 2018年11月13日11:29:53
+/*
+ * @file: element ui plugin import
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月30 17:26:55
  */
+
 /* eslint-disable */
 import Vue from 'vue';
 import Element from 'element-ui';

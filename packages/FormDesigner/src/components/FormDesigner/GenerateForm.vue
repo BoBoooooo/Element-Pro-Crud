@@ -1,9 +1,10 @@
 <!--
-@file 根据jison动态生成表单
-@author ytyang
-@copyright NanJing Anshare Tech .Com
-@createDate 2018年11月15日21:40:56
+ * @file: 根据Json生成表单
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月30 17:26:55
 -->
+
 <template>
   <div class="table-form-wrapper">
     <el-form ref="generateForm"
