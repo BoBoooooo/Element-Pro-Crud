@@ -79,13 +79,15 @@
         <el-row :gutter="15">
           <!-- 对话框内动态表单 -->
           <el-col :span="16">
-              <GenerateForm ref="generateDialogForm"
-                            class="form"
-                            :value="formValues"
-                            :data="formDesign"
-                            :remote="remoteFuncs" />
-            </el-col>
-          <el-col :span="8" style="text-align:right">
+            <GenerateForm ref="generateDialogForm"
+                          class="form"
+                          v-if="visible"
+                          :value="formValues"
+                          :data="formDesign"
+                          :remote="remoteFuncs" />
+          </el-col>
+          <el-col :span="8"
+                  style="text-align:right">
             <!-- <el-button type='text'
                        @click="btnSave_onClick"
                        :loading="btnSaveIsLoading">保存</el-button> -->
@@ -276,6 +278,7 @@ export default {
       formValues: {},
       // 对话框设计结构json
       formDesign: {},
+      visible: false,
       // 保存按钮Loading状态
       btnSaveIsLoading: false,
       // ---------------以下为原来的代码--------------
@@ -545,6 +548,7 @@ export default {
             config: { labelWidth: 100, labelPosition: 'top', size: 'small' },
           };
         }
+        this.visible = true;
         // 初始化右侧的配置区域
         this.widgetFormSelect = '';
       });

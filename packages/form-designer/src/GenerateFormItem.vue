@@ -580,6 +580,7 @@ export default class GenerateFormItem extends Vue {
   }
 
   // 判断是否含有中文
+  // eslint-disable-next-line class-methods-use-this
   isChinese(temp) {
     const re = /[^\u4e00-\u9fa5]/;
     if (re.test(temp)) return false;

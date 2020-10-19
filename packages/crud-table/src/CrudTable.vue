@@ -88,11 +88,6 @@
                 @current-change="(currentRow, oldCurrentRow) => emitTableEvent('current-change', currentRow, oldCurrentRow)"
                 @header-dragend="(newWidth, oldWidth, column, event) => emitTableEvent('header-dragend', newWidth, oldWidth, column, event)"
                 @expand-change="(row, expanded) => emitTableEvent('expand-change', row, expanded)">
-        <template slot='empty'>
-          <svgIcon icon-class='table_empty'
-                   class="empty_icon"></svgIcon>
-          <span>暂无数据</span>
-        </template>
         <el-table-column v-if="isMultiple || view.btnDel"
                          type="selection"
                          reserve-selection

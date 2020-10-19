@@ -43,13 +43,12 @@
 </template>
 
 <script lang="ts">
-import GenerateForm from '../../FormDesigner/src/GenerateForm.vue';
-import { DML, crud } from '../../api/public/crud';
-import { getFormDetail } from '../../api/system/form';
-
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
+import GenerateForm from '../../form-designer/src/GenerateForm.vue';
+import { DML, crud } from '../../api/public/crud';
+import { getFormDetail } from '../../api/system/form';
 
 @Component({
   components: {

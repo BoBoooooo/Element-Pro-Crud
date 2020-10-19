@@ -42,13 +42,13 @@
 </template>
 
 <script lang="ts">
-import { DML, crud } from '../../api/public/crud';
-import { getFormDetail } from '../../api/system/form';
-import GenerateForm from '../../FormDesigner/src/GenerateForm.vue';
-import guid from '../../utils/generator';
 import {
   Component, Vue, Emit, Watch, Prop,
 } from 'vue-property-decorator';
+import { DML, crud } from '../../api/public/crud';
+import { getFormDetail } from '../../api/system/form';
+import GenerateForm from '../../form-designer/src/GenerateForm.vue';
+import guid from '../../utils/generator';
 
 const STATUS = {
   CREATE: 0,

@@ -298,6 +298,7 @@ export default class FileUpload extends Vue {
   }
 
   // 下载
+  // eslint-disable-next-line class-methods-use-this
   btnDownloadOnClick(scope) {
     download(`${process.env.VUE_APP_API_URL}file/download`, scope.row.filename, { id: scope.row.id });
   }
