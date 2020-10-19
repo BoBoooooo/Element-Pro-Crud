@@ -1,6 +1,6 @@
 {
-  "name": "bobo-npm-plugin",
-  "version": "0.1.4",
+  "name": "multifunction-crud",
+  "version": "0.1.0",
   "description": "first npm test",
   "main": "lib/plugin.umd.min.js",
   "private": false,
