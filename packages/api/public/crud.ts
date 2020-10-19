@@ -6,7 +6,7 @@
  * @Date: 2020年04月24 11:35:00
  */
 
-import axios from "../axios";
+import axios from '../axios';
 
 interface optionsType {
   url: string; // 请求地址
@@ -20,14 +20,14 @@ interface optionsType {
  * 操作类型枚举
  */
 export enum DML {
-  INSERT = "add",
-  UPDATE = "update",
-  DELETE = "delete",
-  SELECT = "list",
-  TREE = "tree",
-  TREE_LAZY = "treeByParentID",
-  DETAIL = "detail",
-  DELETES = "deleteByIds",
+  INSERT = 'add',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  SELECT = 'list',
+  TREE = 'tree',
+  TREE_LAZY = 'treeByParentID',
+  DETAIL = 'detail',
+  DELETES = 'deleteByIds',
 }
 
 /**
@@ -41,18 +41,18 @@ export function crud(
   dml: DML,
   tableName: string,
   data: object = {},
-  params: any = null
+  params: any = null,
 ) {
   const options: optionsType = {
     // url: `/${tableName}/${dml}`, // 例如users表的查询接口为  /users/list
-    url: `/${tableName.replace(/_/g, '/')}/${dml}`,
-    method: "post",
+    url: `/${tableName}/${dml}`,
+    method: 'post',
   };
   // 以下请求通过包体传参
-  if ("list,treeByParentID".includes(dml)) {
+  if ('list,treeByParentID'.includes(dml)) {
     // list接口高级查询条件拼接
     options.data = {
-      orderCondition: "",
+      orderCondition: '',
       searchCondition: [],
       pageIndex: 0,
       pageSize: 0,

@@ -78,14 +78,14 @@
                  style="height: 60px;">
         <el-row :gutter="15">
           <!-- 对话框内动态表单 -->
-          <!-- <el-col :span="16">
+          <el-col :span="16">
               <GenerateForm ref="generateDialogForm"
                             class="form"
                             :value="formValues"
                             :data="formDesign"
                             :remote="remoteFuncs" />
-            </el-col> -->
-          <el-col :span="24" style="text-align:right">
+            </el-col>
+          <el-col :span="8" style="text-align:right">
             <!-- <el-button type='text'
                        @click="btnSave_onClick"
                        :loading="btnSaveIsLoading">保存</el-button> -->
@@ -328,7 +328,9 @@ export default {
       allTables: [],
     };
   },
-  created() {},
+  created() {
+    this.init();
+  },
   methods: {
     // 自动生成表单,默认一行两列
     autoGenerateFormByBackend(rows) {
@@ -521,7 +523,7 @@ export default {
      * @param {Number} status 对话框状态[添加:0,编辑:1]，必须是STATUS枚举
      * @param {Object} formValues 编辑时传入所有字段的默认值
      */
-    showDialog(param = {}, status = 0, formValues = {}) {
+    init(param = {}, status = 0, formValues = {}) {
       // 保存参数用于save方法
       this.dialogParams = param;
       this.dialogStatus = status;
@@ -529,7 +531,7 @@ export default {
         this.allTables = res.data;
       });
       // 请求对话框内的动态表单json
-      getFormDetail(this.tableName).then((res) => {
+      getFormDetail('dynamictables').then((res) => {
         this.formDesign = JSON.parse(res.data.formJson);
         if (this.dialogStatus === 1) {
           // 填写编辑框，这里如果不用...拷贝会导致污染实参

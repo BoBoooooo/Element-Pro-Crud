@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <FormDesigner></FormDesigner>
+    <CrudTable tableName='dept'
+               :visibleList='{
+           tableTitle:false,
+         }'
+               fullHeight>
+    </CrudTable>
   </div>
 </template>
 
