@@ -12,6 +12,7 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    '@vue/typescript',
   ],
   // 修改airbnb部分变态规则
   rules: {

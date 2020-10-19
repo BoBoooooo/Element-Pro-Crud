@@ -1,13 +1,15 @@
 <!--
  * @file: 表单设计器右侧配置项区域
- * @copyright: NanJing Anshare Tech .Com
  * @author: BoBo
  * @Date: 2019-07-09 14:30:43
+ * @copyright GavinZhuLei
+  部分修改重构
+  原作者地址 https://github.com/GavinZhuLei/vue-form-making
+  感谢大佬!
  -->
 <template>
   <div v-if="show">
-    <el-form label-position="left"
-             label-width="100px">
+    <el-form label-position="top" class="form">
       <el-form-item label="是否隐藏"
                     v-if="data.type != 'table'">
         <el-switch v-model="data.hidden"></el-switch>
@@ -24,11 +26,9 @@
                     v-if="Object.keys(data.options).indexOf('btnCommand')>=0">
         <el-input v-model="data.options.btnCommand"></el-input>
       </el-form-item>
-      <el-form-item label="文字宽度">
-        <el-input-number v-model="data.labelWidth"
-                         :min="0"
-                         :max="200"
-                         :step="10"></el-input-number>
+      <el-form-item label="label宽度">
+        <el-input v-model="data.labelWidth"
+                  placeholder="label宽度"></el-input>
       </el-form-item>
       <el-form-item label="组件宽度"
                     v-if="Object.keys(data.options).indexOf('width')>=0">
@@ -48,8 +48,9 @@
                     && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
-       <el-form-item label="tips提示">
-        <el-input type="textarea" v-model="data.options.tips"></el-input>
+      <el-form-item label="tips提示">
+        <el-input type="textarea"
+                  v-model="data.options.tips"></el-input>
       </el-form-item>
       <el-form-item label="布局方式"
                     v-if="Object.keys(data.options).indexOf('inline')>=0">
@@ -88,11 +89,16 @@
         <el-switch v-model="data.options.multiple"
                    @change="handleSelectMuliple"></el-switch>
       </el-form-item>
+      <el-form-item label="分隔符"
+                    v-if="data.options.separator">
+        <el-input type="input"
+                  v-model="data.options.separator"></el-input>
+      </el-form-item>
       <el-form-item label="是否可创建"
                     v-if="data.type=='select'">
         <el-switch v-model="data.options.allowCreate"></el-switch>
       </el-form-item>
-       <el-form-item label="启用按钮样式"
+      <el-form-item label="启用按钮样式"
                     v-if="data.type=='checkbox'">
         <el-switch v-model="data.options.buttonStyle"></el-switch>
       </el-form-item>
@@ -153,6 +159,11 @@
                       v-model="data.options.props.label">
               <template slot="prepend">标签</template>
             </el-input>
+            <el-input size="mini"
+                      style=""
+                      v-model="data.options.props.rightLabel">
+              <template slot="prepend">右侧标签</template>
+            </el-input>
           </div>
         </template>
         <template v-else-if="data.options.remote=='search'">
@@ -172,6 +183,11 @@
                       style=""
                       v-model="data.options.props.label">
               <template slot="prepend">标签</template>
+            </el-input>
+            <el-input size="mini"
+                      style=""
+                      v-model="data.options.props.rightLabel">
+              <template slot="prepend">右侧标签</template>
             </el-input>
           </div>
         </template>
@@ -356,7 +372,7 @@
         </el-form-item>
       </template>
 
-      <template v-if="data.type=='blank'">
+      <!-- <template v-if="data.type=='blank'">
         <el-form-item label="绑定数据类型">
           <el-select v-model="data.options.defaultType">
             <el-option value="String"
@@ -367,7 +383,7 @@
                        label="数组"></el-option>
           </el-select>
         </el-form-item>
-      </template>
+      </template> -->
 
       <template v-if="data.type == 'grid'">
         <el-form-item label="栅格间隔">
@@ -432,13 +448,21 @@
       </template>
 
       <template v-if="data.type != 'grid'">
-
-        <el-form-item v-if="data.type != 'button'"
+        <el-form-item v-if="data.type != 'button' && data.type != 'table' && data.type != 'upload' "
                       label="后端接口Key">
           <el-input v-model="data.model"></el-input>
         </el-form-item>
+        <el-form-item v-if="data.type === 'upload'"
+                      label="关联resourceID字段名">
+          <el-input v-model="data.options.resourceId"></el-input>
+        </el-form-item>
+        <el-form-item v-if="data.type === 'upload'"
+                      label="附件类型">
+          <el-input v-model="data.options.fileType"
+                    placeholder="关联多个附件的情况下需要填写"></el-input>
+        </el-form-item>
         <el-form-item label="操作属性"
-                      v-if=" data.type != 'table'">
+                      v-if=" data.type !== 'table' && data.type !== 'blank'">
           <el-checkbox v-model="data.options.readonly"
                        v-if="Object.keys(data.options).indexOf('readonly')>=0">完全只读</el-checkbox>
           <el-checkbox v-model="data.options.disabled"
@@ -452,7 +476,7 @@
             使用箭头进行时间选择
           </el-checkbox>
         </el-form-item>
-        <el-form-item v-if="data.type != 'button' && data.type != 'table'"
+        <el-form-item v-if="data.type != 'button' && data.type != 'table' && data.type !== 'blank' && data.type != 'upload'"
                       label="校验">
           <div>
             <el-checkbox v-model="data.options.required">必填</el-checkbox>
@@ -504,7 +528,7 @@
             <el-input v-model="data.options.dialogFormDesignerName"
                       placeholder="dialogFormDesignerName"></el-input>
           </el-form-item>
-            <el-form-item label="表格标题">
+          <el-form-item label="表格标题">
             <el-input v-model="data.options.tableTitle"
                       placeholder="表格标题"></el-input>
           </el-form-item>
@@ -521,36 +545,46 @@
           </el-form-item>
           <el-form-item label="界面元素控制">
             <el-switch v-model="data.options.visibleList.actionColumn"
-                       inactive-text="是否显示操作列" style="margin-right:10px"></el-switch>
+                       inactive-text="是否显示操作列"
+                       style="margin-right:10px"></el-switch>
             <el-switch v-model="data.options.visibleList.btnAdd"
-                       inactive-text="新增按钮" style="margin-right:10px"></el-switch>
+                       inactive-text="新增按钮"
+                       style="margin-right:10px"></el-switch>
             <el-switch v-model="data.options.visibleList.actionColumnBtnEdit"
                        inactive-text="编辑按钮"></el-switch>
             <el-switch v-model="data.options.visibleList.actionColumnBtnDel"
-                       inactive-text="删除按钮" style="margin-right:10px"></el-switch>
+                       inactive-text="删除按钮"
+                       style="margin-right:10px"></el-switch>
             <el-switch v-model="data.options.visibleList.actionColumnBtnDetail"
                        inactive-text="查看按钮"></el-switch>
             <el-switch v-model="data.options.visibleList.tableTitle"
-                       inactive-text="表格标题" style="margin-right:10px"></el-switch>
+                       inactive-text="表格标题"
+                       style="margin-right:10px"></el-switch>
             <el-switch v-model="data.options.visibleList.searchForm"
                        inactive-text="查询区域"></el-switch>
             <el-switch v-model="data.options.visibleList.btnExport"
-                       inactive-text="导出按钮" style="margin-right:10px"></el-switch>
+                       inactive-text="导出按钮"
+                       style="margin-right:10px"></el-switch>
+            <el-switch v-model="data.options.visibleList.btnImport"
+                       inactive-text="上传按钮" style="margin-right:10px"></el-switch>
           </el-form-item>
         </template>
         <template v-if="data.type === 'treeselect'">
-            <el-form-item label="最大高度">
+          <el-form-item label="最大高度">
             <el-input v-model="data.options.maxHeight"
                       placeholder="maxHeight"></el-input>
           </el-form-item>
-           <el-form-item label="value-label">
-             <el-switch v-model="data.options.showValueLabelSlot"></el-switch>
+          <el-form-item label="value-label">
+            <el-switch v-model="data.options.showValueLabelSlot"></el-switch>
           </el-form-item>
-            <el-form-item label="父结点禁选">
-              <el-switch v-model="data.options.disableBranchNodes"></el-switch>
+          <el-form-item label="父结点禁选">
+            <el-switch v-model="data.options.disableBranchNodes"></el-switch>
           </el-form-item>
-            <el-form-item label="显示数量">
-             <el-switch v-model="data.options.showCount"></el-switch>
+          <el-form-item label="显示数量">
+            <el-switch v-model="data.options.showCount"></el-switch>
+          </el-form-item>
+          <el-form-item label="append-to-body(弹窗中使用不需要开启)">
+            <el-switch v-model="data.options.appendToBody"></el-switch>
           </el-form-item>
         </template>
       </template>
@@ -561,6 +595,7 @@
 <script>
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
+import { DML, crud } from '../../api/public/crud';
 import 'vue-awesome/icons/regular/keyboard';
 import 'vue-awesome/icons/regular/trash-alt';
 import 'vue-awesome/icons/regular/clone';
@@ -610,6 +645,15 @@ export default {
       }
       return false;
     },
+  },
+  created() {
+    // 请求字典分类
+    crud(DML.SELECT, 'ad_codelist_type').then((res) => {
+      this.dictType = res.data.list.map(item => ({
+        label: item.codeName,
+        value: item.codeValue,
+      }));
+    });
   },
   methods: {
     getDraggableOptions() {
@@ -731,3 +775,10 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.form{
+  /deep/.el-input__inner{
+    height:28px!important;
+  }
+}
+</style>

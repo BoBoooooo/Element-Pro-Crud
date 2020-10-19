@@ -1,15 +1,17 @@
 <!--
- * @file: 根据Json生成表单具体组件
- * @copyright: NanJing Anshare Tech .Com
- * @author: BoBo
- * @Date: 2020年09月30 17:26:55
+@file 动态表单最小粒度元素生成
+@author BoBo
+@createDate 2018年11月15日10:17:01
+@copyright GavinZhuLei
+部分修改重构
+原作者地址 https://github.com/GavinZhuLei/vue-form-making
+感谢大佬!
 -->
-
 <template>
   <el-form-item :prop="widget.type == 'button'?undefined:widget.model"
                 :label-width="labelWidth">
     <template #label>
-      {{label}}
+      <span v-html="label"></span>
       <el-popover placement="top-start"
                   title="输入提示"
                   v-if="widget.options.tips"
@@ -17,7 +19,8 @@
                   trigger="hover">
         <i class="el-icon el-icon-question"
            slot="reference"></i>
-        <div style="color:#8492a6" v-html="widget.options.tips"></div>
+        <div style="color:#8492a6"
+             v-html="widget.options.tips"></div>
       </el-popover>
     </template>
     <template v-if="widget.type == 'input'">
@@ -52,7 +55,7 @@
     </template>
     <template v-if="widget.type == 'select'">
       <el-select v-model="dataModel"
-                  default-first-option
+                 default-first-option
                  :disabled="widget.options.disabled"
                  :multiple="widget.options.multiple"
                  allow-create
@@ -64,8 +67,7 @@
                  filterable
                  :data-searchable="widget.options.remoteSearchFunc
                  &&widget.options.remoteSearchFunc!=''
-                 &&widget.options.remote === 'search'"
-                 :filter-method="selectFilter">
+                 &&widget.options.remote === 'search'">
         <el-option v-for="item in optionsList"
                    :key="item.value"
                    :value="item.value"
@@ -80,8 +82,7 @@
     </template>
     <template v-if="widget.type == 'textarea'">
       <el-input type="textarea"
-                :rows="5"
-                :autosize="{ minRows: 4, maxRows: 15}"
+                :autosize="{ minRows: 5}"
                 v-model="dataModel"
                 :disabled="widget.options.disabled"
                 :readonly="widget.options.readonly"
@@ -90,7 +91,7 @@
     </template>
 
     <template v-if="widget.type == 'number'">
-      <el-input-number v-model="widget.options.defaultValue"
+      <el-input-number v-model="dataModel"
                        :style="{width: widget.options.width}"
                        :step="widget.options.step"
                        :disabled="widget.options.disabled"
@@ -204,24 +205,20 @@
                    :clearable="widget.options.clearable"
                    :placeholder="widget.options.placeholder"
                    :style="{width: widget.options.width}"
+                   :separator="widget.options.separator == null ?'/':widget.options.separator"
                    :options="widget.options.remoteOptions"
                    filterable
                    :props="{ checkStrictly: true }">
       </el-cascader>
     </template>
     <template v-if="widget.type == 'table'">
-      <CrudTable :close_on_click_modal="false"
+      <CrudTable :dialogCloseOnClickModal="false"
+                 ref="table"
                  :tableName="widget.options.tableName"
                  :tableDesignerName="widget.options.tableDesignerName"
                  :dialogFormDesignerName="widget.options.dialogFormDesignerName"
-                 appendToBody
-                 :visibleList="{
-                          conditionTitle:false,
-                          btnExport:false,
-                          ...widget.options.visibleList,
-                          btnAdd:false,
-                          btnAddOnColumnHeader:widget.options.visibleList.btnAdd,
-                        }"
+                 dialogAppendToBody
+                 :visibleList="visibleList"
                  :showPagination="widget.options.showPagination"
                  :tableParams="getTableParams"
                  :prefill="getTablePrefill"
@@ -237,7 +234,11 @@
                   :maxHeight="+widget.options.maxHeight"
                   :multiple="widget.options.multiple"
                   :normalizer="normalizer"
-                  :loadOptions="()=>{}"
+                  :append-to-body="widget.options.appendToBody"
+                  :loadOptions="({ action, parentNode, callback })=> {
+                    if(parentNode.children )  parentNode.children = []
+                     callback()
+                  }"
                   valueConsistsOf="ALL"
                   :clearable="widget.options.clearable"
                   :searchable="widget.options.searchable"
@@ -254,18 +255,86 @@
       </template> -->
       </TreeSelect>
     </template>
+    <template v-if="widget.type=='richtext'">
+      <Tinymce :height="400"
+               v-model="dataModel"
+               :readonly="widget.options.readonly"></Tinymce>
+
+    </template>
+    <template v-if="widget.type=='upload'">
+      <!-- 附件上传(注意初始值prefill必须传入id) -->
+      <FileUpload :visibleList="fileVisibleList"
+                  :fileType='widget.options.fileType'
+                  :readOnly="widget.options.readonly || readOnly === {}"
+                  showPagination
+                  :resourceid="models[widget.options.resourceId]"></FileUpload>
+    </template>
   </el-form-item>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  Component, Vue, Prop, Watch,
+} from 'vue-property-decorator';
 import TreeSelect from '@riophae/vue-treeselect';
-
+import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
+import FileUpload from './components/FileUpload/FileUpload.vue';
+import { DML, crud } from '../../api/public/crud';
 // 高级查询单个查询内容
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 
-export default {
-  props: ['widget', 'models', 'rules', 'remote', 'formTableConfig'],
-  data() {
+@Component({
+  components: {
+    TreeSelect,
+    Tinymce,
+    FileUpload,
+  },
+})
+export default class GenerateFormItem extends Vue {
+    $refs!: {
+    table: HTMLFormElement;
+  };
+
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  widget: any;
+
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  models: any;
+
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  remote: any;
+
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  formTableConfig: any;
+
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  readOnly: any;
+
+  // 当前组件对象
+  dataModel: any= '';
+
+  copyOption: any = []; // 备份一份初始选项
+
+  visible = false;
+
+  normalizer: any;
+
+  initData() {
     let normalizer;
     if (this.widget.type === 'treeselect') {
       const { value, label } = this.widget.options.props;
@@ -274,18 +343,54 @@ export default {
         label: node[value],
       });
     }
+    let model = this.models[this.widget.model];
 
-    return {
-      dataModel: this.models[this.widget.model],
-      copyOption: [], // 备份一份初始选项
-      visible: false,
-      normalizer,
-    };
-  },
+    if (this.widget.type === 'date') {
+      // 此处防止传入的值为非正常时间格式导致日历控件报错
+      // new Date校验以下四种情况yyyy-MM-dd yyyy-M-d yyyy/MM/dd yyyy/M/d yyyy-MM yyyy-M yyyy/MM yyyy/M
+      // 正则表达式校验  yyyy年MM月dd日  yyyy年M月d日情况 yyyy年MM月 yyyy年M月
+      const reg = /^([1-9]\d{3})年(\d{1,2})月(\d{1,2})日$/;
+      const regForYYYYMM = /^([1-9]\d{3})年(\d{1,2})月$/;
+      const regForYYYYMMDD = /^([1-9]\d{3})(\d{1,2})(\d{1,2})$/;
+      const isValid = !this.dayjs(model).isValid() || reg.test(model) || regForYYYYMM.test(model) || regForYYYYMMDD.test(model);
+      if (!isValid) {
+        model = '';
+      }
+    }
+
+    this.normalizer = normalizer;
+    this.dataModel = model;
+  }
+
   created() {
+    this.initData();
     this.copyOption = this.widget.options.options;
     this.visible = false;
-    if (
+    // 请求字典
+    if ('radio,select,checkbox,cascader'.includes(this.widget.type) && this.widget.options.remote === 'dict' && this.widget.options.dictType) {
+      crud(DML.SELECT, 'ad_codelist', {
+        searchCondition: [
+          {
+            field: 'codeType',
+            operator: 'eq',
+            value: this.widget.options.dictType,
+          },
+        ],
+      }).then((res) => {
+        if (this.widget.type === 'cascader') {
+          this.widget.options.remoteOptions = JSON.parse(res.data.list[0].codevalue);
+          // 请求完成后再渲染组件
+          this.visible = true;
+        } else {
+          this.widget.options.remoteOptions = res.data.list.map(item => ({
+            value: item.codeValue,
+            label: item.codeName,
+          }));
+        }
+
+        this.copyOption = this.widget.options.remoteOptions;
+      });
+    } else if (
       this.widget.options.remote === 'custom'
       && this.remote[this.widget.options.remoteFunc]
       && (this.widget.options.remoteSearchFunc == null || this.widget.options.remoteSearchFunc === '')
@@ -293,6 +398,8 @@ export default {
       // 请求自定义接口
       this.remote[this.widget.options.remoteFunc]((data) => {
         if (this.widget.type === 'cascader' || this.widget.type === 'treeselect') {
+          // 此处递归洗数据,去掉children为null的情况
+          this.diGuiTree(data);
           this.widget.options.remoteOptions = data;
           // 请求完成后再渲染组件
           this.visible = true;
@@ -300,7 +407,7 @@ export default {
           this.widget.options.remoteOptions = data.map(item => ({
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
-            rightLabel: item.rightLabel,
+            rightLabel: item[this.widget.options.props.rightLabel] || '',
           }));
         }
         this.copyOption = this.widget.options.remoteOptions;
@@ -314,52 +421,91 @@ export default {
           this.widget.options.remoteOptions = data.map(item => ({
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
-            rightLabel: item.rightLabel,
+            rightLabel: item[this.widget.options.props.rightLabel],
           }));
           this.copyOption = this.widget.options.remoteOptions;
         }, this.dataModel);
       }
     }
-  },
-  components: {
-    TreeSelect,
-  },
-  computed: {
-    // 返回当前下拉列表数据
-    optionsList() {
-      if ('dict,custom,search'.includes(this.widget.options.remote)) {
-        return this.widget.options.remoteOptions;
+  }
+
+  get visibleList() {
+    const view = {
+      conditionTitle: false,
+      btnExport: false,
+      ...this.widget.options.visibleList,
+      btnAdd: false,
+      btnAddOnColumnHeader: this.widget.options.visibleList.btnAdd,
+      btnImport: this.widget.options.visibleList.btnImport,
+    };
+    if ((this.readOnly && Object.keys(this.readOnly).length === 0) || this.widget.options.readonly) {
+      view.btnAddOnColumnHeader = false;
+      view.actionColumnBtnDel = false;
+      view.actionColumnBtnEdit = false;
+      view.actionColumnBtnDetail = true;
+      view.btnImport = false;
+    }
+    return view;
+  }
+
+  // 附件列表在只读模式下隐藏增删改按钮
+  get fileVisibleList() {
+    const view: any = {};
+    if ((this.readOnly && Object.keys(this.readOnly).length === 0) || this.widget.options.readonly) {
+      view.upload = false;
+      view.btnEdit = false;
+      view.btnDel = false;
+    }
+    return view;
+  }
+
+  // 返回当前下拉列表数据
+  get optionsList() {
+    if ('dict,custom,search'.includes(this.widget.options.remote)) {
+      return this.widget.options.remoteOptions;
+    }
+    return this.widget.options.options;
+  }
+
+  // 左侧label内容,文本以及意见框组件的时候label为空
+  get label() {
+    return 'text,comment'.includes(this.widget.type) ? '' : this.widget.name;
+  }
+
+  // 日期选择器pickOptions
+  get pickerOptions() {
+    const { range } = this.widget.options;
+    if (range != null && range !== '') {
+      return {
+        disabledDate(time) {
+          if (range === 'smaller') {
+            return time.getTime() >= Date.now();
+          }
+          if (range === 'greater') {
+            return time.getTime() <= Date.now() - 24 * 3600 * 1000;
+          }
+          return true;
+        },
+      };
+    }
+    return {};
+  }
+
+  get labelWidth() {
+    const { type, labelWidth } = this.widget;
+    let label = 'text,comment'.includes(type) ? '0px' : labelWidth || undefined;
+    if (label) {
+      label = label.toString();
+      if (!label.includes('px')) {
+        label += 'px';
       }
-      return this.widget.options.options;
-    },
-    // 左侧label内容,文本以及意见框组件的时候label为空
-    label() {
-      return 'text,comment'.includes(this.widget.type) ? '' : this.widget.name;
-    },
-    // 日期选择器pickOptions
-    pickerOptions() {
-      const { range } = this.widget.options;
-      if (range != null && range !== '') {
-        return {
-          disabledDate(time) {
-            if (range === 'smaller') {
-              return time.getTime() >= Date.now();
-            }
-            if (range === 'greater') {
-              return time.getTime() <= Date.now() - 24 * 3600 * 1000;
-            }
-            return true;
-          },
-        };
-      }
-      return {};
-    },
-    labelWidth() {
-      return 'text,comment'.includes(this.widget.type) ? '0px' : undefined;
-    },
-    // 子表params
-    getTableParams() {
-      /*  如果外侧传入优先使用传入的params
+    }
+    return label;
+  }
+
+  // 子表params
+  get getTableParams() {
+    /*  如果外侧传入优先使用传入的params
           此处考虑到一个表单内有多个子表的情况
           通过表格组件中"后端绑定key输入框"中的内容作为子表唯一标识
           格式例如
@@ -382,118 +528,157 @@ export default {
           }
         }
        */
-      if (this.formTableConfig[this.widget.model] && this.formTableConfig[this.widget.model].tableParams) {
-        return this.formTableConfig[this.widget.model].tableParams;
+    const table = this.formTableConfig[this.widget.model];
+    if (table) {
+      const { tableParams } = table;
+      if (tableParams) {
+        return tableParams;
       }
-      // 没有传入则直接使用配置的
-      // 格式为 子表字段,主表字段 多个用|隔开
-      // 例如 subid,id|subid2,id2 格式
-      const obj = {};
-      // 默认按照|分隔参数名
-      const { tableParams } = this.widget.options;
-      if (tableParams && tableParams !== '') {
-        const params = tableParams.split('|');
-        for (const group of params) {
-          if (group && group !== '') {
-            const key = group.split(',');
-            obj[key[0]] = this.models[key[1]];
-          }
+    }
+    // 没有传入则直接使用配置的
+    // 格式为 子表字段,主表字段 多个用|隔开
+    // 例如 subid,id|subid2,id2 格式
+    const obj = {};
+    // 默认按照|分隔参数名
+    const { tableParams } = this.widget.options;
+    if (tableParams) {
+      const params = tableParams.split('|');
+      for (const group of params) {
+        if (group) {
+          const key = group.split(',');
+          const [field, value] = key;
+          // 如果包含中文则默认为直接传参,否则读取相关字段值
+          const result = this.isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
         }
       }
-      return obj;
-    },
-    // 子表prefill
-    getTablePrefill() {
-      // 如果外侧传入了则优先使用外侧传入的params
-      if (this.formTableConfig[this.widget.model] && this.formTableConfig[this.widget.model].prefill) {
-        return this.formTableConfig[this.widget.model].prefill;
-      }
-      // 没有传入则直接使用配置的 例如 subid,id|subid2,id2 格式
-      const obj = {};
-      // 默认按照|分隔参数名
-      const { prefill } = this.widget.options;
-      if (prefill && prefill !== '') {
-        const fills = prefill.split('|');
-        for (const group of fills) {
-          if (group && group !== '') {
-            const key = group.split(',');
-            obj[key[0]] = this.models[key[1]];
-          }
+    }
+    return obj;
+  }
+
+  // 子表prefill
+  get getTablePrefill() {
+    // 如果外侧传入了则优先使用外侧传入的params
+    if (this.formTableConfig[this.widget.model] && this.formTableConfig[this.widget.model].prefill) {
+      return this.formTableConfig[this.widget.model].prefill;
+    }
+    // 没有传入则直接使用配置的 例如 subid,id|subid2,id2 格式
+    const obj = {};
+    // 默认按照|分隔参数名
+    const { prefill } = this.widget.options;
+    if (prefill && prefill !== '') {
+      const fills = prefill.split('|');
+      for (const group of fills) {
+        if (group) {
+          const key = group.split(',');
+          const [field, value] = key;
+          // 如果包含中文则默认为直接传参,否则读取相关字段值
+          const result = this.isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
         }
       }
-      return obj;
-    },
-  },
-  methods: {
-    // 1.后端要求下拉列表传值时要同时给key和value
-    currentSel(sel, w) {
-      this.models[`${w.model}dict`] = this.getValueByKey(sel);
-    },
-    // 按钮点击
-    btnOnClick(widget) {
-      this.$emit('btnOnClick', widget);
-    },
-    // 根据选中的key获取value
-    getValueByKey(key) {
-      if (key === '' || key == null) {
-        return null;
-      }
-      // 根据key找到下拉列表项
-      const selected = this.optionsList.find(item => item.value === key);
-      let label;
-      // 如果找到匹配列表项
-      if (selected) {
-        ({ label } = selected);
-      } else {
-        // this.$notify({
-        //   title: `[${this.widget.name}]匹配菜单项失败`,
-        //   message: `${key}无法找到对应的值`,
-        //   duration: 5000,
-        // });
-      }
-      return label;
-    },
-    // 查询远端数据
-    search(txt) {
-      this.remote[this.widget.options.remoteSearchFunc]((data) => {
-        this.widget.options.remoteOptions = data.map(item => ({
-          value: item[this.widget.options.props.value],
-          label: item[this.widget.options.props.label],
-          rightLabel: item.rightLabel,
-        }));
-      }, txt);
-    },
-    selectFilter(val) {
+    }
+    return obj;
+  }
+
+  // 判断是否含有中文
+  isChinese(temp) {
+    const re = /[^\u4e00-\u9fa5]/;
+    if (re.test(temp)) return false;
+    return true;
+  }
+
+  diGuiTree(tree) {
+    // 递归便利树结构
+    tree.forEach((item) => {
+      // eslint-disable-next-line no-unused-expressions
+      item.children === '' || item.children === undefined || item.children === null ? delete item.children : this.diGuiTree(item.children);
+    });
+  }
+
+  // 1.后端要求下拉列表传值时要同时给key和value
+  currentSel(sel, w) {
+    this.models[`${w.model}dict`] = this.getValueByKey(sel);
+  }
+
+  // 按钮点击
+  btnOnClick(widget) {
+    this.$emit('btnOnClick', widget);
+  }
+
+  // 根据选中的key获取value
+  getValueByKey(key) {
+    if (key === '' || key == null) {
+      return null;
+    }
+    // 根据key找到下拉列表项
+    const selected = this.optionsList.find(item => item.value === key);
+    let label;
+    // 如果找到匹配列表项
+    if (selected) {
+      ({ label } = selected);
+    } else {
+      // this.$notify({
+      //   title: `[${this.widget.name}]匹配菜单项失败`,
+      //   message: `${key}无法找到对应的值`,
+      //   duration: 5000,
+      // });
+    }
+    return label;
+  }
+
+  // 查询远端数据
+  search(txt) {
+    this.remote[this.widget.options.remoteSearchFunc]((data) => {
+      this.widget.options.remoteOptions = data.map(item => ({
+        value: item[this.widget.options.props.value],
+        label: item[this.widget.options.props.label],
+        rightLabel: item.rightLabel,
+      }));
+    }, txt);
+  }
+
+  selectFilter(val) {
+    if (val) {
       const arr = this.copyOption.filter(item => this.$pinyinmatch.match(item.label || item.value, val));
       this.widget.options.remoteOptions = arr;
       this.widget.options.options = arr;
-    },
-  },
-  watch: {
-    dataModel: {
-      deep: true,
-      handler(val) {
-        this.models[this.widget.model] = val;
-        this.$emit('update:models', {
-          ...this.models,
-          [this.widget.model]: val,
-        });
-      },
-    },
-    models: {
-      deep: true,
-      handler(val) {
-        this.dataModel = val[this.widget.model];
-        // if (this.widget.type === 'select') {
-        //   // 2.后端要求下拉列表传值时要同时给key和value
-        //   this.models[`${this.widget.model}dict`] = this.getValueByKey(
-        //     val[this.widget.model],
-        //   );
-        // }
-      },
-    },
-  },
-};
+    } else {
+      this.widget.options.options = this.copyOption;
+      this.widget.options.remoteOptions = this.copyOption;
+    }
+  }
+
+  @Watch('dataModel', {
+    // deep: true,
+  })
+  dataModelHandler(val) {
+    this.$emit('update:models', {
+      ...this.models,
+      [this.widget.model]: val,
+    });
+  }
+
+  @Watch('models', {
+    // deep: true,
+  })
+  modelsHandler(val) {
+    if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
+      const value = val[this.widget.model];
+      this.dataModel = typeof value === 'string' ? value.split(',') : value;
+    } else {
+      this.dataModel = val[this.widget.model];
+    }
+  }
+
+  // 如果表格预设参数发生变化 自动刷新表格
+  @Watch('getTableParams', {
+    deep: true,
+  })
+  getTableParamsHandler(val, oldVal) {
+    if (JSON.stringify(val) !== JSON.stringify(oldVal)) {
+      this.$refs.table.tableReload();
+    }
+  }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

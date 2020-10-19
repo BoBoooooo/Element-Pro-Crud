@@ -1,3 +1,9 @@
+/*
+ * @file: 使用表格布局样式
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月14 18:01:58
+ */
 .table-form-wrapper {
   @mixin border-style($position: 'all', $style: 1px solid #e6e6e6) {
     @if ($position== 'all') {
@@ -30,7 +36,7 @@
             font-size: 16px;
             flex-shrink: 0;
             text-align: center;
-            padding: 0 6px;
+            padding: 0;
           }
           .el-form-item__content {
             box-sizing: border-box;

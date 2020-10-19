@@ -1,10 +1,5 @@
 $primary-color: #409EFF;
 $primary-background-color: #ecf5ff;
-html,body{
-  margin:0;
-  height: 100%;
-  text-align: left;
-}
 
 *, :after, :before {
   -webkit-box-sizing: border-box;
@@ -105,7 +100,6 @@ html,body{
     font-size: 12px;
     display: block;
     width: 48%;
-    text-align: left;
     line-height: 26px;
     position: relative;
     float: left;
@@ -158,7 +152,7 @@ html,body{
     // border: 1px dashed #999;
     border: 1px dashed #999;
     // min-height: 600px;
-    margin: 10px;
+    margin: 2px;
 
     .widget-col-list{
       min-height: 50px;
@@ -169,10 +163,10 @@ html,body{
     .widget-view{
       padding-bottom: 18px;
       position: relative;
-      border: 1px dashed rgba(170,170,170,0.7);
+      border: 1px dashed hsla(0,0%,66.7%,.7);
       background-color: rgba(236, 245, 255, .3);
       margin: 2px;
-
+      text-align: left;
       .el-form-item__content{
         position: unset;
       }
@@ -530,7 +524,7 @@ html,body{
 
     .widget-col{
       padding-bottom: 0;
-      padding: 5px;
+      padding: 3px;
       // margin-left: 2px !important;
       // margin-right: 2px !important;
       background-color: rgba(253,246,236, .3);
@@ -658,7 +652,7 @@ html,body{
 
 .widget-config-container{
   position: relative;
-
+  overflow: hidden;
   .el-header{
     border-bottom: solid 2px #e4e7ed;
     padding: 0 5px;
@@ -682,15 +676,16 @@ html,body{
 
   .config-content{
     padding: 10px;
-
+    overflow: auto;
+    height: calc(100% - 45px);
     .el-form-item__label{
       padding: 0;
       font-weight: 500;
     }
-
     .el-form-item {
       border-bottom: solid 1px #e1e1e1;
       padding-bottom: 10px;
+      text-align: left;
     }
   }
 

@@ -6,12 +6,12 @@
  */
 
 // 导入组件，组件必须声明 name
-import Test from './src/test.vue';
+import CrudTable from './src/CrudTable.vue';
 
 // 为组件添加 install 方法，用于按需引入
 // eslint-disable-next-line func-names
-Test.install = function (Vue) {
-  Vue.component(Test.name, Test);
+CrudTable.install = function (Vue) {
+  Vue.component(CrudTable.name, CrudTable);
 };
 
-export default Test;
+export default CrudTable;

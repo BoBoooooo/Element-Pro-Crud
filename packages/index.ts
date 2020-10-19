@@ -9,16 +9,16 @@
 
 // 导入单个组件
 import FormDesigner from './FormDesigner';
-import Test from './test';
+import CrudTable from './CrudTable';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
   FormDesigner,
-  Test,
+  CrudTable
 ];
 
 // 定义 install 方法
-const install = (Vue) => {
+const install: any = (Vue) => {
   if (install.installed) return;
   install.installed = true;
   // 遍历并注册全局组件

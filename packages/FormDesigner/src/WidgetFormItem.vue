@@ -9,7 +9,7 @@
                 :label-width="labelWidth"
                 @click.native.stop="handleSelectWidget(index)">
     <template #label>
-      {{label}}
+        <span v-html="label"></span>
        <i v-if="element.options.tips" class="el-icon el-icon-question"></i>
     </template>
     <template v-if="element.type == 'input'">
@@ -166,22 +166,33 @@
       <template v-if="element.type=='treeselect'">
        <h4 style="text-align:center;margin:0">树形下拉框({{element.model}})</h4>
     </template>
+     <template v-if="element.type == 'richtext'">
+      <Tinymce :height="400"
+               v-model="element.options.defaultValue" />
+    </template>
+    <template v-if="element.type === 'upload'">
+      <h4 style="text-align:center;margin:0">附件上传</h4>
+    </template>
     <div class="widget-view-action" v-if="selectWidget.key == element.key">
-          <i class="iconfont icon-icon_clone el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
-          <i class="iconfont icon-trash el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
+          <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
+          <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
         </div>
 
         <div class="widget-view-drag" v-if="selectWidget.key == element.key">
-          <i class="iconfont icon-drag drag-widget el-icon el-icon-rank"></i>
+          <i class="drag-widget el-icon el-icon-rank"></i>
         </div>
 
   </el-form-item>
 </template>
 
 <script>
+import Tinymce from './components/Tinymce'; // 富文本编辑器
 
 export default {
   props: ['element', 'select', 'index', 'data'],
+  components: {
+    Tinymce,
+  },
   data() {
     return {
       selectWidget: this.select,
@@ -189,7 +200,15 @@ export default {
   },
   computed: {
     labelWidth() {
-      return 'text,comment'.includes(this.element.type) ? '0px' : undefined;
+      const { type, labelWidth } = this.element;
+      let label = 'text,comment'.includes(type) ? '0px' : labelWidth || undefined;
+      if (label) {
+        label = label.toString();
+        if (!label.includes('px')) {
+          label += 'px';
+        }
+      }
+      return label;
     },
     // 左侧label内容,文本以及意见框组件的时候label为空
     label() {

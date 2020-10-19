@@ -1,7 +1,7 @@
 <template>
   <div class="widget-form-container">
     <el-form :label-position="data.config.labelPosition"
-             :label-width="data.config.labelWidth + 'px'">
+             :label-width="data.config.labelWidth?data.config.labelWidth+ 'px':'140px'">
       <draggable class="widget-form-list"
                  v-model="data.list"
         v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.drag-widget'}"
@@ -46,11 +46,11 @@
                 </el-col>
   <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
 
-                    <i class="el-icon el-icon-delete-solid iconfont icon-trash" @click.stop="handleWidgetDelete(index)"></i>
+                    <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
                   </div>
 
-                  <div class="widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
-                    <i class="el-icon el-icon-rank iconfont icon-drag drag-widget"></i>
+                  <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+                    <i class="el-icon el-icon-rank"></i>
                   </div>
               </el-row>
               <!-- <el-button title="删除"
@@ -105,7 +105,7 @@ export default {
       // console.log(`拖拽完成，从${oldIndex}行到${newIndex}行`);
     },
     handleSelectWidget(index) {
-      // console.log(`el-row被点击:${index}`);
+      console.log(`el-row被点击:${index}`);
       this.selectWidget = this.data.list[index];
     },
     handleWidgetAdd(evt) {

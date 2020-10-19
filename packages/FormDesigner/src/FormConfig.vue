@@ -1,3 +1,9 @@
+<!--
+ * @file: 表单属性
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年09月14 18:01:58
+-->
 <template>
   <div class="form-config-container">
     <el-form label-position="top">
@@ -13,27 +19,33 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="表单字段宽度">
-        <el-input-number v-model="data.labelWidth" :min="0" :max="200" :step="10"></el-input-number>
+        <el-input-number v-model="data.labelWidth"
+                         :min="0"
+                         :max="200"
+                         :step="10"></el-input-number>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script>
-export default {
-  props: ['data'],
-  data() {
-    return {
-      useTableClass: false,
-    };
-  },
-  methods: {
-    isTableClass() {
-      if (this.data.isTableClass) {
-        this.data.labelPosition = 'right';
-        this.data.labelWidth = 110;
-      }
-    },
-  },
-};
+<script lang="ts">
+import {
+  Component, Vue, Prop,
+} from 'vue-property-decorator';
+
+@Component
+export default class FormConfig extends Vue {
+  // 是否使用table布局
+  useTableClass = false;
+
+  @Prop(Object)
+  data: any;
+
+  isTableClass() {
+    if (this.data.isTableClass) {
+      this.data.labelPosition = 'right';
+      this.data.labelWidth = 110;
+    }
+  }
+}
 </script>
