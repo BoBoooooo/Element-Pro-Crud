@@ -1,6 +1,6 @@
 {
   "name": "multifunction-crud",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "first npm test",
   "main": "lib/plugin.umd.min.js",
   "private": false,
