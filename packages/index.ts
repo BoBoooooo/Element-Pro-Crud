@@ -13,7 +13,7 @@ import CrudTable from './crud-table';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
-  FormDesigner,
+  // FormDesigner,
   CrudTable,
 ];
 // 定义 install 方法
@@ -22,7 +22,7 @@ const install: any = (Vue) => {
   install.installed = true;
   // 遍历并注册全局组件
   components.map((component) => {
-    Vue.component(component.name, component);
+    Vue.component('CrudTable', component);
     return null;
   });
 };

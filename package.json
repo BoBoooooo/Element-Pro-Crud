@@ -1,6 +1,6 @@
 {
   "name": "multifunction-crud",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "first npm test",
   "main": "lib/plugin.umd.min.js",
   "private": false,
@@ -11,7 +11,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name plugin --dest lib packages/index.ts"
+    "lib": "vue-cli-service build --target lib --name plugin --dest lib packages/index.ts",
+    "deploy": "npm run lib && npm publish"
   },
   "dependencies": {
     "vue-class-component": "^7.2.3",
