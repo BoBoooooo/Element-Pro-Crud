@@ -248,6 +248,8 @@ export default class CrudTable extends Vue {
     searchForm: HTMLFormElement;
   };
 
+  name= 'CrudTable';
+
   // 当前点击行
   currentRow: any = {};
 

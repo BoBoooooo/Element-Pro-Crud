@@ -82,9 +82,19 @@ export default {
 
 ### 3、本地调试
 
-npm run serve
+- npm run serve
 
 /examples/App.vue
+
+- lib包直接调试(发布插件后,npm install出来的包)
+
+需要安装`@babel/plugin-transform-modules-umd`对webpack打包生成的`umd.js`转码
+```
+npm install --save-dev @babel/plugin-transform-modules-umd
+```
+
+import plugin from '../lib/plugin.umd.js';
+import '../lib/plugin.css';
 
 ### 4、发布
 
@@ -99,4 +109,5 @@ npm run serve
 ### 5、项目中引入
 
 npm install bobo-npm-plugin 
+
 
