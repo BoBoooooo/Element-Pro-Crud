@@ -34,4 +34,5 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   // 导出的对象必须具备一个 install 方法
   install,
+  ...components,
 };
