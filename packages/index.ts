@@ -10,6 +10,7 @@
 // 导入单个组件
 import FormDesigner from './form-designer';
 import CrudTable from './crud-table';
+import GenerateForm from './form-designer/src/GenerateForm.vue';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
@@ -21,6 +22,10 @@ const components = [
     name: 'CrudTable',
     // 此处深坑,vue-class-component export的组件没有name属性！！!
     component: CrudTable,
+  },
+  {
+    name: 'GenerateForm',
+    component: GenerateForm,
   },
 ];
 // 定义 install 方法
@@ -41,4 +46,10 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   // 导出的对象必须具备一个 install 方法
   install,
+};
+
+export {
+  CrudTable,
+  FormDesigner,
+  GenerateForm,
 };

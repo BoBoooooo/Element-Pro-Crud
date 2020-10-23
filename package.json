@@ -1,8 +1,8 @@
 {
   "name": "multifunction-crud",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "first npm test",
-  "main": "lib/plugin.umd.min.js",
+  "main": "packages/index.ts",
   "private": false,
   "license": "MIT",
   "keyword": "test",
