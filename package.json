@@ -1,6 +1,6 @@
 {
   "name": "multifunction-crud",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "first npm test",
   "main": "packages/index.ts",
   "private": false,
