@@ -1,18 +1,16 @@
 {
   "name": "multifunction-crud",
   "version": "0.1.7",
-  "description": "first npm test",
+  "description": "基于elementui二次封装,一键CrudTable",
   "main": "packages/index.ts",
   "private": false,
   "license": "MIT",
-  "keyword": "test",
+  "keyword": "multifunction-crud",
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name plugin --dest lib packages/index.ts",
-    "deploy": "npm run lib && npm publish"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "vue-class-component": "^7.2.3",
@@ -38,7 +36,6 @@
     "vuex-persistedstate": "3.1.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-umd": "^7.12.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "4.5.4",

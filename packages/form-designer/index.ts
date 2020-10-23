@@ -1,17 +1,9 @@
 /*
- * @file: packages/textarea/index.js
+ * @file: 导出
  * @copyright: NanJing Anshare Tech .Com
  * @author: BoBo
- * @Date: 2020年03月03 11:20:05
+ * @Date: 2020年10月19 14:05:00
  */
 
-// 导入组件，组件必须声明 name
-import FormDesigner from './src/FormDesigner.vue';
-
-// 为组件添加 install 方法，用于按需引入
-// eslint-disable-next-line func-names
-FormDesigner.install = function (Vue) {
-  Vue.component(FormDesigner.name, FormDesigner);
-};
-
-export default FormDesigner;
+export { default as FormDesigner } from './src/FormDesigner.vue';
+export { default as GenerateForm } from './src/GenerateForm.vue';
