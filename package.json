@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.1.1",
+  "version": "0.1.0-1",
   "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
   "main": "lib/ProCrud.umd.min.js",
   "private": false,
