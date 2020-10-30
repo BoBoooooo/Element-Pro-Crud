@@ -1,8 +1,8 @@
 {
   "name": "element-pro-crud",
-  "version": "0.1.0",
-  "description": "Anshare Crud Plugin",
-  "main": "lib/AnshareCrud.umd.min.js",
+  "version": "0.1.1",
+  "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
+  "main": "lib/ProCrud.umd.min.js",
   "private": false,
   "license": "MIT",
   "keyword": "ElementUI,CRUD,el-table,el-form,表单设计器",
