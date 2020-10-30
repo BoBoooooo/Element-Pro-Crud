@@ -7,6 +7,11 @@
   "license": "MIT",
   "keyword": "ElementUI,CRUD,el-table,el-form,表单设计器",
   "author": "BoBo<BoBoooooo159@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BoBoooooo/Element-Pro-Crud"
+  },
+  "homepage": "https://github.com/BoBoooooo/Element-Pro-Crud/blob/master/README.md",
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
