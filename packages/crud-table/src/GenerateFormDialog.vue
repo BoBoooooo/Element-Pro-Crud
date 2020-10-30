@@ -61,6 +61,7 @@ const STATUS = {
   components: {
     GenerateForm,
   },
+  name: 'GenerateFormDialog',
 })
 export default class GenerateFormDialog extends Vue {
   // 异步更新表单数据

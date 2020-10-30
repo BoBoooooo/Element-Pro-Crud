@@ -409,7 +409,9 @@ export default class GenerateForm extends Vue {
   })
   valueOnChange(val) {
     this.$nextTick(() => {
-      this.$refs.generateForm.clearValidate();
+      if (this.$refs.generateForm) {
+        this.$refs.generateForm.clearValidate();
+      }
     });
     this.models = { ...this.models, ...val };
   }
