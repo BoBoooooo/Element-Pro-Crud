@@ -68,8 +68,8 @@
                  :data-searchable="widget.options.remoteSearchFunc
                  &&widget.options.remoteSearchFunc!=''
                  &&widget.options.remote === 'search'">
-        <el-option v-for="item in optionsList"
-                   :key="item.value"
+        <el-option v-for="(item,index) in optionsList"
+                   :key="index"
                    :value="item.value"
                    :label="widget.options.showLabel
                            || widget.options.remote
@@ -212,17 +212,34 @@
       </el-cascader>
     </template>
     <template v-if="widget.type == 'table'">
-      <CrudTable :dialogCloseOnClickModal="false"
+      <CrudTable :closeOnClickModal="false"
                  ref="table"
+                 @selection="getTableSelection"
                  :tableName="widget.options.tableName"
                  :tableDesignerName="widget.options.tableDesignerName"
                  :dialogFormDesignerName="widget.options.dialogFormDesignerName"
-                 dialogAppendToBody
+                 appendToBody
                  :visibleList="visibleList"
                  :showPagination="widget.options.showPagination"
+                 :isMultiple="widget.options.isMultiple"
                  :tableParams="getTableParams"
                  :prefill="getTablePrefill"
                  :remoteFuncs="remote">
+        <template #btnBarPrevBtn>
+          <slot :name="widget.model+'_btnBarPrevBtn'">
+          </slot>
+        </template>
+        <template #btnCustom="{row}">
+          <slot :name="widget.model+'_btnCustom'"
+                :row="row">
+          </slot>
+        </template>
+        <template #columnFormatter="{row, prop}">
+          <slot :name="widget.model+'_columnFormatter'"
+                :row="row"
+                :prop="prop">
+          </slot>
+        </template>
       </CrudTable>
     </template>
     <template v-if="widget.type === 'treeselect'">
@@ -276,10 +293,10 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
+import { DML, crud } from '@/api/public/crud';
 import TreeSelect from '@riophae/vue-treeselect';
 import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
-import { DML, crud } from '../../api/public/crud';
 // 高级查询单个查询内容
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 
@@ -291,7 +308,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
   },
 })
 export default class GenerateFormItem extends Vue {
-    $refs!: {
+  $refs!: {
     table: HTMLFormElement;
   };
 
@@ -326,7 +343,7 @@ export default class GenerateFormItem extends Vue {
   readOnly: any;
 
   // 当前组件对象
-  dataModel: any= '';
+  dataModel: any = '';
 
   copyOption: any = []; // 备份一份初始选项
 
@@ -338,10 +355,17 @@ export default class GenerateFormItem extends Vue {
     let normalizer;
     if (this.widget.type === 'treeselect') {
       const { value, label } = this.widget.options.props;
-      normalizer = node => ({
-        id: node[label],
-        label: node[value],
-      });
+      normalizer = (node) => {
+        // 去掉children=null的属性
+        if (node.children === null || node.children === 'null') {
+          delete node.children;
+        }
+        // 此处暂时写反了...暂时不做修改
+        return {
+          id: node[label],
+          label: node[value],
+        };
+      };
     }
     let model = this.models[this.widget.model];
 
@@ -364,6 +388,11 @@ export default class GenerateFormItem extends Vue {
 
   created() {
     this.initData();
+    if (this.widget.type === 'table') {
+      this.$EventBus.$on(`refresh:subTable:${this.widget.model}`, () => {
+        this.$refs.table.tableReload();
+      });
+    }
     this.copyOption = this.widget.options.options;
     this.visible = false;
     // 请求字典
@@ -429,6 +458,7 @@ export default class GenerateFormItem extends Vue {
     }
   }
 
+  // 子表在只读模式下隐藏增删改按钮
   get visibleList() {
     const view = {
       conditionTitle: false,
@@ -580,7 +610,6 @@ export default class GenerateFormItem extends Vue {
   }
 
   // 判断是否含有中文
-  // eslint-disable-next-line class-methods-use-this
   isChinese(temp) {
     const re = /[^\u4e00-\u9fa5]/;
     if (re.test(temp)) return false;
@@ -646,6 +675,10 @@ export default class GenerateFormItem extends Vue {
       this.widget.options.options = this.copyOption;
       this.widget.options.remoteOptions = this.copyOption;
     }
+  }
+
+  getTableSelection(selection) {
+    this.$emit('selection', selection);
   }
 
   @Watch('dataModel', {

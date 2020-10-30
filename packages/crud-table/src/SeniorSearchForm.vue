@@ -43,12 +43,13 @@
 </template>
 
 <script lang="ts">
+import GenerateForm from '@/form-designer/src/GenerateForm.vue';
+import { DML, crud } from '@/api/public/crud';
+import { getFormDetail } from '@/api/system/form';
+
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import GenerateForm from '../../form-designer/src/GenerateForm.vue';
-import { DML, crud } from '../../api/public/crud';
-import { getFormDetail } from '../../api/system/form';
 
 @Component({
   components: {
@@ -56,7 +57,7 @@ import { getFormDetail } from '../../api/system/form';
   },
 })
 export default class SeniorSearchForm extends Vue {
-   $refs!: {
+  $refs!: {
     generateDialogForm: HTMLFormElement;
   };
 
@@ -75,7 +76,6 @@ export default class SeniorSearchForm extends Vue {
 
   // 远程数据方法
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
-
 
   created() {
     this.autoGenerateFormByBackend();

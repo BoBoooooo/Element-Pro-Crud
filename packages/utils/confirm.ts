@@ -6,6 +6,7 @@
  */
 import { MessageBox } from 'element-ui';
 
+const ElMessageBox = MessageBox;
 /**
  * 确认提示框装饰器
  * @param {*} message 提示信息
@@ -18,7 +19,7 @@ export function confirm(message, title = '提示', cancelFn = (error) => {}) {
     // eslint-disable-next-line func-names
     descriptor.value = async function (...rest) {
       try {
-        await MessageBox.confirm(message, title);
+        await ElMessageBox.confirm(message, title);
         originFn.apply(this, rest);
       } catch (error) {
         if (cancelFn) {
@@ -39,7 +40,7 @@ export function alert(message, title = '提示') {
     const originFn = descriptor.value;
     // eslint-disable-next-line func-names
     descriptor.value = async function (...rest) {
-      await MessageBox.alert(message, title);
+      await ElMessageBox.alert(message, title);
       originFn.apply(this, rest);
     };
   };

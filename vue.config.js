@@ -1,4 +1,15 @@
+/*
+ * @file: vue.config.js
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年10月28 10:44:39
+ */
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const path = require('path');
 
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 module.exports = {
   // 将 examples 目录添加为新的页面
   pages: {
@@ -9,6 +20,41 @@ module.exports = {
       template: 'public/index.html',
       // 输出文件名
       filename: 'index.html',
+    },
+  },
+  chainWebpack: (config) => {
+    if (process.env.IS_REPORT) {
+      config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
+        {
+          analyzerMode: 'static',
+        },
+      ]);
+    }
+    // vue inspect --rules 列出所有规则，可以看到svg是第三个
+    // vue inspect module.rules.2 可以列出默认svg规则配置
+    // 从默认svg规则中排除src/icons路径，因为会当做图标自动加载
+    config.module.rule('svg').exclude.add(resolve('packages/common/icons'));
+    // 添加svg-sprite-loader加载器
+    config.module
+      .rule('svg-sprite-loader')
+      .test(/.svg$/)
+      .include.add(resolve('packages/common/icons')) // 处理svg目录
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]',
+      })
+      .end()
+      .use('svgo-loader')
+      .loader('svgo-loader')
+      .end();
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@': resolve('packages'),
+      },
     },
   },
 };

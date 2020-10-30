@@ -6,13 +6,18 @@
 @createDate 2018年11月15日16:11:09
 -->
 <template>
+ <!-- 对话框 -->
+  <el-dialog v-if="visible"
+             ref="dialog"
+             class="dialog"
+             :visible.sync="visible"
+             fullscreen>
   <el-container style="height:100%">
     <!-- 左侧边栏 -->
     <el-aside style="width: 20%;max-width:250px">
       <div class="components-list">
         <div class="logo-container">
-          <img class="logo"
-               src="./logo.png" />
+          <SvgIcon icon-class="logo" class="logo"></SvgIcon>
           <span class="title">
             Form Generate
           </span>
@@ -88,9 +93,9 @@
           </el-col>
           <el-col :span="8"
                   style="text-align:right">
-            <!-- <el-button type='text'
+            <el-button type='text'
                        @click="btnSave_onClick"
-                       :loading="btnSaveIsLoading">保存</el-button> -->
+                       :loading="btnSaveIsLoading">保存</el-button>
             <el-button type="text"
                        size="medium"
                        icon="el-icon-view"
@@ -144,10 +149,9 @@
                 form>
       <el-alert type="warning"
                 :closable="false"
-                class="mb-15">组件依赖远端数据需要结合代码实际预览,此处无法直接预览效果!</el-alert>
+                style="margin-bottom:15px">组件依赖远端数据需要结合代码实际预览,此处无法直接预览效果!</el-alert>
       <generate-form v-if="previewVisible"
                      :data="widgetForm"
-                     :remote="remoteFuncsForPreview"
                      :value="widgetModels"
                      ref="generateForm">
         <template slot="blank"
@@ -202,16 +206,17 @@
                    @click="handleGenerateKey()">自动绑定key(已有表单的情况)</el-button> -->
     </cus-dialog>
   </el-container>
+    </el-dialog>
 </template>
 
 <script>
-import './element';
 
+// import './element';
+import SvgIcon from '@/common/icons/SvgIcon.vue';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import JSONEditor from 'jsoneditor';
-import { DML, crud } from '../../api/public/crud';
-import { getTables, getFormKey, getFormDetail } from '../../api/system/form';
+import { DML, crud } from '@/api/public/crud';
+import { getTables, getFormKey, getFormDetail } from '@/api/system/form';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
@@ -247,10 +252,14 @@ import 'vue-awesome/icons/tree';
 import 'vue-awesome/icons/random';
 import 'vue-awesome/icons/text-width';
 import 'vue-awesome/icons/mouse-pointer';
-import 'jsoneditor/dist/jsoneditor.min.css';
+
+const STATUS = {
+  CREATE: 0,
+  UPDATE: 1,
+};
 
 export default {
-  name: 'FormDesigner',
+  name: 'FormDesignerDialog',
   components: {
     Draggable,
     WidgetConfig,
@@ -259,13 +268,9 @@ export default {
     CusDialog,
     GenerateForm,
     Icon,
+    SvgIcon,
   },
   props: {
-    // 表名
-    tableName: {
-      type: String,
-      default: '',
-    },
     // 远程数据方法
     remoteFuncs: {
       type: Object,
@@ -302,23 +307,7 @@ export default {
       jsonVisible: false,
       // 绑定formKeys表单是否显示
       formVisible: false,
-      // 用于预览的下拉菜单数据
-      remoteFuncsForPreview: {
-        func_test(resolve) {
-          setTimeout(() => {
-            const options = [
-              { id: '1', name: '1111' },
-              { id: '2', name: '2222' },
-              { id: '3', name: '3333' },
-            ];
-
-            resolve(options);
-          }, 2000);
-        },
-      },
       widgetModels: {},
-      blank: '',
-      htmlTemplate: '',
       // json编辑器内的文本
       jsonTemplate: '',
       formKeys: {
@@ -330,9 +319,6 @@ export default {
       // 数据库所有表
       allTables: [],
     };
-  },
-  created() {
-    this.init();
   },
   methods: {
     // 自动生成表单,默认一行两列
@@ -467,16 +453,6 @@ export default {
       this.jsonVisible = true;
       // 生成后的json赋值给json编辑器
       this.jsonTemplate = this.widgetForm;
-      // 对话框生成后
-      this.$nextTick(() => {
-        // 初始化编辑器？
-        // eslint-disable-next-line
-        const editor = ace.edit("jsoneditor");
-        // 设置编辑器模式？
-        // editor.session.setMode('ace/mode/json');
-        // 复制到剪贴板按钮？
-        // const btnCopy = new Clipboard('#copybtn');
-      });
     },
     // 自动同步后端key
     async handleGenerateKey(generateForm = false) {
@@ -526,32 +502,31 @@ export default {
      * @param {Number} status 对话框状态[添加:0,编辑:1]，必须是STATUS枚举
      * @param {Object} formValues 编辑时传入所有字段的默认值
      */
-    init(param = {}, status = 0, formValues = {}) {
+    async showDialog(param = {}, status = STATUS.CREATE, formValues = {}) {
       // 保存参数用于save方法
       this.dialogParams = param;
       this.dialogStatus = status;
-      getTables().then((res) => {
-        this.allTables = res.data;
-      });
+      if (this.dialogStatus === STATUS.UPDATE) {
+        // 填写编辑框，这里如果不用...拷贝会导致污染实参
+        this.formValues = { ...formValues };
+        // 下方设计区域
+        this.widgetForm = JSON.parse(formValues.formJson);
+      } else {
+        this.formValues = {};
+        this.widgetForm = {
+          list: [],
+          config: { labelWidth: 100, labelPosition: 'top', size: 'small' },
+        };
+      }
+      // 初始化右侧的配置区域
+      this.widgetFormSelect = '';
+      this.visible = true;
+      // 请求数据库所有表名
+      const { data } = await getTables();
+      this.allTables = data;
       // 请求对话框内的动态表单json
-      getFormDetail('dynamictables').then((res) => {
-        this.formDesign = JSON.parse(res.data.formJson);
-        if (this.dialogStatus === 1) {
-          // 填写编辑框，这里如果不用...拷贝会导致污染实参
-          this.formValues = { ...formValues };
-          // 下方设计区域
-          this.widgetForm = JSON.parse(formValues.formJson);
-        } else {
-          this.formValues = {};
-          this.widgetForm = {
-            list: [],
-            config: { labelWidth: 100, labelPosition: 'top', size: 'small' },
-          };
-        }
-        this.visible = true;
-        // 初始化右侧的配置区域
-        this.widgetFormSelect = '';
-      });
+      const res = await getFormDetail('dynamictables');
+      this.formDesign = JSON.parse(res.data.formJson);
     },
     // 保存设计
     btnSave_onClick() {
@@ -562,9 +537,8 @@ export default {
         .then((formValue) => {
           let type;
           let msg;
-
           // 根据对话框状态判断保存或编辑
-          if (this.dialogStatus === 0) {
+          if (this.dialogStatus === STATUS.CREATE) {
             type = DML.INSERT;
             msg = '添加成功';
           } else {
@@ -590,7 +564,8 @@ export default {
                 type: 'success',
                 message: msg,
               });
-              this.$emit('afterSave', {
+              this.visible = false;
+              this.$emit('after-save', {
                 status: this.dialogStatus,
                 dialogParams: this.dialogParams,
               });
@@ -621,10 +596,6 @@ export default {
 @import "./styles/cover.scss";
 @import "./styles/index.scss";
 
-.widget-empty {
-  background: url("~./form_empty.png") no-repeat;
-  background-position: 50% 30%;
-}
 .logo-container {
   padding: 0 10px 10px;
   border-bottom: 1px solid #f2f2f2;

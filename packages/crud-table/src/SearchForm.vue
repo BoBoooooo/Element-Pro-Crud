@@ -23,7 +23,8 @@
              style="display:inline"></i>
         </el-tooltip>
         <!-- 高级查询表单 -->
-        <SeniorSearchForm :remoteFuncs="remoteFuncs"
+        <SeniorSearchForm v-if="showSeniorSearchFormButton"
+                          :remoteFuncs="remoteFuncs"
                           @fetchSearch="getFetchParamsSearch"
                           :columns="columns"> </SeniorSearchForm>
         <el-tooltip class="item"
@@ -36,6 +37,8 @@
         </el-tooltip>
       </div>
     </el-input>
+    <!-- 自定义高级查询表单-->
+    <slot name="SeniorSearchForm"></slot>
     <div class="tips">
       <!-- 提示当前查询内容 -->
       <template v-if="isArray">
@@ -69,6 +72,9 @@ export default class SearchForm extends Vue {
   // 远程数据方法
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
 
+  // 是否显示高级查询按钮
+  @Prop({ default: true, type: Boolean }) showSeniorSearchFormButton!: boolean;
+
   // 表格设计json
   @Prop({
     type: Array,
@@ -80,7 +86,7 @@ export default class SearchForm extends Vue {
   searchContent = '';
 
   // 查询tips
-  paramsTips: any = null;
+  paramsTips:any = null;
 
   get isArray() {
     return Array.isArray(this.paramsTips);
@@ -117,7 +123,7 @@ export default class SearchForm extends Vue {
    * 获取查询条件
    */
   getParams() {
-    let params: any = [];
+    let params:any = [];
     // 拿到所有字段
     const props = this.columns.filter(item => item.searchable).map(item => item.prop);
     const str = props.toString();
@@ -143,7 +149,7 @@ export default class SearchForm extends Vue {
   // 获取高级查询组件中的查询条件
   getFetchParamsSearch(data) {
     this.paramsTips = [];
-    const params: any = [];
+    const params:any = [];
     Object.keys(data).forEach((key) => {
       if (key && data[key]) {
         if (Array.isArray(data[key])) {

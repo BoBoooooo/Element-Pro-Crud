@@ -37,15 +37,9 @@ export enum DML {
  * @param data body data
  * @param params query Params
  */
-export function crud(
-  dml: DML,
-  tableName: string,
-  data: object = {},
-  params: any = null,
-) {
+export function crud(dml: DML, tableName: string, data: object = {}, params: any = null) {
   const options: optionsType = {
-    // url: `/${tableName}/${dml}`, // 例如users表的查询接口为  /users/list
-    url: `/${tableName}/${dml}`,
+    url: `/${tableName}/${dml}`, // 例如users表的查询接口为  /users/list
     method: 'post',
   };
   // 以下请求通过包体传参

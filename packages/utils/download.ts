@@ -1,10 +1,10 @@
 /**
  * @file 文件下载
- * @author BoBo
+ * @author ytyang
  * @copyright NanJing Anshare Tech .Com
  * @createDate 2018年11月18日08:13:10
  */
-import axios from '../../../api/axios';
+import axios from '../api/axios';
 
 /**
  * 通用下载

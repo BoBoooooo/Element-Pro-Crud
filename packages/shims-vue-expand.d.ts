@@ -20,8 +20,20 @@ declare module 'vue/types/vue' {
     dayjs: any;
     $pinyinmatch: any;
     install: any;
+    HOST_URL: any;
+    API_URL: any;
+    $EventBus: any;
   }
   interface VueConstructor {
     install: any;
   }
 }
+
+
+declare global {
+  interface Window  {
+    __HOST__URL__: string;
+    __PREFIX__URL__: string;
+  }
+}
+

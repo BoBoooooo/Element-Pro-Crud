@@ -346,6 +346,7 @@ export const advanceComponents = [
       prefill: '',
       tableTitle: '',
       showPagination: true,
+      isMultiple: false,
       tableName: '',
       tableDesignerName: '',
       dialogFormDesignerName: '',

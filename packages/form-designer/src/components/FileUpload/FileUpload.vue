@@ -22,11 +22,9 @@
                   content="上传附件"
                   placement="bottom">
         <el-button size="mini"
-                   v-show="view.uploadBtn"
                    style="float:right;"
-                   :icon="btnIcon"
                    :loading="btnSaveIsLoading"
-                   type="primary">{{btnText}}</el-button>
+                   type="primary">上传附件</el-button>
       </el-tooltip>
     </el-upload>
     <CrudTable ref="table"
@@ -35,44 +33,41 @@
                emptyText="暂无附件"
                :tableName="tableName"
                :maxHeightMinus="290"
-               :pageSize="[30,50,100]"
+               :pageSize="[10, 20, 50]"
                :tableTitle="tableTitle"
                :tableParams="tableParams"
                :promiseForSelect="promiseForSelect"
                :fullHeight="fullHeight"
                :visibleList="{
                   conditionTitle: false,
-                  tableTitle:view.tableTitle,
-                  searchForm: view.searchForm,
+                  searchForm: true,
                   btnAdd: false,
                   btnExport: false,
                   actionColumnBtnEdit: false,
-                  actionColumnBtnDel:false,
-                  tableTitle:view.tableTitle
+                  actionColumnBtnDel: false,
+                  tableTitle: false,
                 }"
                :paginationLayout="paginationLayout"
                :showPagination="showPagination"
                @selection="getSelection"
-               :isMultiple="isMultiple"
-               :row-class-name="rowClassName">
+               :isMultiple="isMultiple">
       <template #columnFormatter="{prop,row}">
-        <template v-if="prop=== 'filename'">
-          <span>{{row.filename}}</span>
+        <template v-if="prop === 'filename'">
+          <span>{{ row.filename }}</span>
         </template>
       </template>
-      <template #btnBarPrevBtn>
-        <slot name="btnBarPrevBtn"></slot>
-      </template>
+      <template #btnBarPrevBtn> </template>
       <template #btnCustom="scope">
         <slot name="btnCustom"
               :row="scope.row"></slot>
-        <div>
+        <div v-if="scope.row.isdeleted === false">
           <el-dropdown trigger="click"
                        placement="bottom"
                        class="selectButton">
-            <span class="el-dropdown-link">
+            <el-button type="text"
+                       class="el-dropdown-link">
               更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
+            </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <i class="el-icon-download"
@@ -101,15 +96,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import download from '../../utils/download';
-import { crud, DML } from '../../../../api/public/crud';
+import download from '@/utils/download';
+import { DML, crud } from '@/api/public/crud';
 
 @Component
 export default class FileUpload extends Vue {
   $refs!: {
-    uploadBtn: HTMLFormElement;
-    table:HTMLFormElement;
+    table: HTMLFormElement;
   };
+
+  API_URL = this.API_URL;
 
   // 保存按钮Loading状态
   btnSaveIsLoading = false;
@@ -133,18 +129,6 @@ export default class FileUpload extends Vue {
   accept!: string;
 
   @Prop({
-    type: String,
-    default: '上传附件',
-  })
-  btnText!: string;
-
-  @Prop({
-    type: String,
-    default: '',
-  })
-  btnIcon!: string;
-
-  @Prop({
     type: Boolean,
     default: false,
   })
@@ -155,6 +139,12 @@ export default class FileUpload extends Vue {
     default: '',
   })
   resourceid!: string;
+
+  @Prop({
+    type: Object,
+    default: null,
+  })
+  myTask: any;
 
   @Prop({
     type: Object,
@@ -170,15 +160,9 @@ export default class FileUpload extends Vue {
 
   @Prop({
     type: String,
-    default: `${process.env.VUE_APP_API_URL}file/upload`,
+    default: `${window.__HOST__URL__ + window.__PREFIX__URL__}file/upload`,
   })
   uploadUrl!: string;
-
-  @Prop({
-    default: null,
-    type: Function,
-  })
-  promiseForSelect: any;
 
   @Prop({
     type: String,
@@ -200,13 +184,6 @@ export default class FileUpload extends Vue {
   })
   isMultiple!: boolean;
 
-  // file列表行样式
-  @Prop({
-    type: [String, Function],
-    default: null,
-  })
-  rowClassName: any;
-
   @Prop({
     type: String,
     default: '',
@@ -223,22 +200,18 @@ export default class FileUpload extends Vue {
   // 内部元素显示控制，默认只有上传人可以编辑删除
   get view() {
     return {
-      btnAdd: true,
+      btnAdd: false,
       btnDel: true,
-      btnEdit: true,
-      btnPreview: true,
+      btnEdit: false,
       upload: true,
       list: true,
-      btnDownload: true,
-      uploadBtn: true,
-      searchForm: false,
-      tableTitle: true,
+      tableTitle: false,
       ...this.visibleList,
     };
   }
 
   get tableParams() {
-    const params:any = {};
+    const params: any = {};
     if (this.resourceid) {
       params.resourceid = this.resourceid;
     }
@@ -249,21 +222,16 @@ export default class FileUpload extends Vue {
   }
 
   get uploadParams() {
-    const {
-      resourceid, fileType,
-    } = this;
-    let params : any = {
+    const { myTask, resourceid, fileType } = this;
+    const params: any = {
       userid: this.$store.getters.userid,
     };
     if (resourceid) {
       params.resourceid = resourceid;
     }
-    if (this.fileType) {
-      params.type = this.fileType;
+    if (fileType) {
+      params.filetype = fileType;
     }
-    params = {
-      ...params,
-    };
     return params;
   }
 
@@ -289,18 +257,17 @@ export default class FileUpload extends Vue {
         type: 'success',
         message: '上传成功',
       });
-      if (this.view.list) {
-        this.tableReload();
-      }
+      this.tableReload();
       this.$emit('uploadSuccess');
     }
     this.btnSaveIsLoading = false;
   }
 
   // 下载
-  // eslint-disable-next-line class-methods-use-this
   btnDownloadOnClick(scope) {
-    download(`${process.env.VUE_APP_API_URL}file/download`, scope.row.filename, { id: scope.row.id });
+    download(`${this.API_URL}file/download`, scope.row.filename, {
+      id: scope.row.id,
+    });
   }
 
   // 删除按钮代理
@@ -313,7 +280,7 @@ export default class FileUpload extends Vue {
       .then(() => {
         crud(DML.DELETE, this.tableName, {
           id: row.id,
-        }).then((res:any) => {
+        }).then((res: any) => {
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.tableReload();

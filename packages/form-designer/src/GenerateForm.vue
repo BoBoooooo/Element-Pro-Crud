@@ -54,6 +54,7 @@
                 </el-form-item>
                 <!-- 正常组件通过GenerateFormItem生成 -->
                 <GenerateFormItem v-else
+                                  @selection="getTableSelection($event,citem)"
                                   :key="citem.key"
                                   :models.sync="models"
                                   :remote="remote"
@@ -67,6 +68,26 @@
                             slot-scope="{ node }">
                     <slot name="tree-select-value-label"
                           :node="node"></slot>
+                  </template>
+                  <!-- btnBarPrevBtn -->
+                  <template :slot="citem.model+'_btnBarPrevBtn'">
+                    <slot :name="citem.model+'_btnBarPrevBtn'">
+                    </slot>
+                  </template>
+                  <!-- btnCustom -->
+                  <template :slot="citem.model+'_btnCustom'"
+                            slot-scope="{row}">
+                    <slot :name="citem.model+'_btnCustom'"
+                          :row="row">
+                    </slot>
+                  </template>
+                  <!-- columnFormatter -->
+                  <template :slot="citem.model+'_columnFormatter'"
+                            slot-scope="{row,prop}">
+                    <slot :name="citem.model+'_columnFormatter'"
+                          :row="row"
+                          :prop="prop">
+                    </slot>
                   </template>
                 </GenerateFormItem>
               </template>
@@ -87,14 +108,35 @@
         <!-- 普通行布局方式 -->
         <template v-else>
           <GenerateFormItem :key="item.key"
-                            :formTableConfig="formTableConfig"
                             :models.sync="models"
-                            :rules="rules"
-                            :readOnly="setReadOnly"
-                            :widget="item"
                             :remote="remote"
+                            @selection="getTableSelection($event,item)"
+                            :widget="item"
+                            :readOnly="setReadOnly"
                             @btnOnClick="btnOnClick"
-                            v-show="!item.hidden"></GenerateFormItem>
+                            v-show="!item.hidden"
+                            :formTableConfig="formTableConfig">
+            <template slot="tree-select-value-label"
+                      slot-scope="{ node }">
+              <slot name="tree-select-value-label"
+                    :node="node"></slot>
+            </template>
+            <!-- btnBarPrevBtn -->
+            <template :slot="item.model">
+              <slot :name="item.model+'_btnBarPrevBtn'">
+              </slot>
+            </template>
+            <!-- btnCustom -->
+            <template :slot="item.model+'_btnCustom'">
+              <slot :name="item.model+'_btnCustom'">
+              </slot>
+            </template>
+            <!-- columnFormatter -->
+            <template :slot="item.model+'_columnFormatter'">
+              <slot :name="item.model+'_columnFormatter'">
+              </slot>
+            </template>
+          </GenerateFormItem>
         </template>
       </template>
     </el-form>
@@ -105,12 +147,14 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
+import { DML, crud } from '@/api/public/crud';
 import GenerateFormItem from './GenerateFormItem.vue';
 
 @Component({
   components: {
     GenerateFormItem,
   },
+  name: 'GenerateForm',
 })
 export default class GenerateForm extends Vue {
   $refs!: {
@@ -179,9 +223,17 @@ export default class GenerateForm extends Vue {
 
   rules: any = {};
 
+  // 子表表格选中数据
+  tableSelections: any = {};
+
   created() {
     // 根据数据结构生成给子组件的数据源
     this.generateModle(this.data.list);
+  }
+
+  getTableSelection($event, item) {
+    this.tableSelections[item.model] = $event;
+    this.$emit('table-selections', this.tableSelections);
   }
 
   generateModle(genList) {
@@ -202,20 +254,22 @@ export default class GenerateForm extends Vue {
           this.generateModle(item.list);
         });
       } else {
-        // 如果是自定义组件,model值为slotName,不在model中赋属性值
-        if (Object.keys(this.value).indexOf(genList[i].model) >= 0 && genList[i].type !== 'blank') {
-          // 3.后端要求下拉列表传值时要同时给key和value，为了实现此需求的另外两处赋值在GenerateFormItem.vue中
-          if (genList[i].type === 'select') {
-            const dict = `${genList[i].model}dict`;
-            this.models[dict] = this.value[dict];
-          }
-          this.initFormValue(genList[i]);
-        } else {
-          this.setDefaultValue(genList[i]);
-        }
+        // 获取当前组件
         const row = genList[i];
-        // Props单独设置只读
+        // 如果是自定义组件,model值为slotName,不在model中赋属性值
+        if (Object.keys(this.value).indexOf(row.model) >= 0 && row.type !== 'blank') {
+          this.initFormValue(row);
+        } else {
+          this.setDefaultValue(row);
+        }
+
+        // 表单隐藏设置
+        if (this.setHidden.includes(row.model)) {
+          row.hidden = true;
+        }
+
         if (this.setReadOnly) {
+          // 表单只读控制
           const { whiteList, blackList } = this.setReadOnly;
           // 默认空对象 代表全部只读
           if (whiteList == null && blackList == null) {
@@ -224,13 +278,6 @@ export default class GenerateForm extends Vue {
             row.options.disabled = true;
           } else if (whiteList && whiteList.includes(row.model)) {
             row.options.disabled = true;
-          }
-        }
-        // Props 单独设置隐藏
-        if (this.setHidden) {
-          // 默认空对象 代表全部只读
-          if (this.setHidden.includes(row.model)) {
-            row.hidden = true;
           }
         }
         if (this.rules[genList[i].model]) {
@@ -275,7 +322,7 @@ export default class GenerateForm extends Vue {
    * @param {String} 当前表单json.list
    */
   initFormValue(row) {
-    if (row.options.multiple || 'cascader,checkbox'.includes(row.type)) {
+    if (row.options.multiple || 'cascader,checkbox'.includes(row.type) || (row.options.type && row.options.type.includes('range'))) {
       if (this.value[row.model] != null && this.value[row.model] !== '') {
         this.models[row.model] = this.value[row.model].split(',');
       } else {
@@ -309,7 +356,7 @@ export default class GenerateForm extends Vue {
           // 校验失败时focus到文本框
           // 注意此处没有考虑textarea的情况,多行文本会失败
           setTimeout(() => {
-            const isError:any = document.getElementsByClassName('is-error');
+            const isError: any = document.getElementsByClassName('is-error');
             isError[0].querySelector('input').focus();
           }, 100);
           reject(new Error('请检查必填项是否填写').message);

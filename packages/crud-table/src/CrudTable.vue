@@ -33,12 +33,16 @@
 
       <SearchForm ref="searchForm"
                   v-if="view.searchForm"
+                  :showSeniorSearchFormButton="view.seniorSearchBtn"
                   :columns="tableConfig.columns"
                   @click="fetchHandler(false,true)"
                   :searchFormCondition.sync="searchFormCondition"
                   :remoteFuncs="remoteFuncs"
                   :isLoading="loading"
                   @clear="dataChangeHandler(true)">
+                  <template #seniorSearchForm>
+                    <slot name="seniorSearchForm"></slot>
+                  </template>
       </SearchForm>
       <!-- 表格主体 -->
       <el-table v-loading.lock="loading"
@@ -88,6 +92,11 @@
                 @current-change="(currentRow, oldCurrentRow) => emitTableEvent('current-change', currentRow, oldCurrentRow)"
                 @header-dragend="(newWidth, oldWidth, column, event) => emitTableEvent('header-dragend', newWidth, oldWidth, column, event)"
                 @expand-change="(row, expanded) => emitTableEvent('expand-change', row, expanded)">
+        <template slot='empty'>
+          <SvgIcon icon-class='table_empty'
+                   class="empty_icon"></SvgIcon>
+          <span>暂无数据</span>
+        </template>
         <el-table-column v-if="isMultiple || view.btnDel"
                          type="selection"
                          reserve-selection
@@ -140,9 +149,6 @@
 
           <template slot-scope="scope">
             <span v-if="column.slotName === 'actionColumn'">
-              <!-- 自定义按钮 -->
-              <slot name="btnCustom"
-                    :row="scope.row" />
               <!-- 操作列-添加按钮 -->
               <el-button v-if="view.actionColumnBtnAdd"
                          icon="el-icon-plus"
@@ -167,6 +173,9 @@
                          type="danger"
                          size="mini"
                          @click.stop="actionColumnDel(scope.row)">{{text.del}}</el-button>
+              <!-- 自定义按钮 -->
+              <slot name="btnCustom"
+                    :row="scope.row" />
             </span>
             <span v-else-if="column.slotName  && column.slotName !== 'actionColumn'">
               <slot :name="column.slotName"
@@ -207,13 +216,18 @@
                         :tableParams="tableParams"
                         @afterSave="tableReload"
                         @change="formChange"
+                        :formValuesAsync="formValuesAsync"
+                        :formTableConfig="formTableConfig"
                         :remoteFuncs="remoteFuncs"
                         :visibleList="view"
                         :setReadOnly="setReadOnly"
-                        :append-to-body="dialogAppendToBody"
-                        :close_on_click_modal="dialogCloseOnClickModal"
-                        :fullscreen="dialogFullscreen"
-                        @btnOnClick="formBtnOnClick">
+                        :append-to-body="appendToBody"
+                        :close_on_click_modal="closeOnClickModal"
+                        :fullscreen="fullscreen"
+                        @btnonclick="formBtnOnClick">
+                        <template #dialogFooter>
+                          <slot name="dialogFooter"></slot>
+                        </template>
     </GenerateFormDialog>
   </div>
 </template>
@@ -222,10 +236,11 @@
 import {
   Component, Vue, Emit, Prop,
 } from 'vue-property-decorator';
-import { DML, crud } from '../../api/public/crud';
-import { getTableDetail, getFormDetail } from '../../api/system/form';
+import { DML, crud } from '@/api/public/crud';
+import { getTableDetail, getFormDetail } from '@/api/system/form';
+import { confirm } from '@/utils/confirm';
+import SvgIcon from '@/common/icons/SvgIcon.vue';
 import GenerateFormDialog from './GenerateFormDialog.vue';
-import { confirm } from '../../utils/confirm';
 import SearchForm from './SearchForm.vue';
 
 const STATUS = {
@@ -238,6 +253,7 @@ const STATUS = {
   components: {
     GenerateFormDialog,
     SearchForm,
+    SvgIcon,
   },
 })
 export default class CrudTable extends Vue {
@@ -336,28 +352,28 @@ export default class CrudTable extends Vue {
   // 按钮名字
   @Prop({ default: () => ({}), type: Object }) textMap!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 删除方法代理
   @Prop({ default: null, type: Function }) promiseForDel!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 请求数据方法代理
   @Prop({ default: null, type: Function }) promiseForSelect!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 删除按钮是否可见代理
   @Prop({ default: null, type: Function }) btnDelVisibleFunc!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 编辑按钮是否可见代理
   @Prop({ default: null, type: Function }) btnEditVisibleFunc!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 查看按钮是否可见代理
   @Prop({ default: null, type: Function }) btnDetailVisibleFunc!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 表格添加按钮点击事件
   @Prop({ default: null, type: Function }) btnAddOnClick!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 表格行中的编辑按钮点击事件
   @Prop({ default: null, type: Function }) btnEditOnClick!: any;
 
-  // 表格行中的添加按钮点击事件
+  // 表格行中的查看按钮点击事件
   @Prop({ default: null, type: Function }) btnDetailOnClick!: any;
 
   // 表格行中的添加按钮点击事件
@@ -402,6 +418,9 @@ export default class CrudTable extends Vue {
 
   // 斑马纹
   @Prop({ type: Boolean, default: true }) stripe!: boolean;
+
+  // 异步更新表单数据
+  @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
 
   // 子表tableConfig 详情看GenerateFormItem中解释
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
@@ -533,10 +552,6 @@ export default class CrudTable extends Vue {
     };
   }
 
-  // 表格数据源地址
-  get tableUrl() {
-    return `${this.tableName}/list`;
-  }
 
   // 文本映射
   get text() {
@@ -561,6 +576,7 @@ export default class CrudTable extends Vue {
       actionColumnBtnDetail: false,
       actionColumnBtnDel: true,
       actionColumn: true,
+      seniorSearchBtn: true,
       btnAddOnColumnHeader: false,
       ...this.visibleList,
     };
@@ -596,9 +612,7 @@ export default class CrudTable extends Vue {
   // 添加
   btnAdd() {
     if (this.btnAddOnClick) {
-      this.btnAddOnClick({
-        tableParams: this.tableParams,
-      });
+      this.btnAddOnClick();
     } else if (this.prefill) {
       // 对话框内加载预填项
       this.$refs.dialog.showDialog({}, 0, this.prefill);
@@ -692,7 +706,7 @@ export default class CrudTable extends Vue {
   actionColumnDel(row) {
     this.currentRow = row;
     // 如果prop传入了promiseForDel说明需要回调自定义删除
-    const promise = this.promiseForDel ? this.promiseForDel({ id: row.id }) : crud(DML.DELETE, this.tableName, {}, { id: row.id });
+    const promise = this.promiseForDel ? this.promiseForDel({ id: row.id }) : crud(DML.DELETE, this.tableName, { id: row.id });
     promise.then(() => {
       this.tableReload();
       this.$message({
@@ -741,12 +755,6 @@ export default class CrudTable extends Vue {
     return visible;
   }
 
-  // 表格数据请求完成
-  done(t) {
-    t.tableTitle = this.tableTitle;
-    this.$emit('done', t);
-  }
-
   // 多选事件
   handleSelectionChange(selection) {
     this.selectedRows = selection;
@@ -755,12 +763,12 @@ export default class CrudTable extends Vue {
 
   // 生成的按钮点击
   formBtnOnClick(widget) {
-    this.$emit('formBtnOnClick', widget);
+    this.$emit('form-btn-on-click', widget);
   }
 
   // 监听dialog中form对象改变
   formChange(val) {
-    this.$emit('formChange', val);
+    this.$emit('form-change', val);
   }
 
   mounted() {
@@ -815,14 +823,9 @@ export default class CrudTable extends Vue {
     let searchCondition: any[] = [];
     this.loading = true;
     const {
-      tableUrl, showPagination, pageIndexKey, pageSizeKey, pagination, listField, totalField,
+      showPagination, pageIndexKey, pageSizeKey, pagination, listField, totalField,
     } = this;
     const { tableParams, searchFormCondition } = this;
-    // 如果地址为空放弃请求
-    if (tableUrl == null) {
-      this.loading = false;
-      return;
-    }
 
     // 已加载完成, tree lazy table 局部刷新.
     if (this.lazy && this.tableData.length > 0) {
@@ -932,14 +935,9 @@ export default class CrudTable extends Vue {
         this.$emit('done', this);
       })
       .catch((e) => {
-        // 如果list查询方法由外部传入,无法获取到真实请求的URL,故隐藏
-        let message = `URL：${tableUrl}，原因：${e.message}`;
-        if (this.promiseForSelect) {
-          message = `原因：${e.message}`;
-        }
         this.$notify({
           title: '表格数据请求失败',
-          message,
+          message: `原因：${e.message}`,
           duration: 5000,
         });
         this.loading = false;
@@ -958,6 +956,7 @@ export default class CrudTable extends Vue {
         },
       ],
     };
+
     crud(DML.TREE_LAZY, this.tableName, data).then((res) => {
       if (resolve) {
         resolve(res.data);

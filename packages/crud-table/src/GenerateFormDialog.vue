@@ -26,6 +26,7 @@
     <el-row type="flex"
             justify="end"
             slot="footer">
+      <slot name="dialogFooter"></slot>
       <template v-if="readOnly">
         <el-button @click="visible=false">关 闭</el-button>
       </template>
@@ -42,13 +43,13 @@
 </template>
 
 <script lang="ts">
+import { DML, crud } from '@/api/public/crud';
+import { getFormDetail } from '@/api/system/form';
+import GenerateForm from '@/form-designer/src/GenerateForm.vue';
+import guid from '@/utils/generator';
 import {
   Component, Vue, Emit, Watch, Prop,
 } from 'vue-property-decorator';
-import { DML, crud } from '../../api/public/crud';
-import { getFormDetail } from '../../api/system/form';
-import GenerateForm from '../../form-designer/src/GenerateForm.vue';
-import guid from '../../utils/generator';
 
 const STATUS = {
   CREATE: 0,
@@ -62,6 +63,9 @@ const STATUS = {
   },
 })
 export default class GenerateFormDialog extends Vue {
+  // 异步更新表单数据
+  @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
+
   // 子表tableConfig 详情看GenerateFormItem中解释
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
 
@@ -84,7 +88,7 @@ export default class GenerateFormDialog extends Vue {
   // 对话框宽度
   @Prop({
     type: String,
-    default: '80%',
+    default: '1400px',
   })
   width!: string;
 
@@ -223,12 +227,6 @@ export default class GenerateFormDialog extends Vue {
           msg = '编辑成功';
         }
         let promise;
-        // const opt = {
-        //   ...this.formValues,
-        //   ...this.tableParams,
-        //   ...formValue,
-        //   ...this.dialogParams,
-        // };
         // 如果有代理的保存方法
         if (this.promiseForSave) {
           promise = this.promiseForSave(formValue);
@@ -280,6 +278,14 @@ export default class GenerateFormDialog extends Vue {
     this.$emit('change', {
       formEntity: value,
       formDesign: this.formDesign,
+    });
+  }
+
+  @Watch('formValuesAsync', { deep: true })
+  onValueChange(value: any) {
+    Object.keys(value).forEach((k) => {
+      // 异步赋值
+      this.$set(this.formValues, k, value[k]);
     });
   }
 }

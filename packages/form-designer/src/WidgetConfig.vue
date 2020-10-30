@@ -448,7 +448,7 @@
       </template>
 
       <template v-if="data.type != 'grid'">
-        <el-form-item v-if="data.type != 'button' && data.type != 'table' && data.type != 'upload' "
+        <el-form-item v-if="data.type != 'button' && data.type != 'upload' "
                       label="后端接口Key">
           <el-input v-model="data.model"></el-input>
         </el-form-item>
@@ -543,6 +543,9 @@
           <el-form-item label="是否显示分页">
             <el-switch v-model="data.options.showPagination"></el-switch>
           </el-form-item>
+          <el-form-item label="是否多选">
+            <el-switch v-model="data.options.isMultiple"></el-switch>
+          </el-form-item>
           <el-form-item label="界面元素控制">
             <el-switch v-model="data.options.visibleList.actionColumn"
                        inactive-text="是否显示操作列"
@@ -595,7 +598,7 @@
 <script>
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import { DML, crud } from '../../api/public/crud';
+import { DML, crud } from '@/api/public/crud';
 import 'vue-awesome/icons/regular/keyboard';
 import 'vue-awesome/icons/regular/trash-alt';
 import 'vue-awesome/icons/regular/clone';

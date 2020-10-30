@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <FormDesigner></FormDesigner>
+    <el-button @click="showDialog" type="primary">打开表单设计器</el-button>
+    <FormDesignerDialog ref="dialog"></FormDesignerDialog>
     <CrudTable tableName='dept'
                :visibleList='{
            tableTitle:false,
@@ -13,6 +14,12 @@
 <script>
 export default {
   name: 'app',
+  methods: {
+    showDialog() {
+      this.$refs.dialog.showDialog();
+    },
+  },
+
 };
 </script>
 
