@@ -6,6 +6,7 @@
   "private": false,
   "license": "MIT",
   "keyword": "ElementUI,CRUD,el-table,el-form,表单设计器",
+  "keywords": ["CRUD","ElementUI","el-table","el-form","表单设计器","表格设计器"],
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "repository": {
     "type": "git",
