@@ -28,7 +28,7 @@ npm i element-pro-crud -S
 <html>
   <head>
     <meta charset="UTF-8" />
-      <!-- 引入ProCrud CSS -->
+    <!-- 引入ProCrud CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.1.2/lib/ProCrud.css" />
     <!-- 引入ElementUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
@@ -107,13 +107,13 @@ npm i element-pro-crud -S
 
 #### 完整组件列表
 
-- GenerateForm // 根据表单设计器json自动渲染表单
+- `GenerateForm` // 根据表单设计器json自动渲染表单
 
-- FormDesignerDialog // 表单设计器
+- `FormDesignerDialog` // 表单设计器
 
-- TableDesignerDialog 表格设计器
+- `TableDesignerDialog` // 表格设计器
 
-- CrudTable// 高级增删改查 ProTable
+- `CrudTable` // 高级增删改查 ProTable
 
 ## 组件文档
 
