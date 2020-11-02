@@ -210,9 +210,7 @@
 </template>
 
 <script>
-
-// import './element';
-import SvgIcon from '@/common/icons/SvgIcon.vue';
+import SvgIcon from '@/icons/SvgIcon.vue';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import { DML, crud } from '@/api/public/crud';

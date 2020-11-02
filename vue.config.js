@@ -30,10 +30,9 @@ module.exports = {
         },
       ]);
     }
-    // vue inspect --rules 列出所有规则，可以看到svg是第三个
-    // vue inspect module.rules.2 可以列出默认svg规则配置
-    // 从默认svg规则中排除src/icons路径，因为会当做图标自动加载
-    config.module.rule('svg').exclude.add(resolve('packages/common/icons'));
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('packages/common/icons'));
     // 添加svg-sprite-loader加载器
     config.module
       .rule('svg-sprite-loader')
@@ -53,7 +52,8 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@': resolve('packages'),
+        '@': resolve('src'),
+        packages: resolve('packages'),
       },
     },
   },

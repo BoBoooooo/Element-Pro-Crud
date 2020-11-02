@@ -239,7 +239,7 @@ import {
 import { DML, crud } from '@/api/public/crud';
 import { getTableDetail, getFormDetail } from '@/api/system/form';
 import { confirm } from '@/utils/confirm';
-import SvgIcon from '@/common/icons/SvgIcon.vue';
+import SvgIcon from '@/icons/SvgIcon.vue';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import SearchForm from './SearchForm.vue';
 

@@ -1,25 +1,35 @@
+<!--
+ * @file: 本地运行debug (umd打包后调试请允许demo.html)
+ * @copyright: NanJing Anshare Tech .Com
+ * @author: BoBo
+ * @Date: 2020年10月30 15:58:48
+-->
 <template>
   <div id="app">
-    <el-button @click="showDialog" type="primary">打开表单设计器</el-button>
-    <FormDesignerDialog ref="dialog"></FormDesignerDialog>
+
+    <TableDesignerDialog ref="table"></TableDesignerDialog>
+    <FormDesignerDialog ref="form"></FormDesignerDialog>
     <CrudTable tableName='dept'
                :visibleList='{
            tableTitle:false,
          }'
                fullHeight>
     </CrudTable>
+    <el-button @click="showDialog('form')"
+               type="primary">打开表单设计器</el-button>
+    <el-button @click="showDialog('table')"
+               type="danger">打开表格设计器</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: "app",
   methods: {
-    showDialog() {
-      this.$refs.dialog.showDialog();
+    showDialog(name) {
+      this.$refs[name].showDialog();
     },
   },
-
 };
 </script>
 

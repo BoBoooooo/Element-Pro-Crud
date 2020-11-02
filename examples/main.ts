@@ -1,10 +1,9 @@
-import Vue from 'vue';
+import Vue from 'vue'; 
 import App from './App.vue';
-// 直接引入lib进行npm install 模拟测试
-// import plugin from '../lib/plugin.umd.js';
-// import '../lib/plugin.css';
-import plugin from '../packages/index';
-
+// 导入ElementProCrud
+import plugin from '../src/index';
+// 引入ElementUI
+import './element';
 Vue.use(plugin);
 Vue.config.productionTip = false;
 

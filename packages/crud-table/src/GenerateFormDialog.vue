@@ -45,7 +45,7 @@
 <script lang="ts">
 import { DML, crud } from '@/api/public/crud';
 import { getFormDetail } from '@/api/system/form';
-import GenerateForm from '@/form-designer/src/GenerateForm.vue';
+import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
 import {
   Component, Vue, Emit, Watch, Prop,

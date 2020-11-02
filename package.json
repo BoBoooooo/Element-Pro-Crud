@@ -1,25 +1,42 @@
 {
   "name": "element-pro-crud",
-  "version": "0.1.1",
-  "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
+  "version": "0.1.2",
   "main": "lib/ProCrud.umd.min.js",
+  "files": [
+    "lib",
+    "src",
+    "packages",
+    "types"
+  ],
+  "typings": "types/index.d.ts",
+  "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
   "private": false,
   "license": "MIT",
   "keyword": "ElementUI,CRUD,el-table,el-form,表单设计器",
-  "keywords": ["CRUD","ElementUI","el-table","el-form","表单设计器","表格设计器"],
+  "keywords": [
+    "CRUD",
+    "ElementUI",
+    "el-table",
+    "el-form",
+    "表单设计器",
+    "表格设计器"
+  ],
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/BoBoooooo/Element-Pro-Crud"
   },
-  "homepage": "https://github.com/BoBoooooo/Element-Pro-Crud/blob/master/README.md",
+  "homepage": "https://github.com/BoBoooooo/Element-Pro-Crud#readme",
+  "bugs": {
+    "url": "https://github.com/BoBoooooo/Element-Pro-Crud/issues"
+  },
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "fix": "eslint --ext .ts,.vue packages --fix",
     "report": "cross-env IS_REPORT=true vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name ProCrud --dest lib packages/index.ts",
+    "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish"
   },
   "dependencies": {

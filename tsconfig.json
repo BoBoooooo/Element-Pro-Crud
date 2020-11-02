@@ -14,12 +14,13 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "./../element-ui/types",
+      "./../element-ui/types"
     ],
     "paths": {
       "@/*": [
         "examples/*",
-        "packages/*"
+        "packages/*",
+        "src/*"
       ]
     },
     "lib": [
@@ -33,7 +34,11 @@
     "examples/**/*.ts",
     "examples/**/*.vue",
     "packages/**/*.ts",
-    "packages/**/*.tsx"
+    "packages/**/*.vue",
+    "packages/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
   ],
   "exclude": [
     "node_modules"

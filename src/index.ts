@@ -7,12 +7,12 @@
 
 // packages / index.js
 import './element-variables.scss';// 按需导入element-ui css
-import '@/common/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
+import '@/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
-import FormDesignerDialog from './form-designer';
-import CrudTable from './crud-table';
-import GenerateForm from './form-designer/src/GenerateForm.vue';
-import TableDesignerDialog from './table-designer';
+import FormDesignerDialog from 'packages/form-designer';
+import CrudTable from 'packages/crud-table';
+import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
+import TableDesignerDialog from 'packages/table-designer';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
@@ -26,6 +26,7 @@ const components = [
     component: CrudTable,
   },
   {
+    // 此处深坑,vue-class-component export的组件没有name属性！！!
     name: 'GenerateForm',
     component: GenerateForm,
   },
@@ -51,6 +52,9 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  // 导出的对象必须具备一个 install 方法
   install,
+  FormDesignerDialog,
+  CrudTable,
+  GenerateForm,
+  TableDesignerDialog,
 };
