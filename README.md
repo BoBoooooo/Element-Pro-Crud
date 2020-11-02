@@ -12,16 +12,27 @@
     - `树形下拉框` (vue-treeSelect)
 - 表格设计器
 - 注意:本插件采用umd打包发布,支持cdn引入.
+
+## 开始使用
+
+### 安装
+
+```
+npm i element-pro-crud -S
+```
+
+### CDN
+
 ``` html
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+      <!-- 引入ProCrud CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.1.2/lib/ProCrud.css" />
+    <!-- 引入ElementUI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
     />
-    <link rel="stylesheet" href="../lib/ProCrud.css" />
   </head>
   <body>
     <div id="app">
@@ -34,9 +45,10 @@
   </body>
   <!-- import Vue before Element -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <!-- import JavaScript -->
+  <!-- import ElementUI -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="../lib/ProCrud.umd.js"></script>
+  <!-- import ElementProCrud -->
+  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@0.1.2/lib/ProCrud.umd.min.js"></script>
 
   <script>
     new Vue({
@@ -51,46 +63,63 @@
 </html>
   ```
 
-## 开始使用
+### 引入 ElementProCrud
 
-- install
+支持完整引入及按需引入,*该插件基于ElementUI封装,注意引用顺序*
+
+#### 完整引入
+  
+  在 main.js 中写入以下内容：
+
+  ``` javascript
+  import ElementProCrud from 'element-pro-crud';
+  import ElementUI from 'element-ui';
+  import 'element-pro-crud/lib/ProCrud.css'; // 先引入插件css,避免css污染
+  import 'element-ui/lib/theme-chalk/index.css';
+
+  Vue.use(ElementUI)
+  Vue.use(ElementProCrud);
+  ```
+  
+#### 按需引入
+``` javascript
+  import { GenerateForm } from 'element-pro-crud';
+  Vue.use(GenerateForm);
+
+  import Vue from 'vue';
+  import { GenerateForm,CrudTable } from 'element-pro-crud';
+  import App from './App.vue';
+
+  Vue.component(GenerateForm.name, GenerateForm);
+  Vue.component(CrudTable.name, CrudTable);
+
+  /* 或写为
+  * Vue.use(GenerateForm)
+  * Vue.use(CrudTable)
+  */
+
+  new Vue({
+    el: '#app',
+    render: h => h(App)
+  });
 
 ```
 
-npm install element-pro-crud --save
+#### 完整组件列表
 
-```
+- GenerateForm // 根据表单设计器json自动渲染表单
 
-- import
+- FormDesignerDialog // 表单设计器
 
-```
-// main.js
+- TableDesignerDialog 表格设计器
 
-import ElementProCrud from 'element-pro-crud';
+- CrudTable// 高级增删改查 ProTable
 
-import 'element-pro-crud/lib/ProCrud.css'; // 此处css引入需要放到element-ui css引入之前,避免样式覆盖问题
+## 组件文档
 
-import '@/plugins/element';// 引入element-ui;
+### CrudTable
 
-Vue.use(ElementProCrud);
-
------------------------------------
-
-// 自动全局注册下述组件
-
-<GenerateForm></GenerateForm> // 根据表单设计器json自动渲染表单
-
-<FormDesignerDialog></FormDesignerDialog> // 表单设计器
-
-<TableDesignerDialog></TableDesignerDialog> // 表格设计器
-
-<CrudTable></CrudTable> // CrudTable
-
-```
-
-# CrudTable
-
-## Props
+#### Props
 
 |          参数          |                               说明                                |      类型       |                 可选值                  |  默认值   |
 | :--------------------: | :---------------------------------------------------------------: | :-------------: | :-------------------------------------: | :-------: |
@@ -140,7 +169,7 @@ Vue.use(ElementProCrud);
 |      border      |                     是否有边框                     | Boolean |                    -                    |  true    |
 |      paginationLayout      |                     分页显示                     | String |   见官网   |  total, prev, pager, next, jumper, sizes    |
 
-## Props 补充说明
+#### Props 补充说明
 
 - `visibleList`
 
@@ -175,7 +204,7 @@ Vue.use(ElementProCrud);
 
 
 
-## Events
+#### Events
 
 | 事件名称  |             说明             |                      回调参数                      |
 | :-------: | :--------------------------: | :------------------------------------------------: |
@@ -186,7 +215,7 @@ Vue.use(ElementProCrud);
 | `el-table events` |           所有el-table其他事件见官网文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
 
 
-## Slots
+#### Slots
 
 |    插槽名称     |                   说明                   |
 | :-------------: | :--------------------------------------: |
@@ -196,7 +225,7 @@ Vue.use(ElementProCrud);
 |    seniorSearchForm    |      自定义高级查询表单      |
 |    dialogFooter    |      弹出表单右侧底部slot     |
 
-## Methods
+#### Methods
 
 |   方法名    |     说明     | 参数 |
 | :---------: | :----------: | :--: |
