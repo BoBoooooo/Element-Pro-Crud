@@ -32,12 +32,12 @@ module.exports = {
     }
     config.module
       .rule('svg')
-      .exclude.add(resolve('packages/common/icons'));
+      .exclude.add(resolve('src/icons'));
     // 添加svg-sprite-loader加载器
     config.module
       .rule('svg-sprite-loader')
       .test(/.svg$/)
-      .include.add(resolve('packages/common/icons')) // 处理svg目录
+      .include.add(resolve('src/icons')) // 处理svg目录
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
