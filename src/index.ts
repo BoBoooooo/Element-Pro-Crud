@@ -5,8 +5,6 @@
  * @Date: 2020年03月03 11:20:05
  */
 
-// packages / index.js
-import './element-variables.scss';// 按需导入element-ui css
 import '@/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
 import FormDesignerDialog from 'packages/form-designer';
