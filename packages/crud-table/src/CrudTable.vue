@@ -677,7 +677,7 @@ export default class CrudTable extends Vue {
   btnDeletesOnClick() {
     const { length } = this.selectedRows || [];
     if (length > 0) {
-      this.$confirm(`已选中${length}项,确认删除？该操作不可恢复！`, '提示', {
+      this.$confirm(`已选中${length}项,确认删除？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
