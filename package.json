@@ -39,12 +39,11 @@
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish"
   },
-  "dependencies": {
+  "devDependencies": {
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.19.2",
     "core-js": "3.6.5",
     "dayjs": "1.8.20",
-    "element-ui": "^2.13.2",
     "inquirer": "^6.5.2",
     "lodash": "^4.17.14",
     "path": "^0.12.7",
@@ -54,9 +53,8 @@
     "vue-awesome": "^3.5.4",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.5.0",
-    "vuedraggable": "^2.23.2"
-  },
-  "devDependencies": {
+    "vuedraggable": "^2.23.2",
+    "element-ui": "^2.13.2",
     "@babel/plugin-transform-modules-umd": "^7.12.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
