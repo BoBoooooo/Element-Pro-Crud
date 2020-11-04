@@ -206,7 +206,7 @@
                    :placeholder="widget.options.placeholder"
                    :style="{width: widget.options.width}"
                    :separator="widget.options.separator == null ?'/':widget.options.separator"
-                   :options="widget.options.remoteOptions"
+                   :options="optionsList"
                    filterable
                    :props="{ checkStrictly: true }">
       </el-cascader>
