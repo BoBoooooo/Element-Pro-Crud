@@ -11,6 +11,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
+  productionSourceMap: false,
   // 将 examples 目录添加为新的页面
   pages: {
     index: {
