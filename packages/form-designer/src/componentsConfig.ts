@@ -314,6 +314,7 @@ export const advanceComponents = [
       multiple: false,
       disabled: false,
       clearable: false,
+      checkStrictly: false,
       remote: 'dict',
       remoteOptions: [],
       props: {

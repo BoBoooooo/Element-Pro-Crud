@@ -89,6 +89,10 @@
         <el-switch v-model="data.options.multiple"
                    @change="handleSelectMuliple"></el-switch>
       </el-form-item>
+      <el-form-item label="父子结点是否不关联"
+                    v-if="'cascader'.includes(data.type)">
+      <el-switch v-model="data.options.checkStrictly"></el-switch>
+      </el-form-item>
       <el-form-item label="分隔符"
                     v-if="data.options.separator">
         <el-input type="input"
