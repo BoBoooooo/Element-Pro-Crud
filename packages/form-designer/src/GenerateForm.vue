@@ -56,7 +56,7 @@
                 <GenerateFormItem v-else
                                   @selection="getTableSelection($event,citem)"
                                   :key="citem.key"
-                                  :models.sync="models"
+                                  :models="models"
                                   :remote="remote"
                                   :rules="rules"
                                   :widget="citem"
@@ -108,7 +108,7 @@
         <!-- 普通行布局方式 -->
         <template v-else>
           <GenerateFormItem :key="item.key"
-                            :models.sync="models"
+                            :models="models"
                             :remote="remote"
                             @selection="getTableSelection($event,item)"
                             :widget="item"
@@ -147,8 +147,8 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import { DML, crud } from '@/api/public/crud';
 import GenerateFormItem from './GenerateFormItem.vue';
+import _cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   components: {
@@ -335,23 +335,12 @@ export default class GenerateForm extends Vue {
     }
   }
 
-  // 多选情况下数组转字符串
-  formValueToString() {
-    const model = { ...this.models };
-    Object.keys(model).forEach((k) => {
-      if (Array.isArray(model[k])) {
-        model[k] = model[k].toString();
-      }
-    });
-    return model;
-  }
-
   // 先验证再获取表单内容
   getData() {
     return new Promise((resolve, reject) => {
       this.$refs.generateForm.validate((valid) => {
         if (valid) {
-          resolve(this.formValueToString());
+          resolve(_cloneDeep(this.models));
         } else {
           // 校验失败时focus到文本框
           // 注意此处没有考虑textarea的情况,多行文本会失败
@@ -372,7 +361,7 @@ export default class GenerateForm extends Vue {
 
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
-    return new Promise(resolve => resolve(this.formValueToString()));
+    return new Promise(resolve => resolve(_cloneDeep(this.models)));
   }
 
   // 生成的按钮点击
@@ -405,7 +394,6 @@ export default class GenerateForm extends Vue {
 
   @Watch('value', {
     deep: true,
-    immediate: true,
   })
   valueOnChange(val) {
     this.$nextTick(() => {

@@ -343,7 +343,7 @@ export default class GenerateFormItem extends Vue {
   readOnly: any;
 
   // 当前组件对象
-  dataModel: any = '';
+  dataModel: any = this.models[this.widget.model];
 
   copyOption: any = []; // 备份一份初始选项
 
@@ -681,25 +681,24 @@ export default class GenerateFormItem extends Vue {
     this.$emit('selection', selection);
   }
 
-  @Watch('dataModel', {
-    // deep: true,
-  })
+  @Watch('dataModel')
   dataModelHandler(val) {
-    this.$emit('update:models', {
-      ...this.models,
-      [this.widget.model]: val,
-    });
+    const value = Array.isArray(val) ? val.join(',') : val;
+    this.$set(this.models, this.widget.model, value);
   }
 
   @Watch('models', {
-    // deep: true,
+    deep: true,
   })
   modelsHandler(val) {
-    if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
-      const value = val[this.widget.model];
-      this.dataModel = typeof value === 'string' ? value.split(',') : value;
-    } else {
-      this.dataModel = val[this.widget.model];
+    const updateVal = val[this.widget.model];
+    if (updateVal !== this.dataModel) {
+      if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
+        const value = val[this.widget.model];
+        this.dataModel = typeof value === 'string' ? value.split(',') : value;
+      } else {
+        this.dataModel = val[this.widget.model];
+      }
     }
   }
 
