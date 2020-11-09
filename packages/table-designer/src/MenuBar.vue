@@ -53,6 +53,8 @@
 <script>
 import { DML, crud } from '@/api/public/crud';
 import { getFormDetail } from '@/api/system/form';
+import _forEach from 'lodash/forEach';
+import _pick from 'lodash/pick'
 
 export default {
   name: 'MenuBar',
@@ -95,9 +97,9 @@ export default {
           const jsonObj = JSON.parse(res.data.formJson);
           const done = [];
           // 遍历行
-          this.lodash.forEach(jsonObj.list, (row) => {
+          _forEach(jsonObj.list, (row) => {
             // 遍历列
-            this.lodash.forEach(row.columns, (column) => {
+            _forEach(row.columns, (column) => {
               const first = column.list[0];
               if (first && 'date,select'.includes(first.type)) {
                 // 从表单复制到表格的属性
@@ -113,7 +115,7 @@ export default {
                   'props',
                   'options',
                 ];
-                const option = this.lodash.pick(first.options, keyList);
+                const option = _pick(first.options, keyList);
                 option.type = first.type;
                 // 遍历当前表格配置，加入option
                 for (const col of this.designedJSON.columns) {

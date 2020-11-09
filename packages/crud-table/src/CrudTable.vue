@@ -242,6 +242,7 @@ import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import SearchForm from './SearchForm.vue';
+import _cloneDeep from 'lodash/cloneDeep'
 
 const STATUS = {
   CREATE: 0,
@@ -624,7 +625,7 @@ export default class CrudTable extends Vue {
   // 操作列-添加
   actionColumnAdd(row) {
     // 添加成功后需要刷新当前结点的子节点,此处特殊处理
-    this.currentRow.parentid = this.lodash.cloneDeep(row).id;
+    this.currentRow.parentid = _cloneDeep(row).id;
     if (this.btnRowAddOnClick) {
       this.btnRowAddOnClick(row);
     } else if (this.prefill) {

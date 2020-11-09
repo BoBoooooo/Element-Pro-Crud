@@ -8,7 +8,6 @@
 declare module 'vue/types/vue' {
   interface Vue {
     $store: any;
-    lodash: any;
     axios: any;
     dayjs: any;
     $pinyinmatch: any;
