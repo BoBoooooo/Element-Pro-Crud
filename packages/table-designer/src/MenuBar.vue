@@ -54,7 +54,7 @@
 import { DML, crud } from '@/api/public/crud';
 import { getFormDetail } from '@/api/system/form';
 import _forEach from 'lodash/forEach';
-import _pick from 'lodash/pick'
+import _pick from 'lodash/pick';
 
 export default {
   name: 'MenuBar',

@@ -147,8 +147,8 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import GenerateFormItem from './GenerateFormItem.vue';
 import _cloneDeep from 'lodash/cloneDeep';
+import GenerateFormItem from './GenerateFormItem.vue';
 
 @Component({
   components: {

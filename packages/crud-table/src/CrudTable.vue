@@ -240,9 +240,9 @@ import { DML, crud } from '@/api/public/crud';
 import { getTableDetail, getFormDetail } from '@/api/system/form';
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
+import _cloneDeep from 'lodash/cloneDeep';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import SearchForm from './SearchForm.vue';
-import _cloneDeep from 'lodash/cloneDeep'
 
 const STATUS = {
   CREATE: 0,

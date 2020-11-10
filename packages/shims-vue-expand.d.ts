@@ -23,7 +23,7 @@ declare module 'vue/types/vue' {
 
 
 declare global {
-  interface Window  {
+  interface Window {
     __HOST__URL__: string;
     __PREFIX__URL__: string;
   }
