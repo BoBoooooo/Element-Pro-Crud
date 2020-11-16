@@ -147,7 +147,6 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import _cloneDeep from 'lodash/cloneDeep';
 import GenerateFormItem from './GenerateFormItem.vue';
 
 @Component({
@@ -316,6 +315,18 @@ export default class GenerateForm extends Vue {
     }
   }
 
+  // 多选情况下数组转字符串
+  formValueToString() {
+    const model = { ...this.models };
+    Object.keys(model).forEach((k) => {
+      if (Array.isArray(model[k])) {
+        model[k] = model[k].toString();
+      }
+    });
+    return model;
+  }
+
+
   /**
    * 如果select,radio,checkbox等组件为多选情况  后台返回逗号分隔字符串 => 数组
    * 如果 this.value为null 则会按默认值赋值相应字段
@@ -340,7 +351,7 @@ export default class GenerateForm extends Vue {
     return new Promise((resolve, reject) => {
       this.$refs.generateForm.validate((valid) => {
         if (valid) {
-          resolve(_cloneDeep(this.models));
+          resolve(this.formValueToString());
         } else {
           // 校验失败时focus到文本框
           // 注意此处没有考虑textarea的情况,多行文本会失败
@@ -361,7 +372,7 @@ export default class GenerateForm extends Vue {
 
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
-    return new Promise(resolve => resolve(_cloneDeep(this.models)));
+    return new Promise(resolve => resolve(this.formValueToString()));
   }
 
   // 生成的按钮点击

@@ -683,8 +683,7 @@ export default class GenerateFormItem extends Vue {
 
   @Watch('dataModel')
   dataModelHandler(val) {
-    const value = Array.isArray(val) ? val.join(',') : val;
-    this.$set(this.models, this.widget.model, value);
+    this.$set(this.models, this.widget.model, val);
   }
 
   @Watch('models', {
