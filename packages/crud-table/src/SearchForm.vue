@@ -154,16 +154,20 @@ export default class SearchForm extends Vue {
       if (key && data[key]) {
         if (Array.isArray(data[key])) {
           const [startDate, endDate] = data[key];
-          params.push({
-            field: key,
-            operator: 'egt',
-            value: startDate,
-          });
-          params.push({
-            field: key,
-            operator: 'elt',
-            value: endDate,
-          });
+          if (startDate) {
+            params.push({
+              field: key,
+              operator: 'egt',
+              value: startDate,
+            });
+          }
+          if (endDate) {
+            params.push({
+              field: key,
+              operator: 'elt',
+              value: endDate,
+            });
+          }
         } else {
           params.push({
             field: key,
