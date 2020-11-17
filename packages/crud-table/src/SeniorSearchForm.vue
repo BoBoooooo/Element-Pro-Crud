@@ -5,7 +5,7 @@
  * @Date: 2019年12月10 14:27:03
  -->
 <template>
-  <el-popover width="650"
+  <el-popover width="700"
               placement="bottom"
               @hide="getSearchFormData"
               trigger="click">
