@@ -306,7 +306,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
     Tinymce,
     FileUpload,
   },
-  name: 'GenerateFormItem'
+  name: 'GenerateFormItem',
 })
 export default class GenerateFormItem extends Vue {
   $refs!: {
