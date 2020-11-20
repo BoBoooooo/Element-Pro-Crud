@@ -682,6 +682,10 @@ export default class GenerateFormItem extends Vue {
     this.$emit('selection', selection);
   }
 
+  beforeDestroy() {
+    this.$EventBus.$off(`refresh:subTable:${this.widget.model}`);
+  }
+
   @Watch('dataModel')
   dataModelHandler(val) {
     this.$set(this.models, this.widget.model, val);
