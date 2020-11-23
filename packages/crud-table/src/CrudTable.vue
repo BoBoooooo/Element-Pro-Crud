@@ -46,52 +46,21 @@
       </SearchForm>
       <!-- 表格主体 -->
       <el-table v-loading.lock="loading"
+                v-bind="$attrs"
+                v-on="tableListeners"
                 element-loading-text="加载中……"
                 ref="table"
                 :header-cell-style="{ background: '#f2f2f2', color: '#737373' }"
                 :data="tableData"
-                :border="border"
-                :size="size"
-                :stripe="stripe"
                 :height="tableHeight"
                 :max-height="maxHeight"
-                :fit="fit"
-                :show-header="showHeader"
-                :highlight-current-row="highlightCurrentRow"
-                :current-row-key="currentRowKey"
-                :row-class-name="rowClassName"
                 :row-style="rowStyle"
                 :cell-style="cellStyle"
-                :empty-text="emptyText"
-                :default-expand-all="defaultExpandAll"
-                :expand-row-keys="expandRowKeys"
-                :default-sort="defaultSort"
-                :tooltip-effect="tooltipEffect"
-                :show-summary="showSummary"
-                :sum-text="sumText"
                 :row-key="(row)=> row.id"
-                :summary-method="summaryMethod"
                 rowKey="id"
                 :lazy="lazy"
                 :load="treeload"
-                :tree-props="{children: 'children', hasChildren: 'flag'}"
-                :style="tableStyle"
-                @select="(selection, row) => emitTableEvent('select', selection, row)"
-                @select-all="(selection) => emitTableEvent('select-all', selection)"
-                @selection-change="(selection) => handleSelectionChange(selection)"
-                @cell-mouse-enter="(row, column, cell, event) => emitTableEvent('cell-mouse-enter', row, column, cell, event)"
-                @cell-mouse-leave="(row, column, cell, event) => emitTableEvent('cell-mouse-leave', row, column, cell, event)"
-                @cell-click="(row, column, cell, event) => emitTableEvent('cell-click', row, column, cell, event)"
-                @cell-dblclick="(row, column, cell, event) => emitTableEvent('cell-dblclick', row, column, cell, event)"
-                @row-click="(row, event, column) => emitTableEvent('row-click', row, event, column)"
-                @row-dblclick="(row, event) => emitTableEvent('row-dblclick', row, event)"
-                @row-contextmenu="(row, event) => emitTableEvent('row-contextmenu', row, event)"
-                @header-click="(column, event) => emitTableEvent('header-click', column, event)"
-                @sort-change="(args) => sortChange(args)"
-                @filter-change="(filters) => emitTableEvent('filter-change', filters)"
-                @current-change="(currentRow, oldCurrentRow) => emitTableEvent('current-change', currentRow, oldCurrentRow)"
-                @header-dragend="(newWidth, oldWidth, column, event) => emitTableEvent('header-dragend', newWidth, oldWidth, column, event)"
-                @expand-change="(row, expanded) => emitTableEvent('expand-change', row, expanded)">
+                :tree-props="{children: 'children', hasChildren: 'flag'}">
         <template slot='empty'>
           <SvgIcon icon-class='table_empty'
                    class="empty_icon"></SvgIcon>
@@ -221,9 +190,9 @@
                         :remoteFuncs="remoteFuncs"
                         :visibleList="view"
                         :setReadOnly="setReadOnly"
-                        :append-to-body="appendToBody"
-                        :close_on_click_modal="closeOnClickModal"
-                        :fullscreen="fullscreen"
+                        :append-to-body="dialogAppendToBody"
+                        :close_on_click_modal="dialogCloseOnClickModal"
+                        :fullscreen="dialogFullscreen"
                         @btnonclick="formBtnOnClick">
                         <template #dialogFooter>
                           <slot name="dialogFooter"></slot>
@@ -414,12 +383,6 @@ export default class CrudTable extends Vue {
   // 是否显示序号列
   @Prop({ default: false }) showColumnIndex!: boolean;
 
-  // 边框线
-  @Prop({ type: Boolean, default: false }) border!: boolean;
-
-  // 斑马纹
-  @Prop({ type: Boolean, default: true }) stripe!: boolean;
-
   // 异步更新表单数据
   @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
 
@@ -452,66 +415,6 @@ export default class CrudTable extends Vue {
 
   // 排序条件
   @Prop({ default: null, type: String }) orderCondition!: string;
-
-  // 远程数据方法
-  @Prop(String) size!: string;
-
-  // 远程数据方法
-  @Prop({
-    type: Boolean,
-    default: true,
-  })
-  fit!: boolean;
-
-  // el-table showHeader
-  @Prop({
-    type: Boolean,
-    default: true,
-  })
-  showHeader!: boolean;
-
-  // el-table highlightCurrentRow
-  @Prop(Boolean) highlightCurrentRow!: boolean;
-
-  // el-table currentRowKey
-  @Prop([String, Function]) currentRowKey!: any;
-
-  // el-table rowClassName
-  @Prop([String, Function]) rowClassName!: any;
-
-  // el-table rowKey
-  @Prop([String, Function]) rowKey!: any;
-
-  // el-table emptyText
-  @Prop(String) emptyText!: string;
-
-  // el-table defaultExpandAll
-  @Prop(Boolean) defaultExpandAll!: boolean;
-
-  // el-table expandRowKeys
-  @Prop(Array) expandRowKeys!: any;
-
-  // el-table defaultSort
-  @Prop(Object) defaultSort!: any;
-
-  // el-table tooltipEffect
-  @Prop(String) tooltipEffect!: string;
-
-  // el-table showSummary
-  @Prop(Boolean) showSummary!: boolean;
-
-  // el-table sumText
-  @Prop(String) sumText!: string;
-
-  // el-table summaryMethod
-  @Prop(Function) summaryMethod!: any;
-
-  // 自定义tableStyle
-  @Prop({
-    type: String,
-    default: 'width:100%;',
-  })
-  tableStyle!: string;
 
   // totalField
   @Prop({
@@ -580,6 +483,15 @@ export default class CrudTable extends Vue {
       seniorSearchBtn: true,
       btnAddOnColumnHeader: false,
       ...this.visibleList,
+    };
+  }
+
+
+  get tableListeners() {
+    return {
+      ...this.$listeners,
+      'sort-change': this.sortChange,
+      'selection-change': this.handleSelectionChange,
     };
   }
 
@@ -965,10 +877,6 @@ export default class CrudTable extends Vue {
       // 强制更新已渲染子结点
       this.$set(this.$refs.table.store.states.lazyTreeNodeMap, tree.id, res.data);
     });
-  }
-
-  emitTableEvent(...args) {
-    this.$emit(args[0], ...Array.from(args).slice(1));
   }
 
   /**
