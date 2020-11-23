@@ -127,7 +127,7 @@ export default class SeniorSearchForm extends Vue {
               type: 'input',
               dataType: 'string',
               placeholder: `请输入${label}`,
-              width: '100%'
+              width: '100%',
             },
             model: prop,
             rules: [],
@@ -177,7 +177,7 @@ export default class SeniorSearchForm extends Vue {
             },
             model: prop,
             rules: [],
-            width: '100%'
+            width: '100%',
           },
         ],
       };

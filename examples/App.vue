@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "app",
+  name: 'app',
   methods: {
     showDialog(name) {
       this.$refs[name].showDialog();
