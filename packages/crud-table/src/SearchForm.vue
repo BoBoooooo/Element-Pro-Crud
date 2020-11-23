@@ -67,6 +67,7 @@ import SeniorSearchForm from './SeniorSearchForm.vue';
   components: {
     SeniorSearchForm,
   },
+  name: 'SearchForm',
 })
 export default class SearchForm extends Vue {
   // 远程数据方法

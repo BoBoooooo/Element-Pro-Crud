@@ -55,6 +55,7 @@ import {
   components: {
     GenerateForm,
   },
+  name: 'SeniorSearchForm',
 })
 export default class SeniorSearchForm extends Vue {
   $refs!: {
