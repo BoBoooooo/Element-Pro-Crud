@@ -272,7 +272,19 @@
         </template>
 
       </el-form-item>
-
+      <el-form-item label="对齐方式" v-if="data.type === 'text'">
+          <el-select style="width:100%" v-model="data.options.align">
+            <el-option value="center"
+                       label="居中"></el-option>
+            <el-option value="left"
+                       label="左对齐"></el-option>
+            <el-option value="right"
+                       label="右对齐"></el-option>
+          </el-select>
+      </el-form-item>
+       <el-form-item label="字体大小" v-if="data.type === 'text'">
+          <el-input placeholder="例如(16px)" v-model="data.options.fontSize"></el-input>
+      </el-form-item>
       <el-form-item label="默认值"
                     v-if="Object.keys(data.options).indexOf('defaultValue')>=0
                     && (data.type == 'textarea' || data.type == 'input'

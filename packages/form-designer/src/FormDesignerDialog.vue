@@ -123,7 +123,7 @@
     <el-aside class="widget-config-container"
               style="width:300px;">
       <el-container class="full-height">
-        <el-header height="45px">
+        <el-header height="45px" style="width: 300px">
           <div class="config-tab"
                :class="{active: configTab=='widget'}"
                @click="handleConfigSelect('widget')">字段属性</div>

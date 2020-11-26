@@ -18,9 +18,17 @@
                 :placeholder="element.options.placeholder"></el-input>
     </template>
      <template v-if="element.type == 'text'">
-       <h4 style="text-align:center;margin:10px auto">
+        <h3 style="
+            padding: 10px;
+            font-family: KaiTi, STKaiti;
+            margin: 0;
+          "
+          :style="{
+            'text-align': element.options.align,
+            'font-size': element.options.fontSize
+          }">
          {{element.name}}
-       </h4>
+       </h3>
     </template>
     <template v-if="element.type == 'button'">
       <el-button type="primary">{{element.options.text}}</el-button>

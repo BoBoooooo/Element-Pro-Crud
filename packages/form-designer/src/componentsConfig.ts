@@ -17,6 +17,8 @@ export const basicComponents = [
     options: {
       defaultValue: '',
       remoteFunc: '',
+      align: 'center',
+      fontSize: '16px',
     },
   },
   {

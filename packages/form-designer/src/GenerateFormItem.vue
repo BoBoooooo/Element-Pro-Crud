@@ -46,8 +46,17 @@
                  @click="btnOnClick(widget)">{{widget.options.text}}</el-button>
     </template>
     <template v-if="widget.type == 'text'">
-      <h3 style="text-align:center;margin:10px auto;font-family:KaiTi, STKaiti">
-        {{widget.name}}
+      <h3
+        style="
+          padding: 10px;
+          font-family: KaiTi, STKaiti;
+          margin: 0;
+        "
+        :style="{
+          'text-align': widget.options.align,
+          'font-size': widget.options.fontSize
+        }">
+        {{ widget.name }}
       </h3>
     </template>
     <template v-if="widget.type == 'label'">
