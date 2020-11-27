@@ -64,7 +64,7 @@
         <template slot='empty'>
           <SvgIcon icon-class='table_empty'
                    class="empty_icon"></SvgIcon>
-          <span>暂无数据</span>
+              <span>{{this.emptyText}}</span>
         </template>
         <el-table-column v-if="isMultiple || view.btnDel"
                          type="selection"
@@ -184,6 +184,7 @@
                         :dialogFormDesignerName="dialogFormDesignerName"
                         :tableParams="tableParams"
                         @afterSave="tableReload"
+                        :textMap="text"
                         @change="formChange"
                         :formValuesAsync="formValuesAsync"
                         :formTableConfig="formTableConfig"
@@ -193,6 +194,7 @@
                         :append-to-body="dialogAppendToBody"
                         :close_on_click_modal="dialogCloseOnClickModal"
                         :fullscreen="dialogFullscreen"
+                        :width='dialogWidth'
                         @btnonclick="formBtnOnClick">
                         <template #dialogFooter>
                           <slot name="dialogFooter"></slot>
@@ -287,6 +289,9 @@ export default class CrudTable extends Vue {
 
   // 弹出表单appendToBody
   @Prop({ default: false, type: Boolean }) dialogAppendToBody!: boolean;
+
+  // 弹出表单width
+  @Prop({ default: '1000px', type: String }) dialogWidth!: string;
 
   // 用于请求表格设计json的name
   @Prop({
@@ -441,6 +446,14 @@ export default class CrudTable extends Vue {
 
   // 是否懒加载
   @Prop(Boolean) lazy!: boolean;
+
+  // empty-text
+  @Prop({
+    type: String,
+    default: '暂无数据',
+  })
+  emptyText!: string;
+
 
   // 分页
   get pagination() {

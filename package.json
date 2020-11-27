@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "lib/ProCrud.umd.min.js",
   "files": [
     "lib",
@@ -35,7 +35,9 @@
     "fix": "eslint --ext .ts,.vue packages --fix",
     "report": "cross-env IS_REPORT=true vue-cli-service build",
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
-    "deploy": "npm run lib && npm publish"
+    "deploy": "npm run lib && npm publish",
+    "log": "conventional-changelog --config ./node_modules/vue-cli-plugin-commitlint/lib/log -i CHANGELOG.md -s -r 0",
+    "cz": "npm run log && git add . && git cz"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-umd": "^7.12.1",
@@ -53,6 +55,7 @@
     "babel-eslint": "^10.0.2",
     "babel-plugin-component": "^1.1.1",
     "chai": "^4.2.0",
+    "conventional-changelog-cli": "^2.1.0",
     "core-js": "2.6.5",
     "cross-env": "^7.0.2",
     "dayjs": "1.8.20",
@@ -65,9 +68,11 @@
     "inquirer": "^6.5.2",
     "lint-staged": "^9.2.0",
     "lodash": "^4.17.14",
+    "longest": "^2.0.1",
     "node-sass": "^4.12.0",
     "path": "^0.12.7",
     "pinyin-match": "^1.0.9",
+    "right-pad": "^1.0.1",
     "sass-loader": "^7.1.0",
     "svg-sprite-loader": "^4.1.6",
     "svgo-loader": "2.2.1",
@@ -76,6 +81,7 @@
     "vue-awesome": "^3.5.4",
     "vue-class-component": "^7.2.3",
     "vue-cli-plugin-axios": "0.0.4",
+    "vue-cli-plugin-commitlint": "^1.0.12",
     "vue-property-decorator": "^8.5.0",
     "vue-template-compiler": "2.6.11",
     "vuedraggable": "^2.23.2",
@@ -84,7 +90,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -93,6 +100,11 @@
       "npm run lint",
       "git add"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/vue-cli-plugin-commitlint/lib/cz"
+    }
   },
   "postcss": {
     "plugins": {

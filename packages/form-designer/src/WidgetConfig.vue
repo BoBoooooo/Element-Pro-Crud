@@ -203,7 +203,7 @@
                          v-bind="getDraggableOptions()">
                 <li v-for="(item, index) in data.options.options"
                     :key="index">
-                  <el-radio :value="item.value"
+                  <el-radio :label="item.value"
                             style="margin-right: 5px;">
                     <el-input :style="{'width': data.options.showLabel? '90px': '190px' }"
                               size="mini"

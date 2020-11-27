@@ -113,11 +113,9 @@
                       :disabled="widget.options.disabled">
         <el-radio :style="{display: widget.options.inline ? 'inline-block' : 'block'}"
                   :label="item.value"
-                  v-for="(item, index) in (widget.options.remote
-                    ? widget.options.remoteOptions : widget.options.options)"
+                   v-for="(item, index) in optionsList"
                   :key="index">
-          <template v-if="widget.options.remote">{{item.label}}</template>
-          <template v-else>{{widget.options.showLabel ? item.label : item.value}}</template>
+              <template v-if="widget.options.showLabel">{{ item.label }}</template>
         </el-radio>
       </el-radio-group>
     </template>

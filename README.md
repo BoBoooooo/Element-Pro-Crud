@@ -139,18 +139,17 @@ npm i element-pro-crud -S
 
 |          参数          |                               说明                                |      类型       |                 可选值                  |  默认值   |
 | :--------------------: | :---------------------------------------------------------------: | :-------------: | :-------------------------------------: | :-------: |
-|     expandRowKeys      |                              展开行                               |      Array      |                    -                    |     -     |
+| `el-table props` |          el-table原生属性见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
 |       listField        |                        response 中数据位置                        |     String      |             data/data.list              | data.list |
 |      setReadOnly       | GenerateFormDialog 中的表单禁用.null 表示均可编辑;{}表示全部只读; |     Object      |   null/{}/{whiteList:{},blackList:{}}   |   null    |  |
 |       isMultiple       |                           是否开启多选                            |     Boolean     |               true,false                |   false   |
 |       emptyText        |                      列表数据为空时显示文字                       |     String      |                    -                    | 暂无数据  |
 |        prefill         |                      表单预填项(赋值初始值)                       |     Object      |                    -                    |   null    |
-|      appendToBody      |                 表单对话框是否插入至 body 元素上                  |     Boolean     |               true/false                |   false   |
+|      dialogAppendToBody      |                 表单对话框是否插入至 body 元素上                  |     Boolean     |               true/false                |   false   |
 |       tableName        |                               表名                                |     String      |                    -                    |    ''     |
 |   tableDesignerName    |      用于请求表格设计 json 的 name,不传则默认读取 tableName       |     String      |                    -                    |   null    |
 | dialogFormDesignerName |    对话框内加载 FormDesigner 的表名,,不传则默认读取 tableName     |     String      |                    -                    |   null    |
 |     orderCondition     |                             排序条件                              |     String      |                    -                    |   null    |
-|        columns         |     自定义列配置项,会和 tableDesignerName 请求到的配置项合并      |      Array      |                    -                    |    []     |
 |      visibleList       |                         内部元素显示控制(详情见下方)                          |     Object      |                    -                    |    {}     |
 |       tableTitle       |                             表格标题                              |     String      |                    -                    |    ''     |
 |      tableParams       |                   表格请求参数(带查询参数请求)                    |  Object,Array   |                    -                    |    {}     |
@@ -166,8 +165,6 @@ npm i element-pro-crud -S
 |    btnDetailVisibleFunc    |                    表格行中的查看按钮是否显示事件                     |    Function     |                    Function(row)                    |   -    |
 |     showPagination     |                      自定义列表 config 请求                       |     Boolean     |               true/false                |   true    |
 |      remoteFuncs       |               远程数据方法(用于表单内远端数据请求)                |     Object      |                    -                    |    {}     |
-|      allResponse       |             直接传入表头和表体,表格不用再发起任何请求             |     Object      |                    -                    |   null    |
-|      rowClassName      |                     行的 className 的回调方法                     | String,Function |                    见官网                    |   null    |
 |      pageSize          |                     动态传入分页                     | Array |                    -                    |   [10,50,100]    |
 |      maxHeightMinus    |                     表格自适应高度需要减去的高度值                     | Number |                    -                    |   285    |
 |      fullHeight        |                     是否自适应屏幕高度(配置MaxHeightMinus)                     | Boolean |                    -                    |   false    |
@@ -175,14 +172,9 @@ npm i element-pro-crud -S
 |      dialogFullscreen      |                     表单是否全屏                     | Boolean |                    -                    |  false    |
 |      dialogCloseOnClickModal      |                    表单点击阴影是否可以关闭                     | Boolean |                    -                    |  false    |
 |      showColumnIndex      |                     是否显示序号列                     | Boolean |                    -                    |   false    |
-|      showOperator      |                     查询区域是否显示查询条件(默认不显示,查询条件为like)                     | Boolean |                    -                    |   false    |
-|      border      |                     是否有边框                     | Boolean |                    -                    |  true    |
 |      formTableConfig      |                     表单中表格的tableConfig                     | Object |                    -                    |   详情看GenerateFormItem中解释    |
 |      formValuesAsync      |                     异步更新表单数据                     | Object |                    -                    |  外层异步传入数据更新表单,注意不能直接修改formValues    |
-|      editInlineMode      |                     是否开启行内编辑模式                     | Boolean |                    -                    |  false    |
 |      actionColumnWidth      |                     操作列宽度(有时需要直接指定列宽)                    | Number |                    -                    |  null    |
-|      stripe      |                     斑马纹                     | Boolean |                    -                    |  false    |
-|      border      |                     是否有边框                     | Boolean |                    -                    |  true    |
 |      paginationLayout      |                     分页显示                     | String |   见官网   |  total, prev, pager, next, jumper, sizes    |
 
 #### Props 补充说明
@@ -224,11 +216,11 @@ npm i element-pro-crud -S
 
 | 事件名称  |             说明             |                      回调参数                      |
 | :-------: | :--------------------------: | :------------------------------------------------: |
+| `el-table events` |          el-table原生事件见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
 |   done    |       表格数据请求完成       |              整个 CrudTable 组件对象               |
 | selection-change |           多选事件           |              选中的行 (params: Array)              |
 |  form-change   | 监听 dialog 中 form 对象改变 | 返回当前表单对象以及当前表单 json (params: Object) |
 | form-btn-on-click |           表单内按钮组件点击回调           |             widget(表单组件json)              |
-| `el-table events` |           所有el-table其他事件见官网文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
 
 
 #### Slots
