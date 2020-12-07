@@ -11,11 +11,11 @@
 <template>
   <div class="table-form-wrapper">
     <el-form ref="generateForm"
-             :class='{"table-form":data.config.isTableClass}'
+             :class='{"table-form": data.config && data.config.isTableClass}'
              :model="models"
              :rules="rules"
-             :label-position="data.config.labelPosition"
-             :label-width="data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
+             :label-position="data.config && data.config.labelPosition"
+             :label-width="data.config && data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
              size="small">
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="item in this.data.list">
@@ -226,8 +226,10 @@ export default class GenerateForm extends Vue {
   tableSelections: any = {};
 
   created() {
-    // 根据数据结构生成给子组件的数据源
-    this.generateModle(this.data.list);
+    if (this.data.list) {
+      // 根据数据结构生成给子组件的数据源
+      this.generateModle(this.data.list);
+    }
   }
 
   getTableSelection($event, item) {

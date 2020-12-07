@@ -200,10 +200,11 @@
           </td>
         </tbody>
       </table>
-      <el-button type="success"
-                 @click="handleGenerateKey(true)">自动生成表单(根据数据库字段初始化,默认一行两列)</el-button>
-      <!-- <el-button type="primary"
-                   @click="handleGenerateKey()">自动绑定key(已有表单的情况)</el-button> -->
+      <el-tooltip title="根据数据库字段初始化,默认一行两列">
+        <el-button type="success"
+                 style="float: right"
+                 @click="handleGenerateKey(true)">自动生成表单</el-button>
+      </el-tooltip>
     </cus-dialog>
   </el-container>
     </el-dialog>

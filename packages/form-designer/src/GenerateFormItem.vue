@@ -397,7 +397,8 @@ export default class GenerateFormItem extends Vue {
   created() {
     this.initData();
     if (this.widget.type === 'table') {
-      this.$EventBus.$on(`refresh:subTable:${this.widget.model}`, () => {
+      // eslint-disable-next-line no-unused-expressions
+      this.$EventBus && this.$EventBus.$on(`refresh:subTable:${this.widget.model}`, () => {
         this.$refs.table.tableReload();
       });
     }
@@ -690,7 +691,8 @@ export default class GenerateFormItem extends Vue {
   }
 
   beforeDestroy() {
-    this.$EventBus.$off(`refresh:subTable:${this.widget.model}`);
+    // eslint-disable-next-line no-unused-expressions
+    this.$EventBus && this.$EventBus.$off(`refresh:subTable:${this.widget.model}`);
   }
 
   @Watch('dataModel')
