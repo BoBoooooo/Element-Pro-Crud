@@ -185,7 +185,7 @@ npm i element-pro-crud -S
   // 内部元素显示控制
   {
     searchForm: true, // 查询区域
-    tableTitle: true, // 表格标题
+    tableTitle: false, // 表格标题
     btnAdd: true, // 添加按钮
     btnDel: false, // 批量删除按钮
     actionColumnBtnAdd: false, // 操作列添加按钮

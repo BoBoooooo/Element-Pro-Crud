@@ -485,7 +485,7 @@ export default class CrudTable extends Vue {
   get view() {
     return {
       searchForm: true,
-      tableTitle: true,
+      tableTitle: false,
       btnAdd: true,
       btnDel: false,
       actionColumnBtnAdd: false,
