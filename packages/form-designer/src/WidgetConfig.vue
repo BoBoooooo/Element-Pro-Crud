@@ -10,10 +10,10 @@
 <template>
   <div v-if="show">
     <el-form label-position="top" class="form">
-      <el-form-item label="是否隐藏"
+      <!-- <el-form-item label="是否隐藏"
                     v-if="data.type != 'table'">
         <el-switch v-model="data.hidden"></el-switch>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="标题"
                     v-if="data.type!='grid'">
         <el-input v-model="data.name"></el-input>
@@ -26,7 +26,7 @@
                     v-if="Object.keys(data.options).indexOf('btnCommand')>=0">
         <el-input v-model="data.options.btnCommand"></el-input>
       </el-form-item>
-      <el-form-item label="label宽度">
+      <el-form-item label="label宽度" v-if="data.labelWidth">
         <el-input v-model="data.labelWidth"
                   placeholder="label宽度"></el-input>
       </el-form-item>
@@ -48,7 +48,7 @@
                     && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
-      <el-form-item label="tips提示">
+      <el-form-item label="tips提示" v-if="data.options.tips">
         <el-input type="textarea"
                   v-model="data.options.tips"></el-input>
       </el-form-item>
@@ -135,7 +135,8 @@
         <template v-if="data.options.remote=='dict'">
           <el-select v-model="data.options.dictType"
                      placeholder="字典类型"
-                     filterable>
+                     filterable
+                     style="width: 100%">
             <el-option v-for="item in dictType"
                        :key="item.value"
                        :label="item.label"
@@ -464,8 +465,8 @@
       </template>
 
       <template v-if="data.type != 'grid'">
-        <el-form-item v-if="data.type != 'button' && data.type != 'upload' "
-                      label="后端接口Key">
+        <el-form-item v-if="data.type != 'button' && data.type != 'upload' && data.type != 'text' "
+                      :label="data.type === 'blank'? '插槽名(需结合代码)': '后端接口Key'">
           <el-input v-model="data.model"></el-input>
         </el-form-item>
         <el-form-item v-if="data.type === 'upload'"
@@ -478,7 +479,7 @@
                     placeholder="关联多个附件的情况下需要填写"></el-input>
         </el-form-item>
         <el-form-item label="操作属性"
-                      v-if=" data.type !== 'table' && data.type !== 'blank'">
+                      v-if=" data.type !== 'table' && data.type !== 'blank' && data.type !== 'text' && data.type!== 'button'">
           <el-checkbox v-model="data.options.readonly"
                        v-if="Object.keys(data.options).indexOf('readonly')>=0">完全只读</el-checkbox>
           <el-checkbox v-model="data.options.disabled"
@@ -492,7 +493,7 @@
             使用箭头进行时间选择
           </el-checkbox>
         </el-form-item>
-        <el-form-item v-if="data.type != 'button' && data.type != 'table' && data.type !== 'blank' && data.type != 'upload'"
+        <el-form-item v-if="data.type != 'button' && data.type != 'table' && data.type !== 'blank' && data.type != 'upload' && data.type != 'text'"
                       label="校验">
           <div>
             <el-checkbox v-model="data.options.required">必填</el-checkbox>

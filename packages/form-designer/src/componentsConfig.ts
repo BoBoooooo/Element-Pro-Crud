@@ -78,7 +78,7 @@ export const basicComponents = [
     labelWidth: '',
     hidden: false,
     options: {
-      inline: false,
+      inline: true,
       defaultValue: '',
       showLabel: false,
       options: [
@@ -163,7 +163,7 @@ export const basicComponents = [
       format: 'yyyy-MM-dd',
       timestamp: false,
       required: false,
-      width: '',
+      width: '100%',
     },
   },
   {
@@ -185,7 +185,7 @@ export const basicComponents = [
       format: 'yyyy-MM-dd hh:mm:ss',
       timestamp: false,
       required: false,
-      width: '',
+      width: '100%',
     },
   },
   {
@@ -230,7 +230,7 @@ export const basicComponents = [
       required: false,
       showLabel: false,
       allowCreate: false,
-      width: '',
+      width: '100%',
       options: [
         {
           value: '下拉框1',
@@ -286,7 +286,7 @@ export const basicComponents = [
 export const advanceComponents = [
   {
     type: 'blank',
-    name: '自定义',
+    name: '自定义(插槽)',
     icon: 'chalkboard',
     options: {
       defaultType: 'String',
@@ -310,7 +310,7 @@ export const advanceComponents = [
     icon: 'random',
     options: {
       defaultValue: [],
-      width: '',
+      width: '100%',
       separator: '/',
       placeholder: '',
       multiple: false,
@@ -364,7 +364,7 @@ export const advanceComponents = [
     options: {
       remoteFunc: '',
       placeholder: '',
-      width: '',
+      width: '100%',
       maxHeight: 300,
       multiple: false,
       remote: 'custom',

@@ -6,208 +6,254 @@
 @createDate 2018年11月15日16:11:09
 -->
 <template>
- <!-- 对话框 -->
-  <el-dialog v-if="visible"
-             ref="dialog"
-             class="dialog"
-             :visible.sync="visible"
-             fullscreen>
-  <el-container style="height:100%">
-    <!-- 左侧边栏 -->
-    <el-aside style="width: 20%;max-width:250px">
-      <div class="components-list">
-        <div class="logo-container">
-          <SvgIcon icon-class="logo" class="logo"></SvgIcon>
-          <span class="title">
-            Form Generate
-          </span>
-        </div>
-        <div class="widget-cate">基础组件</div>
-        <Draggable tag="ul"
-                   :list="basicComponents"
-                   v-bind="getDraggableOptions()"
-                   @end="handleMoveEnd"
-                   @start="handleMoveStart"
-                   :move="handleMove">
-          <li class="form-edit-widget-label"
+  <!-- 对话框 -->
+  <el-dialog
+    v-if="visible"
+    ref="dialog"
+    class="dialog"
+    :visible.sync="visible"
+    fullscreen
+  >
+    <el-container style="height:100%">
+      <!-- 左侧边栏 -->
+      <el-aside style="width: 20%;max-width:250px">
+        <div class="components-list">
+          <div class="logo-container">
+            <SvgIcon icon-class="logo" class="logo"></SvgIcon>
+            <span class="title">
+              Form Generate
+            </span>
+          </div>
+          <div class="widget-cate">基础组件</div>
+          <Draggable
+            tag="ul"
+            :list="basicComponents"
+            v-bind="getDraggableOptions()"
+            @end="handleMoveEnd"
+            @start="handleMoveStart"
+            :move="handleMove"
+          >
+            <li
+              class="form-edit-widget-label"
               v-for="(item, index) in basicComponents"
-              :key="index">
-            <a>
-              <Icon class="icon"
-                    :name="item.icon"></Icon>
-              <span>{{item.name}}</span>
-            </a>
-          </li>
-        </draggable>
-        <div class="widget-cate">高级组件</div>
-        <Draggable tag="ul"
-                   :list="advanceComponents"
-                   v-bind="getDraggableOptions()"
-                   @end="handleMoveEnd"
-                   @start="handleMoveStart"
-                   :move="handleMove">
-          <li class="form-edit-widget-label"
+              :key="index"
+            >
+              <a>
+                <Icon class="icon" :name="item.icon"></Icon>
+                <span>{{ item.name }}</span>
+              </a>
+            </li>
+          </Draggable>
+          <div class="widget-cate">高级组件</div>
+          <Draggable
+            tag="ul"
+            :list="advanceComponents"
+            v-bind="getDraggableOptions()"
+            @end="handleMoveEnd"
+            @start="handleMoveStart"
+            :move="handleMove"
+          >
+            <li
+              class="form-edit-widget-label"
               v-for="(item, index) in advanceComponents"
-              :key="index">
-            <a>
-              <Icon class="icon"
-                    :name="item.icon"></Icon>
-              <span>{{item.name}}</span>
-            </a>
-          </li>
-        </draggable>
-        <div class="widget-cate">布局组件</div>
-        <Draggable tag="ul"
-                   :list="layoutComponents"
-                   v-bind="getDraggableOptions()"
-                   @end="handleMoveEnd"
-                   @start="handleMoveStart"
-                   :move="handleMove">
-          <li class="form-edit-widget-label data-grid"
+              :key="index"
+            >
+              <a>
+                <Icon class="icon" :name="item.icon"></Icon>
+                <span>{{ item.name }}</span>
+              </a>
+            </li>
+          </Draggable>
+          <div class="widget-cate">布局组件</div>
+          <Draggable
+            tag="ul"
+            :list="layoutComponents"
+            v-bind="getDraggableOptions()"
+            @end="handleMoveEnd"
+            @start="handleMoveStart"
+            :move="handleMove"
+          >
+            <li
+              class="form-edit-widget-label data-grid"
               v-for="(item, index) in layoutComponents"
-              :key="index">
-            <a>
-              <Icon class="icon"
-                    :name="item.icon"></Icon>
-              <span>{{item.name}}</span>
-            </a>
-          </li>
-        </draggable>
-      </div>
-    </el-aside>
-    <!-- 中间区域 -->
-    <el-container class="center-container"
-                  direction="vertical">
-      <!-- 中间区域顶部按钮栏 -->
-      <el-header class="btn-bar"
-                 style="height: 60px;">
-        <el-row :gutter="15">
-          <!-- 对话框内动态表单 -->
-          <el-col :span="16">
-            <GenerateForm ref="generateDialogForm"
-                          class="form"
-                          v-if="visible"
-                          :value="formValues"
-                          :data="formDesign"
-                          :remote="remoteFuncs" />
-          </el-col>
-          <el-col :span="8"
-                  style="text-align:right">
-            <el-button type='text'
-                       @click="btnSave_onClick"
-                       :loading="btnSaveIsLoading">保存</el-button>
-            <el-button type="text"
-                       size="medium"
-                       icon="el-icon-view"
-                       @click="handlePreview">预览</el-button>
-            <el-button type="text"
-                       size="medium"
-                       icon="el-icon-tickets"
-                       @click="handleGenerateJson">JSON</el-button>
-            <el-button type="text"
-                       size="medium"
-                       icon="el-icon-form"
-                       @click="formVisible = true">自动绑定</el-button>
-          </el-col>
-        </el-row>
-
-      </el-header>
-      <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
-      <el-main :class="{'widget-empty': widgetForm.list.length == 0}">
-        <widget-form ref="widgetForm"
-                     :data="widgetForm"
-                     :select.sync="widgetFormSelect"></widget-form>
-      </el-main>
-    </el-container>
-    <!-- 右侧边栏 -->
-    <el-aside class="widget-config-container"
-              style="width:300px;">
-      <el-container class="full-height">
-        <el-header height="45px" style="width: 300px">
-          <div class="config-tab"
-               :class="{active: configTab=='widget'}"
-               @click="handleConfigSelect('widget')">字段属性</div>
-          <div class="config-tab"
-               :class="{active: configTab=='form'}"
-               @click="handleConfigSelect('form')">表单属性</div>
+              :key="index"
+            >
+              <a>
+                <Icon class="icon" :name="item.icon"></Icon>
+                <span>{{ item.name }}</span>
+              </a>
+            </li>
+          </Draggable>
+        </div>
+      </el-aside>
+      <!-- 中间区域 -->
+      <el-container class="center-container" direction="vertical">
+        <!-- 中间区域顶部按钮栏 -->
+        <el-header class="btn-bar" style="height: 60px;">
+          <el-row :gutter="15">
+            <!-- 对话框内动态表单 -->
+            <el-col :span="16">
+              <GenerateForm
+                ref="generateDialogForm"
+                class="form"
+                v-if="visible"
+                :value="formValues"
+                :data="formDesign"
+                :remote="remoteFuncs"
+              />
+            </el-col>
+            <el-col :span="8" style="text-align:right">
+              <el-button
+                type="text"
+                @click="btnSave_onClick"
+                :loading="btnSaveIsLoading"
+                >保存</el-button
+              >
+              <el-button
+                type="text"
+                size="medium"
+                icon="el-icon-view"
+                @click="handlePreview"
+                >预览</el-button
+              >
+              <el-button
+                type="text"
+                size="medium"
+                icon="el-icon-tickets"
+                @click="handleGenerateJson"
+                >JSON</el-button
+              >
+              <el-button
+                type="text"
+                size="medium"
+                icon="el-icon-form"
+                @click="formVisible = true"
+                >自动绑定</el-button
+              >
+            </el-col>
+          </el-row>
         </el-header>
-        <el-main class="config-content">
-          <widget-config v-show="configTab=='widget'"
-                         :data="widgetFormSelect"></widget-config>
-          <form-config v-show="configTab=='form'"
-                       :data="widgetForm.config"></form-config>
+        <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
+        <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
+          <widget-form
+            ref="widgetForm"
+            :data="widgetForm"
+            :select.sync="widgetFormSelect"
+          ></widget-form>
         </el-main>
       </el-container>
-
-    </el-aside>
-    <!-- 预览对话框 -->
-    <cus-dialog :visible="previewVisible"
-                @on-close="previewVisible = false"
-                ref="widgetPreview"
-                @on-submit="handleTest"
-                width="1000px"
-                form>
-      <el-alert type="warning"
-                :closable="false"
-                style="margin-bottom:15px">组件依赖远端数据需要结合代码实际预览,此处无法直接预览效果!</el-alert>
-      <generate-form v-if="previewVisible"
-                     :data="widgetForm"
-                     :value="widgetModels"
-                     ref="generateForm">
-        <template slot="blank"
-                  slot-scope="scope">
-          宽度：<el-input v-model="scope.model.blank.width"
-                    style="width: 100px"></el-input>
-          高度：<el-input v-model="scope.model.blank.height"
-                    style="width: 100px"></el-input>
-        </template>
-      </generate-form>
-    </cus-dialog>
-    <!-- json对话框 -->
-    <cus-dialog :visible="jsonVisible"
-                @on-close="jsonVisible = false"
-                ref="jsonPreview"
-                width="800px"
-                form>
-      <!-- json编辑器 -->
-      <div id="jsoneditor"
-           style="height: 400px;width: 100%;">{{jsonTemplate}}</div>
-    </cus-dialog>
-    <cus-dialog ref="bindKeys"
-                :visible="formVisible"
-                title="绑定后端key/自动初始化表单(根据数据库字段备注)"
-                @on-close="formVisible = false;formKeys.tableName = '';formKeys.prefill = ''"
-                width="800px"
-                :action="false">
-      <el-alert type="warning">请先选择数据源,然后根据需要选择相应功能</el-alert>
-      <table class="el-table"
-             style="width:100%">
-        <thead>
-          <th>数据源</th>
-
-        </thead>
-        <tbody>
-          <td>
-            <el-select v-model="formKeys.tableName"
-                       filterable
-                       style="width:100%"
-                       placeholder="选择数据源">
-              <el-option v-for="(item,index) in allTables"
-                         :key="index"
-                         :label="item.TABLE_NAME"
-                         :value="item.TABLE_NAME"></el-option>
-            </el-select>
-          </td>
-        </tbody>
-      </table>
-      <el-tooltip title="根据数据库字段初始化,默认一行两列">
-        <el-button type="success"
-                 style="float: right"
-                 @click="handleGenerateKey(true)">自动生成表单</el-button>
-      </el-tooltip>
-    </cus-dialog>
-  </el-container>
-    </el-dialog>
+      <!-- 右侧边栏 -->
+      <el-aside class="widget-config-container" style="width:300px;">
+        <el-container class="full-height">
+          <el-header height="45px" style="width: 300px">
+            <div
+              class="config-tab"
+              :class="{ active: configTab == 'widget' }"
+              @click="handleConfigSelect('widget')"
+            >
+              字段属性
+            </div>
+            <div
+              class="config-tab"
+              :class="{ active: configTab == 'form' }"
+              @click="handleConfigSelect('form')"
+            >
+              表单属性
+            </div>
+          </el-header>
+          <el-main class="config-content">
+            <widget-config
+              v-show="configTab == 'widget'"
+              :data="widgetFormSelect"
+            ></widget-config>
+            <form-config
+              v-show="configTab == 'form'"
+              :data="widgetForm.config"
+            ></form-config>
+          </el-main>
+        </el-container>
+      </el-aside>
+      <!-- 预览对话框 -->
+      <cus-dialog
+        :visible="previewVisible"
+        @on-close="previewVisible = false"
+        ref="widgetPreview"
+        @on-submit="handleTest"
+        width="1000px"
+        form
+      >
+        <el-alert type="warning" :closable="false" style="margin-bottom:15px"
+          >组件依赖远端数据需要结合代码实际预览,此处无法直接预览效果!</el-alert
+        >
+        <generate-form
+          v-if="previewVisible"
+          :data="widgetForm"
+          :value="widgetModels"
+          ref="generateForm"
+        >
+          <template slot="blank" slot-scope="scope">
+            宽度：<el-input
+              v-model="scope.model.blank.width"
+              style="width: 100px"
+            ></el-input>
+            高度：<el-input
+              v-model="scope.model.blank.height"
+              style="width: 100px"
+            ></el-input>
+          </template>
+        </generate-form>
+      </cus-dialog>
+      <!-- json对话框 -->
+      <cus-dialog
+        :visible="jsonVisible"
+        @on-close="jsonVisible = false"
+        ref="jsonPreview"
+        width="800px"
+        form
+      >
+        <!-- json编辑器 -->
+        <div id="jsoneditor" style="height: 400px;width: 100%;">
+          {{ jsonTemplate }}
+        </div>
+      </cus-dialog>
+      <cus-dialog
+        ref="bindKeys"
+        :visible="formVisible"
+        title="绑定后端key/自动初始化表单(根据数据库字段备注)"
+        @on-close="
+          formVisible = false;
+          formKeys.tableName = '';
+          formKeys.prefill = '';
+        "
+        width="800px"
+        :action="false"
+      >
+        <el-select
+          v-model="formKeys.tableName"
+          filterable
+          style="width:100%"
+          placeholder="选择数据源"
+        >
+          <el-option
+            v-for="(item, index) in allTables"
+            :key="index"
+            size="small"
+            :label="item.TABLE_NAME"
+            :value="item.TABLE_NAME"
+          ></el-option>
+        </el-select>
+        <el-tooltip title="根据数据库字段初始化,默认一行两列">
+          <el-button
+            type="success"
+            size="small"
+            style="float: right;margin-top: 10px"
+            @click="handleGenerateKey(true)"
+            >自动生成表单</el-button
+          >
+        </el-tooltip>
+      </cus-dialog>
+    </el-container>
+  </el-dialog>
 </template>
 
 <script>
@@ -336,9 +382,8 @@ export default {
         let flag = false;
         const { COLUMN_COMMENT } = rows[i];
         // 遍历整个form
-        const COLUMN_NAME = `${
-          this.formKeys.prefill + rows[i].COLUMN_NAME.toLowerCase()
-        }`;
+        const COLUMN_NAME = `${this.formKeys.prefill
+          + rows[i].COLUMN_NAME.toLowerCase()}`;
         let COLUMN_NAME2 = null;
         let COLUMN_COMMENT2 = null;
         if (i + 1 <= rows.length && rows[i + 1]) {
@@ -346,9 +391,8 @@ export default {
 
           COLUMN_COMMENT2 = rows[i + 1].COLUMN_COMMENT;
           // 遍历整个form
-          COLUMN_NAME2 = `${
-            this.formKeys.prefill + rows[i + 1].COLUMN_NAME.toLowerCase()
-          }`;
+          COLUMN_NAME2 = `${this.formKeys.prefill
+            + rows[i + 1].COLUMN_NAME.toLowerCase()}`;
           i += 1;
         }
         const row = {
@@ -464,9 +508,8 @@ export default {
         for (const row of res.data) {
           const { COLUMN_COMMENT } = row;
           // 遍历整个form
-          const COLUMN_NAME = `${
-            this.formKeys.prefill + row.COLUMN_NAME.toLowerCase()
-          }`;
+          const COLUMN_NAME = `${this.formKeys.prefill
+            + row.COLUMN_NAME.toLowerCase()}`;
           this.generateModle(this.widgetForm.list, COLUMN_COMMENT, COLUMN_NAME);
         }
         this.$alert(`识别成功以下字段:${this.formKeys.success.join(',')}`);
@@ -514,7 +557,7 @@ export default {
         this.formValues = {};
         this.widgetForm = {
           list: [],
-          config: { labelWidth: 100, labelPosition: 'top', size: 'small' },
+          config: { labelWidth: 100, labelPosition: 'right', size: 'small' },
         };
       }
       // 初始化右侧的配置区域
