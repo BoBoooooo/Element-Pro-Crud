@@ -45,7 +45,7 @@ npm i element-pro-crud -S
   <head>
     <meta charset="UTF-8" />
     <!-- 引入ProCrud CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.1.2/lib/ProCrud.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.5.0/lib/ProCrud.css" />
     <!-- 引入ElementUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
     />
@@ -64,7 +64,7 @@ npm i element-pro-crud -S
   <!-- import ElementUI -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <!-- import ElementProCrud -->
-  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@0.1.2/lib/ProCrud.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@0.5.0/lib/ProCrud.umd.js"></script>
 
   <script>
     new Vue({
@@ -87,14 +87,20 @@ npm i element-pro-crud -S
   
   在 main.js 中写入以下内容：
 
-  ``` javascript
+  ```javascript
   import ElementProCrud from 'element-pro-crud';
   import ElementUI from 'element-ui';
   import 'element-pro-crud/lib/ProCrud.css'; // 先引入插件css,避免css污染
   import 'element-ui/lib/theme-chalk/index.css';
 
   Vue.use(ElementUI)
-  Vue.use(ElementProCrud);
+  Vue.use(ElementProCrud, {
+    getTables: Function; // axios方法获取数据库中所有的表
+    getFormKey: Function; // axios方法获取某张表中所有字段信息
+    getFormDetail: Function;// 获取某个表单设计json
+    getTableDetail: Function;// 获取某个表格设计json
+    crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise; // 通用CRUD封装
+  });
   ```
   
 #### 按需引入
@@ -103,16 +109,13 @@ npm i element-pro-crud -S
   Vue.use(GenerateForm);
 
   import Vue from 'vue';
-  import { GenerateForm,CrudTable } from 'element-pro-crud';
+  import { GenerateForm, CrudTable, FormDesignerDialog, TableDesignerDialog } from 'element-pro-crud';
   import App from './App.vue';
 
-  Vue.component(GenerateForm.name, GenerateForm);
-  Vue.component(CrudTable.name, CrudTable);
-
-  /* 或写为
-  * Vue.use(GenerateForm)
-  * Vue.use(CrudTable)
-  */
+  Vue.use(GenerateForm); // 不需要传options
+  Vue.use(CrudTable, options);// options介绍如上,getTables,getFormKey两个方法可以缺省
+  Vue.use(FormDesignerDialog, options);// options介绍如上
+  Vue.use(TableDesignerDialog, options);// options介绍如上
 
   new Vue({
     el: '#app',
@@ -154,8 +157,11 @@ npm i element-pro-crud -S
 |       tableTitle       |                             表格标题                              |     String      |                    -                    |    ''     |
 |      tableParams       |                   表格请求参数(带查询参数请求)                    |  Object,Array   |                    -                    |    {}     |
 |        textMap         |                          表单对话框标题                           |     Object      | { add:'添加',edit:'编辑',detail:'查看'} |    {}     |
-|     promiseForDel      |                    自定义删除按钮 promise 请求                    |    Function     |      Function({id})      |   -    |
+|     promiseForDel      |                    自定义删除按钮 promise 请求                    |    Function     |      Function(id)      |   -    |
+|     promiseForDels      |                    自定义批量删除按钮 promise 请求                    |    Function     |      Function([id])      |   -    |
+|    promiseForDetail    |                    详情 promise 请求                    |    Function     |                    (id: string):Object => formData                 |   -    |
 |    promiseForSelect    |                    自定义列表查询 promise 请求                    |    Function     |                    Function(searchCondition)                   |   -    |
+|    promiseForSave    |                    自定义保存方法 promise 请求                    |    Function     |                    Function(formValue, status)                   |   -    |
 |     btnAddOnClick      |                         添加按钮点击事件                          |    Function     |                    -                    |   -    |
 |    btnRowAddOnClick    |                    表格行中的添加按钮点击事件                     |    Function     |                    Function(row)                    |   -    |
 |     btnEditOnClick     |                         编辑按钮点击事件                          |    Function     |                    Function(row)                   |   -    |

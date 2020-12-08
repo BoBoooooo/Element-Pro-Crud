@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import { BaseComponent } from './main'
-import { ElCrudTable } from './crud-table'
-import { ElFormDesignerDialog } from './form-designer-dialog'
-import { ElTableDesignerDialog } from './table-designer-dialog'
-import { ElGenerateForm } from './generate-form'
+import Vue from 'vue';
+import { BaseComponent } from './main';
+import { ElCrudTable } from './crud-table';
+import { ElFormDesignerDialog } from './form-designer-dialog';
+import { ElTableDesignerDialog } from './table-designer-dialog';
+import { ElGenerateForm } from './generate-form';
 
 export interface InstallationOptions {}
 

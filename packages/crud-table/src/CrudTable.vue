@@ -207,11 +207,10 @@
 import {
   Component, Vue, Emit, Prop,
 } from 'vue-property-decorator';
-import { DML, crud } from '@/api/public/crud';
-import { getTableDetail, getFormDetail } from '@/api/system/form';
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
+import { DML } from '@/types/common';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import SearchForm from './SearchForm.vue';
 
@@ -329,6 +328,15 @@ export default class CrudTable extends Vue {
 
   // 删除方法代理
   @Prop({ default: null, type: Function }) promiseForDel!: any;
+
+  // 批量删除方法代理
+  @Prop({ default: null, type: Function }) promiseForDels!: any;
+
+  // 详情方法代理
+  @Prop({ default: null, type: Function }) promiseForDetail!: any;
+
+  // 代理保存方法
+  @Prop({ default: null, type: Function }) promiseForSave!: any;
 
   // 请求数据方法代理
   @Prop({ default: null, type: Function }) promiseForSelect!: any;
@@ -510,7 +518,7 @@ export default class CrudTable extends Vue {
 
   created() {
     // 请求表格设计json
-    const promise = getTableDetail(this.tableDesignerName ? this.tableDesignerName : this.tableName);
+    const promise = this.$PROCRUD.getTableDetail(this.tableDesignerName ? this.tableDesignerName : this.tableName);
     // 加载表格结构
     promise.then((res) => {
       this.tableConfig = JSON.parse(res.data.formJson);
@@ -575,10 +583,11 @@ export default class CrudTable extends Vue {
     if (this.btnEditOnClick) {
       this.btnEditOnClick(row);
     } else {
-      // 请求后台detail接口获取表单数据
-      crud(DML.DETAIL, this.tableName, {}, {
+      const promise = this.promiseForDetail ? this.promiseForDetail(row.id) : this.$PROCRUD.crud(DML.DETAIL, this.tableName, {}, {
         id: row.id,
-      }).then((res) => {
+      });
+      // 请求后台detail接口获取表单数据
+      promise.then((res) => {
         this.$refs.dialog.showDialog({ id: row.id }, STATUS.UPDATE, res.data);
       });
     }
@@ -590,10 +599,11 @@ export default class CrudTable extends Vue {
     if (this.btnDetailOnClick) {
       this.btnDetailOnClick(row);
     } else {
-      // 请求后台detail接口获取表单数据
-      crud(DML.DETAIL, this.tableName, {}, {
+      const promise = this.promiseForDetail ? this.promiseForDetail(row.id) : this.$PROCRUD.crud(DML.DETAIL, this.tableName, {}, {
         id: row.id,
-      }).then((res) => {
+      });
+      // 请求后台detail接口获取表单数据
+      promise.then((res) => {
         this.$refs.dialog.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
       });
     }
@@ -609,7 +619,7 @@ export default class CrudTable extends Vue {
         type: 'warning',
       })
         .then(() => {
-          const promise = crud(
+          const promise = this.promiseForDels ? this.promiseForDels(this.selectedRows.map(item => item.id)) : this.$PROCRUD.crud(
             DML.DELETES,
             this.tableName,
             this.selectedRows.map(item => item.id),
@@ -632,7 +642,7 @@ export default class CrudTable extends Vue {
   actionColumnDel(row) {
     this.currentRow = row;
     // 如果prop传入了promiseForDel说明需要回调自定义删除
-    const promise = this.promiseForDel ? this.promiseForDel({ id: row.id }) : crud(DML.DELETE, this.tableName, { id: row.id });
+    const promise = this.promiseForDel ? this.promiseForDel(row.id) : this.$PROCRUD.crud(DML.DELETE, this.tableName, { id: row.id });
     promise.then(() => {
       this.tableReload();
       this.$message({
@@ -812,8 +822,8 @@ export default class CrudTable extends Vue {
     const requestObject = this.promiseForSelect
       ? this.promiseForSelect(axiosParams, clearParams)
       : this.lazy
-        ? crud(DML.TREE_LAZY, this.tableName, axiosParams)
-        : crud(DML.SELECT, this.tableName, axiosParams);
+        ? this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, axiosParams)
+        : this.$PROCRUD.crud(DML.SELECT, this.tableName, axiosParams);
 
     requestObject
       .then((response) => {
@@ -883,7 +893,7 @@ export default class CrudTable extends Vue {
       ],
     };
 
-    crud(DML.TREE_LAZY, this.tableName, data).then((res) => {
+    this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, data).then((res) => {
       if (resolve) {
         resolve(res.data);
       }

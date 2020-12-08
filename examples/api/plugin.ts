@@ -4,7 +4,7 @@
  * @author: BoBo
  * @Date: 2020年08月26 16:14:53
  */
-import axios from '../axios';
+import axios from './axios';
 
 /**
  * 获取数据库中所有表名
@@ -41,7 +41,7 @@ export function getFormDetail(tablename) {
 }
 
 /**
- *
+ * 获取某张表所有字段信息
  * @param {String} tablename
  */
 export function getFormKey(tablename) {

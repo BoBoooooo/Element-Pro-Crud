@@ -13,11 +13,23 @@
       href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
     />
     <link rel="stylesheet" href="../lib/ProCrud.css" />
+    <!-- 服务器地址 -->
+    <script>
+      window.__HOST__URL__ = "http://localhost:7788";
+    </script>
+    <!-- 后台url地址 -->
+    <script>
+      window.__PREFIX__URL__ = "/";
+    </script>
   </head>
   <body>
     <div id="app">
-      <el-button @click="showDialog('form')" type="primary">打开表单设计器</el-button>
-      <el-button @click="showDialog('table')" type="danger">打开表格设计器</el-button>
+      <el-button @click="showDialog('form')" type="primary"
+        >打开表单设计器</el-button
+      >
+      <el-button @click="showDialog('table')" type="danger"
+        >打开表格设计器</el-button
+      >
       <form-designer-dialog ref="form"></form-designer-dialog>
       <table-designer-dialog ref="table"></table-designer-dialog>
       <crud-table tableName="dept" tableTitle="表格示例"></crud-table>
@@ -32,11 +44,11 @@
   <script>
     new Vue({
       el: "#app",
-      methods:{
-        showDialog(name){
+      methods: {
+        showDialog(name) {
           this.$refs[name].showDialog();
-        }
-      }
+        },
+      },
     });
   </script>
 </html>

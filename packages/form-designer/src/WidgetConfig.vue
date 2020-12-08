@@ -615,7 +615,6 @@
 <script>
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import { DML, crud } from '@/api/public/crud';
 import 'vue-awesome/icons/regular/keyboard';
 import 'vue-awesome/icons/regular/trash-alt';
 import 'vue-awesome/icons/regular/clone';
@@ -637,6 +636,7 @@ import 'vue-awesome/icons/toggle-off';
 import 'vue-awesome/icons/sliders-h';
 import 'vue-awesome/icons/regular/image';
 import 'vue-awesome/icons/chalkboard';
+import { DML } from '@/types/common';
 
 export default {
   name: 'WidgetConfig',
@@ -668,7 +668,7 @@ export default {
   },
   created() {
     // 请求字典分类
-    crud(DML.SELECT, 'ad_codelist_type').then((res) => {
+    this.$PROCRUD.crud(DML.SELECT, 'ad_codelist_type').then((res) => {
       this.dictType = res.data.list.map(item => ({
         label: item.codeName,
         value: item.codeValue,

@@ -4,9 +4,16 @@ import App from './App.vue';
 import plugin from '../src/index';
 // 引入ElementUI
 import './element';
-import axios from '../src/api/axios';
+import axios from './api/axios';
+import * as pluginsApis from './api/plugin';
+import { crud } from './api/crud';
 
-Vue.use(plugin);
+
+Vue.use(plugin, {
+  ...pluginsApis,
+  axios,
+  crud,
+});
 Vue.config.productionTip = false;
 
 axios({

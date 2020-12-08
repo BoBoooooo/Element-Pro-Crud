@@ -51,10 +51,9 @@
 </template>
 
 <script>
-import { DML, crud } from '@/api/public/crud';
-import { getFormDetail } from '@/api/system/form';
 import _forEach from 'lodash/forEach';
 import _pick from 'lodash/pick';
+import { DML } from '@/types/common';
 
 export default {
   name: 'MenuBar',
@@ -80,7 +79,7 @@ export default {
     },
   },
   created() {
-    crud(DML.SELECT, 'form').then((res) => {
+    this.$PROCRUD.crud(DML.SELECT, 'form').then((res) => {
       this.formList = res.data.list;
     });
   },
@@ -92,7 +91,7 @@ export default {
           message: '请先选择表单',
         });
       }
-      getFormDetail(this.selectedForm).then((res) => {
+      this.$PROCRUD.getFormDetail(this.selectedForm).then((res) => {
         if (res.data !== null) {
           const jsonObj = JSON.parse(res.data.formJson);
           const done = [];
@@ -238,7 +237,7 @@ export default {
             });
             break;
           }
-          getFormDetail(this.selectedForm).then((res) => {
+          this.$PROCRUD.getFormDetail(this.selectedForm).then((res) => {
             if (res.data !== null) {
               const jsonObj = JSON.parse(res.data.formJson);
               // 遍历行

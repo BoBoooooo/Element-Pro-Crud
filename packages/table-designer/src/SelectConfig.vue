@@ -98,7 +98,7 @@
 import 'vue-awesome/icons/bars';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import { DML, crud } from '@/api/public/crud';
+import { DML } from '@/types/common';
 
 export default {
   components: {
@@ -122,7 +122,7 @@ export default {
   },
   created() {
     // 请求字典分类
-    crud(DML.SELECT, 'ad_codelist_type').then((res) => {
+    this.$PROCRUD.crud(DML.SELECT, 'ad_codelist_type').then((res) => {
       this.dictType = res.data.list.map(item => ({
         label: item.codename,
         value: item.codevalue,

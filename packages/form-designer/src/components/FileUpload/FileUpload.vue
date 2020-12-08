@@ -97,7 +97,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import download from '@/utils/download';
-import { DML, crud } from '@/api/public/crud';
+import { DML } from '@/types/common';
 
 @Component
 export default class FileUpload extends Vue {
@@ -278,7 +278,7 @@ export default class FileUpload extends Vue {
       type: 'warning',
     })
       .then(() => {
-        crud(DML.DELETE, this.tableName, {
+        this.$PROCRUD.crud(DML.DELETE, this.tableName, {
           id: row.id,
         }).then((res: any) => {
           if (res.code === 200) {

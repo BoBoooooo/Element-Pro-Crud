@@ -260,8 +260,6 @@
 import SvgIcon from '@/icons/SvgIcon.vue';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import { DML, crud } from '@/api/public/crud';
-import { getTables, getFormKey, getFormDetail } from '@/api/system/form';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
@@ -315,15 +313,20 @@ export default {
     Icon,
     SvgIcon,
   },
-  props: {
-    // 远程数据方法
-    remoteFuncs: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
   data() {
     return {
+      remoteFuncs: {
+        getTablesOfDB: (resolve) => {
+          // 请求表名列表
+          this.$PROCRUD.getTables().then((res) => {
+            const options = res.data.map(item => ({
+              label: item.TABLE_NAME,
+              value: item.TABLE_NAME,
+            }));
+            resolve(options);
+          });
+        },
+      },
       // 对话框内文本框们填写的值
       formValues: {},
       // 对话框设计结构json
@@ -500,7 +503,7 @@ export default {
     // 自动同步后端key
     async handleGenerateKey(generateForm = false) {
       this.formKeys.success = [];
-      const res = await getFormKey(this.formKeys.tableName);
+      const res = await this.$PROCRUD.getFormKey(this.formKeys.tableName);
       if (generateForm) {
         this.autoGenerateFormByBackend(res.data);
         this.$alert('成功表格(默认为一行两列)');
@@ -564,10 +567,10 @@ export default {
       this.widgetFormSelect = '';
       this.visible = true;
       // 请求数据库所有表名
-      const { data } = await getTables();
+      const { data } = await this.$PROCRUD.getTables();
       this.allTables = data;
       // 请求对话框内的动态表单json
-      const res = await getFormDetail('dynamictables');
+      const res = await this.$PROCRUD.getFormDetail('dynamictables');
       this.formDesign = JSON.parse(res.data.formJson);
     },
     // 保存设计
@@ -581,10 +584,10 @@ export default {
           let msg;
           // 根据对话框状态判断保存或编辑
           if (this.dialogStatus === STATUS.CREATE) {
-            type = DML.INSERT;
+            type = this.$PROCRUD.crud.DML.INSERT;
             msg = '添加成功';
           } else {
-            type = DML.UPDATE;
+            type = this.$PROCRUD.crud.DML.UPDATE;
             msg = '编辑成功';
           }
           let promise;
@@ -596,7 +599,7 @@ export default {
           if (this.promiseForSave) {
             promise = this.promiseForSave(opt);
           } else {
-            promise = crud(type, 'form', opt);
+            promise = this.$PROCRUD.crud.crud(type, 'form', opt);
           }
 
           promise

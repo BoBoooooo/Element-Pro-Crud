@@ -6,7 +6,7 @@
  * @Date: 2020年04月24 11:35:00
  */
 
-import axios from '../axios';
+import axios from './axios';
 
 interface optionsType {
   url: string; // 请求地址

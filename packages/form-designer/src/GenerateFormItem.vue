@@ -70,7 +70,7 @@
                  allow-create
                  clearable
                  :placeholder="widget.options.placeholder"
-                 :style="{width: widget.options.width}"
+                 :style="{width: widget.options.width || '100%'}"
                  :remote="widget.options.remote === 'search'&& widget.options.remoteSearchFunc&&widget.options.remoteSearchFunc!=''"
                  :remote-method="search"
                  filterable
@@ -300,8 +300,8 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import { DML, crud } from '@/api/public/crud';
 import TreeSelect from '@riophae/vue-treeselect';
+import { DML } from '@/types/common';
 import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
 // 高级查询单个查询内容
@@ -406,7 +406,7 @@ export default class GenerateFormItem extends Vue {
     this.visible = false;
     // 请求字典
     if ('radio,select,checkbox,cascader'.includes(this.widget.type) && this.widget.options.remote === 'dict' && this.widget.options.dictType) {
-      crud(DML.SELECT, 'ad_codelist', {
+      this.$PROCRUD.crud(DML.SELECT, 'ad_codelist', {
         searchCondition: [
           {
             field: 'codeType',

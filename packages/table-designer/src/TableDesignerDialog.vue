@@ -127,8 +127,7 @@
 
 <script>
 import Draggable from 'vuedraggable';
-import { DML, crud } from '@/api/public/crud';
-import { getFormDetail } from '@/api/system/form';
+import { DML } from '@/types/common';
 import MenuBar from './MenuBar.vue';
 import columnsConfig from './columnsConfig.ts';
 import SelectConfig from './SelectConfig.vue';
@@ -210,7 +209,7 @@ export default {
         };
       }
       // 请求对话框内的动态表单json
-      const res = await getFormDetail(this.tableName);
+      const res = await this.$PROCRUD.getFormDetail(this.tableName);
       this.formDesign = JSON.parse(res.data.formJson);
     },
     // 取消按钮点击
@@ -245,7 +244,7 @@ export default {
           if (this.promiseForSave) {
             promise = this.promiseForSave(opt);
           } else {
-            promise = crud(type, this.tableName, opt);
+            promise = this.$PROCRUD.crud(type, this.tableName, opt);
           }
 
           promise.then(() => {

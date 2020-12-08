@@ -4,7 +4,7 @@
  * @copyright NanJing Anshare Tech .Com
  * @createDate 2018年11月18日08:13:10
  */
-import axios from '../api/axios';
+import Vue from 'vue';
 
 /**
  * 通用下载
@@ -18,9 +18,9 @@ import axios from '../api/axios';
 export default function (url, name, params, requestType = 'get') {
   let axiosObj;
   if (requestType === 'get') {
-    axiosObj = axios.get(url, { responseType: 'blob', params });
+    axiosObj = Vue.prototype.$PROCRUD.axios.get(url, { responseType: 'blob', params });
   } else {
-    axiosObj = axios.post(url, params, { responseType: 'blob' });
+    axiosObj = Vue.prototype.$PROCRUD.axios.post(url, params, { responseType: 'blob' });
   }
   axiosObj
     .then((res) => {

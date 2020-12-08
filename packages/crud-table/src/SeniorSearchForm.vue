@@ -44,8 +44,6 @@
 
 <script lang="ts">
 import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
-import { DML, crud } from '@/api/public/crud';
-import { getFormDetail } from '@/api/system/form';
 
 import {
   Component, Vue, Prop, Watch,

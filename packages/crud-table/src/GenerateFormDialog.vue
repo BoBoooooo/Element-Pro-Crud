@@ -43,13 +43,12 @@
 </template>
 
 <script lang="ts">
-import { DML, crud } from '@/api/public/crud';
-import { getFormDetail } from '@/api/system/form';
 import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
 import {
   Component, Vue, Emit, Watch, Prop,
 } from 'vue-property-decorator';
+import { DML } from '@/types/common';
 
 const STATUS = {
   CREATE: 0,
@@ -188,7 +187,7 @@ export default class GenerateFormDialog extends Vue {
     this.dialogParams = param;
     this.dialogStatus = status;
     // 请求对话框内的动态表单json
-    getFormDetail(this.dialogFormDesignerName ? this.dialogFormDesignerName : this.tableName).then((res) => {
+    this.$PROCRUD.getFormDetail(this.dialogFormDesignerName ? this.dialogFormDesignerName : this.tableName).then((res) => {
       this.formDesign = JSON.parse(res.data.formJson);
       if (this.dialogStatus === STATUS.UPDATE) {
         // 填写编辑框
@@ -230,9 +229,9 @@ export default class GenerateFormDialog extends Vue {
         let promise;
         // 如果有代理的保存方法
         if (this.promiseForSave) {
-          promise = this.promiseForSave(formValue);
+          promise = this.promiseForSave(formValue, type);
         } else {
-          promise = crud(type, this.tableName, formValue);
+          promise = this.$PROCRUD.crud(type, this.tableName, formValue);
         }
 
         promise.then((res) => {

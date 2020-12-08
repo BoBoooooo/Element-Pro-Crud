@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { DML, crud } from '@/api/public/crud';
+import { DML, crud } from './api/crud';
 
 export default {
   name: 'app',

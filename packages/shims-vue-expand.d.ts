@@ -4,7 +4,27 @@
  * @author: BoBo
  * @Date: 2020年06月23 16:47:06
  */
-// 扩充
+import { AxiosPromise } from 'axios';
+
+// eslint-disable-next-line import/prefer-default-export
+declare enum DML {
+  INSERT = 'add',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  SELECT = 'list',
+  TREE = 'tree',
+  TREE_LAZY = 'treeByParentID',
+  DETAIL = 'detail',
+  DELETES = 'deleteByIds',
+}
+
+interface optionsType {
+  getTables: Function;
+  getFormKey: Function;
+  getFormDetail: Function;
+  getTableDetail: Function;
+  crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise
+}
 declare module 'vue/types/vue' {
   interface Vue {
     $store: any;
@@ -15,6 +35,7 @@ declare module 'vue/types/vue' {
     HOST_URL: any;
     API_URL: any;
     $EventBus: any;
+    $PROCRUD: optionsType;
   }
   interface VueConstructor {
     install: any;

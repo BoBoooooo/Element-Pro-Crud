@@ -1,10 +1,58 @@
-## 0.3.2 (2020-11-27)
+# [0.5.0](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.3.3...0.5.0) (2020-12-08)
+
+### 🚀 性能优化
+范围|描述|commitId
+--|--|--
+ - | 优化表单设计器默认配置项 | [2c96915](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2c96915)
+
+## [0.3.3](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.3.2...0.3.3) (2020-12-08)
+
+### 🐛 Bug 修复
+范围|描述|commitId
+--|--|--
+ - | axios token prefix bug | [c1aed5a](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c1aed5a)
+
+
+### 📝 文档
+范围|描述|commitId
+--|--|--
+ - | update docs | [ec7ee69](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ec7ee69)
+
+
+### 🚀 性能优化
+范围|描述|commitId
+--|--|--
+ - | 更新版本至0.3.3 | [e1c919b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e1c919b)
+ CrudTable | tableTitle默认隐藏 | [75d4f57](https://github.com/BoBoooooo/Element-Pro-Crud/commit/75d4f57)
+ - | 优化调试逻辑 | [30d8c1d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/30d8c1d)
+ - | 组件代码优化 | [4023818](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4023818)
+
+## [0.3.2](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.3.1...0.3.2) (2020-11-27)
+
+### chore
+范围|描述|commitId
+--|--|--
+ docs,crud-table | [@0](https://github.com/0).3.2 修改README文档,新增dialogWidth,epmtyText属性,修复已知Bug | [7dcc25a](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7dcc25a)
+
+## [0.3.1](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.3.0...0.3.1) (2020-11-26)
+
+### 🌟 新功能
+范围|描述|commitId
+--|--|--
+ - | 文本组件新增对齐方式/字体大小配置项 | [78388ac](https://github.com/BoBoooooo/Element-Pro-Crud/commit/78388ac)
+
+
+### chore
+范围|描述|commitId
+--|--|--
+ - | version update to 0.3.1 | [0748286](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0748286)
+
+# [0.3.0](https://github.com/BoBoooooo/Element-Pro-Crud/compare/c003a89...0.3.0) (2020-11-23)
 
 ### 🌟 新功能
 范围|描述|commitId
 --|--|--
  - | [@0](https://github.com/0).2.4,修复表单设计器getData 多选情况下bug | [a8ec788](https://github.com/BoBoooooo/Element-Pro-Crud/commit/a8ec788)
- - | 文本组件新增对齐方式/字体大小配置项 | [78388ac](https://github.com/BoBoooooo/Element-Pro-Crud/commit/78388ac)
  FormDesign | 初步提交一版表单设计器 | [0161f67](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0161f67)
  FormDesigner | 级联选择器新增支持配置父子级联关系,version update to 0.2.2 | [40cd7d1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/40cd7d1)
  index | fix eslint bug | [a09ae6b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/a09ae6b)
@@ -57,13 +105,6 @@
  - | update version to 0.1.0-1 | [070beed](https://github.com/BoBoooooo/Element-Pro-Crud/commit/070beed)
 
 
-### 🔨 代码重构
-范围|描述|commitId
---|--|--
- - | 调整目录结构,加入types声明文件 | [ab896f3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ab896f3)
- - | refactor some details | [742f6a6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/742f6a6)
-
-
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
@@ -90,13 +131,6 @@
  - | version update to 0.2.5 | [211ab70](https://github.com/BoBoooooo/Element-Pro-Crud/commit/211ab70)
 
 
-### chore
-范围|描述|commitId
---|--|--
- - | 由于是umd打包发布,依赖全部并入devDependencies | [cf2ece3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cf2ece3)
- - | version update to 0.3.1 | [0748286](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0748286)
-
-
 范围|描述|commitId
 --|--|--
  - | 0.1.6 | [44bae78](https://github.com/BoBoooooo/Element-Pro-Crud/commit/44bae78)
@@ -106,4 +140,17 @@
  - | Create .npmrc | [3ecfee9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3ecfee9)
  - | Update README.md | [c69ba5b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c69ba5b)
  - | [feat](bobo-npm-plugin-test): 初始化项目,结合bobo-npm-plugin-test发布 | [c003a89](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c003a89)
+
+
+### 🔨 代码重构
+范围|描述|commitId
+--|--|--
+ - | 调整目录结构,加入types声明文件 | [ab896f3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ab896f3)
+ - | refactor some details | [742f6a6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/742f6a6)
+
+
+### chore
+范围|描述|commitId
+--|--|--
+ - | 由于是umd打包发布,依赖全部并入devDependencies | [cf2ece3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cf2ece3)
 
