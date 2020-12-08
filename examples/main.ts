@@ -11,7 +11,6 @@ import { crud } from './api/crud';
 
 Vue.use(plugin, {
   ...pluginsApis,
-  axios,
   crud,
 });
 Vue.config.productionTip = false;
