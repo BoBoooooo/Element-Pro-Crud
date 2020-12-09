@@ -99,7 +99,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import download from '@/utils/download';
 import { DML } from '@/types/common';
 
-@Component
+@Component({
+  name: 'FileUpload',
+})
 export default class FileUpload extends Vue {
   $refs!: {
     table: HTMLFormElement;
@@ -311,7 +313,9 @@ export default class FileUpload extends Vue {
 .upload-container >>> .el-upload {
   float: right;
   margin-right: 5px;
-  margin-bottom: 5px;
+  position: relative;
+  z-index: 100;
+  bottom: -10px;
 }
 </style>
 <style lang="scss" scoped>
