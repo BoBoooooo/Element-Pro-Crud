@@ -347,6 +347,9 @@ export default class CrudTable extends Vue {
   // 编辑按钮是否可见代理
   @Prop({ default: null, type: Function }) btnEditVisibleFunc!: any;
 
+  // 表格行中的添加按钮是否显示事件
+  @Prop({ default: null, type: Function }) btnAddVisibleFunc!: any;
+
   // 查看按钮是否可见代理
   @Prop({ default: null, type: Function }) btnDetailVisibleFunc!: any;
 
@@ -650,6 +653,19 @@ export default class CrudTable extends Vue {
         message: '删除成功',
       });
     });
+  }
+
+  // 操作列-添加按钮是否显示
+  actionColumnBtnAddVisible(row) {
+    let visible;
+    if (this.btnAddVisibleFunc) {
+      // 如果传入了计算函数，取函数结果
+      visible = this.btnAddVisibleFunc(row);
+    } else {
+      // 默认不显示
+      visible = this.view.actionColumnBtnAdd;
+    }
+    return visible;
   }
 
   // 操作列-编辑按钮是否显示

@@ -167,6 +167,7 @@ npm i element-pro-crud -S
 |     btnEditOnClick     |                         编辑按钮点击事件                          |    Function     |                    Function(row)                   |   -    |
 |    btnDetailOnClick    |                         查看按钮点击事件                          |    Function     |                    Function(row)                   |    -     |
 |    btnDelVisibleFunc    |                    表格行中的删除按钮是否显示事件                     |    Function     |                    Function(row)                    |   -    |
+|    btnAddVisibleFunc    |                    表格行中的添加按钮是否显示事件                     |    Function     |                    Function(row)                    |   -    |
 |    btnEditVisibleFunc    |                    表格行中的编辑按钮是否显示事件                     |    Function     |                    Function(row)                    |   -    |
 |    btnDetailVisibleFunc    |                    表格行中的查看按钮是否显示事件                     |    Function     |                    Function(row)                    |   -    |
 |     showPagination     |                      自定义列表 config 请求                       |     Boolean     |               true/false                |   true    |
