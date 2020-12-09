@@ -645,7 +645,7 @@ export default class CrudTable extends Vue {
   actionColumnDel(row) {
     this.currentRow = row;
     // 如果prop传入了promiseForDel说明需要回调自定义删除
-    const promise = this.promiseForDel ? this.promiseForDel(row.id) : this.$PROCRUD.crud(DML.DELETE, this.tableName, { id: row.id });
+    const promise = this.promiseForDel ? this.promiseForDel(row.id) : this.$PROCRUD.crud(DML.DELETE, this.tableName, {}, { id: row.id });
     promise.then(() => {
       this.tableReload();
       this.$message({

@@ -280,7 +280,7 @@ export default class FileUpload extends Vue {
       type: 'warning',
     })
       .then(() => {
-        this.$PROCRUD.crud(DML.DELETE, this.tableName, {
+        this.$PROCRUD.crud(DML.DELETE, this.tableName, {}, {
           id: row.id,
         }).then((res: any) => {
           if (res.code === 200) {
