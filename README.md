@@ -160,7 +160,7 @@ npm i element-pro-crud -S
 |     promiseForDel      |                    自定义删除按钮 promise 请求                    |    Function     |      Function(id)      |   -    |
 |     promiseForDels      |                    自定义批量删除按钮 promise 请求                    |    Function     |      Function([id])      |   -    |
 |    promiseForDetail    |                    详情 promise 请求                    |    Function     |                    (id: string):Object => formData                 |   -    |
-|    promiseForSelect    |                    自定义列表查询 promise 请求                    |    Function     |                    Function(searchCondition)                   |   -    |
+|    promiseForSelect    |                    自定义列表查询 promise 请求                    |    Function     |                    Function(searchCondition, clearParams)                   |   -    |
 |    promiseForSave    |                    自定义保存方法 promise 请求                    |    Function     |                    Function(formValue, status)                   |   -    |
 |     btnAddOnClick      |                         添加按钮点击事件                          |    Function     |                    -                    |   -    |
 |    btnRowAddOnClick    |                    表格行中的添加按钮点击事件                     |    Function     |                    Function(row)                    |   -    |
