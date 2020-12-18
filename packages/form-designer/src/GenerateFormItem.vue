@@ -351,7 +351,7 @@ export default class GenerateFormItem extends Vue {
   readOnly: any;
 
   // 当前组件对象
-  dataModel: any = this.models[this.widget.model];
+  dataModel: string | number | null | object = this.models[this.widget.model] || null;
 
   copyOption: any = []; // 备份一份初始选项
 
@@ -375,21 +375,7 @@ export default class GenerateFormItem extends Vue {
         };
       };
     }
-    let model = this.models[this.widget.model];
-
-    if (this.widget.type === 'date') {
-      // 此处防止传入的值为非正常时间格式导致日历控件报错
-      // new Date校验以下四种情况yyyy-MM-dd yyyy-M-d yyyy/MM/dd yyyy/M/d yyyy-MM yyyy-M yyyy/MM yyyy/M
-      // 正则表达式校验  yyyy年MM月dd日  yyyy年M月d日情况 yyyy年MM月 yyyy年M月
-      const reg = /^([1-9]\d{3})年(\d{1,2})月(\d{1,2})日$/;
-      const regForYYYYMM = /^([1-9]\d{3})年(\d{1,2})月$/;
-      const regForYYYYMMDD = /^([1-9]\d{3})(\d{1,2})(\d{1,2})$/;
-      const isValid = !this.dayjs(model).isValid() || reg.test(model) || regForYYYYMM.test(model) || regForYYYYMMDD.test(model);
-      if (!isValid) {
-        model = '';
-      }
-    }
-
+    const model = this.models[this.widget.model];
     this.normalizer = normalizer;
     this.dataModel = model;
   }

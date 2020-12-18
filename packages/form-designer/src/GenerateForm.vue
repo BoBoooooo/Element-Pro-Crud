@@ -407,6 +407,7 @@ export default class GenerateForm extends Vue {
 
   @Watch('value', {
     deep: true,
+    immediate: true,
   })
   valueOnChange(val) {
     this.$nextTick(() => {
@@ -419,7 +420,7 @@ export default class GenerateForm extends Vue {
 
   @Watch('models', {
     deep: true,
-    immediate: true,
+    // immediate: true,
   })
   modelsOnChange(val) {
     this.$emit('update:entity', val);
