@@ -599,7 +599,7 @@ export default {
           if (this.promiseForSave) {
             promise = this.promiseForSave(opt);
           } else {
-            promise = this.$PROCRUD.crud.crud(type, 'form', opt);
+            promise = this.$PROCRUD.crud(type, 'form', opt);
           }
 
           promise
