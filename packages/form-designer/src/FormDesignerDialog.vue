@@ -242,7 +242,6 @@
             :value="item.TABLE_NAME"
           ></el-option>
         </el-select>
-        <el-tooltip title="根据数据库字段初始化,默认一行两列">
           <el-button
             type="success"
             size="small"
@@ -250,7 +249,6 @@
             @click="handleGenerateKey(true)"
             >自动生成表单</el-button
           >
-        </el-tooltip>
       </cus-dialog>
     </el-container>
   </el-dialog>
@@ -258,6 +256,7 @@
 
 <script>
 import SvgIcon from '@/icons/SvgIcon.vue';
+import { DML } from '@/types/common';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import WidgetConfig from './WidgetConfig.vue';
@@ -584,10 +583,10 @@ export default {
           let msg;
           // 根据对话框状态判断保存或编辑
           if (this.dialogStatus === STATUS.CREATE) {
-            type = this.$PROCRUD.crud.DML.INSERT;
+            type = DML.INSERT;
             msg = '添加成功';
           } else {
-            type = this.$PROCRUD.crud.DML.UPDATE;
+            type = DML.UPDATE;
             msg = '编辑成功';
           }
           let promise;
@@ -601,7 +600,6 @@ export default {
           } else {
             promise = this.$PROCRUD.crud(type, 'form', opt);
           }
-
           promise
             .then(() => {
               this.btnSaveIsLoading = false;
@@ -619,7 +617,8 @@ export default {
               this.btnSaveIsLoading = false;
             });
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           // 数据校验失败
           this.btnSaveIsLoading = false;
         });

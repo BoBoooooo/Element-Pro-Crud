@@ -156,11 +156,6 @@ export default {
       // 默认必须为null用于后期判断是否传入
       default: null,
     },
-    // 远程数据方法
-    remoteFuncs: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   data() {
     return {
@@ -182,6 +177,18 @@ export default {
       minColumnWidth: 140,
       // 获取表单实体
       entity: {},
+      remoteFuncs: {
+        getTablesOfDB: (resolve) => {
+          // 请求表名列表
+          this.$PROCRUD.getTables().then((res) => {
+            const options = res.data.map(item => ({
+              label: item.TABLE_NAME,
+              value: item.TABLE_NAME,
+            }));
+            resolve(options);
+          });
+        },
+      },
     };
   },
   methods: {
