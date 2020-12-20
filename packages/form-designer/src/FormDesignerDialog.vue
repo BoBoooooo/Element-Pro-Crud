@@ -615,6 +615,7 @@ export default {
               this.$emit('after-save', {
                 status: this.dialogStatus,
                 dialogParams: this.dialogParams,
+                formDesign: this.widgetForm,
               });
             })
             .catch(() => {
