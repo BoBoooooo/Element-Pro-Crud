@@ -7,55 +7,61 @@
 
 <template>
   <div class="search-form-container">
-    <el-input placeholder="请输入查询内容"
-              @clear="clearEvent"
-              clearable
-              @change="changeEvent"
-              v-model="searchContent"
-              class="input">
-      <div slot="suffix">
-        <el-tooltip class="item"
-                    effect="dark"
-                    content="查询"
-                    placement="top">
-          <i class="el-input__icon el-icon-search"
-             @click="btnSearchOnClick()"
-             style="display:inline"></i>
-        </el-tooltip>
-        <!-- 高级查询表单 -->
-        <SeniorSearchForm v-if="showSeniorSearchFormButton"
-                          :remoteFuncs="remoteFuncs"
-                          @fetchSearch="getFetchParamsSearch"
-                          :columns="columns"> </SeniorSearchForm>
-        <el-tooltip class="item"
-                    effect="dark"
-                    content="清空"
-                    placement="top">
-          <i class="el-input__icon el-icon-refresh"
-             @click="clearEvent()"
-             style="display:inline;color:orange;"></i>
-        </el-tooltip>
-      </div>
+    <el-input
+      placeholder="请输入查询内容"
+      @clear="clearEvent"
+      clearable
+      @change="changeEvent"
+      v-model="searchContent"
+      class="input"
+    >
     </el-input>
-    <!-- 自定义高级查询表单-->
-    <slot name="SeniorSearchForm"></slot>
+    <el-button-group>
+      <el-button
+        size="mini"
+        type="primary"
+        icon="el-icon-search"
+        @click="btnSearchOnClick()"
+        class="tool-btn"
+        >查询</el-button
+      >
+      <!-- 高级查询表单 -->
+      <SeniorSearchForm
+        v-if="showSeniorSearchForm"
+        :remoteFuncs="remoteFuncs"
+        @fetchSearch="getFetchParamsSearch"
+        :columns="columns"
+      >
+      </SeniorSearchForm>
+      <!-- 自定义高级查询表单-->
+      <slot name="seniorSearchForm"></slot>
+
+      <el-button
+        size="mini"
+        icon="el-icon-refresh"
+        @click="clearEvent()"
+        class="tool-btn"
+        >清空</el-button
+      >
+    </el-button-group>
     <div class="tips">
       <!-- 提示当前查询内容 -->
       <template v-if="isArray">
-        <el-tag v-for="(item,index) in paramsTips"
-                size="small"
-                effect="plain"
-                :key="index"
-                closable
-                @close="handleClose(item)">
-          {{item.label +':'+item.value}}
+        <el-tag
+          v-for="(item, index) in paramsTips"
+          size="small"
+          effect="plain"
+          :key="index"
+          closable
+          @close="handleClose(item)"
+        >
+          {{ item.label + ":" + item.value }}
         </el-tag>
       </template>
       <template v-else>
-        <span v-if="paramsTips">当前查询: {{paramsTips}}</span>
+        <span v-if="paramsTips">当前查询: {{ paramsTips }}</span>
       </template>
     </div>
-
   </div>
 </template>
 
@@ -64,17 +70,17 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import SeniorSearchForm from './SeniorSearchForm.vue';
 
 @Component({
+  name: 'SearchForm',
   components: {
     SeniorSearchForm,
   },
-  name: 'SearchForm',
 })
 export default class SearchForm extends Vue {
   // 远程数据方法
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
 
   // 是否显示高级查询按钮
-  @Prop({ default: true, type: Boolean }) showSeniorSearchFormButton!: boolean;
+  @Prop({ default: true, type: Boolean }) showSeniorSearchForm!: boolean;
 
   // 表格设计json
   @Prop({
@@ -86,8 +92,11 @@ export default class SearchForm extends Vue {
   // 查询输入框内容
   searchContent = '';
 
+  // 高级查询表单是否显示,手动控制
+  triggleVisible = false;
+
   // 查询tips
-  paramsTips:any = null;
+  paramsTips: any = null;
 
   get isArray() {
     return Array.isArray(this.paramsTips);
@@ -95,7 +104,9 @@ export default class SearchForm extends Vue {
 
   // 标签关闭事件
   handleClose(tag) {
-    this.paramsTips = this.paramsTips.filter(item => item.field !== tag.field);
+    this.paramsTips = this.paramsTips.filter(
+      item => item.field !== tag.field,
+    );
     this.$emit(
       'update:searchFormCondition',
       this.paramsTips.map(item => ({
@@ -124,9 +135,11 @@ export default class SearchForm extends Vue {
    * 获取查询条件
    */
   getParams() {
-    let params:any = [];
+    let params: any = [];
     // 拿到所有字段
-    const props = this.columns.filter(item => item.searchable).map(item => item.prop);
+    const props = this.columns
+      .filter(item => item.searchable)
+      .map(item => item.prop);
     const str = props.toString();
     if (this.searchContent) {
       params = [
@@ -150,7 +163,8 @@ export default class SearchForm extends Vue {
   // 获取高级查询组件中的查询条件
   getFetchParamsSearch(data) {
     this.paramsTips = [];
-    const params:any = [];
+    this.triggleVisible = false;
+    const params: any = [];
     Object.keys(data).forEach((key) => {
       if (key && data[key]) {
         if (Array.isArray(data[key])) {
@@ -184,7 +198,6 @@ export default class SearchForm extends Vue {
       operator: item.operator,
       label: this.columns.find(s => s.prop === item.field).label,
     }));
-
     this.$emit('update:searchFormCondition', params);
     this.$emit('click');
   }
@@ -194,15 +207,26 @@ export default class SearchForm extends Vue {
 .input-with-select >>> .el-input-group__prepend {
   background-color: #fff;
 }
+.dropdown-menu >>> .popper__arrow {
+  display: none;
+}
+.dropdown >>> .el-button {
+  height: 29px !important;
+}
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-form-container {
   float: left;
+  .tool-btn{
+    display:inline;
+    height: 29px;
+    border-radius:0
+  }
   .input {
     /deep/ .el-input__inner {
-      height: 28px;
-      line-height: 28px;
+      height: 29px;
+      line-height: 29px;
       border-radius: 0;
       display: inline-block;
     }
@@ -212,7 +236,8 @@ export default class SearchForm extends Vue {
       display: inline;
     }
     display: inline-block;
-    width: 25vw;
+    width: 20vw;
+    vertical-align: -1px;
   }
   /deep/.el-input__suffix {
     top: -5px;
