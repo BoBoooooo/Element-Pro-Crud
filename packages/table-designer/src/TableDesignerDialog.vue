@@ -11,7 +11,8 @@
              top="10vh"
              class="dialog"
              :visible.sync="visible"
-             width="95%">
+             width="95%"
+             append-to-body>
     <!-- 对话框内动态表单 -->
     <GenerateForm ref="generateDialogForm"
                   :value="formValues"

@@ -13,6 +13,7 @@
     class="dialog"
     :visible.sync="visible"
     fullscreen
+    append-to-body
   >
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
