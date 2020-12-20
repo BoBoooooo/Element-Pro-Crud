@@ -580,11 +580,6 @@
                        style="margin-right:10px"></el-switch>
             <el-switch v-model="data.options.visibleList.searchForm"
                        inactive-text="查询区域"></el-switch>
-            <el-switch v-model="data.options.visibleList.btnExport"
-                       inactive-text="导出按钮"
-                       style="margin-right:10px"></el-switch>
-            <el-switch v-model="data.options.visibleList.btnImport"
-                       inactive-text="上传按钮" style="margin-right:10px"></el-switch>
           </el-form-item>
         </template>
         <template v-if="data.type === 'treeselect'">

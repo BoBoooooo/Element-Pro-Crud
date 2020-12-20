@@ -456,12 +456,9 @@ export default class GenerateFormItem extends Vue {
   // 子表在只读模式下隐藏增删改按钮
   get visibleList() {
     const view = {
-      conditionTitle: false,
-      btnExport: false,
       ...this.widget.options.visibleList,
       btnAdd: false,
       btnAddOnColumnHeader: this.widget.options.visibleList.btnAdd,
-      btnImport: this.widget.options.visibleList.btnImport,
     };
     if ((this.readOnly && Object.keys(this.readOnly).length === 0) || this.widget.options.readonly) {
       view.btnAddOnColumnHeader = false;

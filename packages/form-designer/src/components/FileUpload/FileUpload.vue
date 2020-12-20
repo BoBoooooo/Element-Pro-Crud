@@ -39,10 +39,8 @@
                :promiseForSelect="promiseForSelect"
                :fullHeight="fullHeight"
                :visibleList="{
-                  conditionTitle: false,
                   searchForm: true,
                   btnAdd: false,
-                  btnExport: false,
                   actionColumnBtnEdit: false,
                   actionColumnBtnDel: false,
                   tableTitle: false,
