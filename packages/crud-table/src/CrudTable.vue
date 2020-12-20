@@ -287,10 +287,10 @@ export default class CrudTable extends Vue {
   @Prop({ default: null, type: Object }) prefill!: any;
 
   // 弹出表单appendToBody
-  @Prop({ default: false, type: Boolean }) dialogAppendToBody!: boolean;
+  @Prop({ default: true, type: Boolean }) dialogAppendToBody!: boolean;
 
   // 弹出表单width
-  @Prop({ default: '1000px', type: String }) dialogWidth!: string;
+  @Prop({ default: '80%', type: String }) dialogWidth!: string;
 
   // 用于请求表格设计json的name
   @Prop({

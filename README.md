@@ -148,7 +148,8 @@ npm i element-pro-crud -S
 |       isMultiple       |                           是否开启多选                            |     Boolean     |               true,false                |   false   |
 |       emptyText        |                      列表数据为空时显示文字                       |     String      |                    -                    | 暂无数据  |
 |        prefill         |                      表单预填项(赋值初始值)                       |     Object      |                    -                    |   null    |
-|      dialogAppendToBody      |                 表单对话框是否插入至 body 元素上                  |     Boolean     |               true/false                |   false   |
+|      dialogAppendToBody      |                 表单对话框是否插入至 body 元素上                  |     Boolean     |               true/false                |   true   |
+|      dialogWidth      |                 表单宽度                 |     String     |               -                |   80%   |
 |       tableName        |                               表名                                |     String      |                    -                    |    ''     |
 |   tableDesignerName    |      用于请求表格设计 json 的 name,不传则默认读取 tableName       |     String      |                    -                    |   null    |
 | dialogFormDesignerName |    对话框内加载 FormDesigner 的表名,,不传则默认读取 tableName     |     String      |                    -                    |   null    |

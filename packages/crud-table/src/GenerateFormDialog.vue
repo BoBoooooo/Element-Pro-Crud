@@ -88,7 +88,7 @@ export default class GenerateFormDialog extends Vue {
   // 对话框宽度
   @Prop({
     type: String,
-    default: '1400px',
+    default: '80%',
   })
   width!: string;
 
