@@ -669,7 +669,7 @@ export default {
     this.$PROCRUD.crud(DML.SELECT, 'ad_codelist_type').then((res) => {
       this.dictType = res.data.list.map(item => ({
         label: item.typeName,
-        value: item.typeName,
+        value: item.id,
       }));
     });
   },
