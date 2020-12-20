@@ -10,8 +10,15 @@
 -->
 <template>
   <div class="table-form-wrapper">
-    <el-form ref="generateForm"
-             :class='{"table-form": data.config && data.config.isTableClass}'
+      <!-- dev模式,支持直接修改表单,不需要可删除 -->
+      <div v-if="data.config && data.config.name && $store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
+        <el-button type="text" @click="showFormDesignerDialog">当前表单: {{data.config.name}} [点此修改]</el-button>
+        <FormDesignerDialog ref="formDesignerDialog"
+                        tableName="dynamictables"
+                        @after-save="formOnSave" />
+      </div>
+      <el-form ref="generateForm"
+             :class='{"table-form":data.config && data.config.isTableClass}'
              :model="models"
              :rules="rules"
              :label-position="data.config && data.config.labelPosition"
@@ -158,11 +165,14 @@ import GenerateFormItem from './GenerateFormItem.vue';
 export default class GenerateForm extends Vue {
   $refs!: {
     generateForm: HTMLFormElement;
+    formDesignerDialog: HTMLFormElement;
   };
 
   @Prop({
     type: Object,
-    default: () => ({}),
+    default: () => ({
+      config: {},
+    }),
   })
   data: any;
 
@@ -222,7 +232,6 @@ export default class GenerateForm extends Vue {
 
   rules: any = {};
 
-  // 子表表格选中数据
   tableSelections: any = {};
 
   created() {
@@ -315,6 +324,7 @@ export default class GenerateForm extends Vue {
         }
       }
     }
+    this.models = { ...this.value, ...this.models };
   }
 
   // 多选情况下数组转字符串
@@ -407,14 +417,11 @@ export default class GenerateForm extends Vue {
 
   @Watch('value', {
     deep: true,
-    immediate: true,
   })
   valueOnChange(val) {
-    this.$nextTick(() => {
-      if (this.$refs.generateForm) {
-        this.$refs.generateForm.clearValidate();
-      }
-    });
+    if (this.$refs.generateForm) {
+      this.$refs.generateForm.clearValidate();
+    }
     this.models = { ...this.models, ...val };
   }
 
@@ -425,8 +432,28 @@ export default class GenerateForm extends Vue {
   modelsOnChange(val) {
     this.$emit('update:entity', val);
   }
+
+
+  /**
+   * 下列为dev模式代码,不需要可自行删除
+   *
+   */
+  formOnSave({ formDesign }) {
+    this.data = formDesign;
+  }
+
+  async showFormDesignerDialog() {
+    const res = await this.$PROCRUD.getFormDetail(this.data.config.name);
+    this.$refs.formDesignerDialog.showDialog({ id: res.data.id }, 1, res.data);
+  }
 }
 </script>
 <style lang="scss" scoped>
 @import './styles/table-form.scss';
+.dev-module{
+  position: absolute;
+  left: 20px;
+  top: 30px;
+  z-index: 2;
+}
 </style>

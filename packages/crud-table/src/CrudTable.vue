@@ -14,6 +14,12 @@
         <!-- 表格标题 -->
         <h4>{{tableTitle}}</h4>
       </div>
+      <!--dev模式可直接编辑表格-->
+      <div v-if="$store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
+        <el-button type="text" @click="showTableDesignerDialog">当前表格: {{this.tableDesignerName || this.tableName}}  [点此修改]</el-button>
+        <TableDesignerDialog ref="tableDesignerDialog"
+                         @after-save="tableOnSave"/>
+      </div>
       <!-- table右上角按钮 -->
       <div class="btn-bar">
         <slot name="btnBarPrevBtn" />
@@ -233,6 +239,7 @@ export default class CrudTable extends Vue {
     table: HTMLFormElement;
     dialog: HTMLFormElement;
     searchForm: HTMLFormElement;
+    tableDesignerDialog: HTMLFormElement;
   };
 
   // 当前点击行
@@ -937,6 +944,32 @@ export default class CrudTable extends Vue {
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeHandler);
   }
+
+  /**
+   * 下列为dev模式代码,不需要可自行删除
+   *
+   */
+  tableOnSave({ tableDesign }) {
+    this.tableConfig = tableDesign;
+    // 如果不显示操作列,则隐藏
+    if (!this.view.actionColumn) {
+      this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
+    }
+    const { actionColumnWidth } = this;
+    // 如果显示指明了操作列列宽
+    if (actionColumnWidth) {
+      const actionColumn: any = this.tableConfig.columns.find((item: any) => item.slotName === 'actionColumn');
+      if (actionColumn) {
+        actionColumn.width = actionColumnWidth;
+        actionColumn.minWidth = actionColumnWidth;
+      }
+    }
+  }
+
+  async showTableDesignerDialog() {
+    const res = await this.$PROCRUD.getTableDetail(this.tableDesignerName || this.tableName);
+    this.$refs.tableDesignerDialog.showDialog({ id: res.data.id }, 1, res.data);
+  }
 }
 </script>
 
@@ -978,6 +1011,14 @@ export default class CrudTable extends Vue {
     & > div,
     button {
       float: right;
+    }
+  }
+  .dev-module{
+    display: inline-block;
+    margin-left: 20px;
+    line-height: 28px;
+    button{
+      padding:0;
     }
   }
 }

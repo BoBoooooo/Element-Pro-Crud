@@ -14,7 +14,14 @@ Vue.use(plugin, {
   crud,
 });
 Vue.config.productionTip = false;
-
+// 开启dev编辑模式
+Vue.prototype.$store = {
+  getters: {
+    config: {
+      isDev: '1',
+    },
+  },
+};
 axios({
   url: '/users/login',
   method: 'post',

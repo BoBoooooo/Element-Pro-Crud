@@ -579,6 +579,9 @@ export default {
       this.$refs.generateDialogForm
         .getData()
         .then((formValue) => {
+          const value = JSON.parse(formValue.formJson);
+          value.config.name = formValue.tableName;
+          formValue.formJson = JSON.stringify(value);
           let type;
           let msg;
           // 根据对话框状态判断保存或编辑

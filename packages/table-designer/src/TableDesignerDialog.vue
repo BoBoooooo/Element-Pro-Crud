@@ -264,6 +264,7 @@ export default {
             this.$emit('after-save', {
               status: this.dialogStatus,
               dialogParams: this.dialogParams,
+              tableDesign: JSON.parse(formValue.formJson),
             });
           });
         })
