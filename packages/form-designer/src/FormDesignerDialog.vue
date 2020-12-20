@@ -565,13 +565,13 @@ export default {
       }
       // 初始化右侧的配置区域
       this.widgetFormSelect = '';
-      this.visible = true;
       // 请求数据库所有表名
       const { data } = await this.$PROCRUD.getTables();
       this.allTables = data;
       // 请求对话框内的动态表单json
       const res = await this.$PROCRUD.getFormDetail('dynamictables');
       this.formDesign = JSON.parse(res.data.formJson);
+      this.visible = true;
     },
     // 保存设计
     btnSave_onClick() {

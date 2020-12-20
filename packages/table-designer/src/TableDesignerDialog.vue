@@ -204,7 +204,6 @@ export default {
       // 保存参数用于save方法
       this.dialogParams = param;
       this.dialogStatus = status;
-      this.visible = true;
       if (this.dialogStatus === STATUS.UPDATE) {
         // 填写编辑框，这里如果不用...拷贝会导致污染实参
         this.formValues = { ...formValues };
@@ -219,6 +218,7 @@ export default {
       // 请求对话框内的动态表单json
       const res = await this.$PROCRUD.getFormDetail(this.tableName);
       this.formDesign = JSON.parse(res.data.formJson);
+      this.visible = true;
     },
     // 取消按钮点击
     btnCancel_onClick() {
