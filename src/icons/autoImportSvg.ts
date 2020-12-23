@@ -1,7 +1,7 @@
 /**
  * @file 目录下的svg图标，在main.js中加载
  * @author BoBo
- * @copyright NanJing Anshare Tech .Com
+ * @copyright BoBo
  * @createDate 2018年11月13日16:58:18
  */
 const requireAll = requireContext => requireContext.keys().map(requireContext);

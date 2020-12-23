@@ -1,7 +1,7 @@
 <!--
 @file 表格设计对话框
 @author ytyang
-@copyright NanJing Anshare Tech .Com
+@copyright BoBo
 @createDate 2018年12月8日19:28:09
 -->
 <template>

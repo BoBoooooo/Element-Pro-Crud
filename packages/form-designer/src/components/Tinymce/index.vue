@@ -1,6 +1,6 @@
 <!--
  * @file: Tinymce组件封装
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2018年6月14 11:12:05
  -->

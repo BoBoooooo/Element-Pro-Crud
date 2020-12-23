@@ -1,7 +1,7 @@
 /*
  * @file: DML枚举
  * @author: BoBo
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @Date: 2020-12-08 11:33:34
  */
 // eslint-disable-next-line import/prefer-default-export

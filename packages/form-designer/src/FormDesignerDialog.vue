@@ -2,7 +2,7 @@
 @file 动态表单设计器
       依赖vue-awesome、vuedraggable
 @author BoBo
-@copyright NanJing Anshare Tech .Com
+@copyright BoBo
 @createDate 2018年11月15日16:11:09
 -->
 <template>

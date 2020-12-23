@@ -1,6 +1,6 @@
 /*
  * @file: 全局导出
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年03月03 11:20:05
  */

@@ -1,7 +1,7 @@
 /**
  * @file 公共生成器
  * @author BoBo
- * @copyright NanJing Anshare Tech .Com
+ * @copyright BoBo
  * @createDate 2018年11月23日17:41:47
  */
 

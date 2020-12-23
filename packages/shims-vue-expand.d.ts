@@ -1,6 +1,6 @@
 /*
  * @file: 声明vue拓展原型链上的属性类型
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年06月23 16:47:06
  */

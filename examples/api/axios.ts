@@ -1,7 +1,7 @@
 /**
  * @file axios config
  * @author BoBo
- * @copyright NanJing Anshare Tech .Com
+ * @copyright BoBo
  * @createDate 2018年11月13日10:52:32
  */
 import axios from 'axios';

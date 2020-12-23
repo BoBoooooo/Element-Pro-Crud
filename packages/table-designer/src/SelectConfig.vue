@@ -1,7 +1,7 @@
 <!--
 @file 下拉菜单配置页面
 @author ytyang
-@copyright NanJing Anshare Tech .Com
+@copyright BoBo
 @createDate 2018年12月26日16:45:31
 -->
 <template>

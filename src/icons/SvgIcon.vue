@@ -1,7 +1,7 @@
 <!--
 @file SVG图标组件，在src\icons\autoImportSvg.js中加载
 @author ytyang
-@copyright NanJing Anshare Tech .Com
+@copyright BoBo
 @createDate 2018年11月14日09:48:32
 -->
 <template>

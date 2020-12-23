@@ -1,6 +1,6 @@
 <!--
  * @file: 本地运行debug (umd打包后调试请允许demo.html)
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年10月30 15:58:48
 -->

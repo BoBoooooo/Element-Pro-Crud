@@ -1,7 +1,7 @@
 <!--
 @file 用于动态表单保存的对话框
 @author BoBo
-@copyright NanJing Anshare Tech .Com
+@copyright BoBo
 @createDate 2018年11月16日19:31:29
 -->
 <template>

@@ -1,6 +1,6 @@
 /*
  * @file: 全局装饰器封装
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年08月19 17:53:46
  */

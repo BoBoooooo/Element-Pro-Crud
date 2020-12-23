@@ -1,6 +1,6 @@
 /*
  * @file: element ui plugin import
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年09月30 17:26:55
  */

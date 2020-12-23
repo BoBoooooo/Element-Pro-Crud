@@ -1,6 +1,6 @@
 <!--
  * @file: el-table CrudTable封装,支持高级查询 分页 增删改查表单
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年09月14 18:01:58
 -->

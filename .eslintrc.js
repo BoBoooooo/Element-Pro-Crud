@@ -1,7 +1,7 @@
 /**
  * @file ESLint配置，基于aribnb规则 http://airbnb.io/javascript/
  * @author ytyang
- * @copyright NanJing Anshare Tech .Com
+ * @copyright BoBo
  * @createDate 2018年11月13日11:21:51
  */
 module.exports = {

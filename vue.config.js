@@ -1,6 +1,6 @@
 /*
  * @file: vue.config.js
- * @copyright: NanJing Anshare Tech .Com
+ * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年10月28 10:44:39
  */
