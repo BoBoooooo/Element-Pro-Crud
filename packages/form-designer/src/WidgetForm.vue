@@ -26,7 +26,7 @@
                 <el-col v-for="(col, colIndex) in element.columns"
                         :key="colIndex"
                         :span="col.span ? col.span : 0">
-                    <draggable class="widget-form-list"
+                    <draggable
                                v-model="col.list"
                                                        v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.drag-widget'}"
                         :no-transition-on-drag="true"
