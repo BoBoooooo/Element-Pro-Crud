@@ -1,5 +1,6 @@
 <template>
   <div class="widget-form-container">
+    <div v-if="data.list.length == 0" class="form-empty">拖拽左侧组件添加字段!</div>
     <el-form :label-position="data.config.labelPosition"
              :label-width="data.config.labelWidth?data.config.labelWidth+ 'px':'140px'">
       <draggable class="widget-form-list"

@@ -788,10 +788,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.form{
-  /deep/.el-input__inner{
-    height:28px!important;
-  }
-}
-</style>
