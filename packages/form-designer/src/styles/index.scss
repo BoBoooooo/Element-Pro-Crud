@@ -146,14 +146,12 @@ $primary-background-color: #ecf5ff;
   right: 0;
   bottom: 0;
 
-  
-
   .widget-form-list{
     background: #fff;
-    // border: 1px dashed #999;
-    // min-height: 600px;
+    border: 1px dashed #999;
+    min-height: 600px;
+    padding-bottom: 20px;
     margin: 2px;
-
     .widget-col-list{
       min-height: 50px;
       border: 1px dashed #ccc;
