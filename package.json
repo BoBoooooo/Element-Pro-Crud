@@ -86,7 +86,8 @@
     "vue-template-compiler": "2.6.11",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",
-    "webpack-bundle-analyzer": "^3.3.2"
+    "webpack-bundle-analyzer": "^3.3.2",
+    "terser-webpack-plugin": "^1.2.4"
   },
   "husky": {
     "hooks": {
