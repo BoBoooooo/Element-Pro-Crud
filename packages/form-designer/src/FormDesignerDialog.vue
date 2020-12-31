@@ -124,6 +124,7 @@
                 @click="handleGenerateJson"
                 >JSON</el-button
               >
+              <el-button type="text" size="medium" icon="el-icon-delete" @click="handleClear">清空</el-button>
               <el-button
                 type="text"
                 size="medium"
@@ -184,7 +185,7 @@
         form
       >
         <el-alert type="warning" :closable="false" style="margin-bottom:15px"
-          >组件依赖远端数据需要结合代码实际预览,此处无法直接预览效果!</el-alert
+          >组件依赖远端数据需要结合代码!</el-alert
         >
         <generate-form
           v-if="previewVisible"
@@ -628,6 +629,19 @@ export default {
           this.btnSaveIsLoading = false;
         });
     },
+    handleClear() {
+      this.widgetForm = {
+        list: [],
+        config: {
+          labelWidth: 100,
+          labelPosition: 'right',
+          size: 'small',
+          customClass: '',
+        },
+      };
+
+      this.widgetFormSelect = {};
+    },
   },
   watch: {
     widgetForm: {
@@ -681,5 +695,8 @@ export default {
 }
 .form {
   margin-top: 6px;
+}
+.form >>> .dev-module{
+  display: none!important;
 }
 </style>
