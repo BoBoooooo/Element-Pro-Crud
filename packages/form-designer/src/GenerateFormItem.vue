@@ -9,19 +9,21 @@
 -->
 <template>
   <el-form-item :prop="widget.type == 'button'?undefined:widget.model"
-                :label-width="labelWidth">
+                :label-width="widget.options.hiddenLabel ? '0' : labelWidth">
     <template #label>
-      <span v-html="label"></span>
-      <el-popover placement="top-start"
-                  title="输入提示"
-                  v-if="widget.options.tips"
-                  width="200"
-                  trigger="hover">
-        <i class="el-icon el-icon-question"
-           slot="reference"></i>
-        <div style="color:#8492a6"
-             v-html="widget.options.tips"></div>
-      </el-popover>
+      <template v-if="widget.options.hiddenLabel ? '' : label">
+        <span v-html="label"></span>
+        <el-popover placement="top-start"
+                    title="输入提示"
+                    v-if="widget.options.tips"
+                    width="200"
+                    trigger="hover">
+          <i class="el-icon el-icon-question"
+            slot="reference"></i>
+          <div style="color:#8492a6"
+              v-html="widget.options.tips"></div>
+        </el-popover>
+      </template>
     </template>
     <template v-if="widget.type == 'input'">
       <el-input v-if="widget.options.dataType == 'number'

@@ -26,9 +26,16 @@
                     v-if="Object.keys(data.options).indexOf('btnCommand')>=0">
         <el-input v-model="data.options.btnCommand"></el-input>
       </el-form-item>
-      <el-form-item label="label宽度" v-if="data.labelWidth">
-        <el-input v-model="data.labelWidth"
-                  placeholder="label宽度"></el-input>
+      <el-form-item label="标签宽度">
+         <el-input-number v-model="data.labelWidth"
+                         :min="100"
+                         :max="180"
+                         :step="10"
+                        :disabled="data.options.hiddenLabel"
+                        placeholder="自定义标签宽度"></el-input-number>
+      </el-form-item>
+      <el-form-item label="隐藏标签">
+        <el-switch v-model="data.options.hiddenLabel"></el-switch>
       </el-form-item>
       <el-form-item label="组件宽度"
                     v-if="Object.keys(data.options).indexOf('width')>=0">

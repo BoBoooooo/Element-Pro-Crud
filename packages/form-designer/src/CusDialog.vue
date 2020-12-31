@@ -2,7 +2,6 @@
   <el-dialog class="cus-dialog-container"
              :title="title"
              :visible.sync="dialogVisible"
-             :close-on-click-modal="false"
              :width="width"
              ref="elDialog"
              :id="id"

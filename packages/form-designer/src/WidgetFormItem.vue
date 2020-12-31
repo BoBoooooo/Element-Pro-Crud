@@ -5,12 +5,13 @@
                   active: selectWidget.key == element.key,
                   'is_req': element.options.required
                   }"
-                :label="label"
-                :label-width="labelWidth"
+                :label-width="element.options.hiddenLabel ? '0' : labelWidth"
                 @click.native.stop="handleSelectWidget(index)">
     <template #label>
+      <template v-if="element.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
-       <i v-if="element.options.tips" class="el-icon el-icon-question"></i>
+        <i v-if="element.options.tips" class="el-icon el-icon-question"></i>
+      </template>
     </template>
     <template v-if="element.type == 'input'">
       <el-input v-model="element.options.defaultValue"

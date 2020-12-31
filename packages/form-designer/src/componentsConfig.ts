@@ -8,6 +8,7 @@ export const basicComponents = [
     options: {
       text: '确认',
       btnCommand: 'btnCallback',
+      hiddenLabel: false,
     },
   },
   {
@@ -19,6 +20,7 @@ export const basicComponents = [
       remoteFunc: '',
       align: 'center',
       fontSize: '16px',
+      hiddenLabel: false,
     },
   },
   {
@@ -36,6 +38,7 @@ export const basicComponents = [
       dataType: 'string',
       pattern: '',
       placeholder: '',
+      hiddenLabel: false,
     },
   },
   {
@@ -52,6 +55,7 @@ export const basicComponents = [
       required: false,
       pattern: '',
       placeholder: '',
+      hiddenLabel: false,
     },
   },
   {
@@ -69,6 +73,7 @@ export const basicComponents = [
       step: 1,
       disabled: false,
       controlsPosition: '',
+      hiddenLabel: false,
     },
   },
   {
@@ -81,6 +86,7 @@ export const basicComponents = [
       inline: true,
       defaultValue: '',
       showLabel: false,
+      hiddenLabel: false,
       options: [
         {
           value: '选项1',
@@ -122,6 +128,7 @@ export const basicComponents = [
       disabled: false,
       min: null,
       max: null,
+      hiddenLabel: false,
       options: [
         {
           value: '选项1',
@@ -151,6 +158,7 @@ export const basicComponents = [
     hidden: false,
     icon: 'regular/calendar-alt',
     options: {
+      hiddenLabel: false,
       defaultValue: false,
       readonly: false,
       disabled: false,
@@ -173,6 +181,7 @@ export const basicComponents = [
     hidden: false,
     icon: 'clock',
     options: {
+      hiddenLabel: false,
       defaultValue: '',
       readonly: false,
       disabled: false,
@@ -195,6 +204,7 @@ export const basicComponents = [
     labelWidth: '',
     hidden: false,
     options: {
+      hiddenLabel: false,
       defaultValue: null,
       max: 5,
       disabled: false,
@@ -209,6 +219,7 @@ export const basicComponents = [
     labelWidth: '',
     hidden: false,
     options: {
+      hiddenLabel: false,
       defaultValue: '',
       disabled: false,
       showAlpha: false,
@@ -222,6 +233,7 @@ export const basicComponents = [
     hidden: false,
     icon: 'regular/caret-square-down',
     options: {
+      hiddenLabel: false,
       defaultValue: '',
       multiple: false,
       disabled: false,
@@ -257,6 +269,7 @@ export const basicComponents = [
     hidden: false,
     icon: 'toggle-off',
     options: {
+      hiddenLabel: false,
       defaultValue: false,
       required: false,
       disabled: false,
@@ -269,6 +282,7 @@ export const basicComponents = [
     labelWidth: '',
     hidden: false,
     options: {
+      hiddenLabel: false,
       defaultValue: 0,
       disabled: false,
       required: false,
