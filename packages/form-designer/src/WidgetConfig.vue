@@ -295,13 +295,14 @@
                     v-if="Object.keys(data.options).indexOf('defaultValue')>=0
                     && (data.type == 'textarea' || data.type == 'input'
                     || data.type=='rate' || data.type=='color'
-                    || data.type=='switch'||data.type == 'date' ||data.type == 'select')">
+                    || data.type=='switch'||data.type == 'date' ||data.type == 'select' ||data.type == 'html')">
         <el-input v-if="data.type=='textarea'"
                   type="textarea"
                   :rows="5"
                   v-model="data.options.defaultValue"></el-input>
         <el-input v-if="data.type=='input' || data.type == 'select'"
                   v-model="data.options.defaultValue"></el-input>
+        <el-input placeholder="此处输入html" type="textarea" v-if="data.type=='html'" v-model="data.options.defaultValue"></el-input>
         <el-rate v-if="data.type == 'rate'"
                  style="display:inline-block;vertical-align: middle;"
                  :max="data.options.max"

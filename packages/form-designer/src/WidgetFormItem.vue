@@ -31,6 +31,9 @@
          {{element.name}}
        </h3>
     </template>
+    <template v-if="element.type === 'html'">
+       <div style="margin-left:30px" v-html="element.options.defaultValue"></div>
+    </template>
     <template v-if="element.type == 'button'">
       <el-button type="primary">{{element.options.text}}</el-button>
     </template>
@@ -185,12 +188,12 @@
     <div class="widget-view-action" v-if="selectWidget.key == element.key">
           <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
           <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
-        </div>
+    </div>
 
-        <div class="widget-view-drag" v-if="selectWidget.key == element.key">
-          <i class="drag-widget el-icon el-icon-rank"></i>
-        </div>
-
+    <div class="widget-view-drag" v-if="selectWidget.key == element.key">
+      <i class="drag-widget el-icon el-icon-rank"></i>
+    </div>
+    <div class="widget-view-model"><span>{{element.model}}</span></div>
   </el-form-item>
 </template>
 

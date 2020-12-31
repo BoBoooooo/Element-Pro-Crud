@@ -223,7 +223,15 @@ $primary-background-color: #ecf5ff;
           cursor: move;
         }
       }
-
+      .widget-view-model {
+        position: absolute;
+        top: -8px;
+        right: 3px;
+        font-size: 12px;
+        color: #67c23a;
+        z-index: 9;
+        font-weight: 500;
+    }
       &:after{
         position: absolute;
         left: 0;

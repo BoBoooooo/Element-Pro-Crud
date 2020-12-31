@@ -273,6 +273,7 @@ import {
 } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
 import 'vue-awesome/icons/regular/keyboard';
+import 'vue-awesome/icons/sign';
 import 'vue-awesome/icons/regular/trash-alt';
 import 'vue-awesome/icons/regular/clone';
 import 'vue-awesome/icons/regular/dot-circle';

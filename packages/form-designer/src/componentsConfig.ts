@@ -1,29 +1,5 @@
 export const basicComponents = [
   {
-    type: 'button',
-    name: '按钮',
-    icon: 'mouse-pointer',
-    labelWidth: '',
-    hidden: false,
-    options: {
-      text: '确认',
-      btnCommand: 'btnCallback',
-      hiddenLabel: false,
-    },
-  },
-  {
-    type: 'text',
-    name: '文本',
-    icon: 'language',
-    options: {
-      defaultValue: '',
-      remoteFunc: '',
-      align: 'center',
-      fontSize: '16px',
-      hiddenLabel: false,
-    },
-  },
-  {
     type: 'input',
     name: '单行文本',
     labelWidth: '',
@@ -294,7 +270,40 @@ export const basicComponents = [
       width: '',
     },
   },
-
+  {
+    type: 'button',
+    name: '按钮',
+    icon: 'mouse-pointer',
+    labelWidth: '',
+    hidden: false,
+    options: {
+      text: '确认',
+      btnCommand: 'btnCallback',
+      hiddenLabel: false,
+    },
+  },
+  {
+    type: 'text',
+    name: '文本',
+    icon: 'language',
+    options: {
+      defaultValue: '',
+      remoteFunc: '',
+      align: 'center',
+      fontSize: '16px',
+      hiddenLabel: false,
+    },
+  },
+  {
+    type: 'html',
+    name: 'HTML',
+    icon: 'sign',
+    labelWidth: '',
+    options: {
+      defaultValue: '',
+      hiddenLabel: false,
+    },
+  },
 ];
 
 export const advanceComponents = [
