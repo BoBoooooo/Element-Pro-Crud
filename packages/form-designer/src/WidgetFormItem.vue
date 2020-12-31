@@ -34,6 +34,9 @@
     <template v-if="element.type === 'html'">
        <div style="margin-left:30px" v-html="element.options.defaultValue"></div>
     </template>
+    <template v-if="element.type === 'divider'">
+      <el-divider :content-position="element.options.align">{{element.name}}</el-divider>
+    </template>
     <template v-if="element.type == 'button'">
       <el-button type="primary">{{element.options.text}}</el-button>
     </template>

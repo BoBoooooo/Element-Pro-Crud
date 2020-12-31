@@ -279,7 +279,7 @@ export const basicComponents = [
     options: {
       text: '确认',
       btnCommand: 'btnCallback',
-      hiddenLabel: false,
+      hiddenLabel: true,
     },
   },
   {
@@ -311,26 +311,31 @@ export const advanceComponents = [
     type: 'blank',
     name: '自定义(插槽)',
     icon: 'chalkboard',
+    labelWidth: '',
     options: {
       defaultType: 'String',
+      hiddenLabel: false,
     },
   },
   {
     type: 'upload',
     name: '附件',
     icon: 'upload',
+    labelWidth: '',
     options: {
       resourceId: 'id',
       fileType: '',
       defaultValue: '',
       remoteFunc: '',
       readonly: false,
+      hiddenLabel: false,
     },
   },
   {
     type: 'cascader',
     name: '级联选择器',
     icon: 'random',
+    labelWidth: '',
     options: {
       defaultValue: [],
       width: '100%',
@@ -348,12 +353,14 @@ export const advanceComponents = [
         children: 'children',
       },
       remoteFunc: '',
+      hiddenLabel: false,
     },
   },
   {
     type: 'table',
     name: '表格',
     icon: 'table',
+    labelWidth: '',
     options: {
       remoteFunc: '',
       visibleList: {
@@ -373,6 +380,7 @@ export const advanceComponents = [
       tableName: '',
       tableDesignerName: '',
       dialogFormDesignerName: '',
+      hiddenLabel: false,
     },
   },
   // 目前暂时提供了几个常用props,有更多需要自行拓展
@@ -381,6 +389,7 @@ export const advanceComponents = [
     type: 'treeselect',
     name: '树形下拉框',
     icon: 'tree',
+    labelWidth: '',
     options: {
       remoteFunc: '',
       placeholder: '',
@@ -406,16 +415,19 @@ export const advanceComponents = [
       showCount: false,
       disableBranchNodes: true,
       remoteOptions: [],
+      hiddenLabel: false,
     },
   },
   {
     type: 'richtext',
     name: '富文本',
     icon: 'text-width',
+    labelWidth: '',
     hidden: false,
     options: {
       defaultValue: '',
       readonly: false,
+      hiddenLabel: false,
     },
   },
 ];
@@ -455,6 +467,16 @@ export const layoutComponents = [
       gutter: 0,
       justify: 'start',
       align: 'top',
+    },
+  },
+  {
+    type: 'divider',
+    name: '分割线',
+    icon: 'divide',
+    labelWidth: '',
+    options: {
+      align: 'center',
+      hiddenLabel: true,
     },
   },
 ];

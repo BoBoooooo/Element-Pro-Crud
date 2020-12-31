@@ -608,6 +608,11 @@
             <el-switch v-model="data.options.appendToBody"></el-switch>
           </el-form-item>
         </template>
+        <template v-if="data.type === 'divider'">
+          <el-radio-group v-model="data.options.align" size="small">
+            <el-radio-button v-for="align in ['left','center','right']" :label="align"  :key="align">{{align}}</el-radio-button>
+          </el-radio-group>
+        </template>
       </template>
     </el-form>
   </div>
@@ -637,6 +642,8 @@ import 'vue-awesome/icons/toggle-off';
 import 'vue-awesome/icons/sliders-h';
 import 'vue-awesome/icons/regular/image';
 import 'vue-awesome/icons/chalkboard';
+import 'vue-awesome/icons/divide';
+
 import { DML } from '@/types/common';
 
 export default {

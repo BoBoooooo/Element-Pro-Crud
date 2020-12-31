@@ -28,6 +28,9 @@
     <template v-if="widget.type === 'html'">
        <div style="margin-left:10px" v-html="widget.options.defaultValue"></div>
     </template>
+    <template v-if="widget.type === 'divider'">
+      <el-divider :content-position="widget.options.align">{{widget.name}}</el-divider>
+    </template>
     <template v-if="widget.type == 'input'">
       <el-input v-if="widget.options.dataType == 'number'
                       || widget.options.dataType == 'integer'

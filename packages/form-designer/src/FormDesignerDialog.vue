@@ -75,7 +75,10 @@
             :move="handleMove"
           >
             <li
-              class="form-edit-widget-label data-grid"
+              class="form-edit-widget-label"
+              :class="{
+                'data-grid': item.name !== '分割线'
+              }"
               v-for="(item, index) in layoutComponents"
               :key="index"
             >

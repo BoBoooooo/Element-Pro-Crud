@@ -169,6 +169,7 @@ $primary-background-color: #ecf5ff;
       text-align: left;
       .el-form-item__content{
         position: unset;
+        min-height: 28px;
       }
 
       &.is_req{
