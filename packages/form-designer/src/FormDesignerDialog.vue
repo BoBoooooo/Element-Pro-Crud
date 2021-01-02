@@ -96,23 +96,18 @@
         <el-header class="btn-bar" style="height: 60px;">
           <el-row :gutter="15">
             <!-- 对话框内动态表单 -->
-            <el-col :span="16">
+            <el-col :span="16" v-if="$PROCRUD.getTables">
               <GenerateForm
                 ref="generateDialogForm"
                 class="form"
                 v-if="visible"
+                hiddenDevModule
                 :value="formValues"
                 :data="formDesign"
                 :remote="remoteFuncs"
               />
             </el-col>
-            <el-col :span="8" style="text-align:right">
-              <el-button
-                type="text"
-                @click="btnSave_onClick"
-                :loading="btnSaveIsLoading"
-                >保存</el-button
-              >
+            <el-col :span="$PROCRUD.getTables ? 8 : 24" style="text-align:right">
               <el-button
                 type="text"
                 size="medium"
@@ -125,15 +120,23 @@
                 size="medium"
                 icon="el-icon-tickets"
                 @click="handleGenerateJson"
-                >JSON</el-button
+                >生成JSON</el-button
               >
               <el-button type="text" size="medium" icon="el-icon-delete" @click="handleClear">清空</el-button>
               <el-button
                 type="text"
                 size="medium"
                 icon="el-icon-form"
+                :disabled="!$PROCRUD.getTables"
                 @click="formVisible = true"
                 >自动绑定</el-button
+              >
+              <el-button
+                type="text"
+                :disabled="!$PROCRUD.getTables"
+                @click="btnSave_onClick"
+                :loading="btnSaveIsLoading"
+                >保存</el-button
               >
             </el-col>
           </el-row>
@@ -233,7 +236,8 @@
         width="800px"
         :action="false"
       >
-        <el-select
+      <template v-if="allTables">
+          <el-select
           v-model="formKeys.tableName"
           filterable
           style="width:100%"
@@ -254,6 +258,12 @@
             @click="handleGenerateKey(true)"
             >自动生成表单</el-button
           >
+      </template>
+      <template v-else>
+        <p>
+          初始化时请先设置getTables方法
+        </p>
+      </template>
       </cus-dialog>
     </el-container>
   </el-dialog>
@@ -370,7 +380,7 @@ export default {
         success: [],
       },
       // 数据库所有表
-      allTables: [],
+      allTables: null,
     };
   },
   methods: {
@@ -571,11 +581,16 @@ export default {
       // 初始化右侧的配置区域
       this.widgetFormSelect = '';
       // 请求数据库所有表名
-      const { data } = await this.$PROCRUD.getTables();
-      this.allTables = data;
+      if (this.$PROCRUD.getTables) {
+        const { data } = await this.$PROCRUD.getTables();
+        this.allTables = data;
+      }
+
       // 请求对话框内的动态表单json
-      const res = await this.$PROCRUD.getFormDetail('dynamictables');
-      this.formDesign = JSON.parse(res.data.formJson);
+      if (this.$PROCRUD.getFormDetail) {
+        const res = await this.$PROCRUD.getFormDetail('dynamictables');
+        this.formDesign = JSON.parse(res.data.formJson);
+      }
       this.visible = true;
     },
     // 保存设计
@@ -699,8 +714,5 @@ export default {
 }
 .form {
   margin-top: 6px;
-}
-.form >>> .dev-module{
-  display: none!important;
 }
 </style>

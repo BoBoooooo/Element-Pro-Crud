@@ -1,8 +1,8 @@
 <!--
 @file 表格设计对话框
-@author ytyang
+@author BoBo
 @copyright BoBo
-@createDate 2018年12月8日19:28:09
+@createDate 2020年03月02日12:12:17
 -->
 <template>
   <!-- 对话框 -->
@@ -15,10 +15,12 @@
              append-to-body>
     <!-- 对话框内动态表单 -->
     <GenerateForm ref="generateDialogForm"
+                  hiddenDevModule
                   :value="formValues"
                   :entity.sync="entity"
                   :data="formDesign"
                   :remote="remoteFuncs"
+                  class="form"
                   style="float:left;width:50%" />
     <!-- 菜单栏 -->
     <MenuBar style="float:right"

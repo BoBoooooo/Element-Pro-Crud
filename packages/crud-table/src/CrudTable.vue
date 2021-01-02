@@ -201,7 +201,7 @@
                         :close_on_click_modal="dialogCloseOnClickModal"
                         :fullscreen="dialogFullscreen"
                         :width='dialogWidth'
-                        @btnonclick="formBtnOnClick">
+                        @btnOnClick="formBtnOnClick">
                         <template #dialogFooter>
                           <slot name="dialogFooter"></slot>
                         </template>
@@ -527,6 +527,21 @@ export default class CrudTable extends Vue {
   }
 
   created() {
+    if (!this.$PROCRUD.getTableDetail) {
+      this.$message.warning('请先设置getTableDetail方法,请求表格json');
+      this.tableConfig = {
+        columns: [{
+          prop: '',
+          label: '请先设置tableConfig',
+          minWidth: '100',
+          sortable: 'custom',
+          slotName: '',
+          align: 'center',
+          headerAlign: 'center',
+        }],
+      } as any;
+      return;
+    }
     // 请求表格设计json
     const promise = this.$PROCRUD.getTableDetail(this.tableDesignerName ? this.tableDesignerName : this.tableName);
     // 加载表格结构

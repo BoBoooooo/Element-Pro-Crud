@@ -358,7 +358,7 @@ export const advanceComponents = [
   },
   {
     type: 'table',
-    name: '表格',
+    name: '子表格',
     icon: 'table',
     labelWidth: '',
     options: {
