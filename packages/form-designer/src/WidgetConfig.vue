@@ -134,10 +134,9 @@
         <el-radio-group v-model="data.options.remote"
                         size="mini"
                         style="margin-bottom:10px;">
-          <el-radio-button label="dict">字典</el-radio-button>
-          <el-radio-button label="static">静态</el-radio-button>
+          <el-radio-button v-if="!isRemoteComponent" label="dict">字典</el-radio-button>
+          <el-radio-button v-if="!isRemoteComponent" label="static">静态</el-radio-button>
           <el-radio-button label="custom">自定义</el-radio-button>
-          <el-radio-button label="search">搜索</el-radio-button>
         </el-radio-group>
         <template v-if="data.options.remote=='dict'">
           <el-select v-model="data.options.dictType"
@@ -157,31 +156,6 @@
             <el-input size="mini"
                       style=""
                       v-model="data.options.remoteFunc">
-              <template slot="prepend">方法名</template>
-            </el-input>
-            <el-input size="mini"
-                      style=""
-                      v-model="data.options.props.value">
-              <template slot="prepend">值</template>
-            </el-input>
-            <el-input size="mini"
-                      style=""
-                      v-model="data.options.props.label">
-              <template slot="prepend">标签</template>
-            </el-input>
-            <el-input size="mini"
-                      style=""
-                      v-model="data.options.props.rightLabel">
-              <template slot="prepend">右侧标签</template>
-            </el-input>
-          </div>
-        </template>
-        <template v-else-if="data.options.remote=='search'">
-          <div>
-            每次输入时，调用方法查询下拉数据
-            <el-input size="mini"
-                      style=""
-                      v-model="data.options.remoteSearchFunc">
               <template slot="prepend">方法名</template>
             </el-input>
             <el-input size="mini"
@@ -476,7 +450,7 @@
           <el-input v-model="data.model"></el-input>
         </el-form-item>
         <el-form-item v-if="data.type === 'upload'"
-                      label="关联resourceID字段名">
+                      label="关联字段名">
           <el-input v-model="data.options.resourceId"></el-input>
         </el-form-item>
         <el-form-item v-if="data.type === 'upload'"
@@ -673,6 +647,10 @@ export default {
       }
       return false;
     },
+    // 依赖自定义数据源组件
+    isRemoteComponent() {
+      return ['cascader', 'treeselect'].includes(this.data.type);
+    },
   },
   created() {
     // 请求字典分类
@@ -744,6 +722,12 @@ export default {
     },
   },
   watch: {
+    isRemoteComponent: function watchRemoteComponent(val) {
+      // 级联选择器/树形下拉框需要依赖remoteFuncs,默认选中自定义
+      if (val) {
+        this.data.options.remote = 'custom';
+      }
+    },
     'data.options.isRange': function watchIsRange(val) {
       if (typeof val !== 'undefined') {
         if (val) {
