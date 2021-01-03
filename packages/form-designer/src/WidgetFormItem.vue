@@ -253,7 +253,7 @@ export default {
       let cloneData = {
         ...this.data.list[index],
         options: { ...this.data.list[index].options },
-        key: `${Date.parse(new Date())}_${Math.ceil(Math.random() * 99999)}`,
+        key: `${this.data.list[index].type}_${Math.ceil(Math.random() * 99999)}`,
       };
 
       if (

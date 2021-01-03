@@ -383,6 +383,14 @@ export const advanceComponents = [
       hiddenLabel: false,
     },
   },
+  {
+    type: 'form',
+    name: '子表单(待开发)',
+    icon: 'file-word',
+    options: {
+
+    },
+  },
   // 目前暂时提供了几个常用props,有更多需要自行拓展
   // 官网:https://vue-treeselect.js.org
   {
@@ -435,27 +443,7 @@ export const advanceComponents = [
 export const layoutComponents = [
   {
     type: 'grid',
-    name: '栅格布局(2列)',
-    icon: 'th',
-    columns: [
-      {
-        span: 12,
-        list: [],
-      },
-      {
-        span: 12,
-        list: [],
-      },
-    ],
-    options: {
-      gutter: 0,
-      justify: 'start',
-      align: 'top',
-    },
-  },
-  {
-    type: 'grid',
-    name: '栅格布局(1列)',
+    name: '栅格布局',
     icon: 'th',
     columns: [
       {
