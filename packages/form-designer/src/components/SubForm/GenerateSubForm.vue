@@ -346,5 +346,11 @@ export default class GenerateSubForm extends Vue {
 }
 .add-button{
   cursor: pointer;
+  &:hover{
+    color: rgb(16, 16, 16);
+    .el-icon-plus{
+      color: rgb(16, 16, 16);
+    }
+  }
 }
 </style>
