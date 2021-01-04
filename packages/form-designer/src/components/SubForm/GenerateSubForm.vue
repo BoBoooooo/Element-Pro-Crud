@@ -47,7 +47,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import {
+  Component, Vue, Prop, Watch,
+} from 'vue-property-decorator';
 import { DML } from '@/types/common';
 import { isChinese } from '@/utils/utils';
 
@@ -319,6 +321,16 @@ export default class GenerateSubForm extends Vue {
       }
     }
     return obj;
+  }
+
+  // 如果表格预设参数发生变化 自动刷新表格
+  @Watch('getTableParams', {
+    deep: true,
+  })
+  getTableParamsHandler(val, oldVal) {
+    if (JSON.stringify(val) !== JSON.stringify(oldVal)) {
+      this.fetchList();
+    }
   }
 }
 </script>

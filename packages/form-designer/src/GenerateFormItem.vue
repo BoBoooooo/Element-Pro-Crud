@@ -645,35 +645,9 @@ export default class GenerateFormItem extends Vue {
     });
   }
 
-  // 1.后端要求下拉列表传值时要同时给key和value
-  currentSel(sel, w) {
-    this.models[`${w.model}dict`] = this.getValueByKey(sel);
-  }
-
   // 按钮点击
   btnOnClick(widget) {
     this.$emit('btnOnClick', widget);
-  }
-
-  // 根据选中的key获取value
-  getValueByKey(key) {
-    if (key === '' || key == null) {
-      return null;
-    }
-    // 根据key找到下拉列表项
-    const selected = this.optionsList.find(item => item.value === key);
-    let label;
-    // 如果找到匹配列表项
-    if (selected) {
-      ({ label } = selected);
-    } else {
-      // this.$notify({
-      //   title: `[${this.widget.name}]匹配菜单项失败`,
-      //   message: `${key}无法找到对应的值`,
-      //   duration: 5000,
-      // });
-    }
-    return label;
   }
 
   // 查询远端数据
