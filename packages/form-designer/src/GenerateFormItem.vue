@@ -301,6 +301,9 @@
                   showPagination
                   :resourceid="models[widget.options.resourceId]"></FileUpload>
     </template>
+    <template v-if="widget.type === 'form'">
+      <GenerateSubForm :widget="widget"></GenerateSubForm>
+    </template>
   </el-form-item>
 </template>
 
@@ -312,6 +315,8 @@ import TreeSelect from '@riophae/vue-treeselect';
 import { DML } from '@/types/common';
 import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
+import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
+
 // 高级查询单个查询内容
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 
@@ -320,6 +325,11 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
     TreeSelect,
     Tinymce,
     FileUpload,
+    GenerateSubForm,
+  },
+  model: {
+    prop: 'value',
+    event: 'change',
   },
   name: 'GenerateFormItem',
 })
@@ -358,6 +368,14 @@ export default class GenerateFormItem extends Vue {
   })
   readOnly: any;
 
+  // 子表单单个组件value
+  @Prop()
+  value: any;
+
+  // 子表单单个组件初始值model
+  @Prop()
+  model: any;
+
   // 当前组件对象
   dataModel: string | number | null | object = this.models[this.widget.model] || null;
 
@@ -368,6 +386,15 @@ export default class GenerateFormItem extends Vue {
   normalizer: any;
 
   initData() {
+    // 如果是子表单
+    if (this.model) {
+      if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
+        this.dataModel = typeof this.model === 'string' ? this.model.split(',') : this.model;
+      } else {
+        this.dataModel = this.model;
+      }
+      return;
+    }
     let normalizer;
     if (this.widget.type === 'treeselect') {
       const { value, label } = this.widget.options.props;
@@ -378,8 +405,8 @@ export default class GenerateFormItem extends Vue {
         }
         // 此处暂时写反了...暂时不做修改
         return {
-          id: node[label],
-          label: node[value],
+          id: node[value],
+          label: node[label],
         };
       };
     }
@@ -689,6 +716,7 @@ export default class GenerateFormItem extends Vue {
   @Watch('dataModel')
   dataModelHandler(val) {
     this.$set(this.models, this.widget.model, val);
+    this.$emit('change', val);
   }
 
   @Watch('models', {

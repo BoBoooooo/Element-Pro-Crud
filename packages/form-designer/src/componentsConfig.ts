@@ -385,10 +385,17 @@ export const advanceComponents = [
   },
   {
     type: 'form',
-    name: '子表单(待开发)',
+    name: '子表单',
     icon: 'file-word',
+    labelWidth: '',
+    tableColumns: [],
     options: {
-
+      hiddenLabel: true,
+      remote: 'custom',
+      remoteFunc: '',
+      tableParams: '',
+      prefill: '',
+      tableName: '',
     },
   },
   // 目前暂时提供了几个常用props,有更多需要自行拓展

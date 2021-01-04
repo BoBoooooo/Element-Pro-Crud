@@ -143,11 +143,11 @@
         </el-header>
         <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
-          <widget-form
+          <WidgetForm
             ref="widgetForm"
             :data="widgetForm"
             :select.sync="widgetFormSelect"
-          ></widget-form>
+          ></WidgetForm>
         </el-main>
       </el-container>
       <!-- 右侧边栏 -->
@@ -170,14 +170,14 @@
             </div>
           </el-header>
           <el-main class="config-content">
-            <widget-config
+            <WidgetConfig
               v-show="configTab == 'widget'"
-              :data="widgetFormSelect"
-            ></widget-config>
-            <form-config
+              :elementConfig="widgetFormSelect"
+            ></WidgetConfig>
+            <FormConfig
               v-show="configTab == 'form'"
               :data="widgetForm.config"
-            ></form-config>
+            ></FormConfig>
           </el-main>
         </el-container>
       </el-aside>
@@ -364,7 +364,7 @@ export default {
         },
       },
       configTab: 'widget',
-      widgetFormSelect: '',
+      widgetFormSelect: null,
       // 预览 对话框显示/隐藏
       previewVisible: false,
       // 生成json 对话框显示/隐藏
@@ -580,7 +580,7 @@ export default {
         };
       }
       // 初始化右侧的配置区域
-      this.widgetFormSelect = '';
+      this.widgetFormSelect = {};
       // 请求数据库所有表名
       if (this.$PROCRUD.getTables) {
         const { data } = await this.$PROCRUD.getTables();

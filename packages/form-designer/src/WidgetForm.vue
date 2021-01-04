@@ -110,6 +110,16 @@
               </el-button> -->
               </div>
             </template>
+            <template v-else-if="element.type === 'form'">
+                <WidgetSubForm
+                   v-if="element && element.key"
+                  :key="element.key"
+                  :element="element"
+                  :select.sync="selectWidget"
+                  :index="index"
+                  :data="data"
+                  @click.native.stop="handleSelectWidget(index)"></WidgetSubForm>
+            </template>
             <template v-else>
               <widget-form-item
                 v-if="element && element.key"
@@ -124,17 +134,20 @@
         </transition-group>
       </draggable>
     </el-form>
+
   </div>
 </template>
 
 <script>
 import Draggable from 'vuedraggable';
 import WidgetFormItem from './WidgetFormItem.vue';
+import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 
 export default {
   components: {
     Draggable,
     WidgetFormItem,
+    WidgetSubForm,
   },
   // 这里的data从父组件接收和设计器实时对应的json
   props: ['data', 'select'],

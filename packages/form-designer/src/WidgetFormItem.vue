@@ -13,12 +13,12 @@
         <i v-if="element.options.tips" class="el-icon el-icon-question"></i>
       </template>
     </template>
-    <template v-if="element.type == 'input'">
+    <template v-if="element.type === 'input'">
       <el-input v-model="element.options.defaultValue"
                 :style="{width: element.options.width}"
                 :placeholder="element.options.placeholder"></el-input>
     </template>
-     <template v-if="element.type == 'text'">
+     <template v-if="element.type === 'text'">
         <h3 style="
             padding: 10px;
             font-family: KaiTi, STKaiti;
@@ -37,10 +37,10 @@
     <template v-if="element.type === 'divider'">
       <el-divider :content-position="element.options.align">{{element.name}}</el-divider>
     </template>
-    <template v-if="element.type == 'button'">
+    <template v-if="element.type === 'button'">
       <el-button type="primary">{{element.options.text}}</el-button>
     </template>
-    <template v-if="element.type == 'textarea'">
+    <template v-if="element.type === 'textarea'">
       <el-input type="textarea"
                 :rows="5"
                 v-model="element.options.defaultValue"
@@ -48,14 +48,14 @@
                 :placeholder="element.options.placeholder"></el-input>
     </template>
 
-    <template v-if="element.type == 'number'">
+    <template v-if="element.type === 'number'">
       <el-input-number v-model="element.options.defaultValue"
                        :disabled="element.options.disabled"
                        :controls-position="element.options.controlsPosition"
                        :style="{width: element.options.width}"></el-input-number>
     </template>
 
-    <template v-if="element.type == 'radio'">
+    <template v-if="element.type === 'radio'">
       <el-radio-group v-model="element.options.defaultValue"
                       :style="{width: element.options.width}">
         <el-radio :style="{display: element.options.inline ? 'inline-block' : 'block'}"
@@ -67,7 +67,7 @@
       </el-radio-group>
     </template>
 
-    <template v-if="element.type == 'checkbox'">
+    <template v-if="element.type === 'checkbox'">
       <el-checkbox-group v-model="element.options.defaultValue"
                          :style="{width: element.options.width}">
         <template v-if="!element.options.buttonStyle">
@@ -90,7 +90,7 @@
       </el-checkbox-group>
     </template>
 
-    <template v-if="element.type == 'time'">
+    <template v-if="element.type === 'time'">
       <el-time-picker v-model="element.options.defaultValue"
                       :is-range="element.options.isRange"
                       :placeholder="element.options.placeholder"
@@ -105,7 +105,7 @@
       </el-time-picker>
     </template>
 
-    <template v-if="element.type == 'date'">
+    <template v-if="element.type === 'date'">
       <el-date-picker v-model="element.options.defaultValue"
                       :type="element.options.type"
                       :is-range="element.options.isRange"
@@ -120,20 +120,20 @@
       </el-date-picker>
     </template>
 
-    <template v-if="element.type == 'rate'">
+    <template v-if="element.type === 'rate'">
       <el-rate v-model="element.options.defaultValue"
                :max="element.options.max"
                :disabled="element.options.disabled"
                :allow-half="element.options.allowHalf"></el-rate>
     </template>
 
-    <template v-if="element.type == 'color'">
+    <template v-if="element.type === 'color'">
       <el-color-picker v-model="element.options.defaultValue"
                        :disabled="element.options.disabled"
                        :show-alpha="element.options.showAlpha"></el-color-picker>
     </template>
 
-    <template v-if="element.type == 'select'">
+    <template v-if="element.type === 'select'">
       <el-select v-model="element.options.defaultValue"
                  :disabled="element.options.disabled"
                  :multiple="element.options.multiple"
@@ -147,13 +147,13 @@
       </el-select>
     </template>
 
-    <template v-if="element.type=='switch'">
+    <template v-if="element.type ==='switch'">
       <el-switch v-model="element.options.defaultValue"
                  :disabled="element.options.disabled">
       </el-switch>
     </template>
 
-    <template v-if="element.type=='slider'">
+    <template v-if="element.type ==='slider'">
       <el-slider v-model="element.options.defaultValue"
                  :min="element.options.min"
                  :max="element.options.max"
@@ -163,7 +163,7 @@
                  :range="element.options.range"
                  :style="{width: element.options.width}"></el-slider>
     </template>
-    <template v-if="element.type == 'cascader'">
+    <template v-if="element.type === 'cascader'">
       <el-cascader v-model="element.options.defaultValue"
                    :disabled="element.options.disabled"
                    :clearable="element.options.clearable"
@@ -172,27 +172,29 @@
                    :options="element.options.remoteOptions">
       </el-cascader>
     </template>
-      <template v-if="element.type=='comment'">
+      <template v-if="element.type ==='comment'">
        <h4 style="text-align:center;margin:0">意见框</h4>
     </template>
-     <template v-if="element.type=='table'">
+     <template v-if="element.type ==='table'">
        <h4 style="text-align:center;margin:0">表格({{element.model}})</h4>
     </template>
-      <template v-if="element.type=='treeselect'">
+      <template v-if="element.type === 'treeselect'">
        <h4 style="text-align:center;margin:0">树形下拉框({{element.model}})</h4>
     </template>
-     <template v-if="element.type == 'richtext'">
+    <template v-if="element.type === 'richtext'">
       <Tinymce :height="400"
                v-model="element.options.defaultValue" />
     </template>
     <template v-if="element.type === 'upload'">
       <h4 style="text-align:center;margin:0">附件上传</h4>
     </template>
+    <!-- <template v-if="element.type === 'form'">
+      <WidgetSubForm :element="element" :select="select" :index="index" :data="data"></WidgetSubForm>
+    </template> -->
     <div class="widget-view-action" v-if="selectWidget.key == element.key">
           <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
           <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
     </div>
-
     <div class="widget-view-drag" v-if="selectWidget.key == element.key">
       <i class="drag-widget el-icon el-icon-rank"></i>
     </div>
@@ -201,12 +203,36 @@
 </template>
 
 <script>
+import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 
 export default {
-  props: ['element', 'select', 'index', 'data'],
+  name: 'WidgetFormItem',
+  props: {
+    element: {
+      type: Object,
+      default: () => ({}),
+    },
+    select: {
+      type: Object,
+      default: () => ({}),
+    },
+    index: {
+      type: Number,
+      default: 0,
+    },
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+    customListField: {
+      type: Array,
+      default: null,
+    },
+  },
   components: {
     Tinymce,
+    // WidgetSubForm,
   },
   data() {
     return {
@@ -235,30 +261,34 @@ export default {
       this.selectWidget = this.data.list[index];
     },
     handleWidgetDelete(index) {
-      if (this.data.list.length - 1 === index) {
+      const field = this.customListField || this.data.list;
+
+      if (field.length - 1 === index) {
         if (index === 0) {
           this.selectWidget = {};
         } else {
-          this.selectWidget = this.data.list[index - 1];
+          this.selectWidget = field[index - 1];
         }
       } else {
-        this.selectWidget = this.data.list[index + 1];
+        this.selectWidget = field[index + 1];
       }
+      console.log(field);
 
       this.$nextTick(() => {
-        this.data.list.splice(index, 1);
+        field.splice(index, 1);
       });
     },
     handleWidgetClone(index) {
+      const field = this.customListField || this.data.list;
       let cloneData = {
-        ...this.data.list[index],
-        options: { ...this.data.list[index].options },
-        key: `${this.data.list[index].type}_${Math.ceil(Math.random() * 99999)}`,
+        ...field[index],
+        options: { ...field[index].options },
+        key: `${field[index].type}_${Math.ceil(Math.random() * 99999)}`,
       };
 
       if (
-        this.data.list[index].type === 'radio'
-        || this.data.list[index].type === 'checkbox'
+        field[index].type === 'radio'
+        || field[index].type === 'checkbox'
       ) {
         cloneData = {
           ...cloneData,
@@ -269,10 +299,10 @@ export default {
         };
       }
 
-      this.data.list.splice(index, 0, cloneData);
+      field.splice(index, 0, cloneData);
 
       this.$nextTick(() => {
-        this.selectWidget = this.data.list[index + 1];
+        this.selectWidget = field[index + 1];
       });
     },
   },
