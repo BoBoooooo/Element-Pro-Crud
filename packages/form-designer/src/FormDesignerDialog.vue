@@ -193,7 +193,7 @@
         <el-alert type="warning" :closable="false" style="margin-bottom:15px"
           >组件依赖远端数据需要结合代码!</el-alert
         >
-        <generate-form
+        <GenerateForm
           v-if="previewVisible"
           :data="widgetForm"
           :value="widgetModels"
@@ -209,7 +209,7 @@
               style="width: 100px"
             ></el-input>
           </template>
-        </generate-form>
+        </GenerateForm>
       </cus-dialog>
       <!-- json对话框 -->
       <cus-dialog
@@ -358,7 +358,7 @@ export default {
       widgetForm: {
         list: [],
         config: {
-          labelWidth: 100,
+          labelWidth: 140,
           labelPosition: 'top',
           columnList: [],
         },
@@ -576,7 +576,7 @@ export default {
         this.formValues = {};
         this.widgetForm = {
           list: [],
-          config: { labelWidth: 100, labelPosition: 'right', size: 'small' },
+          config: { labelWidth: 140, labelPosition: 'right', size: 'small' },
         };
       }
       // 初始化右侧的配置区域
@@ -653,7 +653,7 @@ export default {
       this.widgetForm = {
         list: [],
         config: {
-          labelWidth: 100,
+          labelWidth: 140,
           labelPosition: 'right',
           size: 'small',
           customClass: '',

@@ -10,9 +10,9 @@
   <div class="table_box">
     <!-- 如果不想展示错误提示信息,可以加上show-message参数 -->
     <el-form  :model="subTableForm" ref="tableForm" :rules="subTableForm.rules" :show-message="false">
-      <el-table :data="subTableForm.tableData" border style="width: 100%" fit>
+      <el-table :data="subTableForm.tableData" border>
         <el-table-column type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
-        <el-table-column v-for="(row, index) in widget.tableColumns" :key="index" :prop="row.model" :label="row.name">
+        <el-table-column v-for="(row, index) in widget.tableColumns" :key="index" :min-width="row.options.width" :prop="row.model" :label="row.name">
           <template slot-scope="scope">
             <!-- prop的规则: 在普通的form表单中是一个对象,prop是对象的属性. 表格是由多个对象组成的数组,在写prop是需要根据索引给值.这里的tableData就相当于对象的属性 !-->
             <!-- rules也要单独给 -->
@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column label="操作" header-align="center" :width="100">
           <template slot="header">
-            <span class="add-button"><i type="primary" size="mini" class="el-icon el-icon-plus" @click="addRow" v-if="!readOnly"></i>添加</span>
+            <span class="add-button" @click="addRow"><i type="primary" size="mini" class="el-icon el-icon-plus" v-if="!readOnly"></i>添加</span>
           </template>
           <template slot-scope="scope" v-if="!readOnly">
             <el-button class="action-btn" @click="handleEditOnClick(scope.row)" type="primary" size="mini" v-if="!isEditable(scope.row)">编辑</el-button>
@@ -137,7 +137,6 @@ export default class GenerateSubForm extends Vue {
       [item.model]: item.options.defaultValue || '',
       _mode: 'ADD',
     }));
-    console.log(obj);
     (this.subTableForm.tableData as any).push(obj);
   }
 
