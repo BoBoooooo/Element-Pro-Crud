@@ -49,6 +49,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { DML } from '@/types/common';
+import { isChinese } from '@/utils/utils';
 
 @Component({
   name: 'GenerateSubForm',
@@ -65,12 +66,14 @@ export default class GenerateSubForm extends Vue {
     type: Object as () => {
       tableColumns: any;
       options: any;
+      model: string;
     },
     default: () => ({}),
   })
   widget!: {
     tableColumns: any;
     options: any;
+    model: string;
   };
 
   @Prop({
@@ -84,6 +87,12 @@ export default class GenerateSubForm extends Vue {
     default: null,
   })
   readOnly: any;
+
+ @Prop({
+   type: Object,
+   default: () => ({}),
+ })
+  formTableConfig: any;
 
   // 整个子表单数据
   subTableForm = {
@@ -105,7 +114,20 @@ export default class GenerateSubForm extends Vue {
 
   fetchList() {
     if (this.widget.options.tableName) {
-      this.$PROCRUD.crud(DML.SELECT, this.widget.options.tableName).then((res) => {
+      const searchCondition:any = [];
+      // 预设查询参数
+      if (this.getTableParams) {
+        Object.keys(this.getTableParams).forEach((k) => {
+          searchCondition.push({
+            field: k,
+            operator: 'eq',
+            value: this.getTableParams[k],
+          });
+        });
+      }
+      this.$PROCRUD.crud(DML.SELECT, this.widget.options.tableName, {
+        searchCondition,
+      }).then((res) => {
         if (res.data.list.length === 0) {
           this.addRow();
         } else {
@@ -203,6 +225,13 @@ export default class GenerateSubForm extends Vue {
             formValue[k] = formValue[k].toString();
           }
         });
+        // 预设值
+        if (this.getTablePrefill) {
+          Object.keys(this.getTablePrefill).forEach((k) => {
+            formValue[k] = this.getTablePrefill[k];
+          });
+        }
+
         // 根据对话框状态判断保存或编辑
         if (formValue._mode === 'ADD') {
           type = DML.INSERT;
@@ -237,6 +266,59 @@ export default class GenerateSubForm extends Vue {
           });
       }
     });
+  }
+
+  // 子表params
+  get getTableParams() {
+    const table = this.formTableConfig[this.widget.model];
+    if (table) {
+      const { tableParams } = table;
+      if (tableParams) {
+        return tableParams;
+      }
+    }
+    // 没有传入则直接使用配置的
+    // 格式为 子表字段,主表字段 多个用|隔开
+    // 例如 subid,id|subid2,id2 格式
+    const obj = {};
+    // 默认按照|分隔参数名
+    const { tableParams } = this.widget.options;
+    if (tableParams) {
+      const params = tableParams.split('|');
+      for (const group of params) {
+        if (group) {
+          const key = group.split(',');
+          const [field, value] = key;
+          // 如果包含中文则默认为直接传参,否则读取相关字段值
+          const result = isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
+        }
+      }
+    }
+    return obj;
+  }
+
+  // 子表prefill
+  get getTablePrefill() {
+    // 如果外侧传入了则优先使用外侧传入的params
+    if (this.formTableConfig[this.widget.model] && this.formTableConfig[this.widget.model].prefill) {
+      return this.formTableConfig[this.widget.model].prefill;
+    }
+    // 没有传入则直接使用配置的 例如 subid,id|subid2,id2 格式
+    const obj = {};
+    // 默认按照|分隔参数名
+    const { prefill } = this.widget.options;
+    if (prefill && prefill !== '') {
+      const fills = prefill.split('|');
+      for (const group of fills) {
+        if (group) {
+          const key = group.split(',');
+          const [field, value] = key;
+          // 如果包含中文则默认为直接传参,否则读取相关字段值
+          const result = isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
+        }
+      }
+    }
+    return obj;
   }
 }
 </script>

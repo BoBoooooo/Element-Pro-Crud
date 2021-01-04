@@ -313,6 +313,7 @@ import {
 } from 'vue-property-decorator';
 import TreeSelect from '@riophae/vue-treeselect';
 import { DML } from '@/types/common';
+import { isChinese } from '@/utils/utils';
 import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
 import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
@@ -605,7 +606,7 @@ export default class GenerateFormItem extends Vue {
           const key = group.split(',');
           const [field, value] = key;
           // 如果包含中文则默认为直接传参,否则读取相关字段值
-          const result = this.isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
+          const result = isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
         }
       }
     }
@@ -629,18 +630,11 @@ export default class GenerateFormItem extends Vue {
           const key = group.split(',');
           const [field, value] = key;
           // 如果包含中文则默认为直接传参,否则读取相关字段值
-          const result = this.isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
+          const result = isChinese(value) ? (obj[field] = value) : (obj[field] = this.models[value]);
         }
       }
     }
     return obj;
-  }
-
-  // 判断是否含有中文
-  isChinese(temp) {
-    const re = /[^\u4e00-\u9fa5]/;
-    if (re.test(temp)) return false;
-    return true;
   }
 
   diGuiTree(tree) {
