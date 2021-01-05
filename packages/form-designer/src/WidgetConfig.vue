@@ -190,7 +190,7 @@
                     :key="index">
                   <el-radio :label="item.value"
                             style="margin-right: 5px;">
-                    <el-input size="mini" :style="{'width': elementConfig.options.showLabel? '90px': '190px' }"
+                    <el-input size="mini" :style="{'width': elementConfig.options.showLabel? '80px': '170px' }"
                               v-model="item.value"></el-input>
                     <el-input size="mini" style="width:100px;"
                               v-if="elementConfig.options.showLabel"

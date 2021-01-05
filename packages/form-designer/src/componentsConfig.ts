@@ -79,9 +79,8 @@ export const basicComponents = [
       ],
       required: false,
       disabled: false,
-
       width: '',
-      remote: false,
+      remote: 'static',
       remoteOptions: [],
       props: {
         value: 'value',
