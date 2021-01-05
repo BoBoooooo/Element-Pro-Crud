@@ -9,7 +9,8 @@
 -->
 <template>
   <el-form-item :prop="widget.type == 'button'?undefined:widget.model"
-                :label-width="widget.options.hiddenLabel ? '0' : labelWidth">
+                :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
+                :rules="rules">
     <template #label>
       <template v-if="widget.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
@@ -376,6 +377,11 @@ export default class GenerateFormItem extends Vue {
   // 子表单单个组件初始值model
   @Prop()
   model: any;
+
+  // 组件校验规则
+  @Prop()
+  rules: any;
+
 
   // 当前组件对象
   dataModel: string | number | null | object = this.models[this.widget.model] || null;

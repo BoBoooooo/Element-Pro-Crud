@@ -2,6 +2,7 @@
  * @file: 子表单
  * GenerateFormItem如果想拿到整个子表单所有行数据改写如下
  * v-model="subTableForm.tableData[scope.$index][row.model]"
+ * <el-form :model="subTableForm"></el-form>
  * @author: BoBo
  * @copyright: BoBo
  * @Date: 2020-12-03 20:47:28
@@ -9,7 +10,7 @@
 <template>
   <div class="table_box">
     <!-- 如果不想展示错误提示信息,可以加上show-message参数 -->
-    <el-form  :model="subTableForm" ref="tableForm" :rules="subTableForm.rules" :show-message="false">
+    <el-form status-icon :model="inlineFormData" ref="tableForm" class="subTableForm">
       <el-table :data="subTableForm.tableData" border>
         <el-table-column type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
         <el-table-column v-for="(row, index) in widget.tableColumns" :key="index" :min-width="row.options.width" :prop="row.model" :label="row.name">
@@ -99,6 +100,8 @@ export default class GenerateSubForm extends Vue {
   // 整个子表单数据
   subTableForm = {
     tableData: [],
+    rules: {
+    },
   };
 
   // 单行数据
@@ -266,6 +269,8 @@ export default class GenerateSubForm extends Vue {
           .catch(() => {
             this.btnSaveIsLoading = false;
           });
+      } else {
+        this.$message.warning('表单校验失败');
       }
     });
   }
@@ -351,6 +356,12 @@ export default class GenerateSubForm extends Vue {
     .el-icon-plus{
       color: rgb(16, 16, 16);
     }
+  }
+}
+.subTableForm{
+  ::v-deep.el-form-item__error{
+    right: 30px;
+    bottom: 3px;
   }
 }
 </style>

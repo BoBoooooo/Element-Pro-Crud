@@ -18,9 +18,9 @@
                         @after-save="formOnSave" />
       </div>
       <el-form ref="generateForm"
+              status-icon
              :class='{"table-form":data.config && data.config.isTableClass}'
              :model="models"
-             :rules="rules"
              :label-position="data.config && data.config.labelPosition"
              :label-width="data.config && data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
              size="small">
@@ -65,7 +65,7 @@
                                   :key="citem.key"
                                   :models="models"
                                   :remote="remote"
-                                  :rules="rules"
+                                  :rules="rules[citem.model]"
                                   :widget="citem"
                                   :readOnly="setReadOnly"
                                   @btnOnClick="btnOnClick"
@@ -119,6 +119,7 @@
                             :remote="remote"
                             @selection="getTableSelection($event,item)"
                             :widget="item"
+                            :rules="rules[item.model]"
                             :readOnly="setReadOnly"
                             @btnOnClick="btnOnClick"
                             v-show="!item.hidden"
