@@ -344,7 +344,7 @@ export default class GenerateSubForm extends Vue {
 .action-btn {
   height: 22px;
   width: 34px;
-  padding: 0;
+  padding: 0!important;
 }
 .el-icon-plus{
   color: rgb(85, 85, 85);
