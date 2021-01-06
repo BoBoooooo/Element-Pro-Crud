@@ -23,6 +23,9 @@
         自动设置<i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
       <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="generateTableByForm">
+          [请先设置表单]根据表单生成表格
+        </el-dropdown-item>
         <el-dropdown-item command="autoSetSearchable">
           检索状态：除了操作列，默认所有列都可以作为查询条件。
         </el-dropdown-item>
@@ -31,9 +34,6 @@
         </el-dropdown-item>
         <el-dropdown-item command="autoSetSearchOption">
           [请先设置表单]分析表单配置以设置表格高级搜索options
-        </el-dropdown-item>
-        <el-dropdown-item command="generateTableByForm">
-          [请先设置表单]根据表单生成表格
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
