@@ -224,7 +224,7 @@
                    :separator="widget.options.separator == null ?'/':widget.options.separator"
                    :options="optionsList"
                    filterable
-                   :props="{ checkStrictly: widget.options.checkStrictly }">
+                   :props="{ checkStrictly: widget.options.checkStrictly , multiple: widget.options.multiple}">
       </el-cascader>
     </template>
     <template v-if="widget.type == 'table'">

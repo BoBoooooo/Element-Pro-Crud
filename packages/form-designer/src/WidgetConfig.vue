@@ -693,7 +693,6 @@ export default {
       });
     },
     generateRule() {
-      console.log(this.elementConfig);
       this.$set(this.elementConfig, 'rules', []);
       Object.keys(this.validator).forEach((key) => {
         if (this.validator[key]) {

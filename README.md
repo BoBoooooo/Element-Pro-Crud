@@ -47,7 +47,7 @@ npm i element-pro-crud -S
   <head>
     <meta charset="UTF-8" />
     <!-- 引入ProCrud CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.5.0/lib/ProCrud.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.css" />
     <!-- 引入ElementUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
     />
@@ -66,7 +66,7 @@ npm i element-pro-crud -S
   <!-- import ElementUI -->
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <!-- import ElementProCrud -->
-  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@0.5.0/lib/ProCrud.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.umd.js"></script>
 
   <script>
     new Vue({

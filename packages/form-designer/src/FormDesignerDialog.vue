@@ -7,14 +7,7 @@
 -->
 <template>
   <!-- 对话框 -->
-  <el-dialog
-    v-if="visible"
-    ref="dialog"
-    class="dialog"
-    :visible.sync="visible"
-    fullscreen
-    append-to-body
-  >
+  <el-dialog v-if="visible" ref="dialog" class="dialog" :visible.sync="visible" fullscreen append-to-body>
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%;max-width:250px">
@@ -26,19 +19,8 @@
             </span>
           </div>
           <div class="widget-cate">基础组件</div>
-          <Draggable
-            tag="ul"
-            :list="basicComponents"
-            v-bind="getDraggableOptions()"
-            @end="handleMoveEnd"
-            @start="handleMoveStart"
-            :move="handleMove"
-          >
-            <li
-              class="form-edit-widget-label"
-              v-for="(item, index) in basicComponents"
-              :key="index"
-            >
+          <Draggable tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+            <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -46,19 +28,8 @@
             </li>
           </Draggable>
           <div class="widget-cate">高级组件</div>
-          <Draggable
-            tag="ul"
-            :list="advanceComponents"
-            v-bind="getDraggableOptions()"
-            @end="handleMoveEnd"
-            @start="handleMoveStart"
-            :move="handleMove"
-          >
-            <li
-              class="form-edit-widget-label"
-              v-for="(item, index) in advanceComponents"
-              :key="index"
-            >
+          <Draggable tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+            <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -66,18 +37,11 @@
             </li>
           </Draggable>
           <div class="widget-cate">布局组件</div>
-          <Draggable
-            tag="ul"
-            :list="layoutComponents"
-            v-bind="getDraggableOptions()"
-            @end="handleMoveEnd"
-            @start="handleMoveStart"
-            :move="handleMove"
-          >
+          <Draggable tag="ul" :list="layoutComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
             <li
               class="form-edit-widget-label"
               :class="{
-                'data-grid': item.name !== '分割线'
+                'data-grid': item.name !== '分割线',
               }"
               v-for="(item, index) in layoutComponents"
               :key="index"
@@ -96,133 +60,156 @@
         <el-header class="btn-bar" style="height: 60px;">
           <el-row :gutter="15">
             <!-- 对话框内动态表单 -->
-            <el-col :span="16" v-if="$PROCRUD.getTables">
-              <GenerateForm
-                ref="generateDialogForm"
-                class="form"
-                v-if="visible"
-                hiddenDevModule
-                :value="formValues"
-                :data="formDesign"
-                :remote="remoteFuncs"
-              />
+            <el-col :span="12" v-if="$PROCRUD.getTables">
+              <GenerateForm ref="generateDialogForm" class="form" v-if="visible" hiddenDevModule :value="formValues" :data="formDesign" :remote="remoteFuncs" />
             </el-col>
-            <el-col :span="$PROCRUD.getTables ? 8 : 24" style="text-align:right">
-              <el-button
-                type="text"
-                size="medium"
-                icon="el-icon-view"
-                @click="handlePreview"
-                >预览</el-button
-              >
-              <el-button
-                type="text"
-                size="medium"
-                icon="el-icon-tickets"
-                @click="handleGenerateJson"
-                >生成JSON</el-button
-              >
+            <el-col :span="$PROCRUD.getTables ? 12 : 24" style="text-align:right">
+              <el-button type="text" size="medium" icon="el-icon-view" @click="handlePreview">预览</el-button>
+              <el-button type="text" size="medium" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
+              <el-button type="text" size="medium" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
+              <el-button type="text" size="medium" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
               <el-button type="text" size="medium" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button
-                type="text"
-                size="medium"
-                icon="el-icon-form"
-                :disabled="!$PROCRUD.getTables"
-                @click="formVisible = true"
-                >自动绑定</el-button
-              >
-              <el-button
-                type="text"
-                :disabled="!$PROCRUD.getTables"
-                @click="btnSave_onClick"
-                :loading="btnSaveIsLoading"
-                >保存</el-button
-              >
+              <el-button type="text" size="medium" icon="el-icon-form" :disabled="!$PROCRUD.getTables" @click="formVisible = true">自动绑定</el-button>
+              <el-button type="text" :disabled="!$PROCRUD.getTables" @click="btnSave_onClick" :loading="btnSaveIsLoading">保存</el-button>
             </el-col>
           </el-row>
         </el-header>
         <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
-          <WidgetForm
-            ref="widgetForm"
-            :data="widgetForm"
-            :select.sync="widgetFormSelect"
-          ></WidgetForm>
+          <WidgetForm ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
         </el-main>
       </el-container>
       <!-- 右侧边栏 -->
       <el-aside class="widget-config-container" style="width:300px;">
         <el-container class="full-height">
           <el-header height="45px" style="width: 300px">
-            <div
-              class="config-tab"
-              :class="{ active: configTab == 'widget' }"
-              @click="handleConfigSelect('widget')"
-            >
+            <div class="config-tab" :class="{ active: configTab == 'widget' }" @click="handleConfigSelect('widget')">
               字段属性
             </div>
-            <div
-              class="config-tab"
-              :class="{ active: configTab == 'form' }"
-              @click="handleConfigSelect('form')"
-            >
+            <div class="config-tab" :class="{ active: configTab == 'form' }" @click="handleConfigSelect('form')">
               表单属性
             </div>
           </el-header>
           <el-main class="config-content">
-            <WidgetConfig
-              v-show="configTab == 'widget'"
-              :elementConfig="widgetFormSelect"
-            ></WidgetConfig>
-            <FormConfig
-              v-show="configTab == 'form'"
-              :data="widgetForm.config"
-            ></FormConfig>
+            <WidgetConfig v-show="configTab == 'widget'" :elementConfig="widgetFormSelect"></WidgetConfig>
+            <FormConfig v-show="configTab == 'form'" :data="widgetForm.config"></FormConfig>
           </el-main>
         </el-container>
       </el-aside>
       <!-- 预览对话框 -->
-      <cus-dialog
-        :visible="previewVisible"
-        @on-close="previewVisible = false"
-        ref="widgetPreview"
-        @on-submit="handleTest"
-        width="1000px"
-        form
-      >
-        <el-alert type="warning" :closable="false" style="margin-bottom:15px"
-          >组件依赖远端数据需要结合代码!</el-alert
-        >
-        <GenerateForm
-          v-if="previewVisible"
-          :data="widgetForm"
-          :value="widgetModels"
-          ref="generateForm"
-        >
+      <cus-dialog :visible="previewVisible" @on-close="previewVisible = false" ref="widgetPreview" @on-submit="handleTest" width="1000px" form>
+        <el-alert type="warning" :closable="false" style="margin-bottom:15px">组件依赖远端数据需要结合代码!</el-alert>
+        <GenerateForm v-if="previewVisible" :data="widgetForm" :value="widgetModels" ref="generateForm">
           <template slot="blank" slot-scope="scope">
-            宽度：<el-input
-              v-model="scope.model.blank.width"
-              style="width: 100px"
-            ></el-input>
-            高度：<el-input
-              v-model="scope.model.blank.height"
-              style="width: 100px"
-            ></el-input>
+            宽度：<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input> 高度：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
           </template>
         </GenerateForm>
       </cus-dialog>
+           <cus-dialog
+            :visible="uploadVisible"
+            @on-close="uploadVisible = false"
+            @on-submit="handleUploadJson"
+            ref="uploadJson"
+            width="800px"
+            form
+          >
+            <el-alert type="info" title="在此处导入json"></el-alert>
+            <!-- json编辑器 -->
+        <Editor
+          height="400px"
+          width="100%"
+          ref="uploadeditor"
+          :content="jsonEg"
+          v-model="jsonEg"
+          :options="{
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            wrap: 'free',
+            enableLiveAutocompletion: true,
+            tabSize: 2,
+            fontSize: 15,
+            showPrintMargin: false, //去除编辑器里的竖线
+          }"
+          :lang="'json'"
+          @init="editorInit"
+        >
+        </Editor>
+          </cus-dialog>
       <!-- json对话框 -->
-      <cus-dialog
-        :visible="jsonVisible"
-        @on-close="jsonVisible = false"
-        ref="jsonPreview"
-        width="800px"
-        form
-      >
+      <cus-dialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
         <!-- json编辑器 -->
-        <div id="jsoneditor" style="height: 400px;width: 100%;">
-          {{ jsonTemplate }}
-        </div>
+        <Editor
+          height="400px"
+          width="100%"
+          ref="jsoneditor"
+          :content="jsonTemplate"
+          v-model="jsonTemplate"
+          :options="{
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            wrap: 'free',
+            enableLiveAutocompletion: true,
+            tabSize: 2,
+            fontSize: 15,
+            showPrintMargin: false, //去除编辑器里的竖线
+          }"
+          :lang="'json'"
+          @init="editorInit"
+        >
+        </Editor>
+        <template slot="action">
+          <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
+        </template>
+      </cus-dialog>
+
+      <cus-dialog :visible="codeVisible" @on-close="codeVisible = false" ref="codePreview" width="800px" form :action="false">
+        <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
+        <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
+          <el-tab-pane label="Vue Component" name="vue">
+            <!-- json编辑器 -->
+            <Editor
+              height="500px"
+              width="100%"
+              ref="jsoneditor"
+              :content="vueTemplate"
+              v-model="vueTemplate"
+              :options="{
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                wrap: 'free',
+                enableLiveAutocompletion: true,
+                tabSize: 2,
+                fontSize: 15,
+                showPrintMargin: false, //去除编辑器里的竖线
+              }"
+              :lang="'html'"
+              @init="editorInit"
+            >
+            </Editor>
+          </el-tab-pane>
+          <el-tab-pane label="HTML" name="html">
+            <!-- json编辑器 -->
+            <Editor
+              height="500px"
+              width="100%"
+              ref="jsoneditor"
+              :content="htmlTemplate"
+              v-model="htmlTemplate"
+              :options="{
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                wrap: 'free',
+                enableLiveAutocompletion: true,
+                tabSize: 2,
+                fontSize: 15,
+                showPrintMargin: false, //去除编辑器里的竖线
+              }"
+              :lang="'html'"
+              @init="editorInit"
+            >
+            </Editor>
+          </el-tab-pane>
+        </el-tabs>
       </cus-dialog>
       <cus-dialog
         ref="bindKeys"
@@ -236,34 +223,17 @@
         width="800px"
         :action="false"
       >
-      <template v-if="allTables">
-          <el-select
-          v-model="formKeys.tableName"
-          filterable
-          style="width:100%"
-          placeholder="选择数据源"
-        >
-          <el-option
-            v-for="(item, index) in allTables"
-            :key="index"
-            size="small"
-            :label="item.TABLE_NAME"
-            :value="item.TABLE_NAME"
-          ></el-option>
-        </el-select>
-          <el-button
-            type="success"
-            size="small"
-            style="float: right;margin-top: 10px"
-            @click="handleGenerateKey(true)"
-            >自动生成表单</el-button
-          >
-      </template>
-      <template v-else>
-        <p>
-          初始化时请先设置getTables方法
-        </p>
-      </template>
+        <template v-if="allTables">
+          <el-select v-model="formKeys.tableName" filterable style="width:100%" placeholder="选择数据源">
+            <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.TABLE_NAME" :value="item.TABLE_NAME"></el-option>
+          </el-select>
+          <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
+        </template>
+        <template v-else>
+          <p>
+            初始化时请先设置getTables方法
+          </p>
+        </template>
       </cus-dialog>
     </el-container>
   </el-dialog>
@@ -274,16 +244,14 @@ import SvgIcon from '@/icons/SvgIcon.vue';
 import { DML } from '@/types/common';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
+import Clipboard from 'clipboard';
+import Editor from 'vue2-ace-editor';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
 import CusDialog from './CusDialog.vue';
 import GenerateForm from './GenerateForm.vue';
-import {
-  basicComponents,
-  layoutComponents,
-  advanceComponents,
-} from './componentsConfig';
+import { basicComponents, layoutComponents, advanceComponents } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
 import 'vue-awesome/icons/regular/keyboard';
 import 'vue-awesome/icons/sign';
@@ -311,6 +279,7 @@ import 'vue-awesome/icons/random';
 import 'vue-awesome/icons/text-width';
 import 'vue-awesome/icons/mouse-pointer';
 import 'vue-awesome/icons/file-word';
+import generateCode from './generateCode.js';
 
 const STATUS = {
   CREATE: 0,
@@ -328,6 +297,7 @@ export default {
     GenerateForm,
     Icon,
     SvgIcon,
+    Editor,
   },
   data() {
     return {
@@ -369,11 +339,19 @@ export default {
       previewVisible: false,
       // 生成json 对话框显示/隐藏
       jsonVisible: false,
+      codeVisible: false,
+      uploadVisible: false,
       // 绑定formKeys表单是否显示
       formVisible: false,
+      htmlTemplate: '',
+      vueTemplate: '',
       widgetModels: {},
+      codeActiveName: 'vue',
+      jsonCopyValue: '',
+      jsonClipboard: null,
       // json编辑器内的文本
       jsonTemplate: '',
+      jsonEg: '',
       formKeys: {
         tableName: '',
         prefill: '',
@@ -385,6 +363,33 @@ export default {
     };
   },
   methods: {
+    editorInit() {
+      require('brace/ext/language_tools');
+      require('brace/mode/html');
+      require('brace/mode/json');
+      require('brace/snippets/json');
+      require('brace/snippets/html');
+      require('brace/theme/chrome');
+    },
+    setJSON(json) {
+      this.widgetForm = json;
+
+      if (json.list.length > 0) {
+        [this.widgetFormSelect] = json.list;
+      }
+    },
+    handleUpload() {
+      this.uploadVisible = true;
+    },
+    handleUploadJson() {
+      try {
+        this.setJSON(JSON.parse(this.jsonEg));
+        this.uploadVisible = false;
+      } catch (e) {
+        this.$message.error(e.message);
+        this.$refs.uploadJson.end();
+      }
+    },
     // 自动生成表单,默认一行两列
     autoGenerateFormByBackend(rows) {
       const formJson = {
@@ -401,8 +406,7 @@ export default {
         let flag = false;
         const { COLUMN_COMMENT } = rows[i];
         // 遍历整个form
-        const COLUMN_NAME = `${this.formKeys.prefill
-          + rows[i].COLUMN_NAME.toLowerCase()}`;
+        const COLUMN_NAME = `${this.formKeys.prefill + rows[i].COLUMN_NAME.toLowerCase()}`;
         let COLUMN_NAME2 = null;
         let COLUMN_COMMENT2 = null;
         if (i + 1 <= rows.length && rows[i + 1]) {
@@ -410,8 +414,7 @@ export default {
 
           COLUMN_COMMENT2 = rows[i + 1].COLUMN_COMMENT;
           // 遍历整个form
-          COLUMN_NAME2 = `${this.formKeys.prefill
-            + rows[i + 1].COLUMN_NAME.toLowerCase()}`;
+          COLUMN_NAME2 = `${this.formKeys.prefill + rows[i + 1].COLUMN_NAME.toLowerCase()}`;
           i += 1;
         }
         const row = {
@@ -510,11 +513,25 @@ export default {
           this.$refs.widgetPreview.end();
         });
     },
-    // 生成JSON按钮
     handleGenerateJson() {
       this.jsonVisible = true;
-      // 生成后的json赋值给json编辑器
-      this.jsonTemplate = this.widgetForm;
+      this.jsonTemplate = JSON.stringify(this.widgetForm, null, 2);
+
+      console.log(JSON.stringify(this.widgetForm));
+      this.$nextTick(() => {
+        if (!this.jsonClipboard) {
+          this.jsonClipboard = new Clipboard('.json-btn');
+          this.jsonClipboard.on('success', (e) => {
+            this.$message.success('复制成功');
+          });
+        }
+        this.jsonCopyValue = JSON.stringify(this.widgetForm);
+      });
+    },
+    handleGenerateCode() {
+      this.codeVisible = true;
+      this.htmlTemplate = generateCode(JSON.stringify(this.widgetForm), 'html');
+      this.vueTemplate = generateCode(JSON.stringify(this.widgetForm), 'vue');
     },
     // 自动同步后端key
     async handleGenerateKey(generateForm = false) {
@@ -527,8 +544,7 @@ export default {
         for (const row of res.data) {
           const { COLUMN_COMMENT } = row;
           // 遍历整个form
-          const COLUMN_NAME = `${this.formKeys.prefill
-            + row.COLUMN_NAME.toLowerCase()}`;
+          const COLUMN_NAME = `${this.formKeys.prefill + row.COLUMN_NAME.toLowerCase()}`;
           this.generateModle(this.widgetForm.list, COLUMN_COMMENT, COLUMN_NAME);
         }
         this.$alert(`识别成功以下字段:${this.formKeys.success.join(',')}`);
@@ -676,8 +692,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./styles/cover.scss";
-@import "./styles/index.scss";
+@import './styles/cover.scss';
+@import './styles/index.scss';
 
 .logo-container {
   padding: 0 10px 10px;

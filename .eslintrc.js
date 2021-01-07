@@ -41,7 +41,8 @@ module.exports = {
     "class-methods-use-this": "off",
     // 允许下划线变量命名
     "no-underscore-dangle": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "global-require": "off"
   },
   parserOptions: {
     parser: "@typescript-eslint/parser",

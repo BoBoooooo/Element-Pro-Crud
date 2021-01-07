@@ -24,6 +24,7 @@ module.exports = {
       filename: 'index.html',
     },
   },
+  publicPath: './',
   chainWebpack: (config) => {
     if (process.env.IS_REPORT) {
       config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
