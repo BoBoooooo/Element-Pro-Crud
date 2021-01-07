@@ -61,8 +61,6 @@ export default {
     return {
       // 选中的表名
       selectedForm: null,
-      // 所有动态表单json
-      formList: [],
     };
   },
   props: {
@@ -77,11 +75,11 @@ export default {
       type: Number,
       default: 140,
     },
-  },
-  created() {
-    this.$PROCRUD.crud(DML.SELECT, 'form').then((res) => {
-      this.formList = res.data.list;
-    });
+    // formList
+    formList: {
+      type: Array,
+      default: () => [],
+    },
   },
   methods: {
     autoSetSearchOption() {

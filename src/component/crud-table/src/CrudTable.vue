@@ -15,11 +15,11 @@
         <h4>{{tableTitle}}</h4>
       </div>
       <!--dev模式可直接编辑表格-->
-      <div v-if="$store.getters && $store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
+      <!-- <div v-if="$store.getters && $store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
         <el-button type="text" @click="showTableDesigner">当前表格: {{this.tableDesignerName || this.tableName}}  [点此修改]</el-button>
         <TableDesigner ref="TableDesigner"
                          @after-save="tableOnSave"/>
-      </div>
+      </div> -->
       <!-- table右上角按钮 -->
       <div class="btn-bar">
         <slot name="btnBarPrevBtn" />

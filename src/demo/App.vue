@@ -6,41 +6,35 @@
 -->
 <template>
   <div id="app">
-    <TableDesigner :allTables="allTables" ref="table"></TableDesigner>
+    <el-container class="container">
+      <el-header>表格设计器(TableDesigner)</el-header>
+      <el-main>
+        <TableDesigner :formList="formList" :allTables="allTables" ref="tableDesigner"></TableDesigner>
+      </el-main>
+    </el-container>
 
-    <CrudTable
-      tableName="users"
-      orderCondition="timestamp desc"
-      :visibleList="{
-        tableTitle: false,
-      }"
-      :actionColumnWidth="300"
-      :remoteFuncs="remoteFuncs"
-      fullHeight
-    >
-    </CrudTable>
-    <el-button @click="visible = true" type="primary"
-      >打开表单设计器</el-button
-    >
-    <el-button @click="showDialog('table')" type="danger"
-      >打开表格设计器</el-button
-    >
-
-
-     <el-dialog v-if="visible" ref="dialog" fullscreen class="dialog" :visible.sync="visible" append-to-body>
-      <FormDesigner ref="formDesigner" :allTables="allTables" :getTableFields="getTableFields">
-        <template #custom-btn>
-          <el-button type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
-        </template>
-      </FormDesigner>
-    </el-dialog>
-
+    <el-container class="container">
+      <el-header>表单设计器(FormDesigner)</el-header>
+      <el-main>
+        <FormDesigner ref="formDesigner" :allTables="allTables" :getFormKey="getTableFields">
+          <template #custom-btn>
+            <el-button type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
+          </template>
+        </FormDesigner>
+      </el-main>
+    </el-container>
+    <el-container class="container">
+      <el-header>CrudTable</el-header>
+      <el-main>
+        <CrudTable tableName="person" :isMultiple="false"> </CrudTable>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
 <script>
 import { DML, crud } from '@/demo/api/crud';
-import { getTables, getFormKey } from '@/demo/api/plugin';
+import { getTables, getFormKey, getTableDetail } from '@/demo/api/plugin';
 
 export default {
   name: 'app',
@@ -48,13 +42,29 @@ export default {
     showDialog(name) {
       this.$refs[name].showDialog();
     },
-    getTableFields() {
-      return getFormKey;
+    getTableFields(tablename) {
+      return getFormKey(tablename);
     },
     // 保存设计
     btnSaveOnClick() {
       const formValues = this.$refs.formDesigner.getData();
       console.log(formValues);
+    },
+    showFormDialog() {
+      this.visible = true;
+      const row = {
+        formJson: JSON.stringify({
+          list: [],
+          config: {
+            labelWidth: 120,
+            labelPosition: 'top',
+            size: 'small',
+          },
+        }),
+      };
+      this.$nextTick(() => {
+        this.$refs.formDesigner.setJSON(JSON.parse(row.formJson));
+      });
     },
   },
   created() {
@@ -64,10 +74,24 @@ export default {
         value: item.TABLE_NAME,
       }));
     });
+    getTableDetail('person').then((res) => {
+      this.tableJSON = res.data;
+      this.$nextTick(() => {
+        this.$refs.tableDesigner.setJSON({
+          formJson: JSON.parse(this.tableJSON.formJson),
+          name: '人员信息表',
+          position: 'Person.vue',
+        });
+      });
+    });
+    crud(DML.SELECT, 'form').then((res) => {
+      this.formList = res.data.list;
+    });
   },
   data() {
     return {
       visible: false,
+      formList: [],
       remoteFuncs: {
         // 请求角色
         funcGetRole(resolve) {
@@ -89,7 +113,6 @@ export default {
       },
       allTables: null,
       btnSaveIsLoading: false,
-
     };
   },
 };
@@ -101,12 +124,52 @@ body {
   height: 100%;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  overflow: auto;
   color: #2c3e50;
   height: 100%;
+}
+</style>
+<style lang="scss" scoped>
+.el-aside {
+  background-color: #e9eef3;
+  color: #333;
+  text-align: center;
+  padding-top: 20px;
+}
+.container {
+  border: 1px solid rgb(186, 186, 186);
+  margin: 2rem 0;
+}
+.el-header {
+  background: #87c1fa;
+  color: #333;
+  line-height: 60px;
+}
+
+.el-radio-group {
+  padding-left: 10px;
+}
+
+.dialog {
+  ::v-deep {
+    .el-dialog__body {
+      height: 100%;
+      padding: 0;
+    }
+    .el-dialog__header {
+      padding: 0;
+    }
+    .el-dialog__headerbtn {
+      top: 13px;
+      right: 10px;
+      border: 1px solid gray;
+      background: #fffbd7;
+      color: black;
+      z-index: 100;
+    }
+  }
 }
 </style>

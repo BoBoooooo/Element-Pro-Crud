@@ -60,14 +60,14 @@
           <el-row :gutter="15">
             <!-- 对话框内动态表单 -->
             <el-col :span="12">
-              <el-form :inline="true" :model="formValues" class="inline-form">
-                <el-form-item label="名称">
-                  <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
+              <el-form size="small" :inline="true" :model="formValues" class="inline-form">
+                <el-form-item label="表单名">
+                  <el-select  v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
                     <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
                   </el-select>
                   <el-input v-else v-model="formValues.tableName" placeholder="请输入表单名称"></el-input>
                 </el-form-item>
-                <el-form-item label="使用位置">
+                <el-form-item>
                   <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
                 </el-form-item>
               </el-form>
@@ -78,7 +78,7 @@
               <el-button type="text" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
               <el-button type="text" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
               <el-button type="text" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button type="text" size="small" icon="el-icon-form" :disabled="!allTables || !getFormKey" @click="formVisible = true">自动绑定</el-button>
+              <el-button type="text" size="small" icon="el-icon-form" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
               <slot name="custom-btn"></slot>
             </el-col>
           </el-row>
@@ -290,14 +290,14 @@ export default {
   methods: {
     // 返回当前表单设计器对象
     getData() {
-      return {
-        ...this.formValues,
-        formJson: JSON.stringify(this.widgetForm),
-      };
+      this.widgetForm.name = this.formValues.tableName;
+      this.widgetForm.position = this.formValues.position;
+      return this.widgetForm;
     },
     setJSON(json) {
       this.widgetForm = json;
-
+      this.$set(this.formValues, 'tableName', json.name);
+      this.$set(this.formValues, 'position', json.position);
       if (json.list.length > 0) {
         [this.widgetFormSelect] = json.list;
       }
