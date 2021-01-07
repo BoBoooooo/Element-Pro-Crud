@@ -45,7 +45,7 @@ export default [
     name: '最小宽',
     field: 'minWidth',
     is: 'input',
-    headStyle: 'width:70px',
+    headStyle: 'width:50px',
     tootip: '加粗黑色表示非默认宽度',
     show: true,
   },

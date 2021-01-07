@@ -106,28 +106,28 @@
         </el-container>
       </el-aside>
       <!-- 预览对话框 -->
-      <cus-dialog :visible="previewVisible" @on-close="previewVisible = false" ref="widgetPreview" @on-submit="handleTest" width="1000px" form>
+      <CusDialog :visible="previewVisible" @on-close="previewVisible = false" ref="widgetPreview" @on-submit="handleTest" width="1000px" form>
         <el-alert type="warning" :closable="false" style="margin-bottom:15px">组件依赖远端数据需要结合代码!</el-alert>
         <GenerateForm v-if="previewVisible" :data="widgetForm" :value="widgetModels" ref="generateForm">
           <template slot="blank" slot-scope="scope">
             宽度：<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input> 高度：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
           </template>
         </GenerateForm>
-      </cus-dialog>
-      <cus-dialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
+      </CusDialog>
+      <CusDialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
         <el-alert type="info" title="在此处导入JSON"></el-alert>
         <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
-      </cus-dialog>
+      </CusDialog>
 
-      <cus-dialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
+      <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
         <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
 
         <template slot="action">
           <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
         </template>
-      </cus-dialog>
+      </CusDialog>
 
-      <cus-dialog :visible="codeVisible" @on-close="codeVisible = false" ref="codePreview" width="800px" form :action="false">
+      <CusDialog :visible="codeVisible" @on-close="codeVisible = false" ref="codePreview" width="800px" form :action="false">
         <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
         <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
           <el-tab-pane label="Vue Component" name="vue">
@@ -137,8 +137,8 @@
             <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
           </el-tab-pane>
         </el-tabs>
-      </cus-dialog>
-      <cus-dialog
+      </CusDialog>
+      <CusDialog
         ref="bindKeys"
         :visible="formVisible"
         title="绑定后端key/自动初始化表单(根据数据库字段备注)"
@@ -161,7 +161,7 @@
             初始化时请先设置getTables方法
           </p>
         </template>
-      </cus-dialog>
+      </CusDialog>
     </el-container>
 </template>
 
@@ -171,10 +171,10 @@ import { DML } from '@/types/common';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
+import CusDialog from '@/component/common/CusDialog.vue';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
-import CusDialog from './CusDialog.vue';
 import GenerateForm from './GenerateForm.vue';
 import { basicComponents, layoutComponents, advanceComponents } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';

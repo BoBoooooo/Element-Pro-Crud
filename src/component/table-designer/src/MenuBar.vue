@@ -1,27 +1,19 @@
 <!--
 @file 表格设计页面菜单栏
-@author ytyang
+@author BoBo
 @copyright BoBo
-@createDate 2018年12月26日11:30:16
+@createDate 2021年01月07日23:39:35
 -->
 <template>
   <el-container>
+    <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
     <!-- 添加列 -->
-    <el-dropdown @command="addColumn">
-      <el-button size="small">
-        添加列<i class="el-icon-arrow-down el-icon--right"></i>
-      </el-button>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="addColumn">添加1行普通列</el-dropdown-item>
-        <el-dropdown-item command="addColumnx10">添加10行普通列</el-dropdown-item>
-        <el-dropdown-item command="addActionColumn">添加操作列</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+     <el-button type="primary" size="small" @click="addColumn('addColumn')">添加列</el-button>
+     <el-button type="primary" size="small" @click="addColumn('addColumnx5')">添加5列</el-button>
+     <el-button type="primary" size="small" @click="addColumn('addActionColumn')">添加操作列</el-button>
     <!-- 自动设置 -->
     <el-dropdown @command="autoSet">
-      <el-button size="small">
-        自动设置<i class="el-icon-arrow-down el-icon--right"></i>
-      </el-button>
+      <el-button size="small">快捷设置<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="generateTableByForm">
           [请先设置表单]根据表单生成表格
@@ -37,16 +29,15 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-      <el-select v-model="selectedForm"
-                size="small"
-                 v-if="formList.length>0"
-                 placeholder="请选择表单"
-                 filterable>
-        <el-option v-for="(form, index) in formList"
-                   :key="index"
-                   :label="form.tableName"
-                   :value="form.tableName"></el-option>
-      </el-select>
+    <el-select v-model="selectedForm" size="small" v-if="formList.length > 0" placeholder="请选择表单" filterable>
+      <el-option v-for="(form, index) in formList" :key="index" :label="form.tableName" :value="form.tableName"></el-option>
+    </el-select>
+    <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
+      <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+      <template slot="action">
+        <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
+      </template>
+    </CusDialog>
   </el-container>
 </template>
 
@@ -54,6 +45,8 @@
 import _forEach from 'lodash/forEach';
 import _pick from 'lodash/pick';
 import { DML } from '@/types/common';
+import CusDialog from '@/component/common/CusDialog.vue';
+import Clipboard from 'clipboard';
 
 export default {
   name: 'MenuBar',
@@ -61,6 +54,11 @@ export default {
     return {
       // 选中的表名
       selectedForm: null,
+      jsonVisible: false,
+      jsonCopyValue: '',
+      jsonClipboard: null,
+      // json编辑器内的文本
+      jsonTemplate: '',
     };
   },
   props: {
@@ -82,6 +80,23 @@ export default {
     },
   },
   methods: {
+    handleGenerateJson() {
+      this.jsonVisible = true;
+      this.jsonTemplate = JSON.stringify(this.designedJSON, null, 2);
+
+      this.$nextTick(() => {
+        const editor = ace.edit('jsoneditor');
+        editor.session.setMode('ace/mode/json');
+
+        if (!this.jsonClipboard) {
+          this.jsonClipboard = new Clipboard('.json-btn');
+          this.jsonClipboard.on('success', (e) => {
+            this.$message.success('复制成功');
+          });
+        }
+        this.jsonCopyValue = JSON.stringify(this.designedJSON);
+      });
+    },
     autoSetSearchOption() {
       if (this.selectedForm == null) {
         this.$message({
@@ -116,10 +131,7 @@ export default {
                 option.type = first.type;
                 // 遍历当前表格配置，加入option
                 for (const col of this.designedJSON.columns) {
-                  if (
-                    col.prop === `${first.model}dict`
-                        || col.prop === first.model
-                  ) {
+                  if (col.prop === `${first.model}dict` || col.prop === first.model) {
                     this.$set(col, 'option', option);
                   }
                 }
@@ -157,8 +169,8 @@ export default {
           });
           break;
         // 普通列x10
-        case 'addColumnx10':
-          for (let i = 0; i < 10; i += 1) {
+        case 'addColumnx5':
+          for (let i = 0; i < 5; i += 1) {
             this.designedJSON.columns.push({
               prop: '',
               label: '',
@@ -203,16 +215,10 @@ export default {
         case 'autoSetAlign':
           this.designedJSON.columns = this.designedJSON.columns.map((item) => {
             // 操作列
-            if (
-              (item.slotName !== '' && item.slotName != null)
-              || ['年', '时间', '期'].some(c => item.label.includes(c))
-            ) {
+            if ((item.slotName !== '' && item.slotName != null) || ['年', '时间', '期'].some(c => item.label.includes(c))) {
               // 列按钮居中
               item.align = 'center';
-            } else if (
-              (item.slotName !== '' && item.slotName != null)
-              || ['万元', '得票数', '百分比', '人数', '数量'].some(c => item.label.includes(c))
-            ) {
+            } else if ((item.slotName !== '' && item.slotName != null) || ['万元', '得票数', '百分比', '人数', '数量'].some(c => item.label.includes(c))) {
               item.align = 'right';
             } else {
               item.align = 'center';
@@ -250,10 +256,7 @@ export default {
                     align: 'center',
                     headerAlign: 'center',
                     showOverflowTooltip: true,
-                    sortable:
-                      column.list[0].sortable != null
-                        ? column.list[0].sortable
-                        : 'custom',
+                    sortable: column.list[0].sortable != null ? column.list[0].sortable : 'custom',
                     slotName: '',
                     searchable: true,
                   });
@@ -288,6 +291,9 @@ export default {
     removeColumn(index) {
       this.designedJSON.columns.splice(index, 1);
     },
+  },
+  components: {
+    CusDialog,
   },
   watch: {
     designedJSON(newValue) {

@@ -16,13 +16,13 @@
     <el-row>
       <el-col :span="12">
         <el-form size="small" :inline="true" :model="formValues" class="inline-form">
-          <el-form-item label="名称">
+          <el-form-item label="表格名称">
             <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
               <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
             </el-select>
             <el-input v-else v-model="formValues.tableName" placeholder="请输入表单名称"></el-input>
           </el-form-item>
-          <el-form-item label="使用位置">
+          <el-form-item>
             <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
           </el-form-item>
         </el-form>
@@ -56,29 +56,30 @@
               v-else-if="column.is === 'input'"
               v-model="item[column.field]"
               :placeholder="column.field"
+              size="small"
               :class="{ notDefaultWidth: column.field === 'minWidth' && item[column.field] !== 140 }"
             />
             <!-- 下拉菜单列 -->
-            <el-select v-else-if="column.is === 'select'" v-model="item[column.field]" :placeholder="column.field">
+            <el-select size="small"  v-else-if="column.is === 'select'" v-model="item[column.field]" :placeholder="column.field">
               <el-option v-for="o in column.list" :key="o.label" :label="o.label" :value="o.value"></el-option>
             </el-select>
             <!-- 开关 -->
-            <el-switch v-else-if="column.is === 'switch'" v-model="item[column.field]"></el-switch>
+            <el-switch size="small" v-else-if="column.is === 'switch'" v-model="item[column.field]"></el-switch>
             <!-- 高级查询，如果配置了popover同时options存在就显示编辑 -->
             <el-popover v-else-if="column.is === 'popover' && item[column.field]" placement="bottom-start" width="400" trigger="click">
               <!-- 下拉菜单配置 -->
               <SelectConfig :sourceOption.sync="item[column.field]" />
-              <el-button slot="reference" type="primary">
+              <el-button size="small" slot="reference" type="primary">
                 编辑菜单
               </el-button>
             </el-popover>
-            <el-button v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(index)">
+            <el-button size="small" v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(index)">
               转为菜单
             </el-button>
           </td>
           <td>
             <el-tooltip class="item" effect="dark" content="删除当前行" placement="left">
-              <el-button type="danger" size="small" icon="el-icon-delete" @click="removeColumn(index)"></el-button>
+              <i style="color: red;cursor:pointer" class="el-icon el-icon-delete" @click="removeColumn(index)"></i>
             </el-tooltip>
           </td>
         </tr>
@@ -167,17 +168,15 @@ export default {
     },
     // 返回当前表格设计器对象
     getData() {
-      return {
-        formJson: this.objJSON,
-        name: this.formValues.tableName,
-        position: this.formValues.position,
-      };
+      this.objJSON.name = this.formValues.tableName;
+      this.objJSON.position = this.formValues.position;
+      return this.objJSON;
     },
     // 设置内部JSON
-    setJSON({ name, position, formJson }) {
-      this.objJSON = formJson;
-      this.$set(this.formValues, 'tableName', name);
-      this.$set(this.formValues, 'position', position);
+    setJSON(tableJson) {
+      this.objJSON = tableJson;
+      this.$set(this.formValues, 'tableName', tableJson.name);
+      this.$set(this.formValues, 'position', tableJson.position);
     },
   },
 };
@@ -211,6 +210,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tableDesigner {
   width: 100%;
+  font-size: 14px;
 }
 code {
   display: block;

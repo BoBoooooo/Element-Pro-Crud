@@ -39,9 +39,6 @@ import { getTables, getFormKey, getTableDetail } from '@/demo/api/plugin';
 export default {
   name: 'app',
   methods: {
-    showDialog(name) {
-      this.$refs[name].showDialog();
-    },
     getTableFields(tablename) {
       return getFormKey(tablename);
     },
@@ -50,8 +47,7 @@ export default {
       const formValues = this.$refs.formDesigner.getData();
       console.log(formValues);
     },
-    showFormDialog() {
-      this.visible = true;
+    initFormJson() {
       const row = {
         formJson: JSON.stringify({
           list: [],
@@ -77,20 +73,16 @@ export default {
     getTableDetail('person').then((res) => {
       this.tableJSON = res.data;
       this.$nextTick(() => {
-        this.$refs.tableDesigner.setJSON({
-          formJson: JSON.parse(this.tableJSON.formJson),
-          name: '人员信息表',
-          position: 'Person.vue',
-        });
+        this.$refs.tableDesigner.setJSON(JSON.parse(this.tableJSON.formJson));
       });
     });
     crud(DML.SELECT, 'form').then((res) => {
       this.formList = res.data.list;
     });
+    this.initFormJson();
   },
   data() {
     return {
-      visible: false,
       formList: [],
       remoteFuncs: {
         // 请求角色
