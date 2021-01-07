@@ -6,8 +6,8 @@
 -->
 <template>
   <div id="app">
-    <TableDesigner ref="table"></TableDesigner>
-    <FormDesigner ref="form"></FormDesigner>
+    <TableDesigner :allTables="allTables" ref="table"></TableDesigner>
+    <FormDesigner :allTables="allTables" ref="form"></FormDesigner>
     <CrudTable
       tableName="users"
       orderCondition="timestamp desc"
@@ -30,6 +30,7 @@
 
 <script>
 import { DML, crud } from '@/demo/api/crud';
+import { getTables } from '@/demo/api/plugin';
 
 export default {
   name: 'app',
@@ -37,6 +38,14 @@ export default {
     showDialog(name) {
       this.$refs[name].showDialog();
     },
+  },
+  created() {
+    getTables().then((res) => {
+      this.allTables = res.data.map(item => ({
+        label: item.TABLE_NAME,
+        value: item.TABLE_NAME,
+      }));
+    });
   },
   data() {
     return {
@@ -60,6 +69,9 @@ export default {
           });
         },
       },
+      allTables: null,
+
+
     };
   },
 };

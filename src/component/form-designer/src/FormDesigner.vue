@@ -7,12 +7,7 @@
 -->
 <template>
   <!-- 对话框 -->
-  <el-dialog v-if="visible"
-             ref="dialog"
-             fullscreen
-             class="dialog"
-             :visible.sync="visible"
-             append-to-body>
+  <el-dialog v-if="visible" ref="dialog" fullscreen class="dialog" :visible.sync="visible" append-to-body>
     <!-- 对话框 -->
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
@@ -66,17 +61,27 @@
         <el-header class="btn-bar" style="height: 60px;">
           <el-row :gutter="15">
             <!-- 对话框内动态表单 -->
-            <el-col :span="12" v-if="$PROCRUD.getTables">
-              <GenerateForm v-if="visible" ref="generateDialogForm" class="form" hiddenDevModule :value="formValues" :data="formDesign" :remote="remoteFuncs" />
+            <el-col :span="12">
+              <el-form :inline="true" :model="formValues" class="inline-form">
+                <el-form-item label="名称">
+                  <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
+                    <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
+                  </el-select>
+                  <el-input v-else v-model="formValues.tableName" placeholder="请输入表单名称"></el-input>
+                </el-form-item>
+                <el-form-item label="使用位置">
+                  <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
+                </el-form-item>
+              </el-form>
             </el-col>
-            <el-col :span="$PROCRUD.getTables ? 12 : 24" style="text-align:right">
-              <el-button type="text" size="medium" icon="el-icon-view" @click="handlePreview">预览</el-button>
-              <el-button type="text" size="medium" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
-              <el-button type="text" size="medium" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
-              <el-button type="text" size="medium" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
-              <el-button type="text" size="medium" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button type="text" size="medium" icon="el-icon-form" :disabled="!$PROCRUD.getTables" @click="formVisible = true">自动绑定</el-button>
-              <el-button type="text" :disabled="!$PROCRUD.getTables" @click="btnSave_onClick" :loading="btnSaveIsLoading">保存</el-button>
+            <el-col :span="12" style="text-align:right;margin-top:5px">
+              <el-button type="text" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
+              <el-button type="text" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
+              <el-button type="text" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
+              <el-button type="text" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
+              <el-button type="text" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
+              <el-button type="text" size="small" icon="el-icon-form" :disabled="!allTables" @click="formVisible = true">自动绑定</el-button>
+              <el-button type="text" size="small" :disabled="!$PROCRUD.crud" @click="btnSave_onClick" :loading="btnSaveIsLoading">保存</el-button>
             </el-col>
           </el-row>
         </el-header>
@@ -221,31 +226,21 @@ export default {
     Icon,
     SvgIcon,
   },
+  props: {
+    allTables: {
+      type: Array,
+      default: null,
+    },
+  },
   data() {
     return {
-      remoteFuncs: {
-        getTablesOfDB: (resolve) => {
-          // 请求表名列表
-          this.$PROCRUD.getTables().then((res) => {
-            const options = res.data.map(item => ({
-              label: item.TABLE_NAME,
-              value: item.TABLE_NAME,
-            }));
-            resolve(options);
-          });
-        },
-      },
       // 对话框内文本框们填写的值
       formValues: {},
-      // 对话框设计结构json
-      formDesign: {},
       // 保存按钮Loading状态
       btnSaveIsLoading: false,
-      // ---------------以下为原来的代码--------------
       basicComponents,
       layoutComponents,
       advanceComponents,
-      // 用于保存生成后的json，至少要有空结构，初始化时必须赋值
       widgetForm: {
         list: [],
         config: {
@@ -287,9 +282,8 @@ export default {
         // 成功自动识别的字段
         success: [],
       },
-      // 数据库所有表
-      allTables: null,
       visible: false,
+      dialogStatus: null,
     };
   },
   methods: {
@@ -515,7 +509,6 @@ export default {
      */
     async showDialog(param = {}, status = STATUS.CREATE, formValues = {}) {
       // 保存参数用于save方法
-      this.dialogParams = param;
       this.dialogStatus = status;
       if (this.dialogStatus === STATUS.UPDATE) {
         // 填写编辑框，这里如果不用...拷贝会导致污染实参
@@ -531,65 +524,41 @@ export default {
       }
       // 初始化右侧的配置区域
       this.widgetFormSelect = {};
-      // 请求数据库所有表名
-      if (this.$PROCRUD.getTables) {
-        const { data } = await this.$PROCRUD.getTables();
-        this.allTables = data;
-      }
-
-      // 请求对话框内的动态表单json
-      if (this.$PROCRUD.getFormDetail) {
-        const res = await this.$PROCRUD.getFormDetail('dynamictables');
-        this.formDesign = JSON.parse(res.data.formJson);
-      }
       this.visible = true;
     },
     // 保存设计
     btnSave_onClick() {
       this.btnSaveIsLoading = true;
       // 调用此方法验证表单数据和获取表单数据
-      this.$refs.generateDialogForm
-        .getData()
-        .then((formValue) => {
-          const value = JSON.parse(formValue.formJson);
-          value.config.name = formValue.tableName;
-          formValue.formJson = JSON.stringify(value);
-          let type;
-          let msg;
-          // 根据对话框状态判断保存或编辑
-          if (this.dialogStatus === STATUS.CREATE) {
-            type = DML.INSERT;
-            msg = '添加成功';
-          } else {
-            type = DML.UPDATE;
-            msg = '编辑成功';
-          }
-          const opt = {
-            ...formValue,
-            ...this.dialogParams,
-          };
-          // 如果有代理的保存方法
-          this.$PROCRUD.crud(type, 'form', opt)
-            .then(() => {
-              this.btnSaveIsLoading = false;
-              this.$message({
-                type: 'success',
-                message: msg,
-              });
-              this.visible = false;
-              this.$emit('after-save', {
-                status: this.dialogStatus,
-                dialogParams: this.dialogParams,
-                formDesign: this.widgetForm,
-              });
-            })
-            .catch(() => {
-              this.btnSaveIsLoading = false;
-            });
+      const value = JSON.parse(this.formValues.formJson);
+      value.config.name = this.formValues.tableName;
+      this.formValues.formJson = JSON.stringify(value);
+      let type;
+      let msg;
+      // 根据对话框状态判断保存或编辑
+      if (this.dialogStatus === STATUS.CREATE) {
+        type = DML.INSERT;
+        msg = '添加成功';
+      } else {
+        type = DML.UPDATE;
+        msg = '编辑成功';
+      }
+      // 如果有代理的保存方法
+      this.$PROCRUD
+        .crud(type, 'form', this.formValues)
+        .then(() => {
+          this.btnSaveIsLoading = false;
+          this.$message({
+            type: 'success',
+            message: msg,
+          });
+          this.visible = false;
+          this.$emit('after-save', {
+            status: this.dialogStatus,
+            formDesign: this.widgetForm,
+          });
         })
-        .catch((err) => {
-          console.log(err);
-          // 数据校验失败
+        .catch(() => {
           this.btnSaveIsLoading = false;
         });
     },
