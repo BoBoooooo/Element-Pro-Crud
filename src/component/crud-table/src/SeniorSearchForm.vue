@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
+import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 
 import {
   Component, Vue, Prop, Watch,

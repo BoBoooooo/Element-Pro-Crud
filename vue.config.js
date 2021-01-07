@@ -13,17 +13,6 @@ function resolve(dir) {
 }
 module.exports = {
   productionSourceMap: false,
-  // 将 examples 目录添加为新的页面
-  pages: {
-    index: {
-      // page 的入口
-      entry: 'examples/main.ts',
-      // 模板来源
-      template: 'examples/index.html',
-      // 输出文件名
-      filename: 'index.html',
-    },
-  },
   publicPath: './',
   chainWebpack: (config) => {
     if (process.env.IS_REPORT) {
@@ -53,8 +42,6 @@ module.exports = {
       .end();
   },
   configureWebpack: (config) => {
-    config.resolve.alias['@'] = resolve('src');
-    config.resolve.alias.packages = resolve('packages');
     const plugins = [
       new TerserPlugin({
         terserOptions: {

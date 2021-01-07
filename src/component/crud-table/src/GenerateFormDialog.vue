@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import GenerateForm from 'packages/form-designer/src/GenerateForm.vue';
+import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
 import {
   Component, Vue, Emit, Watch, Prop,

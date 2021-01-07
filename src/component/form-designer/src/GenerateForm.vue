@@ -12,8 +12,8 @@
   <div class="table-form-wrapper">
       <!-- dev模式,支持直接修改表单,不需要可删除 -->
       <div v-if="data.config && data.config.name && $store.getters.config && $store.getters.config.isDev === '1' && !hiddenDevModule" class="dev-module">
-        <el-button type="text" @click="showFormDesignerDialog">当前表单: {{data.config.name}} [点此修改]</el-button>
-        <FormDesignerDialog ref="formDesignerDialog"
+        <el-button type="text" @click="showFormDesigner">当前表单: {{data.config.name}} [点此修改]</el-button>
+        <FormDesigner ref="FormDesigner"
                         tableName="dynamictables"
                         @after-save="formOnSave" />
       </div>
@@ -166,7 +166,7 @@ import GenerateFormItem from './GenerateFormItem.vue';
 export default class GenerateForm extends Vue {
   $refs!: {
     generateForm: HTMLFormElement;
-    formDesignerDialog: HTMLFormElement;
+    FormDesigner: HTMLFormElement;
   };
 
   @Prop({
@@ -410,11 +410,7 @@ export default class GenerateForm extends Vue {
       }
     } else {
       let { defaultValue } = config.options;
-      // 如果默认值设置为$开头,则表示要读取vuex中的全局变量
-      // 如设置为 $deptname 则读取 this.$store.getters.deptname
-      if (typeof defaultValue === 'string' && defaultValue.includes('$')) {
-        defaultValue = this.$store.getters[defaultValue.replace('$', '')];
-      } else if (typeof defaultValue === 'boolean') {
+      if (typeof defaultValue === 'boolean') {
         defaultValue = '';
       } else if (defaultValue === '') {
         defaultValue = null;
@@ -450,9 +446,9 @@ export default class GenerateForm extends Vue {
     this.data = formDesign;
   }
 
-  async showFormDesignerDialog() {
+  async showFormDesigner() {
     const res = await this.$PROCRUD.getFormDetail(this.data.config.name);
-    this.$refs.formDesignerDialog.showDialog({ id: res.data.id }, 1, res.data);
+    this.$refs.FormDesigner.showDialog({ id: res.data.id }, 1, res.data);
   }
 }
 </script>

@@ -1,8 +1,8 @@
 import { BaseComponent } from './main';
 
 
-/** FormDesignerDialog Component */
+/** FormDesigner Component */
 // eslint-disable-next-line import/prefer-default-export
-export declare class ElFormDesignerDialog extends BaseComponent {
+export declare class ElFormDesigner extends BaseComponent {
 
 }

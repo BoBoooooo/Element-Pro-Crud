@@ -15,9 +15,9 @@
         <h4>{{tableTitle}}</h4>
       </div>
       <!--dev模式可直接编辑表格-->
-      <div v-if="$store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
-        <el-button type="text" @click="showTableDesignerDialog">当前表格: {{this.tableDesignerName || this.tableName}}  [点此修改]</el-button>
-        <TableDesignerDialog ref="tableDesignerDialog"
+      <div v-if="$store.getters && $store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
+        <el-button type="text" @click="showTableDesigner">当前表格: {{this.tableDesignerName || this.tableName}}  [点此修改]</el-button>
+        <TableDesigner ref="TableDesigner"
                          @after-save="tableOnSave"/>
       </div>
       <!-- table右上角按钮 -->
@@ -239,7 +239,7 @@ export default class CrudTable extends Vue {
     table: HTMLFormElement;
     dialog: HTMLFormElement;
     searchForm: HTMLFormElement;
-    tableDesignerDialog: HTMLFormElement;
+    TableDesigner: HTMLFormElement;
   };
 
   // 当前点击行
@@ -981,9 +981,9 @@ export default class CrudTable extends Vue {
     }
   }
 
-  async showTableDesignerDialog() {
+  async showTableDesigner() {
     const res = await this.$PROCRUD.getTableDetail(this.tableDesignerName || this.tableName);
-    this.$refs.tableDesignerDialog.showDialog({ id: res.data.id }, 1, res.data);
+    this.$refs.TableDesigner.showDialog({ id: res.data.id }, 1, res.data);
   }
 }
 </script>

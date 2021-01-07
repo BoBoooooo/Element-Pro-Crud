@@ -107,7 +107,8 @@ export default function (data, type = 'vue') {
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <!-- import ElementProCrud -->
     <script src="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.umd.js"></script>
-  
+    <!-- import ace.js for preview function in form generator  -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/ace/test/ace.js"></script>
     <script>
       new Vue({
         el: '#app',

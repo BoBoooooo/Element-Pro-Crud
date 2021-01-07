@@ -67,6 +67,7 @@ npm i element-pro-crud -S
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <!-- import ElementProCrud -->
   <script src="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.umd.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/ace/test/ace.js"></script>
 
   <script>
     new Vue({
@@ -111,13 +112,13 @@ npm i element-pro-crud -S
   Vue.use(GenerateForm);
 
   import Vue from 'vue';
-  import { GenerateForm, CrudTable, FormDesignerDialog, TableDesignerDialog } from 'element-pro-crud';
+  import { GenerateForm, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
   import App from './App.vue';
 
   Vue.use(GenerateForm); // 不需要传options
   Vue.use(CrudTable, options);// options介绍如上,getTables,getFormKey两个方法可以缺省
-  Vue.use(FormDesignerDialog, options);// options介绍如上
-  Vue.use(TableDesignerDialog, options);// options介绍如上
+  Vue.use(FormDesigner, options);// options介绍如上
+  Vue.use(TableDesigner, options);// options介绍如上
 
   new Vue({
     el: '#app',
@@ -130,9 +131,9 @@ npm i element-pro-crud -S
 
 - `GenerateForm` // 根据表单设计器json自动渲染表单
 
-- `FormDesignerDialog` // 表单设计器
+- `FormDesigner` // 表单设计器
 
-- `TableDesignerDialog` // 表格设计器
+- `TableDesigner` // 表格设计器
 
 - `CrudTable` // 高级增删改查 ProTable
 

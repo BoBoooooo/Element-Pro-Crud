@@ -6,8 +6,8 @@
 -->
 <template>
   <div id="app">
-    <TableDesignerDialog ref="table"></TableDesignerDialog>
-    <FormDesignerDialog ref="form"></FormDesignerDialog>
+    <TableDesigner ref="table"></TableDesigner>
+    <FormDesigner ref="form"></FormDesigner>
     <CrudTable
       tableName="users"
       orderCondition="timestamp desc"
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { DML, crud } from './api/crud';
+import { DML, crud } from '@/demo/api/crud';
 
 export default {
   name: 'app',
@@ -75,6 +75,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  overflow: auto;
   color: #2c3e50;
   height: 100%;
 }

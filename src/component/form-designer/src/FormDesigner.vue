@@ -7,7 +7,13 @@
 -->
 <template>
   <!-- 对话框 -->
-  <el-dialog v-if="visible" ref="dialog" class="dialog" :visible.sync="visible" fullscreen append-to-body>
+  <el-dialog v-if="visible"
+             ref="dialog"
+             fullscreen
+             class="dialog"
+             :visible.sync="visible"
+             append-to-body>
+    <!-- 对话框 -->
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%;max-width:250px">
@@ -61,7 +67,7 @@
           <el-row :gutter="15">
             <!-- 对话框内动态表单 -->
             <el-col :span="12" v-if="$PROCRUD.getTables">
-              <GenerateForm ref="generateDialogForm" class="form" v-if="visible" hiddenDevModule :value="formValues" :data="formDesign" :remote="remoteFuncs" />
+              <GenerateForm v-if="visible" ref="generateDialogForm" class="form" hiddenDevModule :value="formValues" :data="formDesign" :remote="remoteFuncs" />
             </el-col>
             <el-col :span="$PROCRUD.getTables ? 12 : 24" style="text-align:right">
               <el-button type="text" size="medium" icon="el-icon-view" @click="handlePreview">预览</el-button>
@@ -105,58 +111,14 @@
           </template>
         </GenerateForm>
       </cus-dialog>
-           <cus-dialog
-            :visible="uploadVisible"
-            @on-close="uploadVisible = false"
-            @on-submit="handleUploadJson"
-            ref="uploadJson"
-            width="800px"
-            form
-          >
-            <el-alert type="info" title="在此处导入json"></el-alert>
-            <!-- json编辑器 -->
-        <Editor
-          height="400px"
-          width="100%"
-          ref="uploadeditor"
-          :content="jsonEg"
-          v-model="jsonEg"
-          :options="{
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            wrap: 'free',
-            enableLiveAutocompletion: true,
-            tabSize: 2,
-            fontSize: 15,
-            showPrintMargin: false, //去除编辑器里的竖线
-          }"
-          :lang="'json'"
-          @init="editorInit"
-        >
-        </Editor>
-          </cus-dialog>
-      <!-- json对话框 -->
+      <cus-dialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
+        <el-alert type="info" title="在此处导入JSON"></el-alert>
+        <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
+      </cus-dialog>
+
       <cus-dialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
-        <!-- json编辑器 -->
-        <Editor
-          height="400px"
-          width="100%"
-          ref="jsoneditor"
-          :content="jsonTemplate"
-          v-model="jsonTemplate"
-          :options="{
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            wrap: 'free',
-            enableLiveAutocompletion: true,
-            tabSize: 2,
-            fontSize: 15,
-            showPrintMargin: false, //去除编辑器里的竖线
-          }"
-          :lang="'json'"
-          @init="editorInit"
-        >
-        </Editor>
+        <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+
         <template slot="action">
           <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
         </template>
@@ -166,48 +128,10 @@
         <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
         <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
           <el-tab-pane label="Vue Component" name="vue">
-            <!-- json编辑器 -->
-            <Editor
-              height="500px"
-              width="100%"
-              ref="jsoneditor"
-              :content="vueTemplate"
-              v-model="vueTemplate"
-              :options="{
-                enableBasicAutocompletion: true,
-                enableSnippets: true,
-                wrap: 'free',
-                enableLiveAutocompletion: true,
-                tabSize: 2,
-                fontSize: 15,
-                showPrintMargin: false, //去除编辑器里的竖线
-              }"
-              :lang="'html'"
-              @init="editorInit"
-            >
-            </Editor>
+            <div id="vuecodeeditor" style="height: 500px; width: 100%;">{{ vueTemplate }}</div>
           </el-tab-pane>
           <el-tab-pane label="HTML" name="html">
-            <!-- json编辑器 -->
-            <Editor
-              height="500px"
-              width="100%"
-              ref="jsoneditor"
-              :content="htmlTemplate"
-              v-model="htmlTemplate"
-              :options="{
-                enableBasicAutocompletion: true,
-                enableSnippets: true,
-                wrap: 'free',
-                enableLiveAutocompletion: true,
-                tabSize: 2,
-                fontSize: 15,
-                showPrintMargin: false, //去除编辑器里的竖线
-              }"
-              :lang="'html'"
-              @init="editorInit"
-            >
-            </Editor>
+            <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
           </el-tab-pane>
         </el-tabs>
       </cus-dialog>
@@ -245,7 +169,6 @@ import { DML } from '@/types/common';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
-import Editor from 'vue2-ace-editor';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
@@ -287,7 +210,7 @@ const STATUS = {
 };
 
 export default {
-  name: 'FormDesignerDialog',
+  name: 'FormDesigner',
   components: {
     Draggable,
     WidgetConfig,
@@ -297,7 +220,6 @@ export default {
     GenerateForm,
     Icon,
     SvgIcon,
-    Editor,
   },
   data() {
     return {
@@ -317,7 +239,6 @@ export default {
       formValues: {},
       // 对话框设计结构json
       formDesign: {},
-      visible: false,
       // 保存按钮Loading状态
       btnSaveIsLoading: false,
       // ---------------以下为原来的代码--------------
@@ -351,7 +272,15 @@ export default {
       jsonClipboard: null,
       // json编辑器内的文本
       jsonTemplate: '',
-      jsonEg: '',
+      uploadEditor: null,
+      jsonEg: `{
+        "list": [],
+        "config": {
+          "labelWidth": 100,
+          "labelPosition": "top",
+          "size": "small"
+        }
+      }`,
       formKeys: {
         tableName: '',
         prefill: '',
@@ -360,17 +289,10 @@ export default {
       },
       // 数据库所有表
       allTables: null,
+      visible: false,
     };
   },
   methods: {
-    editorInit() {
-      require('brace/ext/language_tools');
-      require('brace/mode/html');
-      require('brace/mode/json');
-      require('brace/snippets/json');
-      require('brace/snippets/html');
-      require('brace/theme/chrome');
-    },
     setJSON(json) {
       this.widgetForm = json;
 
@@ -380,10 +302,14 @@ export default {
     },
     handleUpload() {
       this.uploadVisible = true;
+      this.$nextTick(() => {
+        this.uploadEditor = ace.edit('uploadeditor');
+        this.uploadEditor.session.setMode('ace/mode/json');
+      });
     },
     handleUploadJson() {
       try {
-        this.setJSON(JSON.parse(this.jsonEg));
+        this.setJSON(JSON.parse(this.uploadEditor.getValue()));
         this.uploadVisible = false;
       } catch (e) {
         this.$message.error(e.message);
@@ -517,8 +443,10 @@ export default {
       this.jsonVisible = true;
       this.jsonTemplate = JSON.stringify(this.widgetForm, null, 2);
 
-      console.log(JSON.stringify(this.widgetForm));
       this.$nextTick(() => {
+        const editor = ace.edit('jsoneditor');
+        editor.session.setMode('ace/mode/json');
+
         if (!this.jsonClipboard) {
           this.jsonClipboard = new Clipboard('.json-btn');
           this.jsonClipboard.on('success', (e) => {
@@ -532,6 +460,12 @@ export default {
       this.codeVisible = true;
       this.htmlTemplate = generateCode(JSON.stringify(this.widgetForm), 'html');
       this.vueTemplate = generateCode(JSON.stringify(this.widgetForm), 'vue');
+      this.$nextTick(() => {
+        const editor = ace.edit('codeeditor');
+        editor.session.setMode('ace/mode/html');
+        const vueeditor = ace.edit('vuecodeeditor');
+        vueeditor.session.setMode('ace/mode/html');
+      });
     },
     // 自动同步后端key
     async handleGenerateKey(generateForm = false) {
@@ -630,18 +564,12 @@ export default {
             type = DML.UPDATE;
             msg = '编辑成功';
           }
-          let promise;
           const opt = {
             ...formValue,
             ...this.dialogParams,
           };
           // 如果有代理的保存方法
-          if (this.promiseForSave) {
-            promise = this.promiseForSave(opt);
-          } else {
-            promise = this.$PROCRUD.crud(type, 'form', opt);
-          }
-          promise
+          this.$PROCRUD.crud(type, 'form', opt)
             .then(() => {
               this.btnSaveIsLoading = false;
               this.$message({

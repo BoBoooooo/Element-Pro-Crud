@@ -1,8 +1,8 @@
 import { BaseComponent } from './main';
 
 
-/** TableDesignerDialog Component */
+/** TableDesigner Component */
 // eslint-disable-next-line import/prefer-default-export
-export declare class ElTableDesignerDialog extends BaseComponent {
+export declare class ElTableDesigner extends BaseComponent {
 
 }

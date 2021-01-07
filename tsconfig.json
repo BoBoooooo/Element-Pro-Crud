@@ -18,8 +18,8 @@
     ],
     "paths": {
       "@/*": [
-        "examples/*",
-        "packages/*",
+        "public/*",
+        "component/*",
         "src/*"
       ]
     },
@@ -31,11 +31,6 @@
     ]
   },
   "include": [
-    "examples/**/*.ts",
-    "examples/**/*.vue",
-    "packages/**/*.ts",
-    "packages/**/*.vue",
-    "packages/**/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue"

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { BaseComponent } from './main';
 import { ElCrudTable } from './crud-table';
-import { ElFormDesignerDialog } from './form-designer-dialog';
-import { ElTableDesignerDialog } from './table-designer-dialog';
+import { ElFormDesigner } from './form-designer-dialog';
+import { ElTableDesigner } from './table-designer-dialog';
 import { ElGenerateForm } from './generate-form';
 
 export interface InstallationOptions {}
@@ -17,11 +17,11 @@ export function install (vue: typeof Vue, options: InstallationOptions): void
 /** ElementUI component common definition */
 export type Component = BaseComponent
 
-/** FormDesignerDialog Component */
-export class FormDesignerDialog extends ElFormDesignerDialog {}
+/** FormDesigner Component */
+export class FormDesigner extends ElFormDesigner {}
 
-/** TableDesignerDialog Component */
-export class TableDesignerDialog extends ElTableDesignerDialog {}
+/** TableDesigner Component */
+export class TableDesigner extends ElTableDesigner {}
 
 /** GenerateForm Component */
 export class GenerateForm extends ElGenerateForm {}

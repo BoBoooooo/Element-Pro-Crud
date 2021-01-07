@@ -1,10 +1,11 @@
 {
   "name": "element-pro-crud",
-  "version": "0.8.0-1",
+  "version": "0.8.0-2",
   "main": "lib/ProCrud.umd.min.js",
   "files": [
     "lib",
-    "types"
+    "types",
+    "public"
   ],
   "typings": "types/index.d.ts",
   "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
@@ -32,7 +33,6 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "fix": "eslint --ext .ts,.vue packages --fix",
     "report": "cross-env IS_REPORT=true vue-cli-service build",
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish",
@@ -86,7 +86,6 @@
     "vue-cli-plugin-commitlint": "^1.0.12",
     "vue-property-decorator": "^8.5.0",
     "vue-template-compiler": "2.6.11",
-    "vue2-ace-editor": "^0.0.15",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",
     "webpack-bundle-analyzer": "^3.3.2"
@@ -99,7 +98,6 @@
   },
   "lint-staged": {
     "src/**/*.{js,vue,ts}": [
-      "npm run fix",
       "npm run lint",
       "git add"
     ]

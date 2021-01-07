@@ -5,18 +5,15 @@
  * @Date: 2020年03月03 11:20:05
  */
 
-import '@/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
+import './icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
-import { FormDesignerDialog, GenerateForm } from 'packages/form-designer';
-import CrudTable from 'packages/crud-table';
-import TableDesignerDialog from 'packages/table-designer';
+import { FormDesigner, GenerateForm } from '@/component/form-designer';
+import CrudTable from '@/component/crud-table';
+import TableDesigner from '@/component/table-designer';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
-  {
-    name: 'FormDesignerDialog',
-    component: FormDesignerDialog,
-  },
+
   {
     name: 'CrudTable',
     // 此处深坑,vue-class-component export的组件没有name属性！！!
@@ -30,8 +27,12 @@ const components = [
     isClassComponent: true,
   },
   {
-    name: 'TableDesignerDialog',
-    component: TableDesignerDialog,
+    name: 'TableDesigner',
+    component: TableDesigner,
+  },
+  {
+    name: 'FormDesigner',
+    component: FormDesigner,
   },
 ];
 
@@ -56,8 +57,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
   install,
-  FormDesignerDialog,
+  FormDesigner,
   CrudTable,
   GenerateForm,
-  TableDesignerDialog,
+  TableDesigner,
 };
