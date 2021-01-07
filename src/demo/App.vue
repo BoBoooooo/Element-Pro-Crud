@@ -7,7 +7,7 @@
 <template>
   <div id="app">
     <TableDesigner :allTables="allTables" ref="table"></TableDesigner>
-    <FormDesigner :allTables="allTables" ref="form"></FormDesigner>
+
     <CrudTable
       tableName="users"
       orderCondition="timestamp desc"
@@ -19,24 +19,42 @@
       fullHeight
     >
     </CrudTable>
-    <el-button @click="showDialog('form')" type="primary"
+    <el-button @click="visible = true" type="primary"
       >打开表单设计器</el-button
     >
     <el-button @click="showDialog('table')" type="danger"
       >打开表格设计器</el-button
     >
+
+
+     <el-dialog v-if="visible" ref="dialog" fullscreen class="dialog" :visible.sync="visible" append-to-body>
+      <FormDesigner ref="formDesigner" :allTables="allTables" :getTableFields="getTableFields">
+        <template #custom-btn>
+          <el-button type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
+        </template>
+      </FormDesigner>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { DML, crud } from '@/demo/api/crud';
-import { getTables } from '@/demo/api/plugin';
+import { getTables, getFormKey } from '@/demo/api/plugin';
 
 export default {
   name: 'app',
   methods: {
     showDialog(name) {
       this.$refs[name].showDialog();
+    },
+    getTableFields() {
+      return getFormKey;
+    },
+    // 保存设计
+    btnSaveOnClick() {
+      const formValues = this.$refs.formDesigner.getData();
+      console.log(formValues);
     },
   },
   created() {
@@ -49,7 +67,7 @@ export default {
   },
   data() {
     return {
-
+      visible: false,
       remoteFuncs: {
         // 请求角色
         funcGetRole(resolve) {
@@ -70,7 +88,7 @@ export default {
         },
       },
       allTables: null,
-
+      btnSaveIsLoading: false,
 
     };
   },

@@ -11,12 +11,10 @@
 <template>
   <div class="table-form-wrapper">
       <!-- dev模式,支持直接修改表单,不需要可删除 -->
-      <div v-if="data.config && data.config.name && $store.getters.config && $store.getters.config.isDev === '1' && !hiddenDevModule" class="dev-module">
+      <!-- <div v-if="data.config && data.config.name && $store.getters.config && $store.getters.config.isDev === '1' && !hiddenDevModule" class="dev-module">
         <el-button type="text" @click="showFormDesigner">当前表单: {{data.config.name}} [点此修改]</el-button>
-        <FormDesigner ref="FormDesigner"
-                        tableName="dynamictables"
-                        @after-save="formOnSave" />
-      </div>
+        <FormDesigner ref="formDesigner" />
+      </div> -->
       <el-form ref="generateForm"
               status-icon
              :class='{"table-form":data.config && data.config.isTableClass}'

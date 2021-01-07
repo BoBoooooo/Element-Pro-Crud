@@ -6,8 +6,6 @@
 @createDate 2018年11月15日16:11:09
 -->
 <template>
-  <!-- 对话框 -->
-  <el-dialog v-if="visible" ref="dialog" fullscreen class="dialog" :visible.sync="visible" append-to-body>
     <!-- 对话框 -->
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
@@ -80,8 +78,8 @@
               <el-button type="text" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
               <el-button type="text" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
               <el-button type="text" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button type="text" size="small" icon="el-icon-form" :disabled="!allTables" @click="formVisible = true">自动绑定</el-button>
-              <el-button type="text" size="small" :disabled="!$PROCRUD.crud" @click="btnSave_onClick" :loading="btnSaveIsLoading">保存</el-button>
+              <el-button type="text" size="small" icon="el-icon-form" :disabled="!allTables || !getFormKey" @click="formVisible = true">自动绑定</el-button>
+              <slot name="custom-btn"></slot>
             </el-col>
           </el-row>
         </el-header>
@@ -154,7 +152,7 @@
       >
         <template v-if="allTables">
           <el-select v-model="formKeys.tableName" filterable style="width:100%" placeholder="选择数据源">
-            <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.TABLE_NAME" :value="item.TABLE_NAME"></el-option>
+            <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.label" :value="item.value"></el-option>
           </el-select>
           <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
         </template>
@@ -165,7 +163,6 @@
         </template>
       </cus-dialog>
     </el-container>
-  </el-dialog>
 </template>
 
 <script>
@@ -231,13 +228,18 @@ export default {
       type: Array,
       default: null,
     },
+    getFormKey: {
+      type: Function,
+      default: null,
+    },
   },
   data() {
     return {
-      // 对话框内文本框们填写的值
-      formValues: {},
-      // 保存按钮Loading状态
-      btnSaveIsLoading: false,
+      // 表单名/使用位置
+      formValues: {
+        tableName: '',
+        position: '',
+      },
       basicComponents,
       layoutComponents,
       advanceComponents,
@@ -282,11 +284,17 @@ export default {
         // 成功自动识别的字段
         success: [],
       },
-      visible: false,
       dialogStatus: null,
     };
   },
   methods: {
+    // 返回当前表单设计器对象
+    getData() {
+      return {
+        ...this.formValues,
+        formJson: JSON.stringify(this.widgetForm),
+      };
+    },
     setJSON(json) {
       this.widgetForm = json;
 
@@ -464,7 +472,7 @@ export default {
     // 自动同步后端key
     async handleGenerateKey(generateForm = false) {
       this.formKeys.success = [];
-      const res = await this.$PROCRUD.getFormKey(this.formKeys.tableName);
+      const res = await this.getFormKey(this.formKeys.tableName);
       if (generateForm) {
         this.autoGenerateFormByBackend(res.data);
         this.$alert('成功表格(默认为一行两列)');
@@ -500,68 +508,6 @@ export default {
         }
       }
     },
-    /**
-     * 显示对话框，父元素调用
-     *
-     * @param {Object} param 对话框保存时的参数
-     * @param {Number} status 对话框状态[添加:0,编辑:1]，必须是STATUS枚举
-     * @param {Object} formValues 编辑时传入所有字段的默认值
-     */
-    async showDialog(param = {}, status = STATUS.CREATE, formValues = {}) {
-      // 保存参数用于save方法
-      this.dialogStatus = status;
-      if (this.dialogStatus === STATUS.UPDATE) {
-        // 填写编辑框，这里如果不用...拷贝会导致污染实参
-        this.formValues = { ...formValues };
-        // 下方设计区域
-        this.widgetForm = JSON.parse(formValues.formJson);
-      } else {
-        this.formValues = {};
-        this.widgetForm = {
-          list: [],
-          config: { labelWidth: 140, labelPosition: 'right', size: 'small' },
-        };
-      }
-      // 初始化右侧的配置区域
-      this.widgetFormSelect = {};
-      this.visible = true;
-    },
-    // 保存设计
-    btnSave_onClick() {
-      this.btnSaveIsLoading = true;
-      // 调用此方法验证表单数据和获取表单数据
-      const value = JSON.parse(this.formValues.formJson);
-      value.config.name = this.formValues.tableName;
-      this.formValues.formJson = JSON.stringify(value);
-      let type;
-      let msg;
-      // 根据对话框状态判断保存或编辑
-      if (this.dialogStatus === STATUS.CREATE) {
-        type = DML.INSERT;
-        msg = '添加成功';
-      } else {
-        type = DML.UPDATE;
-        msg = '编辑成功';
-      }
-      // 如果有代理的保存方法
-      this.$PROCRUD
-        .crud(type, 'form', this.formValues)
-        .then(() => {
-          this.btnSaveIsLoading = false;
-          this.$message({
-            type: 'success',
-            message: msg,
-          });
-          this.visible = false;
-          this.$emit('after-save', {
-            status: this.dialogStatus,
-            formDesign: this.widgetForm,
-          });
-        })
-        .catch(() => {
-          this.btnSaveIsLoading = false;
-        });
-    },
     handleClear() {
       this.widgetForm = {
         list: [],
@@ -574,15 +520,6 @@ export default {
       };
 
       this.widgetFormSelect = {};
-    },
-  },
-  watch: {
-    widgetForm: {
-      handler(newValue) {
-        // 修改设计时json同步变化
-        this.$set(this.formValues, 'formJson', JSON.stringify(newValue));
-      },
-      deep: true,
     },
   },
 };
