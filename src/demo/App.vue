@@ -9,16 +9,16 @@
     <el-container class="container">
       <el-header>表格设计器(TableDesigner)</el-header>
       <el-main>
-        <TableDesigner :formList="formList" :allTables="allTables" ref="tableDesigner"></TableDesigner>
+        <TableDesigner :formList="formList"  ref="tableDesigner"></TableDesigner>
       </el-main>
     </el-container>
 
     <el-container class="container">
       <el-header>表单设计器(FormDesigner)</el-header>
       <el-main>
-        <FormDesigner ref="formDesigner" :allTables="allTables" :getFormKey="getTableFields">
+        <FormDesigner ref="formDesigner" :getFormKey="getTableFields">
           <template #custom-btn>
-            <el-button type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
+            <el-button disabled type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
           </template>
         </FormDesigner>
       </el-main>
@@ -34,7 +34,9 @@
 
 <script>
 import { DML, crud } from '@/demo/api/crud';
-import { getTables, getFormKey, getTableDetail } from '@/demo/api/plugin';
+import {
+  getTables, getFormKey, getTableDetail, getFormDetail,
+} from '@/demo/api/plugin';
 
 export default {
   name: 'app',
@@ -48,18 +50,10 @@ export default {
       console.log(formValues);
     },
     initFormJson() {
-      const row = {
-        formJson: JSON.stringify({
-          list: [],
-          config: {
-            labelWidth: 120,
-            labelPosition: 'top',
-            size: 'small',
-          },
-        }),
-      };
-      this.$nextTick(() => {
-        this.$refs.formDesigner.setJSON(JSON.parse(row.formJson));
+      getFormDetail('person').then((res) => {
+        this.$nextTick(() => {
+          this.$refs.formDesigner.setJSON(JSON.parse(res.data.formJson));
+        });
       });
     },
   },

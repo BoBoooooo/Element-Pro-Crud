@@ -20,7 +20,7 @@
             <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
               <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
             </el-select>
-            <el-input v-else v-model="formValues.tableName" placeholder="请输入表单名称"></el-input>
+            <el-input v-else v-model="formValues.tableName" placeholder="请输入表格名称"></el-input>
           </el-form-item>
           <el-form-item>
             <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
