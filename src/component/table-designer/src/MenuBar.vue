@@ -15,7 +15,7 @@
     <el-dropdown @command="autoSet">
       <el-button size="small">快捷设置<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="generateTableByForm">
+        <el-dropdown-item command="generateTableByForm" v-if="formList.length > 0">
           [请先设置表单]根据表单生成表格
         </el-dropdown-item>
         <el-dropdown-item command="autoSetSearchable">
@@ -24,7 +24,7 @@
         <el-dropdown-item command="autoSetAlign">
           对齐方式：表头居中，数字靠右、变长靠左
         </el-dropdown-item>
-        <el-dropdown-item command="autoSetSearchOption">
+        <el-dropdown-item command="autoSetSearchOption" v-if="formList.length > 0">
           [请先设置表单]分析表单配置以设置表格高级搜索options
         </el-dropdown-item>
       </el-dropdown-menu>
