@@ -2,6 +2,8 @@
 # 🎉 ElementProCrud 🎉
 
 ## [文档地址](http://crud.boboooooo.top)
+## [在线demo](http://server.boboooooo.top:9999/crud)
+## [集成demo](http://server.boboooooo.top:9999/admin)
 
 ## 特性
 - 基于el-table,el-form二次封装,表单表格支持可视化配置
