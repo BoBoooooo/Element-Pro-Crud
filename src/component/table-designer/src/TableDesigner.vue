@@ -68,7 +68,7 @@
             <!-- 高级查询，如果配置了popover同时options存在就显示编辑 -->
             <el-popover v-else-if="column.is === 'popover' && item[column.field]" placement="bottom-start" width="400" trigger="click">
               <!-- 下拉菜单配置 -->
-              <SelectConfig :sourceOption.sync="item[column.field]" />
+              <SelectConfig :dictList="dictList" :sourceOption.sync="item[column.field]" />
               <el-button size="small" slot="reference" type="primary">
                 编辑菜单
               </el-button>
@@ -115,6 +115,11 @@ export default {
     },
     // formList
     formList: {
+      type: Array,
+      default: () => [],
+    },
+    // 字典列表
+    dictList: {
       type: Array,
       default: () => [],
     },

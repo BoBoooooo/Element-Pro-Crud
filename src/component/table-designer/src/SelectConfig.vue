@@ -11,7 +11,7 @@
       <el-radio-group v-model="localOption.remote"
                       size="mini"
                       style="margin: 3px 0 0 0;">
-        <el-radio-button label="dict">字典</el-radio-button>
+        <el-radio-button label="dict" v-if="dictList.length > 0">字典</el-radio-button>
         <el-radio-button label="static">静态</el-radio-button>
         <el-radio-button label="custom">自定义</el-radio-button>
       </el-radio-group>
@@ -29,7 +29,7 @@
       <el-select v-model="localOption.dictType"
                  placeholder="字典类型"
                  filterable>
-        <el-option v-for="item in dictType"
+        <el-option v-for="item in dictList"
                    :key="item.value"
                    :label="item.label"
                    :value="item.value">
@@ -107,8 +107,6 @@ export default {
   },
   data() {
     return {
-      // 字典类型
-      dictType: [],
       // 当前组件内部options
       localOption: null,
     };
@@ -119,15 +117,13 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    // 字典列表
+    dictList: {
+      type: Array,
+      default: () => [],
+    },
   },
   created() {
-    // 请求字典分类
-    this.$PROCRUD.crud(DML.SELECT, 'ad_codelist_type').then((res) => {
-      this.dictType = res.data.list.map(item => ({
-        label: item.codename,
-        value: item.codevalue,
-      }));
-    });
     // 把外部option同步到组件内部
     this.localOption = this.sourceOption;
     // 表单设计中没有根据什么查询的选项

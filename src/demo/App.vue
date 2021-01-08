@@ -6,28 +6,53 @@
 -->
 <template>
   <div id="app">
-    <el-container class="container">
-      <el-header>表格设计器(TableDesigner)</el-header>
-      <el-main>
-        <TableDesigner :formList="formList"  ref="tableDesigner"></TableDesigner>
-      </el-main>
-    </el-container>
+    <el-container>
+      <el-header height="80px" class="top">
+        <div class="logo">
+          <img src="https://pic.downk.cc/item/5ff7d31d3ffa7d37b3c8ece9.png" />
+          <h2>ElementProCrud</h2>
+        </div>
+        <div class="info">
+          <span class="tips">解放双手 早点下班</span>
+        </div>
+        <div class="right">
+          <el-link target="_blank" :underline="false" href="http://server.boboooooo.top:9999/admin/#/login" type="primary">
+            <h3>生产环境示例</h3>
+          </el-link>
+          <el-link target="_blank" :underline="false" href="https://crud.boboooooo.top/" type="primary">
+            <h3>文档</h3>
+          </el-link>
+          <el-link target="_blank" :underline="false" href="https://github.com/BoBoooooo/Element-Pro-Crud" type="primary">
+            <img style="marign-top:10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
+          </el-link>
+        </div>
+      </el-header>
+      <el-main class="content">
+        <el-container class="container">
+          <el-header>表格设计器(TableDesigner)</el-header>
+          <el-main>
+            <TableDesigner :dictList="dictList" :formList="formList" ref="tableDesigner"></TableDesigner>
+          </el-main>
+        </el-container>
 
-    <el-container class="container">
-      <el-header>表单设计器(FormDesigner)</el-header>
-      <el-main>
-        <FormDesigner ref="formDesigner" :getFormKey="getTableFields">
-          <template #custom-btn>
-            <el-button disabled type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
-          </template>
-        </FormDesigner>
+        <el-container class="container">
+          <el-header>表单设计器(FormDesigner)</el-header>
+          <el-main>
+            <FormDesigner ref="formDesigner" :getFormKey="getTableFields">
+              <template #custom-btn>
+                <el-button disabled type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
+              </template>
+            </FormDesigner>
+          </el-main>
+        </el-container>
+        <el-container class="container">
+          <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
+          <el-main>
+            <CrudTable tableName="person" :isMultiple="false"> </CrudTable>
+          </el-main>
+        </el-container>
       </el-main>
-    </el-container>
-    <el-container class="container">
-      <el-header>CrudTable</el-header>
-      <el-main>
-        <CrudTable tableName="person" :isMultiple="false"> </CrudTable>
-      </el-main>
+      <el-footer> </el-footer>
     </el-container>
   </div>
 </template>
@@ -74,9 +99,16 @@ export default {
       this.formList = res.data.list;
     });
     this.initFormJson();
+    crud(DML.SELECT, 'ad_codelist_type').then((res) => {
+      this.dictList = res.data.list.map(item => ({
+        label: item.typeName,
+        value: item.codeValue,
+      }));
+    });
   },
   data() {
     return {
+      dictList: [],
       formList: [],
       remoteFuncs: {
         // 请求角色
@@ -108,6 +140,12 @@ export default {
 html,
 body {
   height: 100%;
+  margin: 0;
+}
+h2,
+h3 {
+  margin: 0;
+  display: inline-block;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -133,6 +171,44 @@ body {
   background: #87c1fa;
   color: #333;
   line-height: 60px;
+}
+.top {
+  padding: 10px 8rem;
+  background: #ddf4ff;
+  text-align: center;
+  .logo {
+    float: left;
+    display: flex;
+    img {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+    }
+    h2 {
+      margin-left: 10px;
+      color: #2196f3;
+      text-shadow: 1px 1px rgb(189, 189, 189);
+    }
+  }
+  .info {
+    display: inline-block;
+    .tips {
+      font-size: 20px !important;
+      font-weight: 600;
+    }
+  }
+  .right {
+    float: right;
+    margin-top: 20px;
+    line-height: 10px;
+    & > * {
+      margin-left: 10px;
+    }
+  }
+}
+.content {
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .el-radio-group {
