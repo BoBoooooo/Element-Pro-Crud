@@ -48,7 +48,32 @@
         <el-container class="container">
           <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
           <el-main>
-            <CrudTable tableName="person" :isMultiple="false"> </CrudTable>
+            <div class="demo-actions">
+              <el-form :inline="true" :model="visibleList">
+                <el-switch v-model="visibleList.btnAdd" inactive-text="新增按钮"></el-switch>
+                <el-switch v-model="visibleList.actionColumnBtnEdit" inactive-text="编辑按钮"></el-switch>
+                <el-switch v-model="visibleList.actionColumnBtnDel" inactive-text="删除按钮"></el-switch>
+                <el-switch v-model="visibleList.actionColumnBtnDetail" inactive-text="查看按钮"></el-switch>
+                <el-switch v-model="visibleList.seniorSearchBtn" inactive-text="高级查询按钮"></el-switch>
+                <el-divider direction="vertical"></el-divider>
+                <el-switch v-model="visibleList.actionColumn" inactive-text="操作列"></el-switch>
+                <el-switch v-model="visibleList.tableTitle" inactive-text="表格标题"></el-switch>
+                <el-switch v-model="visibleList.searchForm" inactive-text="查询区域"></el-switch>
+                <el-divider direction="vertical"></el-divider>
+                <el-switch v-model="readOnly" inactive-text="只读模式"></el-switch>
+              </el-form>
+            </div>
+            <CrudTable tableTitle="人员管理" tableName="person" :readOnly="readOnly" :visibleList="visibleList" :isMultiple="false">
+              <template #column_jobno="{row}">
+                <el-tag>{{ row.jobno }}</el-tag>
+              </template>
+              <template #column_personname="{row}">
+                <span><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
+              </template>
+              <template #btnCustom="{row}">
+                <el-button size="mini" @click="getRowData(row)">自定义</el-button>
+              </template>
+            </CrudTable>
           </el-main>
         </el-container>
       </el-main>
@@ -66,6 +91,9 @@ import {
 export default {
   name: 'app',
   methods: {
+    getRowData(row) {
+      this.$alert(JSON.stringify(row));
+    },
     getTableFields(tablename) {
       return getFormKey(tablename);
     },
@@ -131,6 +159,17 @@ export default {
       },
       allTables: null,
       btnSaveIsLoading: false,
+      readOnly: false,
+      visibleList: {
+        tableTitle: true,
+        btnAdd: true,
+        actionColumnBtnDel: true,
+        actionColumnBtnEdit: true,
+        actionColumnBtnDetail: true,
+        searchForm: true,
+        actionColumn: true,
+        seniorSearchBtn: true,
+      },
     };
   },
 };
@@ -206,13 +245,25 @@ h3 {
     }
   }
 }
+.demo-actions {
+  border: 1px solid #333;
+  padding: 20px;
+  ::v-deep {
+    .el-switch {
+      margin-right: 10px;
+    }
+    .el-form--inline {
+      text-align: left;
+    }
+  }
+}
 .content {
   max-width: 1600px;
   margin: 0 auto;
 }
 
 .el-radio-group {
-  padding-left: 10px!important;
+  padding-left: 10px !important;
 }
 
 .dialog {
