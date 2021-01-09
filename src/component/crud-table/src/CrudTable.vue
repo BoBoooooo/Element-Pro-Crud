@@ -152,8 +152,9 @@
               <slot name="btnCustom"
                     :row="scope.row" />
             </span>
+            <!-- 自定义插槽 -->
             <span v-else-if="column.slotName  && column.slotName !== 'actionColumn'">
-              <slot :name="column.slotName"
+              <slot :name="`column_${column.slotName}`"
                     :row="scope.row"
                     :prop="column.prop"
                     :$index="scope.$index" />
@@ -523,6 +524,22 @@ export default class CrudTable extends Vue {
       viewObj.actionColumnBtnEdit = false;
       viewObj.actionColumnBtnDetail = true;
     }
+    // 操作列是否隐藏
+    if (!viewObj.actionColumn) {
+      this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
+    } else if (!this.tableConfig.columns.find((item: any) => item.slotName === 'actionColumn')) {
+      (this.tableConfig.columns as any).push({
+        prop: '',
+        label: '操作',
+        minWidth: 180,
+        align: 'center',
+        headerAlign: 'center',
+        slotName: 'actionColumn',
+        fixed: 'right',
+        sortable: 'false',
+        searchable: false,
+      });
+    }
     return viewObj;
   }
 
@@ -557,9 +574,9 @@ export default class CrudTable extends Vue {
     promise.then((res) => {
       this.tableConfig = JSON.parse(res.data.formJson);
       // 如果不显示操作列,则隐藏
-      if (!this.view.actionColumn) {
-        this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-      }
+      // if (!this.view.actionColumn) {
+      //   this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
+      // }
       const { actionColumnWidth } = this;
       // 如果显示指明了操作列列宽
       if (actionColumnWidth) {
@@ -1025,7 +1042,7 @@ export default class CrudTable extends Vue {
       padding-left: 15px;
       border-left: 7px solid #007bff;
       font-weight: 500;
-      font-size: 20px;
+      font-size: 18px;
     }
   }
   .btn-bar {
