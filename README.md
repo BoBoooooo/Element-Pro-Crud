@@ -149,7 +149,7 @@ npm i element-pro-crud -S
 | :--------------------: | :---------------------------------------------------------------: | :-------------: | :-------------------------------------: | :-------: |
 | `el-table props` |          el-table原生属性见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
 |       listField        |                        response 中数据位置                        |     String      |             data/data.list              | data.list |
-|      setReadOnly       | GenerateFormDialog 中的表单禁用.null 表示均可编辑;{}表示全部只读; |     Object      |   null/{}/{whiteList:{},blackList:{}}   |   null    |  |
+|      readOnly       | GenerateFormDialog 中的表单禁用.null 表示均可编辑;{}表示全部只读; |     Boolean      |   true/false   |   false    |  |
 |       isMultiple       |                           是否开启多选                            |     Boolean     |               true,false                |   false   |
 |       emptyText        |                      列表数据为空时显示文字                       |     String      |                    -                    | 暂无数据  |
 |        prefill         |                      表单预填项(赋值初始值)                       |     Object      |                    -                    |   null    |

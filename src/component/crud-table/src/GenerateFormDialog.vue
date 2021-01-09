@@ -18,7 +18,7 @@
     <GenerateForm ref="generateDialogForm"
                   :value="formValues"
                   :data="formDesign"
-                  :setReadOnly="readOnly"
+                  :readOnly="isReadOnly"
                   :remote="remoteFuncs"
                   :entity.sync="entity"
                   @btnOnClick="btnOnClick"
@@ -27,7 +27,7 @@
             justify="end"
             slot="footer">
       <slot name="dialogFooter"></slot>
-      <template v-if="readOnly">
+      <template v-if="isReadOnly">
         <el-button @click="visible=false">关 闭</el-button>
       </template>
       <template v-else>
@@ -70,7 +70,7 @@ export default class GenerateFormDialog extends Vue {
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
 
   // 设置只读
-  @Prop({ default: null, type: Object }) setReadOnly!: any;
+  @Prop({ default: false, type: Boolean }) readOnly!: boolean;
 
   // 对话框内加载FormDesigner的表名
   @Prop({
@@ -161,11 +161,8 @@ export default class GenerateFormDialog extends Vue {
     return title;
   }
 
-  get readOnly() {
-    if (this.dialogStatus === STATUS.DETAIL) {
-      return {};
-    }
-    return this.setReadOnly;
+  get isReadOnly() {
+    return this.dialogStatus === STATUS.DETAIL || this.readOnly;
   }
 
   // 内部元素显示控制

@@ -65,7 +65,7 @@
                                   :remote="remote"
                                   :rules="rules[citem.model]"
                                   :widget="citem"
-                                  :readOnly="setReadOnly"
+                                  :readOnly="readOnly"
                                   @btnOnClick="btnOnClick"
                                   v-show="!citem.hidden"
                                   :formTableConfig="formTableConfig">
@@ -118,7 +118,7 @@
                             @selection="getTableSelection($event,item)"
                             :widget="item"
                             :rules="rules[item.model]"
-                            :readOnly="setReadOnly"
+                            :readOnly="readOnly"
                             @btnOnClick="btnOnClick"
                             v-show="!item.hidden"
                             :formTableConfig="formTableConfig">
@@ -189,31 +189,21 @@ export default class GenerateForm extends Vue {
     default: () => ({}),
   })
   entity: any;
-  /**
-   * 设置只读,默认Null为全部不只读,传{}为全部只读
-   * 以下是分别设置黑白名单
-   * {
-   *  whiteList:[],  //设置需要只读的
-   *  blackList:[]   //设置不需要只读的
-   * }
-   */
-  // 表单当前实时对象
 
   @Prop({
-    type: Object,
-    default: null,
+    type: Boolean,
+    default: false,
   })
-  setReadOnly: any;
+  readOnly!: boolean;
 
   // 设置隐藏区域
-
   @Prop({
     type: Array,
     default: () => [],
   })
   setHidden: any;
-  // 远端数据
 
+  // 远端数据
   @Prop({
     type: Object,
     default: () => ({}),
@@ -282,19 +272,6 @@ export default class GenerateForm extends Vue {
         // 表单隐藏设置
         if (this.setHidden.includes(row.model)) {
           row.hidden = true;
-        }
-
-        if (this.setReadOnly) {
-          // 表单只读控制
-          const { whiteList, blackList } = this.setReadOnly;
-          // 默认空对象 代表全部只读
-          if (whiteList == null && blackList == null) {
-            row.options.disabled = true;
-          } else if (blackList && !blackList.includes(row.model)) {
-            row.options.disabled = true;
-          } else if (whiteList && whiteList.includes(row.model)) {
-            row.options.disabled = true;
-          }
         }
         if (this.rules[genList[i].model]) {
           this.rules[genList[i].model] = [

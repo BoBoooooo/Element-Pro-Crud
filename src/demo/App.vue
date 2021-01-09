@@ -212,7 +212,7 @@ h3 {
 }
 
 .el-radio-group {
-  padding-left: 10px;
+  padding-left: 10px!important;
 }
 
 .dialog {

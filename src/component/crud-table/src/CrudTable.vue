@@ -196,7 +196,7 @@
                         :formTableConfig="formTableConfig"
                         :remoteFuncs="remoteFuncs"
                         :visibleList="view"
-                        :setReadOnly="setReadOnly"
+                        :readOnly="readOnly"
                         :append-to-body="dialogAppendToBody"
                         :close_on_click_modal="dialogCloseOnClickModal"
                         :fullscreen="dialogFullscreen"
@@ -288,7 +288,7 @@ export default class CrudTable extends Vue {
   listField!: string;
 
   // 设置只读
-  @Prop({ default: null, type: Object }) setReadOnly!: any;
+  @Prop({ default: false, type: Boolean }) readOnly!: any;
 
   // 添加对话框预填项
   @Prop({ default: null, type: Object }) prefill!: any;
@@ -501,7 +501,7 @@ export default class CrudTable extends Vue {
 
   // 内部元素显示控制
   get view() {
-    return {
+    const viewObj = {
       searchForm: true,
       tableTitle: false,
       btnAdd: true,
@@ -515,6 +515,15 @@ export default class CrudTable extends Vue {
       btnAddOnColumnHeader: false,
       ...this.visibleList,
     };
+    // 只读模式隐藏添加编辑删除按钮
+    if (this.readOnly) {
+      viewObj.btnAdd = false;
+      viewObj.btnAddOnColumnHeader = false;
+      viewObj.actionColumnBtnDel = false;
+      viewObj.actionColumnBtnEdit = false;
+      viewObj.actionColumnBtnDetail = true;
+    }
+    return viewObj;
   }
 
 

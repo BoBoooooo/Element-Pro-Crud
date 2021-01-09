@@ -39,15 +39,15 @@
                 :type="widget.options.dataType"
                 v-model.number="dataModel"
                 :placeholder="widget.options.placeholder"
-                :readonly="widget.options.readonly"
-                :disabled="widget.options.disabled"
+                :readonly="readOnly || widget.options.readonly"
+                :disabled="readOnly || widget.options.disabled"
                 :style="{width: widget.options.width}"></el-input>
       <el-input v-else
                 :type="widget.options.dataType"
                 v-model="dataModel"
                 :placeholder="widget.options.placeholder"
-                :readonly="widget.options.readonly"
-                :disabled="widget.options.disabled"
+                :readonly="readOnly || widget.options.readonly"
+                :disabled="readOnly || widget.options.disabled"
                 :style="{width: widget.options.width}"></el-input>
     </template>
     <template v-if="widget.type == 'button'">
@@ -74,18 +74,14 @@
     <template v-if="widget.type == 'select'">
       <el-select v-model="dataModel"
                  default-first-option
-                 :disabled="widget.options.disabled"
+                 :disabled="readOnly || widget.options.disabled"
+                 :readonly="readOnly || widget.options.readonly"
                  :multiple="widget.options.multiple"
                  allow-create
                  clearable
                  :placeholder="widget.options.placeholder"
                  :style="{width: widget.options.width || '100%'}"
-                 :remote="widget.options.remote === 'search'&& widget.options.remoteSearchFunc&&widget.options.remoteSearchFunc!=''"
-                 :remote-method="search"
-                 filterable
-                 :data-searchable="widget.options.remoteSearchFunc
-                 &&widget.options.remoteSearchFunc!=''
-                 &&widget.options.remote === 'search'">
+                 filterable>
         <el-option v-for="(item,index) in optionsList"
                    :key="index"
                    :value="item.value"
@@ -102,8 +98,8 @@
       <el-input type="textarea"
                 :autosize="{ minRows: 5}"
                 v-model="dataModel"
-                :disabled="widget.options.disabled"
-                :readonly="widget.options.readonly"
+                :disabled="readOnly || widget.options.disabled"
+                :readonly="readOnly || widget.options.readonly"
                 :placeholder="widget.options.placeholder"
                 :style="{width: widget.options.width}"></el-input>
     </template>
@@ -112,14 +108,15 @@
       <el-input-number v-model="dataModel"
                        :style="{width: widget.options.width}"
                        :step="widget.options.step"
-                       :disabled="widget.options.disabled"
+                       :disabled="readOnly || widget.options.disabled"
+                       :readonly="readOnly || widget.options.readonly"
                        controls-position="right"></el-input-number>
     </template>
 
     <template v-if="widget.type == 'radio'">
       <el-radio-group v-model="dataModel"
                       :style="{width: widget.options.width}"
-                      :disabled="widget.options.disabled">
+                      :disabled="readOnly || widget.options.disabled">
         <el-radio :style="{display: widget.options.inline ? 'inline-block' : 'block'}"
                   :label="item.value"
                    v-for="(item, index) in optionsList"
@@ -159,8 +156,8 @@
                       :placeholder="widget.options.placeholder"
                       :start-placeholder="widget.options.startPlaceholder"
                       :end-placeholder="widget.options.endPlaceholder"
-                      :readonly="widget.options.readonly"
-                      :disabled="widget.options.disabled"
+                      :readonly="readOnly || widget.options.readonly"
+                      :disabled="readOnly || widget.options.disabled"
                       :editable="widget.options.editable"
                       :clearable="widget.options.clearable"
                       :arrowControl="widget.options.arrowControl"
@@ -175,8 +172,8 @@
                       :placeholder="widget.options.placeholder"
                       :start-placeholder="widget.options.startPlaceholder"
                       :end-placeholder="widget.options.endPlaceholder"
-                      :readonly="widget.options.readonly"
-                      :disabled="widget.options.disabled"
+                      :readonly="readOnly || widget.options.readonly"
+                      :disabled="readOnly || widget.options.disabled"
                       :editable="widget.options.editable"
                       :clearable="widget.options.clearable"
                       :value-format="widget.options.timestamp ? 'timestamp' : widget.options.format"
@@ -189,19 +186,19 @@
     <template v-if="widget.type =='rate'">
       <el-rate v-model="dataModel"
                :max="widget.options.max"
-               :disabled="widget.options.disabled"
+               :disabled="readOnly || widget.options.disabled"
                :allow-half="widget.options.allowHalf"></el-rate>
     </template>
 
     <template v-if="widget.type == 'color'">
       <el-color-picker v-model="dataModel"
-                       :disabled="widget.options.disabled"
+                       :disabled="readOnly || widget.options.disabled"
                        :show-alpha="widget.options.showAlpha"></el-color-picker>
     </template>
 
     <template v-if="widget.type=='switch'">
       <el-switch v-model="dataModel"
-                 :disabled="widget.options.disabled">
+                 :disabled="readOnly || widget.options.disabled">
       </el-switch>
     </template>
 
@@ -209,7 +206,7 @@
       <el-slider v-model="dataModel"
                  :min="widget.options.min"
                  :max="widget.options.max"
-                 :disabled="widget.options.disabled"
+                 :disabled="readOnly || widget.options.disabled"
                  :step="widget.options.step"
                  :show-input="widget.options.showInput"
                  :range="widget.options.range"
@@ -217,7 +214,7 @@
     </template>
     <template v-if="widget.type == 'cascader'">
       <el-cascader v-model="dataModel"
-                   :disabled="widget.options.disabled"
+                   :disabled="readOnly || widget.options.disabled"
                    :clearable="widget.options.clearable"
                    :placeholder="widget.options.placeholder"
                    :style="{width: widget.options.width}"
@@ -235,7 +232,8 @@
                  :tableDesignerName="widget.options.tableDesignerName"
                  :dialogFormDesignerName="widget.options.dialogFormDesignerName"
                  appendToBody
-                 :visibleList="visibleList"
+                 :readOnly="readOnly || widget.options.readonly"
+                 :visibleList="tableVisibleList"
                  :showPagination="widget.options.showPagination"
                  :isMultiple="widget.options.isMultiple"
                  :tableParams="getTableParams"
@@ -278,7 +276,7 @@
                   :noChildrenText="widget.options.noChildrenText"
                   :noOptionsText="widget.options.noOptionsText"
                   :noResultsText="widget.options.noResultsText"
-                  :disabled="widget.options.disabled"
+                  :disabled="readOnly || widget.options.disabled"
                   :showCount="widget.options.showCount"
                   :disable-branch-nodes="widget.options.disableBranchNodes"
                   :options="widget.options.remoteOptions"
@@ -291,7 +289,7 @@
     <template v-if="widget.type=='richtext'">
       <Tinymce :height="400"
                v-model="dataModel"
-               :readonly="widget.options.readonly"></Tinymce>
+               :readonly="readOnly || widget.options.readonly"></Tinymce>
 
     </template>
     <template v-if="widget.type=='upload'">
@@ -365,10 +363,10 @@ export default class GenerateFormItem extends Vue {
   formTableConfig: any;
 
   @Prop({
-    type: Object,
-    default: () => ({}),
+    type: Boolean,
+    default: false,
   })
-  readOnly: any;
+  readOnly!: boolean;
 
   // 子表单单个组件value
   @Prop()
@@ -417,9 +415,8 @@ export default class GenerateFormItem extends Vue {
         };
       };
     }
-    const model = this.models[this.widget.model];
     this.normalizer = normalizer;
-    this.dataModel = model;
+    this.dataModel = this.models[this.widget.model];
   }
 
   created() {
@@ -456,11 +453,9 @@ export default class GenerateFormItem extends Vue {
 
         this.copyOption = this.widget.options.remoteOptions;
       });
-    } else if (
+    } else if ( // 请求自定义方法
       this.widget.options.remote === 'custom'
-      && this.remote[this.widget.options.remoteFunc]
-      && (this.widget.options.remoteSearchFunc == null || this.widget.options.remoteSearchFunc === '')
-    ) {
+      && this.remote[this.widget.options.remoteFunc]) {
       // 请求自定义接口
       this.remote[this.widget.options.remoteFunc]((data) => {
         if (this.widget.type === 'cascader' || this.widget.type === 'treeselect') {
@@ -478,44 +473,23 @@ export default class GenerateFormItem extends Vue {
         }
         this.copyOption = this.widget.options.remoteOptions;
       });
-    } else if (this.widget.options.remoteSearchFunc != null && this.widget.options.remoteSearchFunc !== '') {
-      // 模糊查询
-      this.widget.options.remoteOptions = [];
-      // 根据默认值加载下拉菜单
-      if (this.dataModel != null && this.dataModel !== '') {
-        this.remote[`${this.widget.options.remoteSearchFunc}ForLoad`]((data) => {
-          this.widget.options.remoteOptions = data.map(item => ({
-            value: item[this.widget.options.props.value],
-            label: item[this.widget.options.props.label],
-            rightLabel: item[this.widget.options.props.rightLabel],
-          }));
-          this.copyOption = this.widget.options.remoteOptions;
-        }, this.dataModel);
-      }
     }
   }
 
   // 子表在只读模式下隐藏增删改按钮
-  get visibleList() {
+  get tableVisibleList() {
     const view = {
       ...this.widget.options.visibleList,
       btnAdd: false,
       btnAddOnColumnHeader: this.widget.options.visibleList.btnAdd,
     };
-    if ((this.readOnly && Object.keys(this.readOnly).length === 0) || this.widget.options.readonly) {
-      view.btnAddOnColumnHeader = false;
-      view.actionColumnBtnDel = false;
-      view.actionColumnBtnEdit = false;
-      view.actionColumnBtnDetail = true;
-      view.btnImport = false;
-    }
     return view;
   }
 
   // 附件列表在只读模式下隐藏增删改按钮
   get fileVisibleList() {
     const view: any = {};
-    if ((this.readOnly && Object.keys(this.readOnly).length === 0) || this.widget.options.readonly) {
+    if (this.readOnly || this.widget.options.readonly) {
       view.upload = false;
       view.btnEdit = false;
       view.btnDel = false;
@@ -656,28 +630,6 @@ export default class GenerateFormItem extends Vue {
     this.$emit('btnOnClick', widget);
   }
 
-  // 查询远端数据
-  search(txt) {
-    this.remote[this.widget.options.remoteSearchFunc]((data) => {
-      this.widget.options.remoteOptions = data.map(item => ({
-        value: item[this.widget.options.props.value],
-        label: item[this.widget.options.props.label],
-        rightLabel: item.rightLabel,
-      }));
-    }, txt);
-  }
-
-  selectFilter(val) {
-    if (val) {
-      const arr = this.copyOption.filter(item => this.$pinyinmatch.match(item.label || item.value, val));
-      this.widget.options.remoteOptions = arr;
-      this.widget.options.options = arr;
-    } else {
-      this.widget.options.options = this.copyOption;
-      this.widget.options.remoteOptions = this.copyOption;
-    }
-  }
-
   getTableSelection(selection) {
     this.$emit('selection', selection);
   }
@@ -723,5 +675,8 @@ export default class GenerateFormItem extends Vue {
 <style rel="stylesheet/scss" lang="scss" scoped>
 p {
   margin: 0;
+}
+.el-radio-group{
+  padding-left: 10px;
 }
 </style>
