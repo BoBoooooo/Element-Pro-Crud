@@ -27,7 +27,7 @@
       >
       <!-- 高级查询表单 -->
       <SeniorSearchForm
-        v-if="showSeniorSearchForm"
+        v-if="showSeniorSearchFormButton"
         :remoteFuncs="remoteFuncs"
         @fetchSearch="getFetchParamsSearch"
         :columns="columns"
@@ -80,7 +80,7 @@ export default class SearchForm extends Vue {
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
 
   // 是否显示高级查询按钮
-  @Prop({ default: true, type: Boolean }) showSeniorSearchForm!: boolean;
+  @Prop({ default: true, type: Boolean }) showSeniorSearchFormButton!: boolean;
 
   // 表格设计json
   @Prop({
