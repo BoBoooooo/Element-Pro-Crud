@@ -473,6 +473,13 @@ export default class CrudTable extends Vue {
   })
   emptyText!: string;
 
+  // columns
+  @Prop({
+    type: Object,
+    default: null,
+  })
+  columns!: any;
+
 
   // 分页
   get pagination() {
@@ -553,19 +560,9 @@ export default class CrudTable extends Vue {
   }
 
   created() {
-    if (!this.$PROCRUD.getTableDetail) {
-      this.$message.warning('请先设置getTableDetail方法,请求表格json');
-      this.tableConfig = {
-        columns: [{
-          prop: '',
-          label: '请先设置tableConfig',
-          minWidth: '100',
-          sortable: 'custom',
-          slotName: '',
-          align: 'center',
-          headerAlign: 'center',
-        }],
-      } as any;
+    // 外侧传入表格json
+    if (this.columns) {
+      this.tableConfig = this.columns;
       return;
     }
     // 请求表格设计json
@@ -573,10 +570,6 @@ export default class CrudTable extends Vue {
     // 加载表格结构
     promise.then((res) => {
       this.tableConfig = JSON.parse(res.data.formJson);
-      // 如果不显示操作列,则隐藏
-      // if (!this.view.actionColumn) {
-      //   this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-      // }
       const { actionColumnWidth } = this;
       // 如果显示指明了操作列列宽
       if (actionColumnWidth) {

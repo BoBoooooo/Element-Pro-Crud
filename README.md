@@ -148,6 +148,7 @@ npm i element-pro-crud -S
 |          参数          |                               说明                                |      类型       |                 可选值                  |  默认值   |
 | :--------------------: | :---------------------------------------------------------------: | :-------------: | :-------------------------------------: | :-------: |
 | `el-table props` |          el-table原生属性见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
+|       columns        |                       表格json置                        |     Object      |             -             | null |
 |       listField        |                        response 中数据位置                        |     String      |             data/data.list              | data.list |
 |      readOnly       | GenerateFormDialog 中的表单禁用.null 表示均可编辑;{}表示全部只读; |     Boolean      |   true/false   |   false    |  |
 |       isMultiple       |                           是否开启多选                            |     Boolean     |               true,false                |   false   |
