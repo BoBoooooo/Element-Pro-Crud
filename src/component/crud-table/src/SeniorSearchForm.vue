@@ -69,7 +69,10 @@ export default class SeniorSearchForm extends Vue {
 
   entity: any = {};
 
-  formDesign = {};
+  formDesign = {
+    config: {},
+    list: [],
+  };
 
   @Prop({
     type: Array,
@@ -84,10 +87,6 @@ export default class SeniorSearchForm extends Vue {
   $refs!: {
     generateDialogForm: HTMLFormElement;
   };
-
-  created() {
-    this.autoGenerateFormByBackend();
-  }
 
   resetForm() {
     this.$refs.generateDialogForm.resetForm();
@@ -118,92 +117,62 @@ export default class SeniorSearchForm extends Vue {
       const {
         type, label, prop, option,
       } = column;
-      const row: any = {
-        type: 'grid',
-        columns: [],
+      const input: any = {
+        type: 'input',
+        name: label,
         options: {
-          gutter: 0,
+          type: 'input',
+          dataType: 'string',
+          placeholder: `请输入${label}`,
+          width: '100%',
         },
-        model: '1575516929000_36539',
+        model: prop,
         rules: [],
       };
-      const input: any = {
-        span: 24,
-        list: [
-          {
-            type: 'input',
-            name: label,
-            options: {
-              type: 'input',
-              dataType: 'string',
-              placeholder: `请输入${label}`,
-              width: '100%',
-            },
-            model: prop,
-            rules: [],
-          },
-        ],
-      };
       const date: any = {
-        span: 24,
-        list: [
-          {
-            type: 'date',
-            name: label,
-            model: prop,
-            rules: [],
-            options: {
-              editable: true,
-              clearable: true,
-              startPlaceholder: '请选择开始时间',
-              endPlaceholder: '请选择结束时间',
-              type: 'monthrange',
-              format: 'yyyy-MM',
-              width: '100%',
-            },
-          },
-        ],
+        type: 'date',
+        name: label,
+        model: prop,
+        rules: [],
+        options: {
+          editable: true,
+          clearable: true,
+          startPlaceholder: '请选择开始时间',
+          endPlaceholder: '请选择结束时间',
+          type: 'monthrange',
+          format: 'yyyy-MM',
+          width: '100%',
+        },
       };
       const select: any = {
-        span: 24,
-        list: [
-          {
-            type: 'select',
-            name: label,
-            options: {
-              clearable: true,
-              options: [],
-              allowCreate: false,
-              remote: 'dict',
-              remoteOptions: [],
-              props: {
-                value: 'value',
-                label: 'label',
-              },
-              remoteFunc: '',
-              dictType: '',
-              ...option,
-              placeholder: `请选择${label}`,
-              width: '100%',
-            },
-            model: prop,
-            rules: [],
+        type: 'select',
+        name: label,
+        options: {
+          clearable: true,
+          options: [],
+          allowCreate: false,
+          remote: 'dict',
+          remoteOptions: [],
+          props: {
+            value: 'value',
+            label: 'label',
           },
-        ],
+          remoteFunc: '',
+          dictType: '',
+          ...option,
+          placeholder: `请选择${label}`,
+          width: '100%',
+        },
+        model: prop,
+        rules: [],
       };
-      if (
-        prop.includes('date')
-        || prop.includes('time')
-        || label.includes('日期')
-        || label.includes('时间')
-      ) {
-        row.columns.push(date);
+      if (prop.includes('date') || prop.includes('time') || label.includes('日期') || label.includes('时间')) {
+        formJson.list.push(date);
       } else if (option && option.type === 'select') {
-        row.columns.push(select);
+        formJson.list.push(select);
       } else {
-        row.columns.push(input);
+        formJson.list.push(input);
       }
-      formJson.list.push(row);
     }
     this.formDesign = formJson;
   }
