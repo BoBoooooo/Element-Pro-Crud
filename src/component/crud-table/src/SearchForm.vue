@@ -7,54 +7,41 @@
 
 <template>
   <div class="search-form-container">
-    <el-input
-      placeholder="请输入查询内容"
-      @clear="clearEvent"
-      clearable
-      @change="changeEvent"
-      v-model="searchContent"
-      class="input"
-    >
+    <el-input placeholder="请输入查询内容"
+              @clear="clearEvent"
+              clearable
+              @change="changeEvent"
+              v-model="searchContent"
+              class="input">
     </el-input>
     <el-button-group>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-search"
-        @click="btnSearchOnClick()"
-        class="tool-btn"
-        >查询</el-button
-      >
+      <el-button size="mini"
+                 type="primary"
+                 icon="el-icon-search"
+                 @click="btnSearchOnClick()"
+                 class="tool-btn">查询</el-button>
       <!-- 高级查询表单 -->
-      <SeniorSearchForm
-        v-if="showSeniorSearchFormButton"
-        :remoteFuncs="remoteFuncs"
-        @fetchSearch="getFetchParamsSearch"
-        :columns="columns"
-      >
+      <SeniorSearchForm v-if="showSeniorSearchFormButton && !$slots.seniorSearchForm"
+                        :remoteFuncs="remoteFuncs"
+                        @fetchSearch="getFetchParamsSearch"
+                        :columns="columns">
       </SeniorSearchForm>
       <!-- 自定义高级查询表单-->
       <slot name="seniorSearchForm"></slot>
-
-      <el-button
-        size="mini"
-        icon="el-icon-refresh"
-        @click="clearEvent()"
-        class="tool-btn"
-        >清空</el-button
-      >
+      <el-button size="mini"
+                 icon="el-icon-refresh"
+                 @click="clearEvent()"
+                 class="tool-btn">清空</el-button>
     </el-button-group>
     <div class="tips">
       <!-- 提示当前查询内容 -->
       <template v-if="isArray">
-        <el-tag
-          v-for="(item, index) in paramsTips"
-          size="small"
-          effect="plain"
-          :key="index"
-          closable
-          @close="handleClose(item)"
-        >
+        <el-tag v-for="(item, index) in paramsTips"
+                size="small"
+                effect="plain"
+                :key="index"
+                closable
+                @close="handleClose(item)">
           {{ item.label + ":" + item.value }}
         </el-tag>
       </template>
@@ -104,9 +91,7 @@ export default class SearchForm extends Vue {
 
   // 标签关闭事件
   handleClose(tag) {
-    this.paramsTips = this.paramsTips.filter(
-      item => item.field !== tag.field,
-    );
+    this.paramsTips = this.paramsTips.filter(item => item.field !== tag.field);
     this.$emit(
       'update:searchFormCondition',
       this.paramsTips.map(item => ({
@@ -137,9 +122,7 @@ export default class SearchForm extends Vue {
   getParams() {
     let params: any = [];
     // 拿到所有字段
-    const props = this.columns
-      .filter(item => item.searchable)
-      .map(item => item.prop);
+    const props = this.columns.filter(item => item.searchable).map(item => item.prop);
     const str = props.toString();
     if (this.searchContent) {
       params = [
@@ -218,10 +201,10 @@ export default class SearchForm extends Vue {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-form-container {
   float: left;
-  .tool-btn{
-    display:inline;
+  .tool-btn {
+    display: inline;
     height: 29px;
-    border-radius:0
+    border-radius: 0;
   }
   .input {
     /deep/ .el-input__inner {

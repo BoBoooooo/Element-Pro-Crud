@@ -168,10 +168,6 @@
       <!-- 分页 -->
       <div style="overflow:hidden;background:white"
            class="mt-8">
-        <!-- 表格底部左侧功能按钮 -->
-        <div style="float:left">
-          <slot name="bottom-btn"></slot>
-        </div>
         <el-pagination v-if="showPagination"
                        :current-page="pagination.pageIndex"
                        :page-sizes="pageSizes"
