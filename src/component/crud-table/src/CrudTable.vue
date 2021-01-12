@@ -534,7 +534,7 @@ export default class CrudTable extends Vue {
       (this.tableConfig.columns as any).push({
         prop: '',
         label: '操作',
-        minWidth: 180,
+        minWidth: 220,
         align: 'center',
         headerAlign: 'center',
         slotName: 'actionColumn',
