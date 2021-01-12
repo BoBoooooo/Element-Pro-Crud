@@ -16,15 +16,6 @@
         <el-radio-button label="custom">自定义</el-radio-button>
       </el-radio-group>
     </div>
-    <div class="bar">
-      <h2>查询条件使用</h2>
-      <el-radio-group v-model="localOption.selectBy"
-                      size="mini"
-                      style="margin: 3px 0 0 0;">
-        <el-radio-button label="value">value</el-radio-button>
-        <el-radio-button label="label">label</el-radio-button>
-      </el-radio-group>
-    </div>
     <template v-if="localOption.remote=='dict'">
       <el-select v-model="localOption.dictType"
                  placeholder="字典类型"
@@ -33,8 +24,6 @@
                    :key="item.value"
                    :label="item.label"
                    :value="item.value">
-          <span style="float: left">{{ item.label }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
         </el-option>
       </el-select>
     </template>
@@ -126,10 +115,6 @@ export default {
   created() {
     // 把外部option同步到组件内部
     this.localOption = this.sourceOption;
-    // 表单设计中没有根据什么查询的选项
-    if (this.localOption.selectBy == null) {
-      this.$set(this.localOption, 'selectBy', 'label');
-    }
   },
   methods: {
     // 添加下拉列表固定选项
