@@ -6,33 +6,50 @@
  -->
 
 <template>
-  <div class="search-form-container">
-    <el-input placeholder="请输入查询内容"
-              @clear="clearEvent"
-              clearable
-              @change="changeEvent"
-              v-model="searchContent"
-              class="input">
-    </el-input>
-    <el-button-group>
-      <el-button size="mini"
-                 type="primary"
-                 icon="el-icon-search"
-                 @click="btnSearchOnClick()"
-                 class="tool-btn">查询</el-button>
-      <!-- 高级查询表单 -->
-      <SeniorSearchForm v-if="showSeniorSearchFormButton && !$slots.seniorSearchForm"
-                        :remoteFuncs="remoteFuncs"
-                        @fetchSearch="getFetchParamsSearch"
-                        :columns="columns">
-      </SeniorSearchForm>
-      <!-- 自定义高级查询表单-->
-      <slot name="seniorSearchForm"></slot>
-      <el-button size="mini"
-                 icon="el-icon-refresh"
-                 @click="clearEvent()"
-                 class="tool-btn">清空</el-button>
-    </el-button-group>
+  <div class="search-form-container" :style="{
+    float: searchMode === 'cover' ? 'none' : 'left'
+  }">
+    <template v-if="searchMode === 'popover'">
+      <el-input placeholder="请输入查询内容"
+                @clear="clearEvent"
+                clearable
+                @change="changeEvent"
+                v-model="searchContent"
+                class="input">
+      </el-input>
+      <el-button-group>
+        <el-button size="mini"
+                   type="primary"
+                   icon="el-icon-search"
+                   @click="btnSearchOnClick()"
+                   class="tool-btn">查询</el-button>
+        <!-- 高级查询表单 -->
+        <SeniorSearchForm v-if="showSeniorSearchFormButton"
+                          :remoteFuncs="remoteFuncs"
+                          @fetchSearch="getFetchParamsSearch"
+                          :columns="columns">
+        </SeniorSearchForm>
+        <!-- 自定义高级查询表单-->
+        <slot name="seniorSearchForm"></slot>
+
+        <el-button size="mini"
+                   icon="el-icon-refresh"
+                   @click="clearEvent()"
+                   class="tool-btn">清空</el-button>
+      </el-button-group>
+    </template>
+    <template v-else>
+    <!-- 高级查询表单 -->
+      <SeniorSearchFormCover
+          v-if="showSeniorSearchFormButton"
+          :remoteFuncs="remoteFuncs"
+          @fetchSearch="getFetchParamsSearch"
+          :columns="columns"
+        >
+        <slot></slot>
+      </SeniorSearchFormCover>
+    </template>
+
     <div class="tips">
       <!-- 提示当前查询内容 -->
       <template v-if="isArray">
@@ -55,11 +72,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import SeniorSearchForm from './SeniorSearchForm.vue';
+import SeniorSearchFormCover from './SeniorSearchFormCover.vue';
 
 @Component({
   name: 'SearchForm',
   components: {
     SeniorSearchForm,
+    SeniorSearchFormCover,
   },
 })
 export default class SearchForm extends Vue {
@@ -75,6 +94,13 @@ export default class SearchForm extends Vue {
     required: true,
   })
   columns: any;
+
+  // 查询模式
+  @Prop({
+    type: String,
+    default: 'popover',
+  })
+  searchMode!: string;
 
   // 查询输入框内容
   searchContent = '';

@@ -59,11 +59,12 @@
                 <el-switch v-model="visibleList.actionColumn" inactive-text="操作列"></el-switch>
                 <el-switch v-model="visibleList.tableTitle" inactive-text="表格标题"></el-switch>
                 <el-switch v-model="visibleList.searchForm" inactive-text="查询区域"></el-switch>
+                <el-switch v-model="searchMode" inactive-text="平铺高级查询"></el-switch>
                 <el-divider direction="vertical"></el-divider>
                 <el-switch v-model="readOnly" inactive-text="只读模式"></el-switch>
               </el-form>
             </div>
-            <CrudTable tableTitle="人员管理" tableName="person" :readOnly="readOnly" :visibleList="visibleList" :isMultiple="false">
+            <CrudTable :searchMode="searchMode? 'cover':'popover'" tableTitle="人员管理" tableName="person" :readOnly="readOnly" :visibleList="visibleList" :isMultiple="false">
               <template #column_jobno="{row}">
                 <el-tag>{{ row.jobno }}</el-tag>
               </template>
@@ -138,25 +139,6 @@ export default {
     return {
       dictList: [],
       formList: [],
-      remoteFuncs: {
-        // 请求角色
-        funcGetRole(resolve) {
-          crud(DML.SELECT, 'role').then((res) => {
-            const options = res.data.list.map(item => ({
-              label: item.roleName,
-              value: item.id,
-            }));
-            resolve(options);
-          });
-        },
-        // 请求部门tree
-        funcGetDeptTree: (resolve) => {
-          // 此处暂时写死 admin权限的账号可以看到全部部门
-          crud(DML.TREE, 'dept').then((res) => {
-            resolve(res.data);
-          });
-        },
-      },
       allTables: null,
       btnSaveIsLoading: false,
       readOnly: false,
@@ -170,6 +152,7 @@ export default {
         actionColumn: true,
         seniorSearchBtn: true,
       },
+      searchMode: false,
     };
   },
 };

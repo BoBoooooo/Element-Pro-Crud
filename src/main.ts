@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import App from '@/demo/App.vue';
-// 导入ElementProCrud
 // 引入ElementUI
 import '@/demo/element';
 import axios from '@/demo/api/axios';
 import * as pluginsApis from '@/demo/api/plugin';
 import { crud } from '@/demo/api/crud';
+// 导入ElementProCrud
 import plugin from './index';
 
 

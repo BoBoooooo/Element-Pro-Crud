@@ -9,7 +9,10 @@
   <div class="CrudTable">
     <div class="base-table">
       <!-- 表格左侧标题 -->
-      <div class="table-title"
+      <div :class="{
+        'table-title': searchMode === 'popover',
+        'table-title-absolute': searchMode === 'cover'
+      }"
            v-if="view.tableTitle && tableTitle">
         <!-- 表格标题 -->
         <h4>{{tableTitle}}</h4>
@@ -21,7 +24,7 @@
                          @after-save="tableOnSave"/>
       </div> -->
       <!-- table右上角按钮 -->
-      <div class="btn-bar">
+      <div class="btn-bar" v-if="searchMode === 'popover'">
         <slot name="btnBarPrevBtn" />
         <!-- 批量删除按钮 -->
         <el-button v-if="view.btnDel"
@@ -39,6 +42,7 @@
 
       <SearchForm ref="searchForm"
                   v-if="view.searchForm"
+                  :searchMode="searchMode"
                   :showSeniorSearchFormButton="view.seniorSearchBtn"
                   :columns="tableConfig.columns"
                   @click="fetchHandler(false,true)"
@@ -49,6 +53,24 @@
                   <template #seniorSearchForm>
                     <slot name="seniorSearchForm"></slot>
                   </template>
+                    <template v-if="searchMode === 'cover'">
+                      <!-- table右上角按钮 -->
+                      <div class="btn-bar">
+                        <slot name="btnBarPrevBtn" />
+                        <!-- 批量删除按钮 -->
+                        <el-button v-if="view.btnDel"
+                                  @click="btnDeletesOnClick"
+                                  type="primary"
+                                  size="mini"
+                                  icon="el-icon-delete">删除</el-button>
+                        <!-- 添加按钮 -->
+                        <el-button v-if="view.btnAdd"
+                                  type="primary"
+                                  icon="el-icon-plus"
+                                  size="mini"
+                                  @click.stop="btnAdd()">{{text.add}}</el-button>
+                      </div>
+                    </template>
       </SearchForm>
       <!-- 表格主体 -->
       <el-table v-loading.lock="loading"
@@ -276,6 +298,13 @@ export default class CrudTable extends Vue {
 
   // 表格数据
   tableData = [];
+
+  // 查询模式
+  @Prop({
+    type: String,
+    default: 'popover',
+  })
+  searchMode!: string;
 
   // listField
   @Prop({
@@ -1023,10 +1052,23 @@ export default class CrudTable extends Vue {
 .CrudTable {
   background: white;
   padding: 10px;
+  position: relative;
   .table-title {
     float: left;
     margin-left: 5px;
     h4 {
+      margin: 2px 30px 0px 0px;
+      padding-left: 15px;
+      border-left: 7px solid #007bff;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+  .table-title-absolute{
+    position: absolute;
+    top: 110px;
+    left: 10px;
+     h4 {
       margin: 2px 30px 0px 0px;
       padding-left: 15px;
       border-left: 7px solid #007bff;

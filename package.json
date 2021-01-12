@@ -33,7 +33,7 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "report": "cross-env IS_REPORT=true vue-cli-service build",
+    "report": "cross-env IS_REPORT=true vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish",
     "log": "conventional-changelog --config ./node_modules/vue-cli-plugin-commitlint/lib/log -i CHANGELOG.md -s -r 0",
