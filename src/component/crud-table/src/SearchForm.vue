@@ -6,7 +6,8 @@
  -->
 
 <template>
-  <div class="search-form-container" :style="{
+  <div class="search-form-container"
+       :style="{
     float: searchMode === 'cover' ? 'none' : 'left'
   }">
     <template v-if="searchMode === 'popover'">
@@ -39,13 +40,11 @@
       </el-button-group>
     </template>
     <template v-else>
-    <!-- 高级查询表单 -->
-      <SeniorSearchFormCover
-          v-if="showSeniorSearchFormButton"
-          :remoteFuncs="remoteFuncs"
-          @fetchSearch="getFetchParamsSearch"
-          :columns="columns"
-        >
+      <!-- 高级查询表单 -->
+      <SeniorSearchFormCover v-if="showSeniorSearchFormButton"
+                             :remoteFuncs="remoteFuncs"
+                             @fetchSearch="getFetchParamsSearch"
+                             :columns="columns">
         <slot></slot>
       </SeniorSearchFormCover>
     </template>
@@ -232,42 +231,24 @@ export default class SearchForm extends Vue {
     height: 29px;
     border-radius: 0;
   }
+  /deep/.el-input__suffix {
+    top: -5px;
+  }
   .input {
-    /deep/ .el-input__inner {
+    display: inline-block;
+    width: 300px;
+    ::v-deep .el-input__inner {
       height: 29px;
       line-height: 29px;
       border-radius: 0;
       display: inline-block;
     }
   }
-  /deep/.el-input {
-    /deep/.el-input__suffix-inner > div {
-      display: inline;
-    }
-    display: inline-block;
-    width: 20vw;
-    vertical-align: -1px;
-  }
-  /deep/.el-input__suffix {
-    top: -5px;
-  }
-
-  /deep/.el-input-group__append {
-    span {
-      display: inline-block;
-      width: 30px;
-      margin-left: 30px;
-    }
-  }
-  /deep/.el-input__icon {
-    cursor: pointer;
-    font-weight: 600;
-  }
   .tips {
     display: inline-block;
     vertical-align: 1px;
     margin-left: 5px;
-    /deep/.el-tag {
+    ::v-deep.el-tag {
       border-radius: 0;
       margin-right: 5px;
     }
