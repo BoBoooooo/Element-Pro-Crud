@@ -8,6 +8,7 @@
       :label-width="
         data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'
       "
+      :size="data.config.size"
     >
       <draggable
         v-model="data.list"

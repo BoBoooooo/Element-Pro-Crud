@@ -6,10 +6,29 @@
 -->
 <template>
   <div class="form-config-container">
-    <el-form label-position="top">
-      <el-form-item label="是否使用表格布局">
-        <el-switch v-model="data.isTableClass"
-                   @change="isTableClass"></el-switch>
+    <el-form size="mini" label-position="top">
+      <el-form-item label="表单名称">
+        <el-input v-model="data.name"
+                  placeholder="表单名称"></el-input>
+      </el-form-item>
+      <el-form-item label="使用位置">
+        <el-input v-model="data.position"
+                  placeholder="表单使用位置"></el-input>
+      </el-form-item>
+      <el-form-item label="表单尺寸">
+        <el-radio-group @change="isTableClass"
+                        v-model="data.size">
+          <el-radio-button label="medium">中等</el-radio-button>
+          <el-radio-button label="small">较小</el-radio-button>
+          <el-radio-button label="mini">迷你</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="布局方式">
+        <el-radio-group @change="isTableClass"
+                        v-model="data.isTableClass">
+          <el-radio-button :label="false">普通布局</el-radio-button>
+          <el-radio-button :label="true">表格布局</el-radio-button>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="标签对齐方式">
         <el-radio-group v-model="data.labelPosition">
@@ -29,9 +48,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
 export default class FormConfig extends Vue {
@@ -44,7 +61,6 @@ export default class FormConfig extends Vue {
   isTableClass() {
     if (this.data.isTableClass) {
       this.data.labelPosition = 'right';
-      this.data.labelWidth = 110;
     }
   }
 }

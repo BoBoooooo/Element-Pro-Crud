@@ -15,8 +15,19 @@
     </template>
     <template v-if="element.type === 'input'">
       <el-input v-model="element.options.defaultValue"
+                :show-word-limit="element.options.showWordLimit"
+                :maxlength="element.options.maxLength"
                 :style="{width: element.options.width}"
-                :placeholder="element.options.placeholder"></el-input>
+                :placeholder="element.options.placeholder"
+                :suffix-icon="element.options.suffix"
+                :prefix-icon="element.options.prefix">
+                  <span slot="prepend" v-if="element.options.prepend">
+                    {{element.options.prepend}}
+                  </span>
+                  <span slot="append" v-if="element.options.append">
+                    {{element.options.append}}
+                  </span>
+      </el-input>
     </template>
      <template v-if="element.type === 'text'">
         <h3 style="
@@ -43,6 +54,8 @@
     <template v-if="element.type === 'textarea'">
       <el-input type="textarea"
                 :rows="5"
+                :maxlength="element.options.maxLength"
+                :show-word-limit="element.options.showWordLimit"
                 v-model="element.options.defaultValue"
                 :style="{width: element.options.width}"
                 :placeholder="element.options.placeholder"></el-input>

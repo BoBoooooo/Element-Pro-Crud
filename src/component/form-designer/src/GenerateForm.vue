@@ -16,12 +16,11 @@
         <FormDesigner ref="formDesigner" />
       </div> -->
       <el-form ref="generateForm"
-              status-icon
              :class='{"table-form":data.config && data.config.isTableClass}'
              :model="models"
              :label-position="data.config && data.config.labelPosition"
              :label-width="data.config && data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
-             size="small">
+             :size="data.config.size">
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="item in this.data.list">
         <!-- 如果这一行时网格grid布局 -->

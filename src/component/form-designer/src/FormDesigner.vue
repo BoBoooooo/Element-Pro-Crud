@@ -58,27 +58,13 @@
         <!-- 中间区域顶部按钮栏 -->
         <el-header class="btn-bar" style="height: 60px;">
           <el-row :gutter="15">
-            <!-- 对话框内动态表单 -->
-            <el-col :span="12">
-              <el-form size="small" :inline="true" :model="formValues" class="inline-form">
-                <el-form-item label="表单名">
-                  <el-select  v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
-                    <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
-                  </el-select>
-                  <el-input v-else v-model="formValues.tableName" placeholder="请输入表单名称"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
-                </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :span="12" style="text-align:right;margin-top:5px">
-              <el-button type="text" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
-              <el-button type="text" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
-              <el-button type="text" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
-              <el-button type="text" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
-              <el-button type="text" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button type="text" size="small" icon="el-icon-form" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
+            <el-col :span="24" style="text-align:right;margin-top:5px">
+              <el-button type="primary" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
+              <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
+              <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
+              <el-button type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
+              <el-button type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
+              <el-button type="normal" size="small" icon="el-icon-form" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
               <slot name="custom-btn"></slot>
             </el-col>
           </el-row>

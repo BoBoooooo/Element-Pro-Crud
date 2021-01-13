@@ -291,7 +291,30 @@
         <el-switch v-if="elementConfig.type=='switch' || elementConfig.type == 'date'"
                    v-model="elementConfig.options.defaultValue"></el-switch>
       </el-form-item>
-
+      <el-form-item label="最多输入"
+                    v-if="elementConfig.options.maxLength !== undefined">
+        <el-input v-model="elementConfig.options.maxLength" placeholder="请输入最大长度">
+              <span slot="append">个字符</span>
+        </el-input>
+      </el-form-item>
+      <template v-if="elementConfig.type == 'input'">
+         <el-form-item label="前图标">
+        <el-input v-model="elementConfig.options.prefix" placeholder="请输入图标名(例如el-icon-message)">
+        </el-input>
+        </el-form-item>
+        <el-form-item label="后图标">
+          <el-input v-model="elementConfig.options.suffix" placeholder="请输入图标名(例如el-icon-message)">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="前缀">
+          <el-input v-model="elementConfig.options.prepend" placeholder="请输入前缀">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="后缀">
+          <el-input v-model="elementConfig.options.append" placeholder="请输入后缀">
+          </el-input>
+        </el-form-item>
+      </template>
       <template v-if="elementConfig.type == 'time' || elementConfig.type == 'date'">
         <el-form-item label="显示类型"
                       v-if="elementConfig.type == 'date'">
@@ -383,8 +406,8 @@
 
       <template v-if="elementConfig.type == 'grid'">
         <el-form-item label="栅格间隔">
-          <el-input size="mini" type="number"
-                    v-model.number="elementConfig.options.gutter"></el-input>
+          <el-input-number size="mini" :min="0" :max="50" :step="5"
+                    v-model="elementConfig.options.gutter"></el-input-number>
         </el-form-item>
         <el-form-item label="列配置项">
           <Draggable tag="ul"
@@ -454,6 +477,8 @@
                        v-if="Object.keys(elementConfig.options).indexOf('disabled')>=0">禁用 </el-checkbox>
           <el-checkbox v-model="elementConfig.options.editable"
                        v-if="Object.keys(elementConfig.options).indexOf('editable')>=0">文本框可输入</el-checkbox>
+          <el-checkbox v-model="elementConfig.options.showWordLimit"
+                       v-if="Object.keys(elementConfig.options).indexOf('showWordLimit')>=0">输入统计</el-checkbox>
           <el-checkbox v-model="elementConfig.options.clearable"
                        v-if="Object.keys(elementConfig.options).indexOf('clearable')>=0">显示清除按钮</el-checkbox>
           <el-checkbox v-model="elementConfig.options.arrowControl"

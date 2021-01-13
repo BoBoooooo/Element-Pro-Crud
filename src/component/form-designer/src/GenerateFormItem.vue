@@ -33,9 +33,7 @@
       <el-divider :content-position="widget.options.align">{{widget.name}}</el-divider>
     </template>
     <template v-if="widget.type == 'input'">
-      <el-input v-if="widget.options.dataType == 'number'
-                      || widget.options.dataType == 'integer'
-                      || widget.options.dataType == 'float'"
+      <el-input v-if="['number','integer','float'].includes(widget.options.dataType)"
                 :type="widget.options.dataType"
                 v-model.number="dataModel"
                 :placeholder="widget.options.placeholder"
@@ -43,12 +41,23 @@
                 :disabled="readOnly || widget.options.disabled"
                 :style="{width: widget.options.width}"></el-input>
       <el-input v-else
-                :type="widget.options.dataType"
+                type="text"
                 v-model="dataModel"
+                :show-word-limit="widget.options.showWordLimit"
+                :maxlength="widget.options.maxLength"
                 :placeholder="widget.options.placeholder"
                 :readonly="readOnly || widget.options.readonly"
                 :disabled="readOnly || widget.options.disabled"
-                :style="{width: widget.options.width}"></el-input>
+                :style="{width: widget.options.width}"
+                :suffix-icon="widget.options.suffix"
+                :prefix-icon="widget.options.prefix">
+                  <span slot="prepend" v-if="widget.options.prepend">
+                    {{widget.options.prepend}}
+                  </span>
+                  <span slot="append" v-if="widget.options.append">
+                    {{widget.options.append}}
+                  </span>
+      </el-input>
     </template>
     <template v-if="widget.type == 'button'">
       <el-button type="primary"
@@ -98,6 +107,8 @@
       <el-input type="textarea"
                 :autosize="{ minRows: 5}"
                 v-model="dataModel"
+                :show-word-limit="widget.options.showWordLimit"
+                :maxlength="widget.options.maxLength"
                 :disabled="readOnly || widget.options.disabled"
                 :readonly="readOnly || widget.options.readonly"
                 :placeholder="widget.options.placeholder"
