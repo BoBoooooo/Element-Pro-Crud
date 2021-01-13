@@ -45,7 +45,7 @@
                   v-if="view.searchForm"
                   :searchMode="searchMode"
                   :showSeniorSearchFormButton="view.seniorSearchBtn"
-                  :columns="tableConfig.columns"
+                  :columns="tableConfig.columns || []"
                   @click="fetchHandler(false,true)"
                   :searchFormCondition.sync="searchFormCondition"
                   :remoteFuncs="remoteFuncs"
@@ -231,7 +231,7 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Emit, Prop,
+  Component, Vue, Emit, Prop, Watch,
 } from 'vue-property-decorator';
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
@@ -559,18 +559,6 @@ export default class CrudTable extends Vue {
     // 操作列是否隐藏
     if (!viewObj.actionColumn) {
       this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-    } else if (!this.tableConfig.columns.find((item: any) => item.slotName === 'actionColumn')) {
-      (this.tableConfig.columns as any).push({
-        prop: '',
-        label: '操作',
-        minWidth: 220,
-        align: 'center',
-        headerAlign: 'center',
-        slotName: 'actionColumn',
-        fixed: 'right',
-        sortable: 'false',
-        searchable: false,
-      });
     }
     return viewObj;
   }
@@ -1043,6 +1031,13 @@ export default class CrudTable extends Vue {
   async showTableDesigner() {
     const res = await this.$PROCRUD.getTableDetail(this.tableDesignerName || this.tableName);
     this.$refs.TableDesigner.showDialog({ id: res.data.id }, 1, res.data);
+  }
+
+  @Watch('columns', {
+    deep: true,
+  })
+  columnsOnChange(val) {
+    this.tableConfig = val;
   }
 }
 </script>

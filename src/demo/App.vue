@@ -64,7 +64,11 @@
           </el-main>
         </el-container>
         <el-container class="container">
-          <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
+          <el-header>CrudTable组件 此处为人员信息管理示例 （有批量操作按钮时会默认开启多选模式）
+            <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
+              当前表格json
+            </el-button>
+          </el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
               <el-col :span="4"
@@ -88,8 +92,8 @@
                                inactive-text="多选"></el-switch>
                     <el-switch v-model="showColumnIndex"
                                inactive-text="序号列"></el-switch>
-                    <el-switch v-model="visibleList.actionColumn"
-                               inactive-text="操作列"></el-switch>
+                    <!-- <el-switch v-model="visibleList.actionColumn"
+                               inactive-text="操作列"></el-switch> -->
                     <el-divider>操作按钮</el-divider>
                     <el-switch v-model="visibleList.actionColumnBtnEdit"
                                inactive-text="编辑按钮"></el-switch>
@@ -163,6 +167,7 @@
                            tableName="person"
                            :size="size"
                            :textMap="textMap"
+                           :columns="columns"
                            :readOnly="readOnly"
                            :show-header="showHeader"
                            :showPagination="showPagination"
@@ -193,6 +198,9 @@
         Made with <span class="heart">❤</span> BoBo
       </el-footer>
     </el-container>
+     <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
+      <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+    </CusDialog>
   </div>
 </template>
 
@@ -201,12 +209,22 @@ import { DML, crud } from '@/demo/api/crud';
 import {
   getTables, getFormKey, getTableDetail, getFormDetail,
 } from '@/demo/api/plugin';
+import CusDialog from '@/component/common/CusDialog.vue';
 
 export default {
   name: 'app',
   methods: {
     getRowData(row) {
       this.$alert(JSON.stringify(row));
+    },
+    handleGenerateJson() {
+      this.jsonVisible = true;
+      this.jsonTemplate = JSON.stringify(this.columns, null, 2);
+
+      this.$nextTick(() => {
+        const editor = ace.edit('jsoneditor');
+        editor.session.setMode('ace/mode/json');
+      });
     },
     getTableFields(tablename) {
       return getFormKey(tablename);
@@ -235,6 +253,7 @@ export default {
       this.tableJSON = res.data;
       this.$nextTick(() => {
         this.$refs.tableDesigner.setJSON(JSON.parse(this.tableJSON.formJson));
+        this.columns = JSON.parse(this.tableJSON.formJson);
       });
     });
     crud(DML.SELECT, 'form').then((res) => {
@@ -250,8 +269,11 @@ export default {
   },
   data() {
     return {
+      jsonVisible: false,
+      jsonTemplate: '',
       dictList: [],
       formList: [],
+      columns: {},
       allTables: null,
       btnSaveIsLoading: false,
       readOnly: false,
@@ -282,6 +304,9 @@ export default {
       showColumnIndex: false,
       size: '',
     };
+  },
+  components: {
+    CusDialog,
   },
 };
 </script>
