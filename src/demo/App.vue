@@ -55,7 +55,7 @@
                           :getFormKey="getTableFields">
               <template #custom-btn>
                 <el-button disabled
-                           type="text"
+                           type="normal"
                            size="small"
                            @click="btnSaveOnClick"
                            :loading="btnSaveIsLoading">保存</el-button>
@@ -67,10 +67,12 @@
           <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
-              <el-col :span="4">
-                <div>
+              <el-col :span="4"
+                      class="left-container">
+                <div class="form-container">
                   <h4>表格相关配置</h4>
                   <el-form :inline="true"
+                           size="mini"
                            :model="visibleList">
                     <el-switch v-model="readOnly"
                                inactive-text="只读模式"></el-switch>
@@ -88,25 +90,26 @@
                                inactive-text="序号列"></el-switch>
                     <el-switch v-model="visibleList.actionColumn"
                                inactive-text="操作列"></el-switch>
-                    <el-divider>功能按钮</el-divider>
+                    <el-divider>操作按钮</el-divider>
                     <el-switch v-model="visibleList.actionColumnBtnEdit"
                                inactive-text="编辑按钮"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnDel"
                                inactive-text="删除按钮"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnDetail"
                                inactive-text="查看按钮"></el-switch>
-                    <el-divider>尺寸</el-divider>
-                    <el-radio-group v-model="size">
-                      <el-radio label="medium">medium</el-radio>
-                      <el-radio label="small">small</el-radio>
-                      <el-radio label="mini">mini</el-radio>
+                    <el-divider>表格尺寸</el-divider>
+                    <el-radio-group v-model="size" size="mini">
+                      <el-radio label="medium">中等</el-radio>
+                      <el-radio label="small">较小</el-radio>
+                      <el-radio label="mini">迷你</el-radio>
                     </el-radio-group>
                   </el-form>
                 </div>
                 <el-divider></el-divider>
-                <div>
+                <div class="form-container">
                   <h4>工具栏</h4>
                   <el-form :inline="true"
+                           size="mini"
                            :model="visibleList">
                     <el-switch v-model="visibleList.tableTitle"
                                inactive-text="表格标题"></el-switch>
@@ -116,25 +119,50 @@
                                inactive-text="查询区域"></el-switch>
                     <el-switch v-model="visibleList.seniorSearchBtn"
                                inactive-text="高级查询按钮"></el-switch>
+                    <el-switch v-model="visibleList.btnDel"
+                               inactive-text="批量删除"></el-switch>
                   </el-form>
                 </div>
                 <el-divider></el-divider>
-                <div>
+                <div class="form-container">
                   <h4>查询表单</h4>
                   <el-form :inline="true"
+                           size="mini"
                            :model="visibleList">
                     <el-switch v-model="searchMode"
                                inactive-text="平铺高级查询"></el-switch>
                   </el-form>
                 </div>
-
+                <el-divider></el-divider>
+                <div class="form-container">
+                  <h4>操作按钮名称</h4>
+                  <el-form :inline="true"
+                           size="mini"
+                           :model="textMap">
+                    <el-form-item label="新增按钮">
+                      <el-input v-model="textMap.add"></el-input>
+                    </el-form-item>
+                    <el-form-item label="编辑按钮">
+                      <el-input v-model="textMap.edit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="删除按钮">
+                      <el-input v-model="textMap.del"></el-input>
+                    </el-form-item>
+                    <el-form-item label="查看按钮">
+                      <el-input v-model="textMap.detail"></el-input>
+                    </el-form-item>
+                    <el-form-item label="批量删除按钮">
+                      <el-input v-model="textMap.multiDel"></el-input>
+                    </el-form-item>
+                  </el-form>
+                </div>
               </el-col>
               <el-col :span="20">
                 <CrudTable :searchMode="searchMode? 'cover':'popover'"
                            tableTitle="人员管理"
-                           style="border-left:1px solid #eee;height: 100%"
                            tableName="person"
                            :size="size"
+                           :textMap="textMap"
                            :readOnly="readOnly"
                            :show-header="showHeader"
                            :showPagination="showPagination"
@@ -227,12 +255,20 @@ export default {
       allTables: null,
       btnSaveIsLoading: false,
       readOnly: false,
+      textMap: {
+        add: '添加',
+        edit: '编辑',
+        del: '删除',
+        detail: '查看',
+        multiDel: '批量删除',
+      },
       visibleList: {
         tableTitle: true,
         btnAdd: true,
+        btnDel: true,
         actionColumnBtnDel: true,
         actionColumnBtnEdit: true,
-        actionColumnBtnDetail: true,
+        actionColumnBtnDetail: false,
         searchForm: true,
         actionColumn: true,
         seniorSearchBtn: true,
@@ -314,23 +350,35 @@ h3 {
     }
   }
 }
-.demo-actions {
-  text-align: left;
-  padding: 20px;
-  ::v-deep {
-    .el-switch {
-      margin-right: 10px;
-    }
-    .el-form--inline {
-      text-align: left;
-    }
-  }
-}
+
 .content {
   max-width: 1600px;
   margin: 0 auto;
   .el-header {
     background: #97c8ff;
+  }
+  .demo-actions {
+    text-align: left;
+    padding: 20px;
+    ::v-deep {
+      .el-switch {
+        margin-right: 10px;
+      }
+      .el-form--inline {
+        text-align: left;
+      }
+    }
+    .left-container {
+      border-right: 1px solid #eee;
+      max-height: 700px;
+      overflow: auto;
+      .form-container {
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: 1px solid #e8f2f9 ;
+        background: #f3faff;
+      }
+    }
   }
 }
 
