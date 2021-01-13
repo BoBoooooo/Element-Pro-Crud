@@ -24,7 +24,8 @@
                          @after-save="tableOnSave"/>
       </div> -->
       <!-- table右上角按钮 -->
-      <div class="btn-bar" v-if="searchMode === 'popover'">
+      <div class="btn-bar"
+           v-if="searchMode === 'popover'">
         <slot name="btnBarPrevBtn" />
         <!-- 批量删除按钮 -->
         <el-button v-if="view.btnDel"
@@ -50,27 +51,27 @@
                   :remoteFuncs="remoteFuncs"
                   :isLoading="loading"
                   @clear="dataChangeHandler(true)">
-                  <template #seniorSearchForm>
-                    <slot name="seniorSearchForm"></slot>
-                  </template>
-                    <template v-if="searchMode === 'cover'">
-                      <!-- table右上角按钮 -->
-                      <div class="btn-bar">
-                        <slot name="btnBarPrevBtn" />
-                        <!-- 批量删除按钮 -->
-                        <el-button v-if="view.btnDel"
-                                  @click="btnDeletesOnClick"
-                                  type="primary"
-                                  size="mini"
-                                  icon="el-icon-delete">删除</el-button>
-                        <!-- 添加按钮 -->
-                        <el-button v-if="view.btnAdd"
-                                  type="primary"
-                                  icon="el-icon-plus"
-                                  size="mini"
-                                  @click.stop="btnAdd()">{{text.add}}</el-button>
-                      </div>
-                    </template>
+        <template #seniorSearchForm>
+          <slot name="seniorSearchForm"></slot>
+        </template>
+        <template v-if="searchMode === 'cover'">
+          <!-- table右上角按钮 -->
+          <div class="btn-bar">
+            <slot name="btnBarPrevBtn" />
+            <!-- 批量删除按钮 -->
+            <el-button v-if="view.btnDel"
+                       @click="btnDeletesOnClick"
+                       type="primary"
+                       size="mini"
+                       icon="el-icon-delete">删除</el-button>
+            <!-- 添加按钮 -->
+            <el-button v-if="view.btnAdd"
+                       type="primary"
+                       icon="el-icon-plus"
+                       size="mini"
+                       @click.stop="btnAdd()">{{text.add}}</el-button>
+          </div>
+        </template>
       </SearchForm>
       <!-- 表格主体 -->
       <el-table v-loading.lock="loading"
@@ -92,7 +93,7 @@
         <template slot='empty'>
           <SvgIcon icon-class='table_empty'
                    class="empty_icon"></SvgIcon>
-              <span>{{this.emptyText}}</span>
+          <span>{{this.emptyText}}</span>
         </template>
         <el-table-column v-if="isMultiple || view.btnDel"
                          type="selection"
@@ -221,9 +222,9 @@
                         :fullscreen="dialogFullscreen"
                         :width='dialogWidth'
                         @btnOnClick="formBtnOnClick">
-                        <template #dialogFooter>
-                          <slot name="dialogFooter"></slot>
-                        </template>
+      <template #dialogFooter>
+        <slot name="dialogFooter"></slot>
+      </template>
     </GenerateFormDialog>
   </div>
 </template>
@@ -505,7 +506,6 @@ export default class CrudTable extends Vue {
   })
   columns!: any;
 
-
   // 分页
   get pagination() {
     return {
@@ -519,7 +519,6 @@ export default class CrudTable extends Vue {
       })(),
     };
   }
-
 
   // 文本映射
   get text() {
@@ -574,7 +573,6 @@ export default class CrudTable extends Vue {
     }
     return viewObj;
   }
-
 
   get tableListeners() {
     return {
@@ -652,9 +650,16 @@ export default class CrudTable extends Vue {
     if (this.btnEditOnClick) {
       this.btnEditOnClick(row);
     } else {
-      const promise = this.promiseForDetail ? this.promiseForDetail(row.id) : this.$PROCRUD.crud(DML.DETAIL, this.tableName, {}, {
-        id: row.id,
-      });
+      const promise = this.promiseForDetail
+        ? this.promiseForDetail(row.id)
+        : this.$PROCRUD.crud(
+          DML.DETAIL,
+          this.tableName,
+          {},
+          {
+            id: row.id,
+          },
+        );
       // 请求后台detail接口获取表单数据
       promise.then((res) => {
         this.$refs.dialog.showDialog({ id: row.id }, STATUS.UPDATE, res.data);
@@ -668,9 +673,16 @@ export default class CrudTable extends Vue {
     if (this.btnDetailOnClick) {
       this.btnDetailOnClick(row);
     } else {
-      const promise = this.promiseForDetail ? this.promiseForDetail(row.id) : this.$PROCRUD.crud(DML.DETAIL, this.tableName, {}, {
-        id: row.id,
-      });
+      const promise = this.promiseForDetail
+        ? this.promiseForDetail(row.id)
+        : this.$PROCRUD.crud(
+          DML.DETAIL,
+          this.tableName,
+          {},
+          {
+            id: row.id,
+          },
+        );
       // 请求后台detail接口获取表单数据
       promise.then((res) => {
         this.$refs.dialog.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
@@ -688,11 +700,13 @@ export default class CrudTable extends Vue {
         type: 'warning',
       })
         .then(() => {
-          const promise = this.promiseForDels ? this.promiseForDels(this.selectedRows.map(item => item.id)) : this.$PROCRUD.crud(
-            DML.DELETES,
-            this.tableName,
-            this.selectedRows.map(item => item.id),
-          );
+          const promise = this.promiseForDels
+            ? this.promiseForDels(this.selectedRows.map(item => item.id))
+            : this.$PROCRUD.crud(
+              DML.DELETES,
+              this.tableName,
+              this.selectedRows.map(item => item.id),
+            );
           promise.then(() => {
             this.tableReload();
             this.$message.success('批量删除成功');
@@ -1053,28 +1067,20 @@ export default class CrudTable extends Vue {
   background: white;
   padding: 10px;
   position: relative;
+  h4 {
+    margin: 2px 30px 0px 0px;
+    padding-left: 15px;
+    font-weight: 500;
+    font-size: 18px;
+  }
   .table-title {
     float: left;
     margin-left: 5px;
-    h4 {
-      margin: 2px 30px 0px 0px;
-      padding-left: 15px;
-      border-left: 7px solid #007bff;
-      font-weight: 500;
-      font-size: 18px;
-    }
   }
-  .table-title-absolute{
+  .table-title-absolute {
     position: absolute;
     top: 110px;
     left: 10px;
-     h4 {
-      margin: 2px 30px 0px 0px;
-      padding-left: 15px;
-      border-left: 7px solid #007bff;
-      font-weight: 500;
-      font-size: 18px;
-    }
   }
   .btn-bar {
     float: right;
@@ -1085,12 +1091,12 @@ export default class CrudTable extends Vue {
       float: right;
     }
   }
-  .dev-module{
+  .dev-module {
     display: inline-block;
     margin-left: 20px;
     line-height: 28px;
-    button{
-      padding:0;
+    button {
+      padding: 0;
     }
   }
 }

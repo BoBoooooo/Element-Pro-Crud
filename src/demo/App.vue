@@ -67,7 +67,7 @@
           <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
-              <el-col :span="3">
+              <el-col :span="4">
                 <div>
                   <h4>表格相关配置</h4>
                   <el-form :inline="true"
@@ -78,16 +78,29 @@
                                inactive-text="边框"></el-switch>
                     <el-switch v-model="visibleList.stripe"
                                inactive-text="斑马纹"></el-switch>
+                    <el-switch v-model="showPagination"
+                               inactive-text="分页"></el-switch>
+                    <el-switch v-model="showHeader"
+                               inactive-text="表头"></el-switch>
                     <el-switch v-model="isMultiple"
                                inactive-text="多选"></el-switch>
+                    <el-switch v-model="showColumnIndex"
+                               inactive-text="序号列"></el-switch>
                     <el-switch v-model="visibleList.actionColumn"
                                inactive-text="操作列"></el-switch>
+                    <el-divider>功能按钮</el-divider>
                     <el-switch v-model="visibleList.actionColumnBtnEdit"
                                inactive-text="编辑按钮"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnDel"
                                inactive-text="删除按钮"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnDetail"
                                inactive-text="查看按钮"></el-switch>
+                    <el-divider>尺寸</el-divider>
+                    <el-radio-group v-model="size">
+                      <el-radio label="medium">medium</el-radio>
+                      <el-radio label="small">small</el-radio>
+                      <el-radio label="mini">mini</el-radio>
+                    </el-radio-group>
                   </el-form>
                 </div>
                 <el-divider></el-divider>
@@ -99,6 +112,8 @@
                                inactive-text="表格标题"></el-switch>
                     <el-switch v-model="visibleList.btnAdd"
                                inactive-text="新增按钮"></el-switch>
+                    <el-switch v-model="visibleList.searchForm"
+                               inactive-text="查询区域"></el-switch>
                     <el-switch v-model="visibleList.seniorSearchBtn"
                                inactive-text="高级查询按钮"></el-switch>
                   </el-form>
@@ -108,22 +123,24 @@
                   <h4>查询表单</h4>
                   <el-form :inline="true"
                            :model="visibleList">
-                    <el-switch v-model="visibleList.searchForm"
-                               inactive-text="查询区域"></el-switch>
                     <el-switch v-model="searchMode"
                                inactive-text="平铺高级查询"></el-switch>
                   </el-form>
                 </div>
 
               </el-col>
-              <el-col :span="21">
+              <el-col :span="20">
                 <CrudTable :searchMode="searchMode? 'cover':'popover'"
                            tableTitle="人员管理"
                            style="border-left:1px solid #eee;height: 100%"
                            tableName="person"
+                           :size="size"
                            :readOnly="readOnly"
+                           :show-header="showHeader"
+                           :showPagination="showPagination"
                            :border="visibleList.border"
                            :stripe="visibleList.stripe"
+                           :showColumnIndex="showColumnIndex"
                            :isMultiple="isMultiple"
                            :visibleList="visibleList">
                   <template #column_jobno="{row}">
@@ -221,10 +238,13 @@ export default {
         seniorSearchBtn: true,
         border: false,
         stripe: false,
-        showHeader: true,
       },
+      showPagination: true,
       isMultiple: true,
       searchMode: false,
+      showHeader: true,
+      showColumnIndex: false,
+      size: '',
     };
   },
 };
