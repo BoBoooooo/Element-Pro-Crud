@@ -69,51 +69,51 @@
             <el-row :gutter="10">
               <el-col :span="3">
                 <div>
-                    <h4>表格相关配置</h4>
-                    <el-form :inline="true"
-                             :model="visibleList">
-                      <el-switch v-model="readOnly"
-                                 inactive-text="只读模式"></el-switch>
-                      <el-switch v-model="visibleList.border"
-                                 inactive-text="边框"></el-switch>
-                      <el-switch v-model="visibleList.stripe"
-                                 inactive-text="斑马纹"></el-switch>
-                      <el-switch v-model="isMultiple"
-                                 inactive-text="多选"></el-switch>
-                      <el-switch v-model="visibleList.actionColumn"
-                                 inactive-text="操作列"></el-switch>
-                      <el-switch v-model="visibleList.actionColumnBtnEdit"
-                                 inactive-text="编辑按钮"></el-switch>
-                      <el-switch v-model="visibleList.actionColumnBtnDel"
-                                 inactive-text="删除按钮"></el-switch>
-                      <el-switch v-model="visibleList.actionColumnBtnDetail"
-                                 inactive-text="查看按钮"></el-switch>
-                    </el-form>
-                  </div>
-                  <el-divider></el-divider>
-                  <div>
-                    <h4>工具栏</h4>
-                    <el-form :inline="true"
-                             :model="visibleList">
-                      <el-switch v-model="visibleList.tableTitle"
-                                 inactive-text="表格标题"></el-switch>
-                      <el-switch v-model="visibleList.btnAdd"
-                                 inactive-text="新增按钮"></el-switch>
-                      <el-switch v-model="visibleList.seniorSearchBtn"
-                                 inactive-text="高级查询按钮"></el-switch>
-                    </el-form>
-                  </div>
-                  <el-divider></el-divider>
-                  <div>
-                    <h4>查询表单</h4>
-                    <el-form :inline="true"
-                             :model="visibleList">
-                      <el-switch v-model="visibleList.searchForm"
-                                 inactive-text="查询区域"></el-switch>
-                      <el-switch v-model="searchMode"
-                                 inactive-text="平铺高级查询"></el-switch>
-                    </el-form>
-                  </div>
+                  <h4>表格相关配置</h4>
+                  <el-form :inline="true"
+                           :model="visibleList">
+                    <el-switch v-model="readOnly"
+                               inactive-text="只读模式"></el-switch>
+                    <el-switch v-model="visibleList.border"
+                               inactive-text="边框"></el-switch>
+                    <el-switch v-model="visibleList.stripe"
+                               inactive-text="斑马纹"></el-switch>
+                    <el-switch v-model="isMultiple"
+                               inactive-text="多选"></el-switch>
+                    <el-switch v-model="visibleList.actionColumn"
+                               inactive-text="操作列"></el-switch>
+                    <el-switch v-model="visibleList.actionColumnBtnEdit"
+                               inactive-text="编辑按钮"></el-switch>
+                    <el-switch v-model="visibleList.actionColumnBtnDel"
+                               inactive-text="删除按钮"></el-switch>
+                    <el-switch v-model="visibleList.actionColumnBtnDetail"
+                               inactive-text="查看按钮"></el-switch>
+                  </el-form>
+                </div>
+                <el-divider></el-divider>
+                <div>
+                  <h4>工具栏</h4>
+                  <el-form :inline="true"
+                           :model="visibleList">
+                    <el-switch v-model="visibleList.tableTitle"
+                               inactive-text="表格标题"></el-switch>
+                    <el-switch v-model="visibleList.btnAdd"
+                               inactive-text="新增按钮"></el-switch>
+                    <el-switch v-model="visibleList.seniorSearchBtn"
+                               inactive-text="高级查询按钮"></el-switch>
+                  </el-form>
+                </div>
+                <el-divider></el-divider>
+                <div>
+                  <h4>查询表单</h4>
+                  <el-form :inline="true"
+                           :model="visibleList">
+                    <el-switch v-model="visibleList.searchForm"
+                               inactive-text="查询区域"></el-switch>
+                    <el-switch v-model="searchMode"
+                               inactive-text="平铺高级查询"></el-switch>
+                  </el-form>
+                </div>
 
               </el-col>
               <el-col :span="21">
@@ -143,7 +143,10 @@
           </el-main>
         </el-container>
       </el-main>
-      <el-footer> </el-footer>
+      <el-footer height="80px"
+                 class="footer">
+        Made with <span class="heart">❤</span> BoBo
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -232,19 +235,12 @@ html,
 body {
   height: 100%;
   margin: 0;
+  background: #f2f2f2;
 }
 h2,
 h3 {
   margin: 0;
   display: inline-block;
-}
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  height: 100%;
 }
 </style>
 <style lang="scss" scoped>
@@ -255,18 +251,19 @@ h3 {
   padding-top: 20px;
 }
 .container {
-  border: 1px solid rgb(186, 186, 186);
+  border: 1px solid rgb(92, 92, 92);
   margin: 2rem 0;
+  background: white;
 }
 .el-header {
-  background: #87c1fa;
   color: #333;
   line-height: 60px;
+  background: white;
 }
 .top {
   padding: 10px 8rem;
-  background: #ddf4ff;
   text-align: center;
+  box-shadow: 0 6px 12px #ededed;
   .logo {
     float: left;
     display: flex;
@@ -299,7 +296,6 @@ h3 {
 }
 .demo-actions {
   text-align: left;
-  border: 1px solid #333;
   padding: 20px;
   ::v-deep {
     .el-switch {
@@ -313,6 +309,9 @@ h3 {
 .content {
   max-width: 1600px;
   margin: 0 auto;
+  .el-header {
+    background: #97c8ff;
+  }
 }
 
 .el-radio-group {
@@ -336,6 +335,21 @@ h3 {
       color: black;
       z-index: 100;
     }
+  }
+}
+.footer {
+  position: relative;
+  z-index: 100;
+  clear: both;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  line-height: 80px;
+  color: hsla(0, 0%, 100%, 0.65);
+  font-size: 14px;
+  background-color: #000;
+  text-align: center;
+  .heart {
+    color: #f73f51;
+    font-size: 22px;
   }
 }
 </style>
