@@ -222,6 +222,7 @@ npm i element-pro-crud -S
   edit: '编辑',
   del: '删除',
   detail: '查看',
+  multiDel: '批量删除'
 }
 ```
 

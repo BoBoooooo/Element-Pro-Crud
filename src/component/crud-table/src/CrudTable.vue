@@ -30,9 +30,9 @@
         <!-- 批量删除按钮 -->
         <el-button v-if="view.btnDel"
                    @click="btnDeletesOnClick"
-                   type="primary"
+                   type="danger"
                    size="mini"
-                   icon="el-icon-delete">删除</el-button>
+                   icon="el-icon-delete">{{text.multiDel}}</el-button>
         <!-- 添加按钮 -->
         <el-button v-if="view.btnAdd"
                    type="primary"
@@ -61,9 +61,9 @@
             <!-- 批量删除按钮 -->
             <el-button v-if="view.btnDel"
                        @click="btnDeletesOnClick"
-                       type="primary"
+                       type="danger"
                        size="mini"
-                       icon="el-icon-delete">删除</el-button>
+                       icon="el-icon-delete">{{text.multiDel}}</el-button>
             <!-- 添加按钮 -->
             <el-button v-if="view.btnAdd"
                        type="primary"
@@ -527,6 +527,7 @@ export default class CrudTable extends Vue {
       edit: '编辑',
       del: '删除',
       detail: '查看',
+      multiDel: '批量删除',
       ...this.textMap,
     };
   }
@@ -1089,6 +1090,7 @@ export default class CrudTable extends Vue {
     & > div,
     button {
       float: right;
+      margin-left: 10px;
     }
   }
   .dev-module {
