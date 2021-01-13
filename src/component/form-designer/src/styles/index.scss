@@ -192,16 +192,18 @@ $primary-background-color: #ecf5ff;
         position: absolute;
         right: 0;
         bottom: 0;
-        height: 28px;
-        line-height: 28px;
-        background: $primary-color;
+        height: 20px;
+        line-height: 20px;
         z-index: 9;
-
         i {
           font-size: 14px;
-          color: #fff;
+          border-radius: 50%;
+          color: $primary-color;
           margin: 0 5px;
           cursor: pointer;
+          &:hover{
+            color:#f56c6c
+          }
         }
       }
 
@@ -310,16 +312,17 @@ $primary-background-color: #ecf5ff;
         position: absolute;
         right: 0;
         bottom: 0;
-        height: 28px;
-        line-height: 28px;
-        background: $primary-color;
+        height: 20px;
+        line-height: 20px;
         z-index: 9;
-
         i {
           font-size: 14px;
-          color: #fff;
+          color: $primary-color;
           margin: 0 5px;
           cursor: pointer;
+          &:hover{
+            color:#f56c6c
+          }
         }
       }
 
@@ -477,6 +480,12 @@ $primary-background-color: #ecf5ff;
 
       .widget-view-action.widget-col-action {
         background: #e6a23c;
+        i{
+          color: white!important;
+          &:hover{
+            color:#303030!important;
+          }
+        }
       }
 
       .widget-view-drag.widget-col-drag {
