@@ -7,7 +7,8 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header height="80px" class="top">
+      <el-header height="80px"
+                 class="top">
         <div class="logo">
           <img src="https://pic.downk.cc/item/5ff7d31d3ffa7d37b3c8ece9.png" />
           <h2>ElementProCrud</h2>
@@ -16,14 +17,24 @@
           <span class="tips">解放双手 早点下班</span>
         </div>
         <div class="right">
-          <el-link target="_blank" :underline="false" href="http://server.boboooooo.top:9999/admin/#/login" type="primary">
+          <el-link target="_blank"
+                   :underline="false"
+                   href="http://server.boboooooo.top:9999/admin/#/login"
+                   type="primary">
             <h3>生产环境示例</h3>
           </el-link>
-          <el-link target="_blank" :underline="false" href="https://crud.boboooooo.top/" type="primary">
+          <el-link target="_blank"
+                   :underline="false"
+                   href="https://crud.boboooooo.top/"
+                   type="primary">
             <h3>文档</h3>
           </el-link>
-          <el-link target="_blank" :underline="false" href="https://github.com/BoBoooooo/Element-Pro-Crud" type="primary">
-            <img style="marign-top:10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
+          <el-link target="_blank"
+                   :underline="false"
+                   href="https://github.com/BoBoooooo/Element-Pro-Crud"
+                   type="primary">
+            <img style="marign-top:10px"
+                 src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
           </el-link>
         </div>
       </el-header>
@@ -31,50 +42,104 @@
         <el-container class="container">
           <el-header>表格设计器(TableDesigner)</el-header>
           <el-main>
-            <TableDesigner :dictList="dictList" :formList="formList" ref="tableDesigner"></TableDesigner>
+            <TableDesigner :dictList="dictList"
+                           :formList="formList"
+                           ref="tableDesigner"></TableDesigner>
           </el-main>
         </el-container>
 
         <el-container class="container">
           <el-header>表单设计器(FormDesigner)</el-header>
           <el-main>
-            <FormDesigner ref="formDesigner" :getFormKey="getTableFields">
+            <FormDesigner ref="formDesigner"
+                          :getFormKey="getTableFields">
               <template #custom-btn>
-                <el-button disabled type="text" size="small" @click="btnSaveOnClick" :loading="btnSaveIsLoading">保存</el-button>
+                <el-button disabled
+                           type="text"
+                           size="small"
+                           @click="btnSaveOnClick"
+                           :loading="btnSaveIsLoading">保存</el-button>
               </template>
             </FormDesigner>
           </el-main>
         </el-container>
         <el-container class="container">
           <el-header>CrudTable组件 此处为人员信息管理示例</el-header>
-          <el-main>
-            <div class="demo-actions">
-              <el-form :inline="true" :model="visibleList">
-                <el-switch v-model="visibleList.btnAdd" inactive-text="新增按钮"></el-switch>
-                <el-switch v-model="visibleList.actionColumnBtnEdit" inactive-text="编辑按钮"></el-switch>
-                <el-switch v-model="visibleList.actionColumnBtnDel" inactive-text="删除按钮"></el-switch>
-                <el-switch v-model="visibleList.actionColumnBtnDetail" inactive-text="查看按钮"></el-switch>
-                <el-switch v-model="visibleList.seniorSearchBtn" inactive-text="高级查询按钮"></el-switch>
-                <el-divider direction="vertical"></el-divider>
-                <el-switch v-model="visibleList.actionColumn" inactive-text="操作列"></el-switch>
-                <el-switch v-model="visibleList.tableTitle" inactive-text="表格标题"></el-switch>
-                <el-switch v-model="visibleList.searchForm" inactive-text="查询区域"></el-switch>
-                <el-switch v-model="searchMode" inactive-text="平铺高级查询"></el-switch>
-                <el-divider direction="vertical"></el-divider>
-                <el-switch v-model="readOnly" inactive-text="只读模式"></el-switch>
-              </el-form>
-            </div>
-            <CrudTable :searchMode="searchMode? 'cover':'popover'" tableTitle="人员管理" tableName="person" :readOnly="readOnly" :visibleList="visibleList" :isMultiple="false">
-              <template #column_jobno="{row}">
-                <el-tag>{{ row.jobno }}</el-tag>
-              </template>
-              <template #column_personname="{row}">
-                <span><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
-              </template>
-              <template #btnCustom="{row}">
-                <el-button size="mini" @click="getRowData(row)">自定义</el-button>
-              </template>
-            </CrudTable>
+          <el-main class="demo-actions">
+            <el-row :gutter="10">
+              <el-col :span="3">
+                <div>
+                    <h4>表格相关配置</h4>
+                    <el-form :inline="true"
+                             :model="visibleList">
+                      <el-switch v-model="readOnly"
+                                 inactive-text="只读模式"></el-switch>
+                      <el-switch v-model="visibleList.border"
+                                 inactive-text="边框"></el-switch>
+                      <el-switch v-model="visibleList.stripe"
+                                 inactive-text="斑马纹"></el-switch>
+                      <el-switch v-model="isMultiple"
+                                 inactive-text="多选"></el-switch>
+                      <el-switch v-model="visibleList.actionColumn"
+                                 inactive-text="操作列"></el-switch>
+                      <el-switch v-model="visibleList.actionColumnBtnEdit"
+                                 inactive-text="编辑按钮"></el-switch>
+                      <el-switch v-model="visibleList.actionColumnBtnDel"
+                                 inactive-text="删除按钮"></el-switch>
+                      <el-switch v-model="visibleList.actionColumnBtnDetail"
+                                 inactive-text="查看按钮"></el-switch>
+                    </el-form>
+                  </div>
+                  <el-divider></el-divider>
+                  <div>
+                    <h4>工具栏</h4>
+                    <el-form :inline="true"
+                             :model="visibleList">
+                      <el-switch v-model="visibleList.tableTitle"
+                                 inactive-text="表格标题"></el-switch>
+                      <el-switch v-model="visibleList.btnAdd"
+                                 inactive-text="新增按钮"></el-switch>
+                      <el-switch v-model="visibleList.seniorSearchBtn"
+                                 inactive-text="高级查询按钮"></el-switch>
+                    </el-form>
+                  </div>
+                  <el-divider></el-divider>
+                  <div>
+                    <h4>查询表单</h4>
+                    <el-form :inline="true"
+                             :model="visibleList">
+                      <el-switch v-model="visibleList.searchForm"
+                                 inactive-text="查询区域"></el-switch>
+                      <el-switch v-model="searchMode"
+                                 inactive-text="平铺高级查询"></el-switch>
+                    </el-form>
+                  </div>
+
+              </el-col>
+              <el-col :span="21">
+                <CrudTable :searchMode="searchMode? 'cover':'popover'"
+                           tableTitle="人员管理"
+                           style="border-left:1px solid #eee;height: 100%"
+                           tableName="person"
+                           :readOnly="readOnly"
+                           :border="visibleList.border"
+                           :stripe="visibleList.stripe"
+                           :isMultiple="isMultiple"
+                           :visibleList="visibleList">
+                  <template #column_jobno="{row}">
+                    <el-tag>{{ row.jobno }}</el-tag>
+                  </template>
+                  <template #column_personname="{row}">
+                    <span><i class="el-icon el-icon-user"
+                         style="color: red"></i>{{ row.personname }}</span>
+                  </template>
+                  <template #btnCustom="{row}">
+                    <el-button size="mini"
+                               @click="getRowData(row)">自定义</el-button>
+                  </template>
+                </CrudTable>
+              </el-col>
+            </el-row>
           </el-main>
         </el-container>
       </el-main>
@@ -151,7 +216,11 @@ export default {
         searchForm: true,
         actionColumn: true,
         seniorSearchBtn: true,
+        border: false,
+        stripe: false,
+        showHeader: true,
       },
+      isMultiple: true,
       searchMode: false,
     };
   },
@@ -229,6 +298,7 @@ h3 {
   }
 }
 .demo-actions {
+  text-align: left;
   border: 1px solid #333;
   padding: 20px;
   ::v-deep {
