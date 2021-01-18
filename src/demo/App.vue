@@ -19,7 +19,7 @@
         <div class="right">
           <el-link target="_blank"
                    :underline="false"
-                   href="http://server.boboooooo.top:9999/admin/#/login"
+                   href="http://server.boboooooo.top:9998/"
                    type="primary">
             <h3>生产环境示例</h3>
           </el-link>
