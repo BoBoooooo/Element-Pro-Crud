@@ -232,7 +232,7 @@ export default class GenerateForm extends Vue {
   created() {
     if (this.data.list) {
       // 根据数据结构生成给子组件的数据源
-      this.generateModle(this.data.list);
+      this.generateModel(this.data.list);
     }
   }
 
@@ -241,7 +241,7 @@ export default class GenerateForm extends Vue {
     this.$emit('table-selections', this.tableSelections);
   }
 
-  generateModle(genList) {
+  generateModel(genList) {
     const customValidate = (rule, value, callback) => {
       const { type } = rule;
       if ('string,number'.includes(type)) {
@@ -256,7 +256,7 @@ export default class GenerateForm extends Vue {
     for (let i = 0; i < genList.length; i += 1) {
       if (genList[i].type === 'grid') {
         genList[i].columns.forEach((item) => {
-          this.generateModle(item.list);
+          this.generateModel(item.list);
         });
       } else {
         // 获取当前组件
