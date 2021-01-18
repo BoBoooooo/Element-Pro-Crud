@@ -15,3 +15,20 @@ export enum DML {
   DETAIL = 'detail',
   DELETES = 'deleteByIds',
 }
+
+export interface Condition {
+  field: string;
+  operator: string;
+  value: any;
+}
+
+export interface Params {
+  orderCondition?: string;
+  searchCondition?: Array<Condition>;
+  pageIndex: number;
+  pageSize: number;
+}
+export interface DataSource {
+  data: any[]
+  total: number
+}

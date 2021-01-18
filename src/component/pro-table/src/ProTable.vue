@@ -1,12 +1,12 @@
 <!--
- * @file: el-table CrudTable封装,支持高级查询 分页 增删改查表单
+ * @file: el-table ProTable封装,支持高级查询 分页 增删改查表单
  * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年09月14 18:01:58
 -->
 
 <template>
-  <div class="CrudTable">
+  <div class="ProTable">
     <div class="base-table">
       <!-- 表格左侧标题 -->
       <div :class="{
@@ -77,19 +77,11 @@
       <el-table v-loading.lock="loading"
                 v-bind="$attrs"
                 v-on="tableListeners"
-                element-loading-text="加载中……"
                 ref="table"
-                :header-cell-style="{ background: '#f2f2f2', color: '#737373' }"
+                :row-key="(row)=> row.id"
                 :data="tableData"
                 :height="tableHeight"
-                :max-height="maxHeight"
-                :row-style="rowStyle"
-                :cell-style="cellStyle"
-                :row-key="(row)=> row.id"
-                rowKey="id"
-                :lazy="lazy"
-                :load="treeload"
-                :tree-props="{children: 'children', hasChildren: 'flag'}">
+                :max-height="maxHeight">
         <template slot='empty'>
           <SvgIcon icon-class='table_empty'
                    class="empty_icon"></SvgIcon>
@@ -236,7 +228,7 @@ import {
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
-import { DML } from '@/types/common';
+import { DML, Params, DataSource } from '@/types/common';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import SearchForm from './SearchForm.vue';
 
@@ -246,14 +238,14 @@ const STATUS = {
   DETAIL: 2,
 };
 @Component({
-  name: 'CrudTable',
+  name: 'ProTable',
   components: {
     GenerateFormDialog,
     SearchForm,
     SvgIcon,
   },
 })
-export default class CrudTable extends Vue {
+export default class ProTable extends Vue {
   // https://github.com/vuejs/vue-class-component/issues/94
   $refs!: {
     table: HTMLFormElement;
@@ -291,14 +283,14 @@ export default class CrudTable extends Vue {
   // 表格高度
   tableHeight: number | string = '100%';
 
-  // 表格结构json，将来可能有多张表
+  // 表格结构json
   tableConfig = { columns: [] };
 
   // 多选行选中项
-  selectedRows: any = [];
+  selectedRows: any[] = [];
 
   // 表格数据
-  tableData = [];
+  tableData: any[] = [];
 
   // 查询模式
   @Prop({
@@ -439,24 +431,6 @@ export default class CrudTable extends Vue {
   // 子表tableConfig 详情看GenerateFormItem中解释
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
 
-  // 行样式
-  @Prop({
-    default: () => ({
-      height: '20px',
-    }),
-    type: Function,
-  })
-  rowStyle!: any;
-
-  // 单元格样式
-  @Prop({
-    default: () => ({
-      padding: '5px',
-    }),
-    type: Function,
-  })
-  cellStyle!: any;
-
   // 操作列宽度
   @Prop({ type: Number, default: null }) actionColumnWidth!: number;
 
@@ -499,12 +473,20 @@ export default class CrudTable extends Vue {
   })
   emptyText!: string;
 
-  // columns
+  // columns列配置
   @Prop({
     type: Object,
     default: null,
   })
   columns!: any;
+
+  // request请求方法
+  @Prop({
+    type: Function,
+    default: null,
+    required: true,
+  })
+  request!: any;
 
   // 分页
   get pagination() {
@@ -793,13 +775,13 @@ export default class CrudTable extends Vue {
   }
 
   mounted() {
-    // 初始化表格高度
-    this.setMaxHeight();
     // 请求数据
     this.fetchHandler(true);
 
     // 自适应分页组件按钮;
     window.addEventListener('resize', this.resizeHandler);
+    // 初始化表格高度
+    this.setMaxHeight();
   }
 
   resizeHandler() {
@@ -848,14 +830,14 @@ export default class CrudTable extends Vue {
     } = this;
     const { tableParams, searchFormCondition } = this;
 
-    // 已加载完成, tree lazy table 局部刷新.
-    if (this.lazy && this.tableData.length > 0) {
-      this.treeload({
-        id: this.currentRow.parentid,
-      });
-      this.loading = false;
-      return;
-    }
+    // 已加载完成, tree lazy table 局部刷新.     待处理
+    // if (this.lazy && this.tableData.length > 0) {
+    //   this.treeload({
+    //     id: this.currentRow.parentid,
+    //   });
+    //   this.loading = false;
+    //   return;
+    // }
 
     // 如清空查询条件,则清空
     if (clearParams) {
@@ -902,52 +884,12 @@ export default class CrudTable extends Vue {
     } else if (this.orderCondition) {
       Object.assign(axiosParams, { orderCondition: this.orderCondition });
     }
-    // 发起请求
-    // eslint-disable-next-line no-nested-ternary
-    const requestObject = this.promiseForSelect
-      ? this.promiseForSelect(axiosParams, clearParams)
-      : this.lazy
-        ? this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, axiosParams)
-        : this.$PROCRUD.crud(DML.SELECT, this.tableName, axiosParams);
-
-    requestObject
-      .then((response) => {
-        let result = response;
-        // 此处判断返回的数据格式
-        // 和后台默认约束好的resultBean格式如下:
-        /**
-         * {
-         *    code: 200,
-         *    data: {
-         *      list: [],
-         *      total: 0,
-         *    };
-         *    message: SUCCESS
-         * }
-         */
-        if (response && !Array.isArray(response)) {
-          // 此处listField默认为 data.list
-          result = listField.split('.').reduce((res, key) => res[key], response);
-        }
-        // 判断拿到的list是否为Array
-        if (!result || !Array.isArray(result)) {
-          this.loading = false;
-          throw new Error(`The result of key:${listField} is not Array.`);
-        }
-        // 拿到list数据
-        this.tableData = result as any;
+    this.request(axiosParams)
+      .then((response: DataSource) => {
+        const { data = [], total = 0 } = response;
+        this.tableData = data;
         // 以下代码 获取该列表总数
-        let totalValue = response;
-        // 如果返回直接为list,则说明没有分页处理,直接统计length作为总数
-        if (Array.isArray(response)) {
-          totalValue = response.length;
-        } else if (typeof response === 'object') {
-          // 此处totalField默认为data.total
-          totalValue = totalField.split('.').reduce((res, key) => res[key], response);
-        } else {
-          totalValue = 0;
-        }
-        this.total = totalValue;
+        this.total = total;
         this.loading = false;
         if (this.$refs.table) {
           // 获取到数据后清空已选项
@@ -1059,7 +1001,7 @@ export default class CrudTable extends Vue {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.CrudTable {
+.ProTable {
   background: white;
   padding: 10px;
   position: relative;

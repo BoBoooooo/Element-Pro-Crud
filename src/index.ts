@@ -8,16 +8,16 @@
 import './icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
 import { FormDesigner, GenerateForm } from '@/component/form-designer';
-import CrudTable from '@/component/crud-table';
+import ProTable from '@/component/pro-table';
 import TableDesigner from '@/component/table-designer';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
 
   {
-    name: 'CrudTable',
+    name: 'ProTable',
     // 此处深坑,vue-class-component export的组件没有name属性！！!
-    component: CrudTable,
+    component: ProTable,
     isClassComponent: true,
   },
   {
@@ -56,7 +56,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   install,
   FormDesigner,
-  CrudTable,
+  ProTable,
   GenerateForm,
   TableDesigner,
 };

@@ -64,7 +64,7 @@
           </el-main>
         </el-container>
         <el-container class="container">
-          <el-header>CrudTable组件 此处为人员信息管理示例 （有批量操作按钮时会默认开启多选模式）
+          <el-header>ProTable组件 此处为人员信息管理示例 （有批量操作按钮时会默认开启多选模式）
             <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
               当前表格json
             </el-button>
@@ -162,7 +162,7 @@
                 </div>
               </el-col>
               <el-col :span="20">
-                <CrudTable :searchMode="searchMode? 'cover':'popover'"
+                <PersonTable :searchMode="searchMode? 'cover':'popover'"
                            tableTitle="人员管理"
                            tableName="person"
                            :size="size"
@@ -187,7 +187,7 @@
                     <el-button size="mini"
                                @click="getRowData(row)">自定义</el-button>
                   </template>
-                </CrudTable>
+                </PersonTable>
               </el-col>
             </el-row>
           </el-main>
@@ -210,6 +210,7 @@ import {
   getTables, getFormKey, getTableDetail, getFormDetail,
 } from '@/demo/api/plugin';
 import CusDialog from '@/component/common/CusDialog.vue';
+import PersonTable from './component/PersonTable.vue';
 
 export default {
   name: 'app',
@@ -307,6 +308,7 @@ export default {
   },
   components: {
     CusDialog,
+    PersonTable,
   },
 };
 </script>

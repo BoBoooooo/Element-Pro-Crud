@@ -1,8 +1,8 @@
 import { BaseComponent } from './main';
 
 
-/** CrudTable Component */
+/** ProTable Component */
 // eslint-disable-next-line import/prefer-default-export
-export declare class ElCrudTable extends BaseComponent {
+export declare class ElProTable extends BaseComponent {
 
 }

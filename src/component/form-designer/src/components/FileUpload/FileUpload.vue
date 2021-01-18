@@ -27,7 +27,7 @@
                    type="primary">上传附件</el-button>
       </el-tooltip>
     </el-upload>
-    <CrudTable ref="table"
+    <ProTable ref="table"
                v-if="view.list"
                :listField="listField"
                emptyText="暂无附件"
@@ -88,7 +88,7 @@
           </el-dropdown>
         </div>
       </template>
-    </CrudTable>
+    </ProTable>
   </div>
 </template>
 

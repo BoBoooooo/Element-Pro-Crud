@@ -236,13 +236,13 @@
       </el-cascader>
     </template>
     <template v-if="widget.type == 'table'">
-      <CrudTable :closeOnClickModal="false"
+      <ProTable :closeOnClickModal="false"
                  ref="table"
                  @selection="getTableSelection"
                  :tableName="widget.options.tableName"
                  :tableDesignerName="widget.options.tableDesignerName"
                  :dialogFormDesignerName="widget.options.dialogFormDesignerName"
-                 appendToBody
+                 dialogAppendToBody
                  :readOnly="readOnly || widget.options.readonly"
                  :visibleList="tableVisibleList"
                  :showPagination="widget.options.showPagination"
@@ -265,7 +265,7 @@
                 :prop="prop">
           </slot>
         </template>
-      </CrudTable>
+      </ProTable>
     </template>
     <template v-if="widget.type === 'treeselect'">
       <!-- 目前暂时提供了几个常用props,有更多需要自行拓展 -->

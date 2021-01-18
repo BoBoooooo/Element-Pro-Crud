@@ -23,7 +23,7 @@
 范围|描述|commitId
 --|--|--
  - | 更新版本至0.3.3 | [e1c919b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e1c919b)
- CrudTable | tableTitle默认隐藏 | [75d4f57](https://github.com/BoBoooooo/Element-Pro-Crud/commit/75d4f57)
+ ProTable | tableTitle默认隐藏 | [75d4f57](https://github.com/BoBoooooo/Element-Pro-Crud/commit/75d4f57)
  - | 优化调试逻辑 | [30d8c1d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/30d8c1d)
  - | 组件代码优化 | [4023818](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4023818)
 

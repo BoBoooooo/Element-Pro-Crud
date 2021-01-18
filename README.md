@@ -13,7 +13,7 @@
     - `级联选择器` (el-cascader)
     - `富文本编辑器` Tinymce
     - `附件模块` (FileUpload)
-    - `表格模块` (CrudTable)
+    - `表格模块` (ProTable)
     - `树形下拉框` (vue-treeSelect)
     - `自定义插槽`
 - 表格设计器 
@@ -114,11 +114,11 @@ npm i element-pro-crud -S
   Vue.use(GenerateForm);
 
   import Vue from 'vue';
-  import { GenerateForm, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
+  import { GenerateForm, ProTable, FormDesigner, TableDesigner } from 'element-pro-crud';
   import App from './App.vue';
 
   Vue.use(GenerateForm); // 不需要传options
-  Vue.use(CrudTable, options);// options介绍如上,getTables,getFormKey两个方法可以缺省
+  Vue.use(ProTable, options);// options介绍如上,getTables,getFormKey两个方法可以缺省
   Vue.use(FormDesigner, options);// options介绍如上
   Vue.use(TableDesigner, options);// options介绍如上
 
@@ -137,11 +137,11 @@ npm i element-pro-crud -S
 
 - `TableDesigner` // 表格设计器
 
-- `CrudTable` // 高级增删改查 ProTable
+- `ProTable` // 高级增删改查 ProTable
 
 ## 组件文档
 
-### CrudTable
+### ProTable
 
 #### Props
 
@@ -233,7 +233,7 @@ npm i element-pro-crud -S
 | 事件名称  |             说明             |                      回调参数                      |
 | :-------: | :--------------------------: | :------------------------------------------------: |
 | `el-table events` |          el-table原生事件见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
-|   done    |       表格数据请求完成       |              整个 CrudTable 组件对象               |
+|   done    |       表格数据请求完成       |              整个 ProTable 组件对象               |
 | selection-change |           多选事件           |              选中的行 (params: Array)              |
 |  form-change   | 监听 dialog 中 form 对象改变 | 返回当前表单对象以及当前表单 json (params: Object) |
 | form-btn-on-click |           表单内按钮组件点击回调           |             widget(表单组件json)              |
