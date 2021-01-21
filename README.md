@@ -233,7 +233,6 @@ npm i element-pro-crud -S
 | 事件名称  |             说明             |                      回调参数                      |
 | :-------: | :--------------------------: | :------------------------------------------------: |
 | `el-table events` |          el-table原生事件见文档          |          https://element.eleme.cn/#/zh-CN/component/table            |
-|   done    |       表格数据请求完成       |              整个 ProTable 组件对象               |
 | selection-change |           多选事件           |              选中的行 (params: Array)              |
 |  form-change   | 监听 dialog 中 form 对象改变 | 返回当前表单对象以及当前表单 json (params: Object) |
 | form-btn-on-click |           表单内按钮组件点击回调           |             widget(表单组件json)              |
@@ -246,7 +245,6 @@ npm i element-pro-crud -S
 | columnFormatter | 结合表格设计自定义列使用 |
 |  btnBarPrevBtn  |           自定义右上角功能按钮           |
 |    btnCustom    |      自定义操作按钮 参数为 {row}     |
-|    seniorSearchForm    |      自定义高级查询表单      |
 |    dialogFooter    |      弹出表单右侧底部slot     |
 
 #### Methods

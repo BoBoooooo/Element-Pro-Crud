@@ -32,9 +32,6 @@
                   :remoteFuncs="remoteFuncs"
                   :isLoading="loading"
                   @clear="dataChangeHandler(true)">
-        <template #seniorSearchForm>
-          <slot name="seniorSearchForm"></slot>
-        </template>
         <template v-if="searchMode === 'cover'">
           <!-- table右上角按钮 -->
           <div class="btn-bar">

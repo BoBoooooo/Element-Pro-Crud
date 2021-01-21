@@ -58,7 +58,7 @@
                 </el-form-item>
                 <!-- 正常组件通过GenerateFormItem生成 -->
                 <GenerateFormItem v-else
-                                  @selection="getTableSelection($event,citem)"
+                                  @selection-change="getTableSelection($event,citem)"
                                   :key="citem.key"
                                   :models="models"
                                   :remote="remote"
@@ -114,7 +114,7 @@
           <GenerateFormItem :key="item.key"
                             :models="models"
                             :remote="remote"
-                            @selection="getTableSelection($event,item)"
+                            @selection-change="getTableSelection($event,item)"
                             :widget="item"
                             :rules="rules[item.model]"
                             :readOnly="readOnly"
@@ -227,8 +227,6 @@ export default class GenerateForm extends Vue {
 
   rules: any = {};
 
-  tableSelections: any = {};
-
   created() {
     if (this.data.list) {
       // 根据数据结构生成给子组件的数据源
@@ -237,8 +235,9 @@ export default class GenerateForm extends Vue {
   }
 
   getTableSelection($event, item) {
-    this.tableSelections[item.model] = $event;
-    this.$emit('table-selections', this.tableSelections);
+    const tableSelections = {};
+    tableSelections[item.model] = $event;
+    this.$emit('table-selections', tableSelections);
   }
 
   generateModel(genList) {

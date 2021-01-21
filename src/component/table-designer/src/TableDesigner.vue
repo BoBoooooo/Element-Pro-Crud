@@ -15,15 +15,15 @@
     <!-- 对话框内动态表单 -->
     <el-row>
       <el-col :span="12">
-        <el-form size="small" :inline="true" :model="formValues" class="inline-form">
+        <el-form size="small" :inline="true" :model="objJSON" class="inline-form">
           <el-form-item label="表格名称">
             <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
               <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
             </el-select>
-            <el-input v-else v-model="formValues.tableName" placeholder="请输入表格名称"></el-input>
+            <el-input v-else v-model="objJSON.name" placeholder="请输入表格名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="formValues.position" placeholder="使用位置"></el-input>
+            <el-input v-model="objJSON.position" placeholder="使用位置"></el-input>
           </el-form-item>
         </el-form>
       </el-col>
@@ -173,15 +173,11 @@ export default {
     },
     // 返回当前表格设计器对象
     getData() {
-      this.objJSON.name = this.formValues.tableName;
-      this.objJSON.position = this.formValues.position;
       return this.objJSON;
     },
     // 设置内部JSON
     setJSON(tableJson) {
       this.objJSON = tableJson;
-      this.$set(this.formValues, 'tableName', tableJson.name);
-      this.$set(this.formValues, 'position', tableJson.position);
     },
   },
 };

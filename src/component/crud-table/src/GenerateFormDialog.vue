@@ -10,10 +10,10 @@
              ref="dialog"
              :title="dialogTitle"
              :visible.sync="visible"
-             :width="width"
-             :append-to-body="appendToBody"
-             :fullscreen="fullscreen"
-             :close-on-click-modal="closeOnClickModal">
+             :width="dialogWidth"
+             :append-to-body="dialogAppendToBody"
+             :fullscreen="dialogFullscreen"
+             :close-on-click-modal="dialogCloseOnClickModal">
     <!-- 对话框内动态表单 -->
     <GenerateForm ref="generateDialogForm"
                   :value="formValues"
@@ -90,7 +90,7 @@ export default class GenerateFormDialog extends Vue {
     type: String,
     default: '80%',
   })
-  width!: string;
+  dialogWidth!: string;
 
   // 表名
   @Prop({
@@ -109,13 +109,13 @@ export default class GenerateFormDialog extends Vue {
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
 
   // 弹出表单appendToBody
-  @Prop({ default: false, type: Boolean }) appendToBody!: boolean;
+  @Prop({ default: true, type: Boolean }) dialogAppendToBody!: boolean;
 
   // 点击阴影弹框是否可以关闭
-  @Prop({ default: true, type: Boolean }) closeOnClickModal!: boolean;
+  @Prop({ default: true, type: Boolean }) dialogCloseOnClickModal!: boolean;
 
   // 表单是否全屏
-  @Prop({ default: false, type: Boolean }) fullscreen!: boolean;
+  @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
 
   $refs!: {
     generateDialogForm: HTMLFormElement;

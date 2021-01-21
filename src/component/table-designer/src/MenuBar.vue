@@ -186,7 +186,7 @@ export default {
         // 操作列
         case 'addActionColumn':
           this.designedJSON.columns.push({
-            prop: '',
+            prop: '_action',
             label: '操作',
             minWidth: 180,
             align: 'center',

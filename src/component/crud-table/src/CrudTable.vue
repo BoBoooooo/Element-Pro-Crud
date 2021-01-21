@@ -113,8 +113,8 @@ import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
 import { DML } from '@/types/common';
-import GenerateFormDialog from './src/GenerateFormDialog.vue';
-import ProTable from './src/ProTable.vue';
+import GenerateFormDialog from './GenerateFormDialog.vue';
+import ProTable from '../../pro-table';
 
 
 const STATUS = {
@@ -426,6 +426,7 @@ export default class CrudTable extends Vue {
 
   handleSelectionChange(selection) {
     this.selectedRows = selection;
+    this.$emit('selection-change', selection);
   }
 
   // 批量删除按钮

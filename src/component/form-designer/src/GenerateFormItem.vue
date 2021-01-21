@@ -236,9 +236,9 @@
       </el-cascader>
     </template>
     <template v-if="widget.type == 'table'">
-      <ProTable :closeOnClickModal="false"
+      <CrudTable :closeOnClickModal="false"
                  ref="table"
-                 @selection="getTableSelection"
+                 @selection-change="getTableSelection"
                  :tableName="widget.options.tableName"
                  :tableDesignerName="widget.options.tableDesignerName"
                  :dialogFormDesignerName="widget.options.dialogFormDesignerName"
@@ -265,7 +265,7 @@
                 :prop="prop">
           </slot>
         </template>
-      </ProTable>
+      </CrudTable>
     </template>
     <template v-if="widget.type === 'treeselect'">
       <!-- 目前暂时提供了几个常用props,有更多需要自行拓展 -->
@@ -323,13 +323,14 @@ import {
 } from 'vue-property-decorator';
 import TreeSelect from '@riophae/vue-treeselect';
 import { DML } from '@/types/common';
+import CrudTable from '@/component/crud-table/src/CrudTable.vue';
 import { isChinese } from '@/utils/utils';
 import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
 import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
-
 // 高级查询单个查询内容
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+
 
 @Component({
   components: {
@@ -337,6 +338,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
     Tinymce,
     FileUpload,
     GenerateSubForm,
+    CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
   model: {
     prop: 'value',
@@ -642,7 +644,7 @@ export default class GenerateFormItem extends Vue {
   }
 
   getTableSelection(selection) {
-    this.$emit('selection', selection);
+    this.$emit('selection-change', selection);
   }
 
   beforeDestroy() {

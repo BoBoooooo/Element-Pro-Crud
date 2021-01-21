@@ -30,9 +30,6 @@
                           @fetchSearch="getFetchParamsSearch"
                           :columns="columns">
         </SeniorSearchForm>
-        <!-- 自定义高级查询表单-->
-        <slot name="seniorSearchForm"></slot>
-
         <el-button size="mini"
                    icon="el-icon-refresh"
                    @click="clearEvent()"

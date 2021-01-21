@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import CrudTable from '@/component/pro-table/CrudTable.vue';
+import CrudTable from '@/component/crud-table/src/CrudTable.vue';
 import { DML } from '@/types/common';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
