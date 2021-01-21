@@ -17,7 +17,7 @@
       <el-col :span="12">
         <el-form size="small" :inline="true" :model="objJSON" class="inline-form">
           <el-form-item label="表格名称">
-            <el-select v-if="allTables" filterable allow-create v-model="formValues.tableName" placeholder="名称">
+            <el-select v-if="allTables" filterable allow-create v-model="objJSON.name" placeholder="名称">
               <el-option v-for="(item, index) in allTables" :label="item.label" :value="item.value" :key="index"></el-option>
             </el-select>
             <el-input v-else v-model="objJSON.name" placeholder="请输入表格名称"></el-input>

@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import { BaseComponent } from './main';
-import { ElProTable } from './crud-table';
+import { ElProTable } from './pro-table';
 import { ElFormDesigner } from './form-designer-dialog';
 import { ElTableDesigner } from './table-designer-dialog';
 import { ElGenerateForm } from './generate-form';
+import { ElCrudTable } from './crud-table';
 
 export interface InstallationOptions {}
 
@@ -28,3 +29,6 @@ export class GenerateForm extends ElGenerateForm {}
 
 /** ProTable Component */
 export class ProTable extends ElProTable {}
+
+/** CrudTable Component */
+export class CrudTable extends ElCrudTable {}
