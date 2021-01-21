@@ -7,42 +7,28 @@
 
 <template>
   <div class="page-container">
-    <ProTable
-      ref="table"
-      :request="request"
-      tableName="person"
-      tableTitle="员工管理"
-      fullHeight
-      orderCondition="timestamp desc"
-      :visibleList="{
-        btnDel: true,
-        tableTitle: true,
-      }">
-      <template #column_jobno="{row}">
-        <el-tag>{{ row.jobno }}</el-tag>
+    <CrudTable ref="table" tableName="person" tableTitle="员工管理" fullHeight orderCondition="timestamp desc" :visibleList="visibleList" v-bind="$attrs" v-on="$listeners">
+      <template #columnFormatter="{row,prop}">
+        <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
+        <span v-if="prop === 'personname'"><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
       </template>
-      <template #column_personname="{row}">
-        <span><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
-      </template>
-    </ProTable>
+    </CrudTable>
   </div>
 </template>
 
 <script>
+import CrudTable from '@/component/pro-table/CrudTable.vue';
 import { DML } from '@/types/common';
-import { Vue, Component } from 'vue-property-decorator';
-
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
   name: 'PersonTable',
+  components: {
+    CrudTable,
+  },
 })
 export default class PersonTable extends Vue {
-  async request(axiosParams) {
-    const res = await this.$PROCRUD.crud(DML.SELECT, 'person', axiosParams);
-    return {
-      data: res.data.list,
-      total: res.data.total,
-    };
-  }
+  @Prop(Object)
+  visibleList;
 }
 </script>

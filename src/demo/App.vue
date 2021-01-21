@@ -95,6 +95,8 @@
                     <!-- <el-switch v-model="visibleList.actionColumn"
                                inactive-text="操作列"></el-switch> -->
                     <el-divider>操作按钮</el-divider>
+                      <el-switch v-model="visibleList.btnAddOnColumnHeader"
+                               inactive-text="列头新增按钮(需重载)"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnEdit"
                                inactive-text="编辑按钮"></el-switch>
                     <el-switch v-model="visibleList.actionColumnBtnDel"
@@ -289,6 +291,7 @@ export default {
         tableTitle: true,
         btnAdd: true,
         btnDel: true,
+        btnAddOnColumnHeader: false,
         actionColumnBtnDel: true,
         actionColumnBtnEdit: true,
         actionColumnBtnDetail: false,

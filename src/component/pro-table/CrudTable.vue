@@ -14,145 +14,43 @@
 <template>
   <div class="CrudTable">
     <div class="base-table">
-      <!-- 表格左侧标题 -->
-      <div :class="{
-        'table-title': searchMode === 'popover',
-        'table-title-absolute': searchMode === 'cover'
-      }"
-           v-if="view.tableTitle && tableTitle">
-        <!-- 表格标题 -->
-        <h4>{{tableTitle}}</h4>
-      </div>
-      <!--dev模式可直接编辑表格-->
-      <!-- <div v-if="$store.getters && $store.getters.config && $store.getters.config.isDev === '1'" class="dev-module">
-        <el-button type="text" @click="showTableDesigner">当前表格: {{this.tableDesignerName || this.tableName}}  [点此修改]</el-button>
-        <TableDesigner ref="TableDesigner"
-                         @after-save="tableOnSave"/>
-      </div> -->
-      <!-- table右上角按钮 -->
-      <div class="btn-bar"
-           v-if="searchMode === 'popover'">
-        <slot name="btnBarPrevBtn" />
-        <!-- 批量删除按钮 -->
-        <el-button v-if="view.btnDel"
-                   @click="btnDeletesOnClick"
-                   type="danger"
-                   size="mini"
-                   icon="el-icon-delete">{{text.multiDel}}</el-button>
-        <!-- 添加按钮 -->
-        <el-button v-if="view.btnAdd"
-                   type="primary"
-                   icon="el-icon-plus"
-                   size="mini"
-                   @click.stop="btnAdd()">{{text.add}}</el-button>
-      </div>
-
-      <SearchForm ref="searchForm"
-                  v-if="view.searchForm"
-                  :searchMode="searchMode"
-                  :showSeniorSearchFormButton="view.seniorSearchBtn"
-                  :columns="tableConfig.columns || []"
-                  @click="fetchHandler(false,true)"
-                  :searchFormCondition.sync="searchFormCondition"
-                  :remoteFuncs="remoteFuncs"
-                  :isLoading="loading"
-                  @clear="dataChangeHandler(true)">
-        <template #seniorSearchForm>
-          <slot name="seniorSearchForm"></slot>
-        </template>
-        <template v-if="searchMode === 'cover'">
-          <!-- table右上角按钮 -->
-          <div class="btn-bar">
-            <slot name="btnBarPrevBtn" />
-            <!-- 批量删除按钮 -->
-            <el-button v-if="view.btnDel"
-                       @click="btnDeletesOnClick"
-                       type="danger"
-                       size="mini"
-                       icon="el-icon-delete">{{text.multiDel}}</el-button>
-            <!-- 添加按钮 -->
-            <el-button v-if="view.btnAdd"
-                       type="primary"
-                       icon="el-icon-plus"
-                       size="mini"
-                       @click.stop="btnAdd()">{{text.add}}</el-button>
-          </div>
-        </template>
-      </SearchForm>
       <!-- 表格主体 -->
-      <el-table v-loading.lock="loading"
-                v-bind="$attrs"
-                v-on="tableListeners"
-                element-loading-text="加载中……"
+      <ProTable v-bind="$attrs"
+                v-on="$listeners"
                 ref="table"
-                :header-cell-style="{ background: '#f2f2f2', color: '#737373' }"
-                :data="tableData"
-                :height="tableHeight"
-                :max-height="maxHeight"
-                :row-style="rowStyle"
-                :cell-style="cellStyle"
-                :row-key="(row)=> row.id"
-                rowKey="id"
+                @selection-change="handleSelectionChange"
+                :visibleList="view"
+                :columns="tableConfig"
+                :request="request"
                 :lazy="lazy"
                 :load="treeload"
                 :tree-props="{children: 'children', hasChildren: 'flag'}">
-        <template slot='empty'>
-          <SvgIcon icon-class='table_empty'
-                   class="empty_icon"></SvgIcon>
-          <span>{{this.emptyText}}</span>
-        </template>
-        <el-table-column v-if="isMultiple || view.btnDel"
-                         type="selection"
-                         reserve-selection
-                         align="center"
-                         header-align="center"
-                         width="55"
-                         :selectable="selectableFunc"> </el-table-column>
-        <el-table-column v-if="showColumnIndex"
-                         type="index"
-                         align="center"
-                         label="#"
-                         header-align="center"
-                         width="50"> </el-table-column>
-        <el-table-column v-for="(column, columnIndex) in tableConfig.columns"
-                         :key="columnIndex"
-                         :column-key="column.columnKey"
-                         :prop="column.prop"
-                         :label="column.label"
-                         :width="column.minWidth ? '-' : column.width || 140"
-                         :min-width="column.minWidth || column.width || 140"
-                         :fixed="column.fixed"
-                         :render-header="column.renderHeader"
-                         :sortable="column.sortable == 'false' ? false : column.sortable"
-                         :sort-by="column.sortBy"
-                         :sort-method="column.method"
-                         :resizable="column.resizable"
-                         :formatter="column.formatter"
-                         :show-overflow-tooltip="column.showOverflowTooltip"
-                         :align="column.align"
-                         :header-align="column.headerAlign || column.align"
-                         :class-name="column.className"
-                         :label-class-name="column.labelClassName"
-                         :selectable="column.selectable"
-                         :reserve-selection="column.reserveSelection"
-                         :filters="column.filters"
-                         :filter-placement="column.filterPlacement"
-                         :filter-multiple="column.filterMultiple"
-                         :filter-method="column.filterMethod"
-                         :filtered-value="column.filteredValue">
-          <!-- 此处暂时只考虑操作列表头的处理 -->
-          <template slot="header"
-                    v-if="view.btnAddOnColumnHeader && column.slotName === 'actionColumn'">
+          <template #btnBarPrevBtn>
+              <!-- 批量删除按钮 -->
+            <el-button v-if="view.btnDel"
+                      @click="btnDeletesOnClick"
+                      type="danger"
+                      size="mini"
+                      icon="el-icon-delete">{{text.multiDel}}</el-button>
             <!-- 添加按钮 -->
+            <el-button v-if="view.btnAdd"
+                      type="primary"
+                      icon="el-icon-plus"
+                      size="mini"
+                      @click.stop="btnAdd()">{{text.add}}</el-button>
+          </template>
+          <!-- 列表头添加按钮 -->
+          <template #_action_header v-if="view.btnAddOnColumnHeader">
             <el-button icon="el-icon-plus"
                        size="mini"
                        type="primary"
                        style="color:white"
-                       @click.stop="btnAdd()"></el-button>
+                       @click.stop="btnAdd"></el-button>
           </template>
-
-          <template slot-scope="scope">
-            <span v-if="column.slotName === 'actionColumn'">
+          <template #columnFormatter="{row,prop}">
+            <slot name="columnFormatter" :row="row" :prop="prop"></slot>
+          </template>
+          <template slot-scope="scope" slot="actionColumn">
               <!-- 操作列-添加按钮 -->
               <el-button v-if="view.actionColumnBtnAdd"
                          icon="el-icon-plus"
@@ -161,18 +59,17 @@
                          @click.stop="actionColumnAdd(scope.row)">{{text.add}}</el-button>
               <!-- 操作列-编辑按钮 -->
               <template v-if="actionColumnBtnEditVisible(scope.row)">
-                <!-- 正常编辑按钮 -->
                 <el-button type="success"
                            size="mini"
                            @click.stop="actionColumnEdit(scope.row)">{{text.edit}}</el-button>
               </template>
-              <!-- 查看按钮 -->
+              <!-- 操作列-查看按钮 -->
               <el-button v-if="actionColumnBtnDetailVisible(scope.row)"
                          type="primary"
                          size="mini"
                          @click.stop="actionColumnDetail(scope.row)">{{text.detail}}</el-button>
 
-              <!-- 操作列-删除按钮，支持传入btnDelVisibleFunc()用于判断按钮显示状态 -->
+              <!-- 操作列-删除按钮 -->
               <el-button v-if="actionColumnBtnDelVisible(scope.row)"
                          type="danger"
                          size="mini"
@@ -180,37 +77,9 @@
               <!-- 自定义按钮 -->
               <slot name="btnCustom"
                     :row="scope.row" />
-            </span>
-            <!-- 自定义插槽 -->
-            <span v-else-if="column.slotName  && column.slotName !== 'actionColumn'">
-              <slot :name="`column_${column.slotName}`"
-                    :row="scope.row"
-                    :prop="column.prop"
-                    :$index="scope.$index" />
-            </span>
-            <span v-else>
-              {{ scope.row[column.prop] }}
-            </span>
           </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页 -->
-      <div style="overflow:hidden;background:white"
-           class="mt-8">
-        <el-pagination v-if="showPagination"
-                       :current-page="pagination.pageIndex"
-                       :page-sizes="pageSizes"
-                       :page-size="pagination.pageSize"
-                       :layout="paginationLayout"
-                       :pager-count="pagerCount"
-                       :small="pagerSmall"
-                       :total="total"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       style="float:right" />
-      </div>
-    </div>
-    <!-- 新增、编辑、查看按钮 弹出 表单-->
+      </ProTable>
+       <!-- 新增、编辑、查看按钮 弹出 表单-->
     <GenerateFormDialog ref="dialog"
                         :tableName="tableName"
                         :dialogFormDesignerName="dialogFormDesignerName"
@@ -233,6 +102,7 @@
       </template>
     </GenerateFormDialog>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -243,8 +113,9 @@ import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
 import { DML } from '@/types/common';
-import GenerateFormDialog from './GenerateFormDialog.vue';
-import SearchForm from './SearchForm.vue';
+import GenerateFormDialog from './src/GenerateFormDialog.vue';
+import ProTable from './src/ProTable.vue';
+
 
 const STATUS = {
   CREATE: 0,
@@ -255,8 +126,8 @@ const STATUS = {
   name: 'CrudTable',
   components: {
     GenerateFormDialog,
-    SearchForm,
     SvgIcon,
+    ProTable,
   },
 })
 export default class CrudTable extends Vue {
@@ -271,47 +142,14 @@ export default class CrudTable extends Vue {
   // 当前点击行
   currentRow: any = {};
 
-  // 结果总数
-  total = 0;
-
-  // 是否在加载
-  loading = false;
-
-  // 排序参数
-  sortParams = {
-    orderCondition: '',
-  };
-
-  // 最大页码按钮数
-  pagerCount = 7;
-
-  // 是否显示小型分页
-  pagerSmall = false;
-
-  // 高级查询Condition
-  searchFormCondition = [];
-
-  // 表格最大高度
-  maxHeight: string | number = '100%';
-
-  // 表格高度
-  tableHeight: number | string = '100%';
+  // 已选择行
+  selectedRows: any = [];
 
   // 表格结构json，将来可能有多张表
   tableConfig = { columns: [] };
 
-  // 多选行选中项
-  selectedRows: any = [];
-
   // 表格数据
   tableData = [];
-
-  // 查询模式
-  @Prop({
-    type: String,
-    default: 'popover',
-  })
-  searchMode!: string;
 
   // listField
   @Prop({
@@ -356,13 +194,6 @@ export default class CrudTable extends Vue {
   })
   tableName!: string;
 
-  // 表格标题
-  @Prop({
-    type: String,
-    default: '',
-  })
-  tableTitle!: string;
-
   // 按钮名字
   @Prop({ default: () => ({}), type: Object }) textMap!: any;
 
@@ -405,30 +236,12 @@ export default class CrudTable extends Vue {
   // 表格行中的添加按钮点击事件
   @Prop({ default: null, type: Function }) btnRowAddOnClick!: any;
 
-  // 是否显示分页
-  @Prop({ default: true, type: Boolean }) showPagination!: boolean;
-
   // 远程数据方法
   @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
-
-  // 页码大小
-  @Prop({ default: () => [20, 50, 100] }) pageSizes!: number[];
-
-  // 分页显示
-  @Prop({
-    type: String,
-    default: 'total, prev, pager, next, jumper, sizes',
-  })
-  paginationLayout!: string;
-
-  // 是否自适应屏幕高度
-  @Prop({ type: Boolean, default: false }) fullHeight!: boolean;
 
   // 高度minus
   @Prop({ type: Number, default: 270 }) maxHeightMinus!: number;
 
-  // el-table height
-  @Prop(Number) height!: number;
 
   // 点击阴影弹框是否可以关闭
   @Prop({ default: true, type: Boolean }) dialogCloseOnClickModal!: boolean;
@@ -436,8 +249,6 @@ export default class CrudTable extends Vue {
   // 表单是否全屏
   @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
 
-  // 是否显示序号列
-  @Prop({ default: false }) showColumnIndex!: boolean;
 
   // 异步更新表单数据
   @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
@@ -445,32 +256,9 @@ export default class CrudTable extends Vue {
   // 子表tableConfig 详情看GenerateFormItem中解释
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
 
-  // 行样式
-  @Prop({
-    default: () => ({
-      height: '20px',
-    }),
-    type: Function,
-  })
-  rowStyle!: any;
-
-  // 单元格样式
-  @Prop({
-    default: () => ({
-      padding: '5px',
-    }),
-    type: Function,
-  })
-  cellStyle!: any;
 
   // 操作列宽度
   @Prop({ type: Number, default: null }) actionColumnWidth!: number;
-
-  // 是否需要多选
-  @Prop({ default: true, type: Boolean }) isMultiple!: boolean;
-
-  // 排序条件
-  @Prop({ default: null, type: String }) orderCondition!: string;
 
   // totalField
   @Prop({
@@ -486,45 +274,9 @@ export default class CrudTable extends Vue {
   })
   tableParams!: any;
 
-  // pageIndexKey
-  @Prop({ default: 'pageIndex', type: String }) pageIndexKey!: string;
-
-  // pageSizeKey
-  @Prop({ default: 'pageSize', type: String }) pageSizeKey!: string;
-
-  // 选择行是否可选
-  @Prop({ default: null, type: Function }) selectableFunc: any;
-
   // 是否懒加载
   @Prop(Boolean) lazy!: boolean;
 
-  // empty-text
-  @Prop({
-    type: String,
-    default: '暂无数据',
-  })
-  emptyText!: string;
-
-  // columns
-  @Prop({
-    type: Object,
-    default: null,
-  })
-  columns!: any;
-
-  // 分页
-  get pagination() {
-    return {
-      pageIndex: 1,
-      pageSize: ((): number => {
-        const { pageSizes } = this;
-        if (pageSizes.length > 0) {
-          return pageSizes[0];
-        }
-        return 20;
-      })(),
-    };
-  }
 
   // 文本映射
   get text() {
@@ -569,20 +321,7 @@ export default class CrudTable extends Vue {
     return viewObj;
   }
 
-  get tableListeners() {
-    return {
-      ...this.$listeners,
-      'sort-change': this.sortChange,
-      'selection-change': this.handleSelectionChange,
-    };
-  }
-
   created() {
-    // 外侧传入表格json
-    if (this.columns) {
-      this.tableConfig = this.columns;
-      return;
-    }
     // 请求表格设计json
     const promise = this.$PROCRUD.getTableDetail(this.tableDesignerName ? this.tableDesignerName : this.tableName);
     // 加载表格结构
@@ -602,7 +341,7 @@ export default class CrudTable extends Vue {
 
   // 表格刷新
   tableReload() {
-    this.dataChangeHandler();
+    this.$refs.table.tableReload();
   }
 
   // 添加
@@ -683,6 +422,10 @@ export default class CrudTable extends Vue {
         this.$refs.dialog.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
       });
     }
+  }
+
+  handleSelectionChange(selection) {
+    this.selectedRows = selection;
   }
 
   // 批量删除按钮
@@ -782,12 +525,6 @@ export default class CrudTable extends Vue {
     return visible;
   }
 
-  // 多选事件
-  handleSelectionChange(selection) {
-    this.selectedRows = selection;
-    this.$emit('selection-change', selection);
-  }
-
   // 生成的按钮点击
   formBtnOnClick(widget) {
     this.$emit('form-btn-on-click', widget);
@@ -798,128 +535,29 @@ export default class CrudTable extends Vue {
     this.$emit('form-change', val);
   }
 
-  mounted() {
-    // 请求数据
-    this.fetchHandler(true);
 
-    // 自适应分页组件按钮;
-    window.addEventListener('resize', this.resizeHandler);
-  }
-
-  resizeHandler() {
-    this.setPagerByWidth();
-    this.setTableHeight();
-  }
-
-  setTableHeight() {
-    const h = document.documentElement.clientHeight || document.body.clientHeight;
-    this.maxHeight = Math.max(0, h - this.maxHeightMinus);
-    this.tableHeight = this.fullHeight ? this.maxHeight : this.height;
-  }
-
-  // 根据表格宽度自动调整分页栏大小
-  setPagerByWidth() {
-    if (this.$refs.table && this.$refs.table.$el.clientWidth < 655) {
-      this.pagerCount = 5;
-      this.pagerSmall = true;
-    } else {
-      this.pagerCount = 7;
-      this.pagerSmall = false;
-    }
-  }
-
-  // pageSize改变事件
-  handleSizeChange(size) {
-    this.pagination.pageSize = size;
-    this.dataChangeHandler();
-  }
-
-  // pageIndex改变事件
-  handleCurrentChange(pageIndex) {
-    this.pagination.pageIndex = pageIndex;
-    this.dataChangeHandler();
-  }
-
-  dataChangeHandler(clearParams = false) {
-    this.fetchHandler(clearParams);
-  }
-
-  fetchHandler(clearParams = false, resetPageIndex = false) {
-    let searchCondition: any[] = [];
-    this.loading = true;
-    const {
-      showPagination, pageIndexKey, pageSizeKey, pagination, listField, totalField,
-    } = this;
-    const { tableParams, searchFormCondition } = this;
-
+  async request(axiosParams) {
     // 已加载完成, tree lazy table 局部刷新.
-    if (this.lazy && this.tableData.length > 0) {
+    // 懒加载待重构
+    if (this.lazy) {
       this.treeload({
         id: this.currentRow.parentid,
       });
-      this.loading = false;
       return;
-    }
-
-    // 如清空查询条件,则清空
-    if (clearParams) {
-      searchCondition = [];
-    } else {
-      searchCondition = searchCondition.concat(searchFormCondition);
-    }
-    // 此处为外部传入的tableParams,不做清空处理!
-    if (this.tableParams) {
-      Object.keys(tableParams).forEach((k) => {
-        searchCondition.push({
-          field: k,
-          operator: 'eq',
-          value: tableParams[k],
-        });
-      });
-      // 自定义表格参数合并到表单查询条件
-      if (Array.isArray(tableParams)) {
-        searchCondition = searchCondition.concat(tableParams);
-      }
-    }
-    // 是否resetPageIndex
-    if (resetPageIndex) {
-      this.pagination.pageIndex = 1;
-    }
-    // 由于后端实体类接收，发送前必须确保所有属性都在
-    const axiosParams = {
-      orderCondition: '',
-      searchCondition: [],
-      pageIndex: 0,
-      pageSize: 0,
-    };
-    Object.assign(axiosParams, { searchCondition });
-    // 合并用于分页的两个参数
-    if (showPagination) {
-      Object.assign(axiosParams, {
-        [pageIndexKey]: pagination.pageIndex,
-        [pageSizeKey]: pagination.pageSize,
-      });
-    }
-    // 合并排序参数
-    if (this.sortParams.orderCondition !== '') {
-      Object.assign(axiosParams, this.sortParams);
-    } else if (this.orderCondition) {
-      Object.assign(axiosParams, { orderCondition: this.orderCondition });
     }
     // 发起请求
     // eslint-disable-next-line no-nested-ternary
     const requestObject = this.promiseForSelect
-      ? this.promiseForSelect(axiosParams, clearParams)
+      ? this.promiseForSelect(axiosParams)
       : this.lazy
         ? this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, axiosParams)
         : this.$PROCRUD.crud(DML.SELECT, this.tableName, axiosParams);
 
-    requestObject
-      .then((response) => {
-        let result = response;
-        // 此处判断返回的数据格式
-        // 和后台默认约束好的resultBean格式如下:
-        /**
+    const response = await requestObject;
+    let result = response;
+    // 此处判断返回的数据格式
+    // 和后台默认约束好的resultBean格式如下:
+    /**
          * {
          *    code: 200,
          *    data: {
@@ -929,46 +567,29 @@ export default class CrudTable extends Vue {
          *    message: SUCCESS
          * }
          */
-        if (response && !Array.isArray(response)) {
-          // 此处listField默认为 data.list
-          result = listField.split('.').reduce((res, key) => res[key], response);
-        }
-        // 判断拿到的list是否为Array
-        if (!result || !Array.isArray(result)) {
-          this.loading = false;
-          throw new Error(`The result of key:${listField} is not Array.`);
-        }
-        // 拿到list数据
-        this.tableData = result as any;
-        // 以下代码 获取该列表总数
-        let totalValue = response;
-        // 如果返回直接为list,则说明没有分页处理,直接统计length作为总数
-        if (Array.isArray(response)) {
-          totalValue = response.length;
-        } else if (typeof response === 'object') {
-          // 此处totalField默认为data.total
-          totalValue = totalField.split('.').reduce((res, key) => res[key], response);
-        } else {
-          totalValue = 0;
-        }
-        this.total = totalValue;
-        this.loading = false;
-        if (this.$refs.table) {
-          // 获取到数据后清空已选项
-          this.$refs.table.clearSelection();
-        }
-        // 初始化表格高度
-        this.setTableHeight();
-        this.$emit('done', this);
-      })
-      .catch((e) => {
-        this.$notify({
-          title: '表格数据请求失败',
-          message: `原因：${e.message}`,
-          duration: 5000,
-        });
-        this.loading = false;
-      });
+    if (response && !Array.isArray(response)) {
+      // 此处listField默认为 data.list
+      result = this.listField.split('.').reduce((res, key) => res[key], response);
+    }
+    // 判断拿到的list是否为Array
+    if (!result || !Array.isArray(result)) {
+      throw new Error(`The result of key:${this.listField} is not Array.`);
+    }
+    let totalValue = response;
+    // 如果返回直接为list,则说明没有分页处理,直接统计length作为总数
+    if (Array.isArray(response)) {
+      totalValue = response.length;
+    } else if (typeof response === 'object') {
+      // 此处totalField默认为data.total
+      totalValue = this.totalField.split('.').reduce((res, key) => res[key], response);
+    } else {
+      totalValue = 0;
+    }
+    // eslint-disable-next-line consistent-return
+    return {
+      total: totalValue,
+      data: result,
+    };
   }
 
   /** 懒加载树 */
@@ -991,26 +612,6 @@ export default class CrudTable extends Vue {
       // 强制更新已渲染子结点
       this.$set(this.$refs.table.store.states.lazyTreeNodeMap, tree.id, res.data);
     });
-  }
-
-  /**
-   * 排序条件发生变化的时候会触发该事件
-   *
-   * @param {Object} prop 当前列需要排序的数据
-   * @param {Object} order 排序的规则（升序、降序和默认[默认就是没排序]）
-   */
-  sortChange(args) {
-    const { prop, order } = args;
-    const fieldOrder = order === 'ascending' ? 'asc' : 'desc';
-    this.sortParams.orderCondition = prop ? `${prop} ${fieldOrder}` : '';
-    // emit sort-change
-    this.$emit('sort-change', args);
-    // table reload
-    this.dataChangeHandler();
-  }
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeHandler);
   }
 
   /**
@@ -1037,13 +638,6 @@ export default class CrudTable extends Vue {
   async showTableDesigner() {
     const res = await this.$PROCRUD.getTableDetail(this.tableDesignerName || this.tableName);
     this.$refs.TableDesigner.showDialog({ id: res.data.id }, 1, res.data);
-  }
-
-  @Watch('columns', {
-    deep: true,
-  })
-  columnsOnChange(val) {
-    this.tableConfig = val;
   }
 }
 </script>

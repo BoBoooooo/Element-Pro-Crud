@@ -96,14 +96,17 @@
                          :filter-method="column.filterMethod"
                          :filtered-value="column.filteredValue">
           <!-- 操作列表头插槽 -->
-          <template slot="header">
-           <slot name="header"></slot>
+          <template slot="header" slot-scope="scope">
+           <slot v-if="$scopedSlots[`${column.prop}_header`]" :name="`${column.prop}_header`"  :column="scope.column"></slot>
+           <span v-else>
+             {{column.label}}
+           </span>
           </template>
          <!-- 插槽情况 -->
           <template slot-scope="scope">
              <!-- 自定义插槽 -->
             <span v-if="column.slotName">
-              <slot :name="`column_${column.slotName}`"
+              <slot :name="column.slotName"
                     :row="scope.row"
                     :prop="column.prop"
                     :$index="scope.$index" />
@@ -189,9 +192,6 @@ export default class ProTable extends Vue {
 
   // 表格结构json
   tableConfig = { columns: [] };
-
-  // 多选行选中项
-  selectedRows: any[] = [];
 
   // 表格数据
   tableData: any[] = [];
@@ -363,6 +363,7 @@ export default class ProTable extends Vue {
     this.fetchHandler(true);
     // 自适应分页组件按钮;
     window.addEventListener('resize', this.resizeHandler);
+    console.log(this);
   }
 
 
@@ -373,7 +374,6 @@ export default class ProTable extends Vue {
 
   // 多选事件
   handleSelectionChange(selection) {
-    this.selectedRows = selection;
     this.$emit('selection-change', selection);
   }
 
@@ -469,6 +469,7 @@ export default class ProTable extends Vue {
     }
     this.request(axiosParams)
       .then((response: DataSource) => {
+        console.log(response);
         const { data = [], total = 0 } = response;
         this.tableData = data;
         this.total = total;
@@ -510,6 +511,7 @@ export default class ProTable extends Vue {
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeHandler);
   }
+
 
   @Watch('columns', {
     deep: true,
