@@ -22,6 +22,7 @@
                 :visibleList="view"
                 :columns="tableConfig"
                 :request="request"
+                :tableParams="tableParams"
                 :lazy="lazy"
                 :load="treeload"
                 :tree-props="{children: 'children', hasChildren: 'flag'}">
