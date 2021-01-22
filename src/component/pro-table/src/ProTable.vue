@@ -1,5 +1,5 @@
 <!--
- * @file: ProTable封装,支持高级查询 分页 增删改查表单
+ * @file: ProTable 基于el-table耳聪封装,托管高级查询、分页、表格
  * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年09月14 18:01:58
@@ -48,6 +48,9 @@
                 ref="table"
                 :row-key="(row)=> row.id"
                 :data="tableData">
+        <template slot="append">
+          <slot name="append"></slot>
+        </template>
         <template slot='empty'>
           <SvgIcon icon-class='table_empty'
                    class="empty_icon"></SvgIcon>
@@ -200,13 +203,6 @@ export default class ProTable extends Vue {
   })
   searchMode!: string;
 
-  // 对话框内加载FormDesigner的表名
-  @Prop({
-    type: String,
-    default: null,
-  })
-  dialogFormDesignerName!: string;
-
   // 内部元素显示控制
   @Prop({ default: () => ({}), type: Object }) visibleList!: any;
 
@@ -242,12 +238,6 @@ export default class ProTable extends Vue {
   // el-table height
   @Prop(Number) height!: number;
 
-  // 点击阴影弹框是否可以关闭
-  @Prop({ default: true, type: Boolean }) dialogCloseOnClickModal!: boolean;
-
-  // 表单是否全屏
-  @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
-
   // 是否显示序号列
   @Prop({ default: false }) showColumnIndex!: boolean;
 
@@ -256,9 +246,6 @@ export default class ProTable extends Vue {
 
   // 子表tableConfig 详情看GenerateFormItem中解释
   @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
-
-  // 操作列宽度
-  @Prop({ type: Number, default: null }) actionColumnWidth!: number;
 
   // 是否需要多选
   @Prop({ default: true, type: Boolean }) isMultiple!: boolean;
@@ -273,17 +260,8 @@ export default class ProTable extends Vue {
   })
   tableParams!: any;
 
-  // pageIndexKey
-  @Prop({ default: 'pageIndex', type: String }) pageIndexKey!: string;
-
-  // pageSizeKey
-  @Prop({ default: 'pageSize', type: String }) pageSizeKey!: string;
-
   // 选择行是否可选
   @Prop({ default: null, type: Function }) selectableFunc: any;
-
-  // 是否懒加载
-  @Prop(Boolean) lazy!: boolean;
 
   // empty-text
   @Prop({
@@ -416,7 +394,7 @@ export default class ProTable extends Vue {
     let searchCondition: any[] = [];
     this.loading = true;
     const {
-      showPagination, pageIndexKey, pageSizeKey, pagination,
+      showPagination, pagination,
     } = this;
     const { tableParams, searchFormCondition } = this;
     // 如清空查询条件,则清空
@@ -454,8 +432,8 @@ export default class ProTable extends Vue {
     // 合并用于分页的两个参数
     if (showPagination) {
       Object.assign(axiosParams, {
-        [pageIndexKey]: pagination.pageIndex,
-        [pageSizeKey]: pagination.pageSize,
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
       });
     }
     // 合并排序参数

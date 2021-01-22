@@ -25,6 +25,9 @@
                 :lazy="lazy"
                 :load="treeload"
                 :tree-props="{children: 'children', hasChildren: 'flag'}">
+                  <template #append>
+                    <slot name="append"></slot>
+                  </template>
           <template #btnBarPrevBtn>
               <!-- 批量删除按钮 -->
             <el-button v-if="view.btnDel"
