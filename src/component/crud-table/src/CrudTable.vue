@@ -116,10 +116,11 @@ import {
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
-import { DML } from '@/types/common';
+import {
+  columns, DataSource, DML, Params,
+} from '@/types/common';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import ProTable from '../../pro-table';
-
 
 const STATUS = {
   CREATE: 0,
@@ -150,7 +151,7 @@ export default class CrudTable extends Vue {
   selectedRows: any = [];
 
   // 表格结构json，将来可能有多张表
-  tableConfig = { columns: [] };
+  tableConfig:columns = { columns: [], name: '', position: '' };
 
   // 表格数据
   tableData = [];
@@ -541,7 +542,7 @@ export default class CrudTable extends Vue {
   }
 
 
-  async request(axiosParams) {
+  async request(axiosParams: Params): Promise<DataSource | undefined> {
     // 已加载完成, tree lazy table 局部刷新.
     // 懒加载待重构
     if (this.lazy) {

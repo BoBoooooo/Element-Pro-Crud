@@ -18,17 +18,35 @@ export enum DML {
 
 export interface Condition {
   field: string;
-  operator: string;
+  operator?: string;
   value: any;
 }
 
 export interface Params {
-  orderCondition?: string;
-  searchCondition?: Array<Condition>;
+  orderCondition: string;
+  searchCondition: Array<Condition>;
   pageIndex: number;
   pageSize: number;
 }
 export interface DataSource {
   data: any[]
   total: number
+}
+
+export interface columns {
+  name: string; // 表格json名称
+  position: string; // 使用位置
+  columns: Array<columnConfig>; // 列配置
+}
+
+export interface columnConfig {
+  prop: string // 字段名
+  label: string // 表头
+  minWidth: number // 最小宽度
+  align: boolean // 内容对齐方式
+  headerAlign: boolean // 表头对齐方式
+  slotName: string // 自定义插槽名
+  fixed: string // 列对齐方式
+  sortable: 'false' | 'custom' // 是否可排序
+  searchable: boolean // 是否可查询
 }

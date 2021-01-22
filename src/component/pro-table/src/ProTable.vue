@@ -7,130 +7,113 @@
 
 <template>
   <div class="ProTable">
-    <div class="base-table">
-      <!-- 表格左侧标题 -->
-      <div :class="{
-        'table-title': searchMode === 'popover',
-        'table-title-absolute': searchMode === 'cover'
+    <!-- 表格左侧标题 -->
+    <div
+      :class="{
+        'table-title-container': searchMode === 'popover',
+        'table-title-container-absolute': searchMode === 'cover',
       }"
-           v-if="view.tableTitle && tableTitle">
-        <!-- 表格标题 -->
-        <h4>{{tableTitle}}</h4>
-      </div>
-      <!-- table右上角按钮 -->
-      <div class="btn-bar"
-           v-if="searchMode === 'popover'">
-        <slot name="btnBarPrevBtn" />
-      </div>
-      <SearchForm ref="searchForm"
-                  v-if="view.searchForm"
-                  :searchMode="searchMode"
-                  :showSeniorSearchFormButton="view.seniorSearchBtn"
-                  :columns="tableConfig.columns || []"
-                  @click="fetchHandler(false,true)"
-                  :searchFormCondition.sync="searchFormCondition"
-                  :remoteFuncs="remoteFuncs"
-                  :isLoading="loading"
-                  @clear="dataChangeHandler(true)">
-        <template v-if="searchMode === 'cover'">
-          <!-- table右上角按钮 -->
-          <div class="btn-bar">
-            <slot name="btnBarPrevBtn" />
-          </div>
+      v-if="view.tableTitle && tableTitle"
+    >
+      <!-- 表格标题 -->
+      <h4 class="title">{{ tableTitle }}</h4>
+    </div>
+    <!-- table右上角按钮 -->
+    <div class="btn-bar" v-if="searchMode === 'popover'">
+      <slot name="btnBarPrevBtn" />
+    </div>
+    <SearchForm
+      ref="searchForm"
+      v-if="view.searchForm"
+      :searchMode="searchMode"
+      :showSeniorSearchFormButton="view.seniorSearchBtn"
+      :columns="tableConfig.columns || []"
+      @click="fetchHandler(false, true)"
+      :searchFormCondition.sync="searchFormCondition"
+      :remoteFuncs="remoteFuncs"
+      :isLoading="loading"
+      @clear="dataChangeHandler(true)"
+    >
+      <template v-if="searchMode === 'cover'">
+        <!-- table右上角按钮 -->
+        <div class="btn-bar">
+          <slot name="btnBarPrevBtn" />
+        </div>
+      </template>
+    </SearchForm>
+    <!-- 表格主体 -->
+    <el-table v-loading.lock="loading" v-bind="$attrs" v-on="tableListeners" :height="tableHeight" :max-height="maxHeight" ref="table" :row-key="(row) => row.id" :data="tableData">
+      <template slot="append">
+        <slot name="append"></slot>
+      </template>
+      <template slot="empty">
+        <SvgIcon icon-class="table_empty" class="empty_icon"></SvgIcon>
+        <span>{{ this.emptyText }}</span>
+      </template>
+      <el-table-column v-if="isMultiple" type="selection" reserve-selection align="center" header-align="center" width="55" :selectable="selectableFunc"> </el-table-column>
+      <el-table-column v-if="showColumnIndex" type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
+      <el-table-column
+        v-for="(column, columnIndex) in tableConfig.columns"
+        :key="columnIndex"
+        :column-key="column.columnKey"
+        :prop="column.prop"
+        :label="column.label"
+        :width="column.minWidth ? '-' : column.width || 140"
+        :min-width="column.minWidth || column.width || 140"
+        :fixed="column.fixed"
+        :render-header="column.renderHeader"
+        :sortable="column.sortable == 'false' ? false : column.sortable"
+        :sort-by="column.sortBy"
+        :sort-method="column.method"
+        :resizable="column.resizable"
+        :formatter="column.formatter"
+        :show-overflow-tooltip="column.showOverflowTooltip"
+        :align="column.align"
+        :header-align="column.headerAlign || column.align"
+        :class-name="column.className"
+        :label-class-name="column.labelClassName"
+        :selectable="column.selectable"
+        :reserve-selection="column.reserveSelection"
+        :filters="column.filters"
+        :filter-placement="column.filterPlacement"
+        :filter-multiple="column.filterMultiple"
+        :filter-method="column.filterMethod"
+        :filtered-value="column.filteredValue"
+      >
+        <!-- 操作列表头插槽 -->
+        <template slot="header" slot-scope="scope">
+          <slot v-if="$scopedSlots[`${column.prop}_header`]" :name="`${column.prop}_header`" :column="scope.column"></slot>
+          <span v-else>
+            {{ column.label }}
+          </span>
         </template>
-      </SearchForm>
-      <!-- 表格主体 -->
-      <el-table v-loading.lock="loading"
-                v-bind="$attrs"
-                v-on="tableListeners"
-                :height="tableHeight"
-                :max-height="maxHeight"
-                ref="table"
-                :row-key="(row)=> row.id"
-                :data="tableData">
-        <template slot="append">
-          <slot name="append"></slot>
+        <!-- 插槽情况 -->
+        <template slot-scope="scope">
+          <!-- 自定义插槽 -->
+          <span v-if="column.slotName">
+            <slot :name="column.slotName" :row="scope.row" :prop="column.prop" :$index="scope.$index" />
+          </span>
+          <span v-else>
+            {{ scope.row[column.prop] }}
+          </span>
         </template>
-        <template slot='empty'>
-          <SvgIcon icon-class='table_empty'
-                   class="empty_icon"></SvgIcon>
-          <span>{{this.emptyText}}</span>
-        </template>
-        <el-table-column v-if="isMultiple"
-                         type="selection"
-                         reserve-selection
-                         align="center"
-                         header-align="center"
-                         width="55"
-                         :selectable="selectableFunc"> </el-table-column>
-        <el-table-column v-if="showColumnIndex"
-                         type="index"
-                         align="center"
-                         label="#"
-                         header-align="center"
-                         width="50"> </el-table-column>
-        <el-table-column v-for="(column, columnIndex) in tableConfig.columns"
-                         :key="columnIndex"
-                         :column-key="column.columnKey"
-                         :prop="column.prop"
-                         :label="column.label"
-                         :width="column.minWidth ? '-' : column.width || 140"
-                         :min-width="column.minWidth || column.width || 140"
-                         :fixed="column.fixed"
-                         :render-header="column.renderHeader"
-                         :sortable="column.sortable == 'false' ? false : column.sortable"
-                         :sort-by="column.sortBy"
-                         :sort-method="column.method"
-                         :resizable="column.resizable"
-                         :formatter="column.formatter"
-                         :show-overflow-tooltip="column.showOverflowTooltip"
-                         :align="column.align"
-                         :header-align="column.headerAlign || column.align"
-                         :class-name="column.className"
-                         :label-class-name="column.labelClassName"
-                         :selectable="column.selectable"
-                         :reserve-selection="column.reserveSelection"
-                         :filters="column.filters"
-                         :filter-placement="column.filterPlacement"
-                         :filter-multiple="column.filterMultiple"
-                         :filter-method="column.filterMethod"
-                         :filtered-value="column.filteredValue">
-          <!-- 操作列表头插槽 -->
-          <template slot="header" slot-scope="scope">
-           <slot v-if="$scopedSlots[`${column.prop}_header`]" :name="`${column.prop}_header`"  :column="scope.column"></slot>
-           <span v-else>
-             {{column.label}}
-           </span>
-          </template>
-         <!-- 插槽情况 -->
-          <template slot-scope="scope">
-             <!-- 自定义插槽 -->
-            <span v-if="column.slotName">
-              <slot :name="column.slotName"
-                    :row="scope.row"
-                    :prop="column.prop"
-                    :$index="scope.$index" />
-            </span>
-            <span v-else>
-              {{ scope.row[column.prop] }}
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页 -->
-      <div class="mt-8">
-        <el-pagination v-if="showPagination"
-                       :current-page="pagination.pageIndex"
-                       :page-sizes="pageSizes"
-                       :page-size="pagination.pageSize"
-                       :layout="paginationLayout"
-                       :pager-count="pagerCount"
-                       :small="pagerSmall"
-                       :total="total"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       style="float:right" />
-      </div>
+      </el-table-column>
+    </el-table>
+    <!-- 分页 -->
+    <div class="mt-8">
+      <el-pagination
+        v-if="showPagination"
+        :current-page="pagination.pageIndex"
+        :page-sizes="pageSizes"
+        :page-size="pagination.pageSize"
+        :layout="paginationLayout"
+        :pager-count="pagerCount"
+        :small="pagerSmall"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        style="float:right"
+      />
     </div>
   </div>
 </template>
@@ -142,7 +125,10 @@ import {
 import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
-import { DML, Params, DataSource } from '@/types/common';
+import {
+  DML, Params, DataSource, columns, columnConfig,
+} from '@/types/common';
+import { PropType } from 'vue';
 import SearchForm from './SearchForm.vue';
 
 const STATUS = {
@@ -191,7 +177,7 @@ export default class ProTable extends Vue {
   tableHeight: number | string = '100%';
 
   // 表格结构json
-  tableConfig = { columns: [] };
+  tableConfig: columns = { columns: [], name: '', position: '' };
 
   // 表格数据
   tableData: any[] = [];
@@ -241,11 +227,6 @@ export default class ProTable extends Vue {
   // 是否显示序号列
   @Prop({ default: false }) showColumnIndex!: boolean;
 
-  // 异步更新表单数据
-  @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
-
-  // 子表tableConfig 详情看GenerateFormItem中解释
-  @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
 
   // 是否需要多选
   @Prop({ default: true, type: Boolean }) isMultiple!: boolean;
@@ -272,19 +253,19 @@ export default class ProTable extends Vue {
 
   // columns列配置
   @Prop({
-    type: Object,
+    type: Object as PropType<columns>,
     default: null,
     required: true,
   })
-  columns!: any;
+  columns!: columns;
 
   // request请求方法
   @Prop({
-    type: Function,
+    type: Function as PropType<(params: Params) => Promise<DataSource>>,
     default: null,
     required: true,
   })
-  request!: any;
+  request!: (params: Params) => Promise<DataSource>;
 
   // 分页
   get pagination() {
@@ -338,9 +319,7 @@ export default class ProTable extends Vue {
     this.fetchHandler(true);
     // 自适应分页组件按钮;
     window.addEventListener('resize', this.resizeHandler);
-    console.log(this);
   }
-
 
   // 表格刷新
   tableReload() {
@@ -393,9 +372,7 @@ export default class ProTable extends Vue {
   fetchHandler(clearParams = false, resetPageIndex = false) {
     let searchCondition: any[] = [];
     this.loading = true;
-    const {
-      showPagination, pagination,
-    } = this;
+    const { showPagination, pagination } = this;
     const { tableParams, searchFormCondition } = this;
     // 如清空查询条件,则清空
     if (clearParams) {
@@ -443,8 +420,7 @@ export default class ProTable extends Vue {
       Object.assign(axiosParams, { orderCondition: this.orderCondition });
     }
     this.request(axiosParams)
-      .then((response: DataSource) => {
-        console.log(response);
+      .then((response) => {
         const { data = [], total = 0 } = response;
         this.tableData = data;
         this.total = total;
@@ -487,7 +463,6 @@ export default class ProTable extends Vue {
     window.removeEventListener('resize', this.resizeHandler);
   }
 
-
   @Watch('columns', {
     deep: true,
   })
@@ -497,38 +472,36 @@ export default class ProTable extends Vue {
 }
 </script>
 
-<style scoped>
-/* 修改暂无数据样式 */
-.base-table >>> .el-table__empty-text {
-  line-height: 10px;
-  margin-bottom: 15px;
-  color: rgba(0, 0, 0, 0.25) !important;
-  font-size: 14px;
-}
-.base-table >>> .empty_icon {
-  width: 4em;
-  height: 4em;
-  display: block;
-  margin: 0 auto;
-}
-</style>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
 .ProTable {
   background: white;
   padding: 10px;
   position: relative;
-  h4 {
+  ::v-deep {
+    .el-table__empty-text {
+      line-height: 10px;
+      margin-bottom: 15px;
+      color: rgba(0, 0, 0, 0.25) !important;
+      font-size: 14px;
+    }
+    .empty_icon {
+      width: 4em;
+      height: 4em;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .title {
     margin: 2px 30px 0px 0px;
     padding-left: 15px;
     font-weight: 500;
     font-size: 18px;
   }
-  .table-title {
+  .table-title-container {
     float: left;
     margin-left: 5px;
   }
-  .table-title-absolute {
+  .table-title-container-absolute {
     position: absolute;
     top: 110px;
     left: 10px;
