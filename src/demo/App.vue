@@ -63,8 +63,88 @@
             </FormDesigner>
           </el-main>
         </el-container>
+          <el-container class="container">
+          <el-header>ProTable组件 (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
+            <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
+              当前表格json
+            </el-button>
+          </el-header>
+          <el-main class="demo-actions">
+            <el-row :gutter="10">
+              <el-col :span="4"
+                      class="left-container">
+                <div class="form-container">
+                  <h4>表格相关配置</h4>
+                  <el-form :inline="true"
+                           size="mini"
+                           :model="visibleList">
+                    <el-switch v-model="visibleList.border"
+                               inactive-text="边框"></el-switch>
+                    <el-switch v-model="visibleList.stripe"
+                               inactive-text="斑马纹"></el-switch>
+                    <el-switch v-model="showPagination"
+                               inactive-text="分页"></el-switch>
+                    <el-switch v-model="showHeader"
+                               inactive-text="表头"></el-switch>
+                    <el-switch v-model="isMultiple"
+                               inactive-text="多选"></el-switch>
+                    <el-switch v-model="showColumnIndex"
+                               inactive-text="序号列"></el-switch>
+                    <!-- <el-switch v-model="visibleList.actionColumn"
+                               inactive-text="操作列"></el-switch> -->
+                    <el-divider>表格尺寸</el-divider>
+                    <el-radio-group v-model="size" size="mini">
+                      <el-radio label="medium">中等</el-radio>
+                      <el-radio label="small">较小</el-radio>
+                      <el-radio label="mini">迷你</el-radio>
+                    </el-radio-group>
+                  </el-form>
+                </div>
+                <el-divider></el-divider>
+                <div class="form-container">
+                  <h4>工具栏</h4>
+                  <el-form :inline="true"
+                           size="mini"
+                           :model="visibleList">
+                    <el-switch v-model="visibleList.tableTitle"
+                               inactive-text="表格标题"></el-switch>
+                    <el-switch v-model="visibleList.searchForm"
+                               inactive-text="查询区域"></el-switch>
+                    <el-switch v-model="visibleList.seniorSearchBtn"
+                               inactive-text="高级查询按钮"></el-switch>
+                  </el-form>
+                </div>
+                <el-divider></el-divider>
+                <div class="form-container">
+                  <h4>查询表单</h4>
+                  <el-form :inline="true"
+                           size="mini"
+                           :model="visibleList">
+                    <el-switch v-model="searchMode"
+                               inactive-text="平铺高级查询"></el-switch>
+                  </el-form>
+                </div>
+              </el-col>
+              <el-col :span="20">
+                <PersonProTable :searchMode="searchMode? 'cover':'popover'"
+                           tableTitle="人员管理"
+                           :size="size"
+                           :columns="columns"
+                           :readOnly="readOnly"
+                           :show-header="showHeader"
+                           :showPagination="showPagination"
+                           :border="visibleList.border"
+                           :stripe="visibleList.stripe"
+                           :showColumnIndex="showColumnIndex"
+                           :isMultiple="isMultiple"
+                           :visibleList="visibleList">
+                </PersonProTable>
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
         <el-container class="container">
-          <el-header>ProTable组件 此处为人员信息管理示例 （有批量操作按钮时会默认开启多选模式）
+          <el-header>CrudTable组件 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
             <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
               当前表格json
             </el-button>
@@ -164,7 +244,7 @@
                 </div>
               </el-col>
               <el-col :span="20">
-                <PersonTable :searchMode="searchMode? 'cover':'popover'"
+                <PersonCrudTable :searchMode="searchMode? 'cover':'popover'"
                            tableTitle="人员管理"
                            tableName="person"
                            :size="size"
@@ -189,7 +269,7 @@
                     <el-button size="mini"
                                @click="getRowData(row)">自定义</el-button>
                   </template>
-                </PersonTable>
+                </PersonCrudTable>
               </el-col>
             </el-row>
           </el-main>
@@ -212,7 +292,8 @@ import {
   getTables, getFormKey, getTableDetail, getFormDetail,
 } from '@/demo/api/plugin';
 import CusDialog from '@/component/common/CusDialog.vue';
-import PersonTable from './component/PersonTable.vue';
+import PersonCrudTable from './component/PersonCrudTable.vue';
+import PersonProTable from './component/PersonProTable.vue';
 
 export default {
   name: 'app',
@@ -311,7 +392,8 @@ export default {
   },
   components: {
     CusDialog,
-    PersonTable,
+    PersonCrudTable,
+    PersonProTable,
   },
 };
 </script>
@@ -400,7 +482,7 @@ h3 {
     }
     .left-container {
       border-right: 1px solid #eee;
-      max-height: 700px;
+      max-height: 1000px;
       overflow: auto;
       .form-container {
         padding: 5px 10px;
