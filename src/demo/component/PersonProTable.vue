@@ -16,8 +16,8 @@
   </div>
 </template>
 
-<script>
-import { DML } from '@/types/common';
+<script lang="ts">
+import { DataSource, DML, Params } from '@/types/common';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component({
@@ -100,11 +100,11 @@ export default class PersonProTable extends Vue {
      }],
    }
 
-   async request(axiosParams) {
+   async request(axiosParams: Params) : Promise<DataSource> {
      const res = await this.$PROCRUD.crud(DML.SELECT, 'person', axiosParams);
      return {
        data: res.data.list,
-       total: res.total,
+       total: res.data.total,
      };
    }
 }
