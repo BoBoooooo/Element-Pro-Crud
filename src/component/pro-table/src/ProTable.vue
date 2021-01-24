@@ -1,10 +1,9 @@
 <!--
- * @file: ProTable 基于el-table耳聪封装,托管高级查询、分页、表格
+ * @file: ProTable 基于el-table封装,托管高级查询、分页、表格
  * @copyright: BoBo
  * @author: BoBo
  * @Date: 2020年09月14 18:01:58
 -->
-
 <template>
   <div class="ProTable">
     <!-- 表格左侧标题 -->
@@ -42,13 +41,13 @@
       </template>
     </SearchForm>
     <!-- 表格主体 -->
-    <el-table v-loading.lock="loading" v-bind="$attrs" v-on="tableListeners" :height="tableHeight" :max-height="maxHeight" ref="table" :row-key="(row) => row.id" :data="tableData">
+    <el-table v-loading.lock="loading" v-bind="$attrs" v-on="tableListeners" :height="tableHeight" :max-height="maxHeight" ref="tableRefs" :row-key="rowKey" :data="tableData">
       <template slot="append">
         <slot name="append"></slot>
       </template>
       <template slot="empty">
         <SvgIcon icon-class="table_empty" class="empty_icon"></SvgIcon>
-        <span>{{ this.emptyText }}</span>
+        <span>{{ emptyText }}</span>
       </template>
       <el-table-column v-if="isMultiple" type="selection" reserve-selection align="center" header-align="center" width="55" :selectable="selectableFunc"> </el-table-column>
       <el-table-column v-if="showColumnIndex" type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
@@ -119,359 +118,369 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Emit, Prop, Watch,
-} from 'vue-property-decorator';
-import { confirm } from '@/utils/confirm';
+import Vue from 'vue';
 import SvgIcon from '@/icons/SvgIcon.vue';
-import _cloneDeep from 'lodash/cloneDeep';
+
+import VueCompositionApi, {
+  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType,
+} from '@vue/composition-api';
 import {
-  DML, Params, DataSource, columns, columnConfig,
+  columnConfig, columns, Condition, DataSource, Params,
 } from '@/types/common';
-import { PropType } from 'vue';
+import { Notification } from 'element-ui';
+import { ElTable } from 'element-ui/types/table';
 import SearchForm from './SearchForm.vue';
+import { ProTableProps } from '../types/ProTable.types';
 
 const STATUS = {
   CREATE: 0,
   UPDATE: 1,
   DETAIL: 2,
 };
-@Component({
+
+Vue.use(VueCompositionApi);
+
+export default defineComponent({
   name: 'ProTable',
   components: {
     SearchForm,
     SvgIcon,
   },
-})
-export default class ProTable extends Vue {
-  // https://github.com/vuejs/vue-class-component/issues/94
-  $refs!: {
-    table: HTMLFormElement;
-    searchForm: HTMLFormElement;
-  };
-
-  // 结果总数
-  total = 0;
-
-  // 是否在加载
-  loading = false;
-
-  // 排序参数
-  sortParams = {
-    orderCondition: '',
-  };
-
-  // 最大页码按钮数
-  pagerCount = 7;
-
-  // 是否显示小型分页
-  pagerSmall = false;
-
-  // 高级查询Condition
-  searchFormCondition = [];
-
-  // 表格最大高度
-  maxHeight: string | number = '100%';
-
-  // 表格高度
-  tableHeight: number | string = '100%';
-
-  // 表格结构json
-  tableConfig: columns = { columns: [], name: '', position: '' };
-
-  // 表格数据
-  tableData: any[] = [];
-
-  // 查询模式
-  @Prop({
-    type: String,
-    default: 'popover',
-  })
-  searchMode!: string;
-
-  // 内部元素显示控制
-  @Prop({ default: () => ({}), type: Object }) visibleList!: any;
-
-  // 表格标题
-  @Prop({
-    type: String,
-    default: '',
-  })
-  tableTitle!: string;
-
-  // 是否显示分页
-  @Prop({ default: true, type: Boolean }) showPagination!: boolean;
-
-  // 远程数据方法
-  @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
-
-  // 页码大小
-  @Prop({ default: () => [20, 50, 100] }) pageSizes!: number[];
-
-  // 分页显示
-  @Prop({
-    type: String,
-    default: 'total, prev, pager, next, jumper, sizes',
-  })
-  paginationLayout!: string;
-
-  // 是否自适应屏幕高度
-  @Prop({ type: Boolean, default: false }) fullHeight!: boolean;
-
-  // 高度minus
-  @Prop({ type: Number, default: 270 }) maxHeightMinus!: number;
-
-  // el-table height
-  @Prop(Number) height!: number;
-
-  // 是否显示序号列
-  @Prop({ default: false }) showColumnIndex!: boolean;
-
-
-  // 是否需要多选
-  @Prop({ default: true, type: Boolean }) isMultiple!: boolean;
-
-  // 排序条件
-  @Prop({ default: null, type: String }) orderCondition!: string;
-
-  // tableParams 预设查询参数
-  @Prop({
-    type: [Object, Array],
-    default: () => ({}),
-  })
-  tableParams!: any;
-
-  // 选择行是否可选
-  @Prop({ default: null, type: Function }) selectableFunc: any;
-
-  // empty-text
-  @Prop({
-    type: String,
-    default: '暂无数据',
-  })
-  emptyText!: string;
-
-  // columns列配置
-  @Prop({
-    type: Object as PropType<columns>,
-    default: null,
-    required: true,
-  })
-  columns!: columns;
-
-  // request请求方法
-  @Prop({
-    type: Function as PropType<(params: Params) => Promise<DataSource>>,
-    default: null,
-    required: true,
-  })
-  request!: (params: Params) => Promise<DataSource>;
-
-  // 分页
-  get pagination() {
-    return {
+  props: {
+    // 查询模式
+    searchMode: {
+      type: String,
+      default: 'popover',
+    },
+    visibleList: {
+      default: () => ({}),
+      type: Object,
+    },
+    tableTitle: {
+      type: String,
+      default: '',
+    },
+    showPagination: {
+      default: true,
+      type: Boolean,
+    },
+    // 远程数据方法
+    remoteFuncs: {
+      default: () => ({}),
+      type: Object,
+    },
+    // 页码大小
+    pageSizes: {
+      default: () => [20, 50, 100],
+      type: Array,
+    },
+    // 分页显示
+    paginationLayout: {
+      type: String,
+      default: 'total, prev, pager, next, jumper, sizes',
+    },
+    // 是否自适应屏幕高度
+    fullHeight: {
+      type: Boolean,
+      default: false,
+    },
+    // 高度minus
+    maxHeightMinus: {
+      type: Number,
+      default: 270,
+    },
+    // el-table height
+    height: {
+      type: Number,
+    },
+    // 是否显示序号列
+    showColumnIndex: {
+      default: false,
+      type: Boolean,
+    },
+    // 是否需要多选
+    isMultiple: {
+      default: true,
+      type: Boolean,
+    },
+    // 排序条件
+    orderCondition: {
+      default: null,
+      type: String,
+    },
+    // tableParams 预设查询参数
+    tableParams: {
+      type: [Object, Array],
+      default: () => ({}),
+    },
+    // 选择行是否可选
+    selectableFunc: {
+      default: null,
+      type: Function,
+    },
+    // empty-text
+    emptyText: {
+      type: String,
+      default: '暂无数据',
+    },
+    // columns列配置
+    columns: {
+      type: Object as PropType<columns>,
+      default: () => ({}),
+      required: true,
+    },
+    // request请求方法
+    request: {
+      type: Function as PropType<(params: Params) => Promise<DataSource>>,
+      default: null,
+      required: true,
+    },
+    rowKey: {
+      type: Function,
+      default: row => row.id,
+    },
+  },
+  emits: ['done', 'selection-change'],
+  setup(props: ProTableProps, { listeners, emit, attrs }) {
+    // 表格数据总数
+    const total = ref(0);
+    // 是否在加载
+    const loading = ref(false);
+    const sortParams = reactive({
+      orderCondition: '',
+    });
+    // 最大页码按钮数
+    const pagerCount = ref(7);
+    // 是否显示小型分页
+    const pagerSmall = ref(false);
+    // 高级查询Condition
+    const searchFormCondition = ref<Condition[]>([]);
+    // 表格最大高度
+    const maxHeight = ref('100%');
+    // 表格高度
+    const tableHeight = ref<string | number>('100%');
+    // 表格结构json
+    const _config = props.columns ? props.columns : { columns: [], name: '', position: '' };
+    const tableConfig = reactive(_config);
+    // 表格数据
+    const tableData = ref<any>([]);
+    // table refs
+    const tableRefs: Ref<ElTable | null> = ref(null);
+    // 分页页码
+    const pagination = computed(() => ({
       pageIndex: 1,
       pageSize: ((): number => {
-        const { pageSizes } = this;
-        if (pageSizes.length > 0) {
-          return pageSizes[0];
+        if (props.pageSizes.length > 0) {
+          return props.pageSizes[0];
         }
         return 20;
       })(),
-    };
-  }
-
-  // 内部元素显示控制
-  get view() {
-    const viewObj = {
-      searchForm: true,
-      tableTitle: false,
-      actionColumn: true,
-      seniorSearchBtn: true,
-      ...this.visibleList,
-    };
-    // 操作列是否隐藏
-    if (!viewObj.actionColumn) {
-      this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-    }
-    return viewObj;
-  }
-
-  get tableListeners() {
-    return {
-      ...this.$listeners,
-      'sort-change': this.sortChange,
-      'selection-change': this.handleSelectionChange,
-    };
-  }
-
-  created() {
-    // 外侧传入表格json
-    if (this.columns) {
-      this.tableConfig = this.columns;
-    } else {
-      this.$message.error('请先设置columns');
-    }
-  }
-
-  mounted() {
-    // 请求数据
-    this.fetchHandler(true);
-    // 自适应分页组件按钮;
-    window.addEventListener('resize', this.resizeHandler);
-  }
-
-  // 表格刷新
-  tableReload() {
-    this.dataChangeHandler();
-  }
-
-  // 多选事件
-  handleSelectionChange(selection) {
-    this.$emit('selection-change', selection);
-  }
-
-  resizeHandler() {
-    this.setPagerByWidth();
-    this.setMaxHeight();
-  }
-
-  setMaxHeight() {
-    const h = document.documentElement.clientHeight || document.body.clientHeight;
-    this.maxHeight = Math.max(0, h - this.maxHeightMinus);
-    this.tableHeight = this.fullHeight ? this.maxHeight : this.height;
-  }
-
-  // 根据表格宽度自动调整分页栏大小
-  setPagerByWidth() {
-    if (this.$refs.table && this.$refs.table.$el.clientWidth < 655) {
-      this.pagerCount = 5;
-      this.pagerSmall = true;
-    } else {
-      this.pagerCount = 7;
-      this.pagerSmall = false;
-    }
-  }
-
-  // pageSize改变事件
-  handleSizeChange(size) {
-    this.pagination.pageSize = size;
-    this.dataChangeHandler();
-  }
-
-  // pageIndex改变事件
-  handleCurrentChange(pageIndex) {
-    this.pagination.pageIndex = pageIndex;
-    this.dataChangeHandler();
-  }
-
-  dataChangeHandler(clearParams = false) {
-    this.fetchHandler(clearParams);
-  }
-
-  fetchHandler(clearParams = false, resetPageIndex = false) {
-    let searchCondition: any[] = [];
-    this.loading = true;
-    const { showPagination, pagination } = this;
-    const { tableParams, searchFormCondition } = this;
-    // 如清空查询条件,则清空
-    if (clearParams) {
-      searchCondition = [];
-    } else {
-      searchCondition = searchCondition.concat(searchFormCondition);
-    }
-    // 此处为外部传入的tableParams,不做清空处理!
-    if (this.tableParams) {
-      Object.keys(tableParams).forEach((k) => {
-        searchCondition.push({
-          field: k,
-          operator: 'eq',
-          value: tableParams[k],
-        });
-      });
-      // 自定义表格参数合并到表单查询条件
-      if (Array.isArray(tableParams)) {
-        searchCondition = searchCondition.concat(tableParams);
+    }));
+    // 内部元素显示控制
+    const view = computed(() => {
+      const viewObj = {
+        searchForm: true,
+        tableTitle: false,
+        actionColumn: true,
+        seniorSearchBtn: true,
+        ...props.visibleList,
+      };
+      // 操作列是否隐藏
+      if (!viewObj.actionColumn) {
+        tableConfig.columns = tableConfig.columns.filter((_: columnConfig) => _.slotName !== 'actionColumn');
       }
-    }
-    // 是否resetPageIndex
-    if (resetPageIndex) {
-      this.pagination.pageIndex = 1;
-    }
-    // 由于后端实体类接收，发送前必须确保所有属性都在
-    const axiosParams = {
-      orderCondition: '',
-      searchCondition: [],
-      pageIndex: 0,
-      pageSize: 0,
+      return viewObj;
+    });
+    const setMaxHeight = () => {
+      const h = document.documentElement.clientHeight || document.body.clientHeight;
+      maxHeight.value = `${Math.max(0, h - props.maxHeightMinus)}px`;
+      tableHeight.value = props.fullHeight ? maxHeight.value : props.height;
     };
-    Object.assign(axiosParams, { searchCondition });
-    // 合并用于分页的两个参数
-    if (showPagination) {
-      Object.assign(axiosParams, {
-        pageIndex: pagination.pageIndex,
-        pageSize: pagination.pageSize,
-      });
-    }
-    // 合并排序参数
-    if (this.sortParams.orderCondition !== '') {
-      Object.assign(axiosParams, this.sortParams);
-    } else if (this.orderCondition) {
-      Object.assign(axiosParams, { orderCondition: this.orderCondition });
-    }
-    this.request(axiosParams)
-      .then((response) => {
-        const { data = [], total = 0 } = response;
-        this.tableData = data;
-        this.total = total;
-        this.loading = false;
-        // 刷新表格清空已勾选项
-        if (this.$refs.table) {
-          this.$refs.table.clearSelection();
-        }
-        // 初始化表格高度
-        this.setMaxHeight();
-        this.$emit('done', this);
-      })
-      .catch((e) => {
-        this.$notify({
-          title: '表格数据请求失败',
-          message: `原因：${e.message}`,
-          duration: 5000,
+
+    // 根据表格宽度自动调整分页栏大小
+    const setPagerByWidth = () => {
+      if (tableRefs.value && tableRefs.value.$el.clientWidth < 655) {
+        pagerCount.value = 5;
+        pagerSmall.value = true;
+      } else {
+        pagerCount.value = 7;
+        pagerSmall.value = false;
+      }
+    };
+    const resizeHandler = () => {
+      setPagerByWidth();
+      setMaxHeight();
+    };
+    const fetchHandler = (clearParams = false, resetPageIndex = false) => {
+      let searchCondition: Condition[] = [];
+      loading.value = true;
+      // 如清空查询条件,则清空
+      if (clearParams) {
+        searchCondition = [];
+      } else {
+        searchCondition = searchCondition.concat(searchFormCondition.value);
+      }
+      const { tableParams, orderCondition, showPagination } = props;
+      // 此处为外部传入的tableParams,不做清空处理!
+      if (tableParams) {
+        Object.keys(tableParams).forEach((k) => {
+          searchCondition.push({
+            field: k,
+            operator: 'eq',
+            value: tableParams[k],
+          });
         });
-        this.loading = false;
-      });
-  }
+        // 自定义表格参数合并到表单查询条件
+        if (Array.isArray(tableParams)) {
+          searchCondition = searchCondition.concat(tableParams);
+        }
+      }
+      // 是否resetPageIndex
+      if (resetPageIndex) {
+        pagination.value.pageIndex = 1;
+      }
+      // 由于后端实体类接收，发送前必须确保所有属性都在
+      const axiosParams: Params = {
+        orderCondition: '',
+        searchCondition: [],
+        pageIndex: 0,
+        pageSize: 0,
+      };
+      Object.assign(axiosParams, { searchCondition });
+      // 合并用于分页的两个参数
+      if (showPagination) {
+        Object.assign(axiosParams, {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        });
+      }
+      // 合并排序参数
+      if (sortParams.orderCondition !== '') {
+        Object.assign(axiosParams, sortParams);
+      } else if (orderCondition) {
+        Object.assign(axiosParams, { orderCondition });
+      }
+      props
+        .request(axiosParams)
+        .then((response) => {
+          const { data = [], total: count = 0 } = response;
+          tableData.value = data;
+          total.value = count;
+          loading.value = false;
+          // 刷新表格清空已勾选项
+          if (tableRefs.value) {
+            tableRefs.value.clearSelection();
+          }
+          // 初始化表格高度
+          setMaxHeight();
+          emit('done', getCurrentInstance());
+        })
+        .catch((e) => {
+          Notification({
+            title: '表格数据请求失败',
+            message: `原因：${e.message}`,
+            duration: 5000,
+          });
+          loading.value = false;
+        });
+    };
 
-  /**
-   * 排序条件发生变化的时候会触发该事件
-   *
-   * @param {Object} prop 当前列需要排序的数据
-   * @param {Object} order 排序的规则（升序、降序和默认[默认就是没排序]）
-   */
-  sortChange(args) {
-    const { prop, order } = args;
-    const fieldOrder = order === 'ascending' ? 'asc' : 'desc';
-    this.sortParams.orderCondition = prop ? `${prop} ${fieldOrder}` : '';
-    // emit sort-change
-    this.$emit('sort-change', args);
-    // table reload
-    this.dataChangeHandler();
-  }
+    const dataChangeHandler = (clearParams = false) => {
+      fetchHandler(clearParams);
+    };
+    /**
+     * 排序条件发生变化的时候会触发该事件
+     *
+     * @param {Object} prop 当前列需要排序的数据
+     * @param {Object} order 排序的规则（升序、降序和默认[默认就是没排序]）
+     */
+    const sortChange = (args) => {
+      const { prop, order } = args;
+      const fieldOrder = order === 'ascending' ? 'asc' : 'desc';
+      sortParams.orderCondition = prop ? `${prop} ${fieldOrder}` : '';
+      // emit sort-change
+      emit('sort-change', args);
+      // table reload
+      dataChangeHandler();
+    };
 
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeHandler);
-  }
+    // 多选事件
+    const handleSelectionChange = (selection) => {
+      emit('selection-change', selection);
+    };
 
-  @Watch('columns', {
-    deep: true,
-  })
-  columnsOnChange(val) {
-    this.tableConfig = val;
-  }
-}
+    const tableListeners = computed(() => ({
+      ...listeners,
+      'sort-change': sortChange,
+      'selection-change': handleSelectionChange,
+    }));
+
+    // 表格刷新
+    const tableReload = () => {
+      dataChangeHandler();
+    };
+
+    // pageSize改变事件
+    const handleSizeChange = (size) => {
+      pagination.value.pageSize = size;
+      dataChangeHandler();
+    };
+
+    // pageIndex改变事件
+    const handleCurrentChange = (pageIndex) => {
+      pagination.value.pageIndex = pageIndex;
+      dataChangeHandler();
+    };
+
+    onMounted(() => {
+      // 请求数据
+      fetchHandler(true);
+      // 自适应分页组件按钮;
+      window.addEventListener('resize', resizeHandler);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', resizeHandler);
+    });
+
+    // 监听
+    watch(
+      () => props.columns,
+      (val) => {
+        // 此处语法待优化
+        // eslint-disable-next-line no-shadow
+        const { columns, name, position } = val;
+        tableConfig.columns = columns;
+        tableConfig.name = name;
+        tableConfig.position = position;
+      },
+    );
+
+    return {
+      total,
+      view,
+      tableData,
+      tableRefs,
+      tableConfig,
+      loading,
+      attrs,
+      listeners,
+      tableHeight,
+      maxHeight,
+      pagination,
+      pagerCount,
+      pagerSmall,
+      handleSizeChange,
+      fetchHandler,
+      dataChangeHandler,
+      handleCurrentChange,
+      tableListeners,
+      searchFormCondition,
+      tableReload,
+    };
+  },
+});
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
 .ProTable {
   background: white;
@@ -490,30 +499,30 @@ export default class ProTable extends Vue {
       display: block;
       margin: 0 auto;
     }
-  }
-  .title {
-    margin: 2px 30px 0px 0px;
-    padding-left: 15px;
-    font-weight: 500;
-    font-size: 18px;
-  }
-  .table-title-container {
-    float: left;
-    margin-left: 5px;
-  }
-  .table-title-container-absolute {
-    position: absolute;
-    top: 110px;
-    left: 10px;
-  }
-  .btn-bar {
-    float: right;
-    width: auto;
-    text-align: right;
-    & > div,
-    button {
+    .title {
+      margin: 2px 30px 0px 0px;
+      padding-left: 15px;
+      font-weight: 500;
+      font-size: 18px;
+    }
+    .table-title-container {
+      float: left;
+      margin-left: 5px;
+    }
+    .table-title-container-absolute {
+      position: absolute;
+      top: 110px;
+      left: 10px;
+    }
+    .btn-bar {
       float: right;
-      margin-left: 10px;
+      width: auto;
+      text-align: right;
+      & > div,
+      button {
+        float: right;
+        margin-left: 10px;
+      }
     }
   }
 }
