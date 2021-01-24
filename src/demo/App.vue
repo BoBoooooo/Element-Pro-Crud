@@ -38,6 +38,7 @@
           </el-link>
         </div>
       </el-header>
+
       <el-main class="content">
         <el-container class="container">
           <el-header>表格设计器(TableDesigner)</el-header>
@@ -295,6 +296,7 @@ import CusDialog from '@/component/common/CusDialog.vue';
 import PersonCrudTable from './component/PersonCrudTable.vue';
 import PersonProTable from './component/PersonProTable.vue';
 
+
 export default {
   name: 'app',
   methods: {
@@ -316,7 +318,6 @@ export default {
     // 保存设计
     btnSaveOnClick() {
       const formValues = this.$refs.formDesigner.getData();
-      console.log(formValues);
     },
     initFormJson() {
       getFormDetail('person').then((res) => {

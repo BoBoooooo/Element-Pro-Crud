@@ -1,10 +1,4 @@
 <!--
- * @file:
- * @author: BoBo
- * @copyright: NanJing Anshare Tech .Com
- * @Date: 2021-01-20 10:00:48
--->
-<!--
  * @file: el-table CrudTable封装,支持高级查询 分页 增删改查表单
  * @copyright: BoBo
  * @author: BoBo
@@ -18,6 +12,7 @@
       <ProTable v-bind="$attrs"
                 v-on="$listeners"
                 ref="table"
+                :rowKey="rowKey"
                 @selection-change="handleSelectionChange"
                 :visibleList="view"
                 :columns="tableConfig"
@@ -162,6 +157,12 @@ export default class CrudTable extends Vue {
     default: 'data.list',
   })
   listField!: string;
+
+  @Prop({
+    type: Function,
+    default: row => row.id,
+  })
+  rowKey!: any;
 
   // 设置只读
   @Prop({ default: false, type: Boolean }) readOnly!: any;

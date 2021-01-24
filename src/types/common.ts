@@ -50,3 +50,11 @@ export interface columnConfig {
   sortable: 'false' | 'custom' // 是否可排序
   searchable: boolean // 是否可查询
 }
+
+export interface fn {
+  (...args: any[]): any
+}
+
+export interface AnyObject {
+  [key: string]: any
+}
