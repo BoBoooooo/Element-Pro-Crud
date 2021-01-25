@@ -17,21 +17,15 @@ const components = [
 
   {
     name: 'CrudTable',
-    // 此处深坑,vue-class-component export的组件没有name属性！！!
     component: CrudTable,
-    isClassComponent: true,
   },
   {
     name: 'ProTable',
-    // 此处深坑,vue-class-component export的组件没有name属性！！!
     component: ProTable,
-    isClassComponent: true,
   },
   {
-    // 此处深坑,vue-class-component export的组件没有name属性！！!
     name: 'GenerateForm',
     component: GenerateForm,
-    isClassComponent: true,
   },
   {
     name: 'TableDesigner',

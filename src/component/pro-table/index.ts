@@ -6,7 +6,7 @@ ProTable.install = function (Vue, options) {
   if (options) {
     Vue.prototype.$PROCRUD = options;
   }
-  Vue.component('ProTable', ProTable);
+  Vue.component(ProTable.name, ProTable);
 };
 
 export default ProTable;

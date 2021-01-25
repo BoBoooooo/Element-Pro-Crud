@@ -31,7 +31,7 @@
       :searchFormCondition.sync="searchFormCondition"
       :remoteFuncs="remoteFuncs"
       :isLoading="loading"
-      @clear="dataChangeHandler(true)"
+      @clear="fetchHandler(true)"
     >
       <template v-if="searchMode === 'cover'">
         <!-- table右上角按钮 -->
@@ -373,7 +373,10 @@ export default defineComponent({
           }
           // 初始化表格高度
           setMaxHeight();
-          emit('done', getCurrentInstance());
+          emit('done', {
+            total: count,
+            data,
+          });
         })
         .catch((e) => {
           Notification({
@@ -385,9 +388,6 @@ export default defineComponent({
         });
     };
 
-    const dataChangeHandler = (clearParams = false) => {
-      fetchHandler(clearParams);
-    };
     /**
      * 排序条件发生变化的时候会触发该事件
      *
@@ -401,7 +401,7 @@ export default defineComponent({
       // emit sort-change
       emit('sort-change', args);
       // table reload
-      dataChangeHandler();
+      fetchHandler();
     };
 
     // 多选事件
@@ -417,19 +417,19 @@ export default defineComponent({
 
     // 表格刷新
     const tableReload = () => {
-      dataChangeHandler();
+      fetchHandler();
     };
 
     // pageSize改变事件
     const handleSizeChange = (size) => {
       pagination.value.pageSize = size;
-      dataChangeHandler();
+      fetchHandler();
     };
 
     // pageIndex改变事件
     const handleCurrentChange = (pageIndex) => {
       pagination.value.pageIndex = pageIndex;
-      dataChangeHandler();
+      fetchHandler();
     };
 
     onMounted(() => {
@@ -472,7 +472,6 @@ export default defineComponent({
       pagerSmall,
       handleSizeChange,
       fetchHandler,
-      dataChangeHandler,
       handleCurrentChange,
       tableListeners,
       searchFormCondition,

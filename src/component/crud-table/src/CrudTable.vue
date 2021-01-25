@@ -9,99 +9,78 @@
   <div class="CrudTable">
     <div class="base-table">
       <!-- 表格主体 -->
-      <ProTable v-bind="$attrs"
-                v-on="$listeners"
-                ref="table"
-                :rowKey="rowKey"
-                @selection-change="handleSelectionChange"
-                :visibleList="view"
-                :columns="tableConfig"
-                :request="request"
-                :tableParams="tableParams"
-                :lazy="lazy"
-                :load="treeload"
-                :tree-props="{children: 'children', hasChildren: 'flag'}">
-                  <template #append>
-                    <slot name="append"></slot>
-                  </template>
-          <template #btnBarPrevBtn>
-              <!-- 批量删除按钮 -->
-            <el-button v-if="view.btnDel"
-                      @click="btnDeletesOnClick"
-                      type="danger"
-                      size="mini"
-                      icon="el-icon-delete">{{text.multiDel}}</el-button>
-            <!-- 添加按钮 -->
-            <el-button v-if="view.btnAdd"
-                      type="primary"
-                      icon="el-icon-plus"
-                      size="mini"
-                      @click.stop="btnAdd()">{{text.add}}</el-button>
+      <ProTable
+        v-bind="$attrs"
+        v-on="$listeners"
+        ref="proTableRef"
+        :rowKey="rowKey"
+        @selection-change="handleSelectionChange"
+        :visibleList="view"
+        :columns="tableConfig"
+        :request="request"
+        :tableParams="tableParams"
+        :lazy="lazy"
+        :load="treeload"
+        :tree-props="{ children: 'children', hasChildren: 'flag' }"
+      >
+        <template #append>
+          <slot name="append"></slot>
+        </template>
+        <template #btnBarPrevBtn>
+          <!-- 批量删除按钮 -->
+          <el-button v-if="view.btnDel" @click="btnDeletesOnClick" type="danger" size="mini" icon="el-icon-delete">{{ text.multiDel }}</el-button>
+          <!-- 添加按钮 -->
+          <el-button v-if="view.btnAdd" type="primary" icon="el-icon-plus" size="mini" @click.stop="btnAdd()">{{ text.add }}</el-button>
+        </template>
+        <!-- 列表头添加按钮 -->
+        <template #_action_header v-if="view.btnAddOnColumnHeader">
+          <el-button icon="el-icon-plus" size="mini" type="primary" style="color:white" @click.stop="btnAdd"></el-button>
+        </template>
+        <template #columnFormatter="{row,prop}">
+          <slot name="columnFormatter" :row="row" :prop="prop"></slot>
+        </template>
+        <template slot-scope="scope" slot="actionColumn">
+          <!-- 操作列-添加按钮 -->
+          <el-button v-if="view.actionColumnBtnAdd" icon="el-icon-plus" type="primary" size="mini" @click.stop="actionColumnAdd(scope.row)">{{ text.add }}</el-button>
+          <!-- 操作列-编辑按钮 -->
+          <template v-if="actionColumnBtnEditVisible(scope.row)">
+            <el-button type="success" size="mini" @click.stop="actionColumnEdit(scope.row)">{{ text.edit }}</el-button>
           </template>
-          <!-- 列表头添加按钮 -->
-          <template #_action_header v-if="view.btnAddOnColumnHeader">
-            <el-button icon="el-icon-plus"
-                       size="mini"
-                       type="primary"
-                       style="color:white"
-                       @click.stop="btnAdd"></el-button>
-          </template>
-          <template #columnFormatter="{row,prop}">
-            <slot name="columnFormatter" :row="row" :prop="prop"></slot>
-          </template>
-          <template slot-scope="scope" slot="actionColumn">
-              <!-- 操作列-添加按钮 -->
-              <el-button v-if="view.actionColumnBtnAdd"
-                         icon="el-icon-plus"
-                         type="primary"
-                         size="mini"
-                         @click.stop="actionColumnAdd(scope.row)">{{text.add}}</el-button>
-              <!-- 操作列-编辑按钮 -->
-              <template v-if="actionColumnBtnEditVisible(scope.row)">
-                <el-button type="success"
-                           size="mini"
-                           @click.stop="actionColumnEdit(scope.row)">{{text.edit}}</el-button>
-              </template>
-              <!-- 操作列-查看按钮 -->
-              <el-button v-if="actionColumnBtnDetailVisible(scope.row)"
-                         type="primary"
-                         size="mini"
-                         @click.stop="actionColumnDetail(scope.row)">{{text.detail}}</el-button>
+          <!-- 操作列-查看按钮 -->
+          <el-button v-if="actionColumnBtnDetailVisible(scope.row)" type="primary" size="mini" @click.stop="actionColumnDetail(scope.row)">{{ text.detail }}</el-button>
 
-              <!-- 操作列-删除按钮 -->
-              <el-button v-if="actionColumnBtnDelVisible(scope.row)"
-                         type="danger"
-                         size="mini"
-                         @click.stop="actionColumnDel(scope.row)">{{text.del}}</el-button>
-              <!-- 自定义按钮 -->
-              <slot name="btnCustom"
-                    :row="scope.row" />
-          </template>
+          <!-- 操作列-删除按钮 -->
+          <el-button v-if="actionColumnBtnDelVisible(scope.row)" type="danger" size="mini" @click.stop="actionColumnDel(scope.row)">{{ text.del }}</el-button>
+          <!-- 自定义按钮 -->
+          <slot name="btnCustom" :row="scope.row" />
+        </template>
       </ProTable>
-       <!-- 新增、编辑、查看按钮 弹出 表单-->
-    <GenerateFormDialog ref="dialog"
-                        :tableName="tableName"
-                        :dialogFormDesignerName="dialogFormDesignerName"
-                        :tableParams="tableParams"
-                        @afterSave="tableReload"
-                        :textMap="text"
-                        @change="formChange"
-                        :formValuesAsync="formValuesAsync"
-                        :formTableConfig="formTableConfig"
-                        :remoteFuncs="remoteFuncs"
-                        :visibleList="view"
-                        :readOnly="readOnly"
-                        :append-to-body="dialogAppendToBody"
-                        :close_on_click_modal="dialogCloseOnClickModal"
-                        :fullscreen="dialogFullscreen"
-                        :width='dialogWidth'
-                        @btnOnClick="formBtnOnClick">
-      <template #dialogFooter>
-        <slot name="dialogFooter"></slot>
-      </template>
-    </GenerateFormDialog>
+      <!-- 新增、编辑、查看按钮 弹出 表单-->
+      <GenerateFormDialog
+        ref="dialogRef"
+        :tableName="tableName"
+        :dialogFormDesignerName="dialogFormDesignerName"
+        :tableParams="tableParams"
+        @afterSave="tableReload"
+        :textMap="text"
+        @change="formChange"
+        :formValuesAsync="formValuesAsync"
+        :formTableConfig="formTableConfig"
+        :remoteFuncs="remoteFuncs"
+        :visibleList="view"
+        :readOnly="readOnly"
+        :append-to-body="dialogAppendToBody"
+        :close_on_click_modal="dialogCloseOnClickModal"
+        :fullscreen="dialogFullscreen"
+        :width="dialogWidth"
+        @btnOnClick="formBtnOnClick"
+      >
+        <template #dialogFooter>
+          <slot name="dialogFooter"></slot>
+        </template>
+      </GenerateFormDialog>
+    </div>
   </div>
-</div>
 </template>
 
 <script lang="ts">
@@ -112,541 +91,533 @@ import { confirm } from '@/utils/confirm';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
-  columns, DataSource, DML, Params,
+  columns, DataSource, DML, Params, columnConfig, Condition,
 } from '@/types/common';
+import VueCompositionApi, {
+  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType,
+} from '@vue/composition-api';
+import { Message, MessageBox } from 'element-ui';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import ProTable from '../../pro-table';
+import { CrudTableProps } from '../types/CrudTable.types';
 
 const STATUS = {
   CREATE: 0,
   UPDATE: 1,
   DETAIL: 2,
 };
-@Component({
+
+Vue.use(VueCompositionApi);
+
+export default defineComponent({
   name: 'CrudTable',
   components: {
     GenerateFormDialog,
     SvgIcon,
     ProTable,
   },
-})
-export default class CrudTable extends Vue {
-  // https://github.com/vuejs/vue-class-component/issues/94
-  $refs!: {
-    table: HTMLFormElement;
-    dialog: HTMLFormElement;
-    searchForm: HTMLFormElement;
-    TableDesigner: HTMLFormElement;
-  };
+  props: {
+    listField: {
+      type: String,
+      default: 'data.list',
+    },
+    rowKey: {
+      type: Function,
+      default: row => row.id,
+    },
+    readOnly: {
+      default: false,
+      type: Boolean,
+    },
+    prefill: {
+      default: null,
+      type: Object,
+    },
+    dialogAppendToBody: {
+      default: true,
+      type: Boolean,
+    },
+    dialogWidth: {
+      default: '80%',
+      type: String,
+    },
+    tableDesignerName: {
+      type: String,
+      default: null,
+    },
+    dialogFormDesignerName: {
+      type: String,
+      default: null,
+    },
+    visibleList: {
+      default: () => ({}),
+      type: Object,
+    },
+    tableName: {
+      type: String,
+      default: '',
+    },
+    textMap: {
+      default: () => ({}),
+      type: Object,
+    },
+    promiseForDel: {
+      default: null,
+      type: Function,
+    },
+    promiseForDels: {
+      default: null,
+      type: Function,
+    },
+    promiseForDetail: {
+      default: null,
+      type: Function,
+    },
+    promiseForSave: {
+      default: null,
+      type: Function,
+    },
+    btnDelVisibleFunc: {
+      default: null,
+      type: Function,
+    },
+    btnEditVisibleFunc: {
+      default: null,
+      type: Function,
+    },
+    btnAddVisibleFunc: {
+      default: null,
+      type: Function,
+    },
+    btnDetailVisibleFunc: {
+      default: null,
+      type: Function,
+    },
+    btnAddOnClick: {
+      default: null,
+      type: Function,
+    },
+    btnEditOnClick: {
+      default: null,
+      type: Function,
+    },
+    btnDetailOnClick: {
+      default: null,
+      type: Function,
+    },
+    btnRowAddOnClick: {
+      default: null,
+      type: Function,
+    },
+    remoteFuncs: {
+      default: () => ({}),
+      type: Object,
+    },
+    dialogCloseOnClickModal: {
+      default: true,
+      type: Boolean,
+    },
+    dialogFullscreen: {
+      default: false,
+      type: Boolean,
+    },
+    formValuesAsync: {
+      default: () => ({}),
+      type: Object,
+    },
+    formTableConfig: {
+      default: () => ({}),
+      type: Object,
+    },
+    actionColumnWidth: {
+      type: Number,
+      default: null,
+    },
+    totalField: {
+      type: String,
+      default: 'data.total',
+    },
+    tableParams: {
+      type: [Object, Array],
+      default: () => ({}),
+    },
+    lazy: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['form-btn-on-click', 'form-change', 'selection-change'],
+  setup(props: CrudTableProps, {
+    listeners, attrs, emit, root,
+  }) {
+    const { $PROCRUD } = root;
 
-  // 当前点击行
-  currentRow: any = {};
+    // 当前行
+    let currentRow = reactive<any>({});
+    // 已选择行
+    const selectedRows = ref<any>([]);
+    // tableJson
+    const tableConfig = reactive<columns>({ columns: [], name: '', position: '' });
 
-  // 已选择行
-  selectedRows: any = [];
+    const proTableRef: Ref<any> = ref(null);
+    const dialogRef: Ref<any> = ref(null);
 
-  // 表格结构json，将来可能有多张表
-  tableConfig:columns = { columns: [], name: '', position: '' };
-
-  // 表格数据
-  tableData = [];
-
-  // listField
-  @Prop({
-    type: String,
-    default: 'data.list',
-  })
-  listField!: string;
-
-  @Prop({
-    type: Function,
-    default: row => row.id,
-  })
-  rowKey!: any;
-
-  // 设置只读
-  @Prop({ default: false, type: Boolean }) readOnly!: any;
-
-  // 添加对话框预填项
-  @Prop({ default: null, type: Object }) prefill!: any;
-
-  // 弹出表单appendToBody
-  @Prop({ default: true, type: Boolean }) dialogAppendToBody!: boolean;
-
-  // 弹出表单width
-  @Prop({ default: '80%', type: String }) dialogWidth!: string;
-
-  // 用于请求表格设计json的name
-  @Prop({
-    type: String,
-    default: null,
-  })
-  tableDesignerName!: string;
-
-  // 对话框内加载FormDesigner的表名
-  @Prop({
-    type: String,
-    default: null,
-  })
-  dialogFormDesignerName!: string;
-
-  // 内部元素显示控制
-  @Prop({ default: () => ({}), type: Object }) visibleList!: any;
-
-  // 表名
-  @Prop({
-    type: String,
-    default: '',
-  })
-  tableName!: string;
-
-  // 按钮名字
-  @Prop({ default: () => ({}), type: Object }) textMap!: any;
-
-  // 删除方法代理
-  @Prop({ default: null, type: Function }) promiseForDel!: any;
-
-  // 批量删除方法代理
-  @Prop({ default: null, type: Function }) promiseForDels!: any;
-
-  // 详情方法代理
-  @Prop({ default: null, type: Function }) promiseForDetail!: any;
-
-  // 代理保存方法
-  @Prop({ default: null, type: Function }) promiseForSave!: any;
-
-  // 请求数据方法代理
-  @Prop({ default: null, type: Function }) promiseForSelect!: any;
-
-  // 删除按钮是否可见代理
-  @Prop({ default: null, type: Function }) btnDelVisibleFunc!: any;
-
-  // 编辑按钮是否可见代理
-  @Prop({ default: null, type: Function }) btnEditVisibleFunc!: any;
-
-  // 表格行中的添加按钮是否显示事件
-  @Prop({ default: null, type: Function }) btnAddVisibleFunc!: any;
-
-  // 查看按钮是否可见代理
-  @Prop({ default: null, type: Function }) btnDetailVisibleFunc!: any;
-
-  // 表格添加按钮点击事件
-  @Prop({ default: null, type: Function }) btnAddOnClick!: any;
-
-  // 表格行中的编辑按钮点击事件
-  @Prop({ default: null, type: Function }) btnEditOnClick!: any;
-
-  // 表格行中的查看按钮点击事件
-  @Prop({ default: null, type: Function }) btnDetailOnClick!: any;
-
-  // 表格行中的添加按钮点击事件
-  @Prop({ default: null, type: Function }) btnRowAddOnClick!: any;
-
-  // 远程数据方法
-  @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
-
-  // 高度minus
-  @Prop({ type: Number, default: 270 }) maxHeightMinus!: number;
-
-
-  // 点击阴影弹框是否可以关闭
-  @Prop({ default: true, type: Boolean }) dialogCloseOnClickModal!: boolean;
-
-  // 表单是否全屏
-  @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
-
-
-  // 异步更新表单数据
-  @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
-
-  // 子表tableConfig 详情看GenerateFormItem中解释
-  @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
-
-
-  // 操作列宽度
-  @Prop({ type: Number, default: null }) actionColumnWidth!: number;
-
-  // totalField
-  @Prop({
-    type: String,
-    default: 'data.total',
-  })
-  totalField!: string;
-
-  // tableParams 预设查询参数
-  @Prop({
-    type: [Object, Array],
-    default: () => ({}),
-  })
-  tableParams!: any;
-
-  // 是否懒加载
-  @Prop(Boolean) lazy!: boolean;
-
-
-  // 文本映射
-  get text() {
-    return {
+    // 文本映射
+    const text = computed(() => ({
       add: '添加',
       edit: '编辑',
       del: '删除',
       detail: '查看',
       multiDel: '批量删除',
-      ...this.textMap,
-    };
-  }
+      ...props.textMap,
+    }));
 
-  // 内部元素显示控制
-  get view() {
-    const viewObj = {
-      searchForm: true,
-      tableTitle: false,
-      btnAdd: true,
-      btnDel: false,
-      actionColumnBtnAdd: false,
-      actionColumnBtnEdit: true,
-      actionColumnBtnDetail: false,
-      actionColumnBtnDel: true,
-      actionColumn: true,
-      seniorSearchBtn: true,
-      btnAddOnColumnHeader: false,
-      ...this.visibleList,
-    };
-    // 只读模式隐藏添加编辑删除按钮
-    if (this.readOnly) {
-      viewObj.btnAdd = false;
-      viewObj.btnAddOnColumnHeader = false;
-      viewObj.actionColumnBtnDel = false;
-      viewObj.actionColumnBtnEdit = false;
-      viewObj.actionColumnBtnDetail = true;
-    }
-    // 操作列是否隐藏
-    if (!viewObj.actionColumn) {
-      this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-    }
-    return viewObj;
-  }
+    const view = computed(() => {
+      const viewObj = {
+        searchForm: true,
+        tableTitle: false,
+        btnAdd: true,
+        btnDel: false,
+        actionColumnBtnAdd: false,
+        actionColumnBtnEdit: true,
+        actionColumnBtnDetail: false,
+        actionColumnBtnDel: true,
+        actionColumn: true,
+        seniorSearchBtn: true,
+        btnAddOnColumnHeader: false,
+        ...props.visibleList,
+      };
+      // 只读模式隐藏添加编辑删除按钮
+      if (props.readOnly) {
+        viewObj.btnAdd = false;
+        viewObj.btnDel = false;
+        viewObj.btnAddOnColumnHeader = false;
+        viewObj.actionColumnBtnDel = false;
+        viewObj.actionColumnBtnEdit = false;
+        viewObj.actionColumnBtnDetail = true;
+      }
+      // 操作列是否隐藏
+      if (!viewObj.actionColumn) {
+        tableConfig.columns = tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
+      }
 
-  created() {
-    // 请求表格设计json
-    const promise = this.$PROCRUD.getTableDetail(this.tableDesignerName ? this.tableDesignerName : this.tableName);
+      return viewObj;
+    });
+
+    // 表格刷新
+    const tableReload = () => {
+      proTableRef.value.tableReload();
+    };
+
+    // 初始化表格json
+    const promise = $PROCRUD.getTableDetail(props.tableDesignerName ? props.tableDesignerName : props.tableName);
     // 加载表格结构
     promise.then((res) => {
-      this.tableConfig = JSON.parse(res.data.formJson);
-      const { actionColumnWidth } = this;
+      const _tableConfig = JSON.parse(res.data.formJson);
+      // eslint-disable-next-line no-shadow
+      const { columns, name, position } = _tableConfig;
+      tableConfig.columns = columns;
+      tableConfig.name = name;
+      tableConfig.position = position;
       // 如果显示指明了操作列列宽
-      if (actionColumnWidth) {
-        const actionColumn: any = this.tableConfig.columns.find((item: any) => item.slotName === 'actionColumn');
+      if (props.actionColumnWidth) {
+        const actionColumn = tableConfig.columns.find(_ => _.slotName === 'actionColumn');
         if (actionColumn) {
-          actionColumn.width = actionColumnWidth;
-          actionColumn.minWidth = actionColumnWidth;
+          actionColumn.width = props.actionColumnWidth;
+          actionColumn.minWidth = props.actionColumnWidth;
         }
       }
     });
-  }
 
-  // 表格刷新
-  tableReload() {
-    this.$refs.table.tableReload();
-  }
-
-  // 添加
-  btnAdd() {
-    if (this.btnAddOnClick) {
-      this.btnAddOnClick();
-    } else if (this.prefill) {
-      // 对话框内加载预填项
-      this.$refs.dialog.showDialog({}, 0, this.prefill);
-    } else {
-      this.$refs.dialog.showDialog();
-    }
-  }
-
-  // 操作列-添加
-  actionColumnAdd(row) {
-    // 添加成功后需要刷新当前结点的子节点,此处特殊处理
-    this.currentRow.parentid = _cloneDeep(row).id;
-    if (this.btnRowAddOnClick) {
-      this.btnRowAddOnClick(row);
-    } else if (this.prefill) {
-      // 对话框内加载预填项
-      // 此处跟正常情况的preFill不一样
-      // 此处传的为Array
-      // 用于tree接口点添加自动赋值parentid的情况
-      // 例如传 { parentid : id} 则表示添加的parentid = row.id
-      const obj = {};
-      Object.keys(this.prefill).forEach((key) => {
-        obj[key] = row[this.prefill[key]];
-      });
-      this.$refs.dialog.showDialog({}, 0, obj);
-    } else {
-      this.$refs.dialog.showDialog();
-    }
-  }
-
-  // 操作列-编辑
-  actionColumnEdit(row) {
-    this.currentRow = row;
-    if (this.btnEditOnClick) {
-      this.btnEditOnClick(row);
-    } else {
-      const promise = this.promiseForDetail
-        ? this.promiseForDetail(row.id)
-        : this.$PROCRUD.crud(
-          DML.DETAIL,
-          this.tableName,
-          {},
+    // 懒加载
+    const treeload = (tree, treeNode?: any, resolve?: any) => {
+      const data = {
+        searchCondition: [
           {
-            id: row.id,
+            field: 'parentid',
+            operator: 'eq',
+            value: tree.id,
           },
-        );
-      // 请求后台detail接口获取表单数据
-      promise.then((res) => {
-        this.$refs.dialog.showDialog({ id: row.id }, STATUS.UPDATE, res.data);
+        ],
+      };
+
+      $PROCRUD.crud(DML.TREE_LAZY, props.tableName, data).then((res) => {
+        if (resolve) {
+          resolve(res.data);
+        }
+        // 强制更新已渲染子结点
+        proTableRef.value.$refs.tableRefs.store.states.lazyTreeNodeMap[tree.id] = res.data;
       });
-    }
-  }
-
-  // 操作列-查看
-  actionColumnDetail(row) {
-    this.currentRow = row;
-    if (this.btnDetailOnClick) {
-      this.btnDetailOnClick(row);
-    } else {
-      const promise = this.promiseForDetail
-        ? this.promiseForDetail(row.id)
-        : this.$PROCRUD.crud(
-          DML.DETAIL,
-          this.tableName,
-          {},
-          {
-            id: row.id,
-          },
-        );
-      // 请求后台detail接口获取表单数据
-      promise.then((res) => {
-        this.$refs.dialog.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
-      });
-    }
-  }
-
-  handleSelectionChange(selection) {
-    this.selectedRows = selection;
-    this.$emit('selection-change', selection);
-  }
-
-  // 批量删除按钮
-  btnDeletesOnClick() {
-    const { length } = this.selectedRows || [];
-    if (length > 0) {
-      this.$confirm(`已选中${length}项,确认删除？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          const promise = this.promiseForDels
-            ? this.promiseForDels(this.selectedRows.map(item => item.id))
-            : this.$PROCRUD.crud(
-              DML.DELETES,
-              this.tableName,
-              this.selectedRows.map(item => item.id),
-            );
-          promise.then(() => {
-            this.tableReload();
-            this.$message.success('批量删除成功');
-          });
-        })
-        .catch(() => {
-          this.$message.info('已取消删除');
+    };
+    // CRUD请求封装
+    const request = async (axiosParams: Params): Promise<DataSource | undefined> => {
+      // 已加载完成, tree lazy table 局部刷新.
+      // 懒加载待重构
+      if (props.lazy) {
+        treeload({
+          id: currentRow.parentid,
         });
-    } else {
-      this.$message('请先选择删除项');
-    }
-  }
+        return;
+      }
+      // 发起请求
+      // eslint-disable-next-line no-nested-ternary
+      const requestObject = props.promiseForSelect
+        ? props.promiseForSelect(axiosParams)
+        : props.lazy
+          ? $PROCRUD.crud(DML.TREE_LAZY, props.tableName, axiosParams)
+          : $PROCRUD.crud(DML.SELECT, props.tableName, axiosParams);
 
-  // 操作列-删除
-  @confirm('确认删除?', '提示')
-  actionColumnDel(row) {
-    this.currentRow = row;
-    // 如果prop传入了promiseForDel说明需要回调自定义删除
-    const promise = this.promiseForDel ? this.promiseForDel(row.id) : this.$PROCRUD.crud(DML.DELETE, this.tableName, {}, { id: row.id });
-    promise.then(() => {
-      this.tableReload();
-      this.$message({
-        type: 'success',
-        message: '删除成功',
-      });
-    });
-  }
+      const response = await requestObject;
+      let result = response;
+      if (response && !Array.isArray(response)) {
+        // 此处listField默认为 data.list
+        result = props.listField.split('.').reduce((res, key) => res[key], response);
+      }
+      // 判断拿到的list是否为Array
+      if (!result || !Array.isArray(result)) {
+        throw new Error(`The result of key:${props.listField} is not Array.`);
+      }
+      let totalValue = response;
+      // 如果返回直接为list,则说明没有分页处理,直接统计length作为总数
+      if (Array.isArray(response)) {
+        totalValue = response.length;
+      } else if (typeof response === 'object') {
+        // 此处totalField默认为data.total
+        totalValue = props.totalField.split('.').reduce((res, key) => res[key], response);
+      } else {
+        totalValue = 0;
+      }
+      // 返回数据集合以及总数
+      // eslint-disable-next-line consistent-return
+      return {
+        total: totalValue,
+        data: result,
+      };
+    };
 
-  // 操作列-添加按钮是否显示
-  actionColumnBtnAddVisible(row) {
-    let visible;
-    if (this.btnAddVisibleFunc) {
-      // 如果传入了计算函数，取函数结果
-      visible = this.btnAddVisibleFunc(row);
-    } else {
-      // 默认不显示
-      visible = this.view.actionColumnBtnAdd;
-    }
-    return visible;
-  }
+    const ElMessage = Message;
+    const ElMessageBox = MessageBox;
 
-  // 操作列-编辑按钮是否显示
-  actionColumnBtnEditVisible(row) {
-    let visible;
-    if (this.btnEditVisibleFunc) {
-      // 如果传入了计算函数，取函数结果
-      visible = this.btnEditVisibleFunc(row);
-    } else {
-      // 默认不显示
-      visible = this.view.actionColumnBtnEdit;
-    }
-    return visible;
-  }
+    // 增删改查按钮方法定义
+    const handlerButtonMethods = {
+      // 添加
+      btnAdd() {
+        if (props.btnAddOnClick) {
+          props.btnAddOnClick();
+        } else if (props.prefill) {
+          // 对话框内加载预填项
+          dialogRef.value.showDialog({}, 0, props.prefill);
+        } else {
+          dialogRef.value.showDialog();
+        }
+      },
 
-  // 操作列-详情按钮是否显示
-  actionColumnBtnDetailVisible(row) {
-    let visible;
-    // 如果传入了计算函数，取函数结果
-    if (this.btnDetailVisibleFunc) {
-      visible = this.btnDetailVisibleFunc(row);
-    } else {
-      // 默认不显示
-      visible = this.view.actionColumnBtnDetail;
-    }
-    return visible;
-  }
+      // 操作列-添加
+      actionColumnAdd(row) {
+        // 添加成功后需要刷新当前结点的子节点,此处特殊处理
+        currentRow.parentid = _cloneDeep(row).id;
+        if (props.btnRowAddOnClick) {
+          props.btnRowAddOnClick(row);
+        } else if (props.prefill) {
+          // 对话框内加载预填项
+          // 此处跟正常情况的preFill不一样
+          // 此处传的为Array
+          // 用于tree接口点添加自动赋值parentid的情况
+          // 例如传 { parentid : id} 则表示添加的parentid = row.id
+          const obj = {};
+          Object.keys(props.prefill).forEach((key) => {
+            obj[key] = row[props.prefill[key]];
+          });
+          dialogRef.value.showDialog({}, 0, obj);
+        } else {
+          dialogRef.value.showDialog();
+        }
+      },
 
-  // 操作列-删除按钮是否显示
-  actionColumnBtnDelVisible(row) {
-    let visible;
-    if (this.btnDelVisibleFunc) {
-      // 如果传入了计算函数，取函数结果
-      visible = this.btnDelVisibleFunc(row);
-    } else {
-      // 默认显示
-      visible = this.view.actionColumnBtnDel;
-    }
-    return visible;
-  }
+      // 操作列-编辑
+      actionColumnEdit(row) {
+        currentRow = reactive(row);
+        if (props.btnEditOnClick) {
+          props.btnEditOnClick(row);
+        } else {
+          const promiseForDetail = props.promiseForDetail
+            ? props.promiseForDetail(row.id)
+            : $PROCRUD.crud(
+              DML.DETAIL,
+              props.tableName,
+              {},
+              {
+                id: row.id,
+              },
+            );
+          // 请求后台detail接口获取表单数据
+          promiseForDetail.then((res) => {
+            dialogRef.value.showDialog({ id: row.id }, STATUS.UPDATE, res.data);
+          });
+        }
+      },
 
-  // 生成的按钮点击
-  formBtnOnClick(widget) {
-    this.$emit('form-btn-on-click', widget);
-  }
+      // 操作列-查看
+      actionColumnDetail(row) {
+        currentRow = row;
+        if (props.btnDetailOnClick) {
+          props.btnDetailOnClick(row);
+        } else {
+          const promiseForDetail = props.promiseForDetail
+            ? props.promiseForDetail(row.id)
+            : $PROCRUD.crud(
+              DML.DETAIL,
+              props.tableName,
+              {},
+              {
+                id: row.id,
+              },
+            );
+          // 请求后台detail接口获取表单数据
+          promiseForDetail.then((res) => {
+            dialogRef.value.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
+          });
+        }
+      },
 
-  // 监听dialog中form对象改变
-  formChange(val) {
-    this.$emit('form-change', val);
-  }
+      handleSelectionChange(selection) {
+        selectedRows.value = selection;
+        emit('selection-change', selection);
+      },
 
+      // 批量删除按钮
+      btnDeletesOnClick() {
+        const { length } = selectedRows.value || [];
+        if (length > 0) {
+          ElMessageBox.confirm(`已选中${length}项,确认删除？`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              const promiseForDels = props.promiseForDels
+                ? props.promiseForDels(selectedRows.value.map(item => item.id))
+                : $PROCRUD.crud(
+                  DML.DELETES,
+                  props.tableName,
+                  selectedRows.value.map(item => item.id),
+                );
+              promiseForDels.then(() => {
+                tableReload();
+                ElMessage.success('批量删除成功');
+              });
+            })
+            .catch(() => {
+              ElMessage.info('已取消删除');
+            });
+        } else {
+          console.log(ElMessage);
 
-  async request(axiosParams: Params): Promise<DataSource | undefined> {
-    // 已加载完成, tree lazy table 局部刷新.
-    // 懒加载待重构
-    if (this.lazy) {
-      this.treeload({
-        id: this.currentRow.parentid,
-      });
-      return;
-    }
-    // 发起请求
-    // eslint-disable-next-line no-nested-ternary
-    const requestObject = this.promiseForSelect
-      ? this.promiseForSelect(axiosParams)
-      : this.lazy
-        ? this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, axiosParams)
-        : this.$PROCRUD.crud(DML.SELECT, this.tableName, axiosParams);
+          ElMessage('请先选择删除项');
+        }
+      },
 
-    const response = await requestObject;
-    let result = response;
-    // 此处判断返回的数据格式
-    // 和后台默认约束好的resultBean格式如下:
-    /**
-         * {
-         *    code: 200,
-         *    data: {
-         *      list: [],
-         *      total: 0,
-         *    };
-         *    message: SUCCESS
-         * }
-         */
-    if (response && !Array.isArray(response)) {
-      // 此处listField默认为 data.list
-      result = this.listField.split('.').reduce((res, key) => res[key], response);
-    }
-    // 判断拿到的list是否为Array
-    if (!result || !Array.isArray(result)) {
-      throw new Error(`The result of key:${this.listField} is not Array.`);
-    }
-    let totalValue = response;
-    // 如果返回直接为list,则说明没有分页处理,直接统计length作为总数
-    if (Array.isArray(response)) {
-      totalValue = response.length;
-    } else if (typeof response === 'object') {
-      // 此处totalField默认为data.total
-      totalValue = this.totalField.split('.').reduce((res, key) => res[key], response);
-    } else {
-      totalValue = 0;
-    }
-    // eslint-disable-next-line consistent-return
+      // 操作列-删除
+      actionColumnDel(row) {
+        ElMessageBox.confirm('确认删除？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(() => {
+            currentRow = row;
+            // 如果prop传入了promiseForDel说明需要回调自定义删除
+            const promiseForDel = props.promiseForDel ? props.promiseForDel(row.id) : $PROCRUD.crud(DML.DELETE, props.tableName, {}, { id: row.id });
+            promiseForDel.then(() => {
+              tableReload();
+              ElMessage({
+                type: 'success',
+                message: '删除成功',
+              });
+            });
+          })
+          .catch(() => {
+            ElMessage.info('已取消删除');
+          });
+      },
+
+      // 操作列-添加按钮是否显示
+      actionColumnBtnAddVisible(row) {
+        let visible;
+        if (props.btnAddVisibleFunc) {
+          // 如果传入了计算函数，取函数结果
+          visible = props.btnAddVisibleFunc(row);
+        } else {
+          // 默认不显示
+          visible = view.value.actionColumnBtnAdd;
+        }
+        return visible;
+      },
+
+      // 操作列-编辑按钮是否显示
+      actionColumnBtnEditVisible(row) {
+        let visible;
+        if (props.btnEditVisibleFunc) {
+          // 如果传入了计算函数，取函数结果
+          visible = props.btnEditVisibleFunc(row);
+        } else {
+          // 默认不显示
+          visible = view.value.actionColumnBtnEdit;
+        }
+        return visible;
+      },
+
+      // 操作列-详情按钮是否显示
+      actionColumnBtnDetailVisible(row) {
+        let visible;
+        // 如果传入了计算函数，取函数结果
+        if (props.btnDetailVisibleFunc) {
+          visible = props.btnDetailVisibleFunc(row);
+        } else {
+          // 默认不显示
+          visible = view.value.actionColumnBtnDetail;
+        }
+        return visible;
+      },
+
+      // 操作列-删除按钮是否显示
+      actionColumnBtnDelVisible(row) {
+        let visible;
+        if (props.btnDelVisibleFunc) {
+          // 如果传入了计算函数，取函数结果
+          visible = props.btnDelVisibleFunc(row);
+        } else {
+          // 默认显示
+          visible = view.value.actionColumnBtnDel;
+        }
+        return visible;
+      },
+
+      // 生成的按钮点击
+      formBtnOnClick(widget) {
+        emit('form-btn-on-click', widget);
+      },
+
+      // 监听dialog中form对象改变
+      formChange(val) {
+        emit('form-change', val);
+      },
+    };
     return {
-      total: totalValue,
-      data: result,
+      tableReload,
+      ...handlerButtonMethods,
+      currentRow,
+      selectedRows,
+      tableConfig,
+      proTableRef,
+      dialogRef,
+      view,
+      text,
+      request,
+      treeload,
     };
-  }
-
-  /** 懒加载树 */
-  treeload(tree, treeNode?: any, resolve?: any) {
-    const { tableName } = this;
-    const data = {
-      searchCondition: [
-        {
-          field: 'parentid',
-          operator: 'eq',
-          value: tree.id,
-        },
-      ],
-    };
-
-    this.$PROCRUD.crud(DML.TREE_LAZY, this.tableName, data).then((res) => {
-      if (resolve) {
-        resolve(res.data);
-      }
-      // 强制更新已渲染子结点
-      this.$set(this.$refs.table.store.states.lazyTreeNodeMap, tree.id, res.data);
-    });
-  }
-
-  /**
-   * 下列为dev模式代码,不需要可自行删除
-   *
-   */
-  tableOnSave({ tableDesign }) {
-    this.tableConfig = tableDesign;
-    // 如果不显示操作列,则隐藏
-    if (!this.view.actionColumn) {
-      this.tableConfig.columns = this.tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
-    }
-    const { actionColumnWidth } = this;
-    // 如果显示指明了操作列列宽
-    if (actionColumnWidth) {
-      const actionColumn: any = this.tableConfig.columns.find((item: any) => item.slotName === 'actionColumn');
-      if (actionColumn) {
-        actionColumn.width = actionColumnWidth;
-        actionColumn.minWidth = actionColumnWidth;
-      }
-    }
-  }
-
-  async showTableDesigner() {
-    const res = await this.$PROCRUD.getTableDetail(this.tableDesignerName || this.tableName);
-    this.$refs.TableDesigner.showDialog({ id: res.data.id }, 1, res.data);
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

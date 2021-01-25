@@ -42,6 +42,7 @@ export interface columns {
 export interface columnConfig {
   prop: string // 字段名
   label: string // 表头
+  width?: number // 宽度
   minWidth: number // 最小宽度
   align: boolean // 内容对齐方式
   headerAlign: boolean // 表头对齐方式

@@ -6,7 +6,7 @@ CrudTable.install = function (Vue, options) {
   if (options) {
     Vue.prototype.$PROCRUD = options;
   }
-  Vue.component('CrudTable', CrudTable);
+  Vue.component(CrudTable.name, CrudTable);
 };
 
 export default CrudTable;
