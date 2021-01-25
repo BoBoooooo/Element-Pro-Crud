@@ -87,14 +87,12 @@
 import {
   Component, Vue, Emit, Prop, Watch,
 } from 'vue-property-decorator';
-import { confirm } from '@/utils/confirm';
-import SvgIcon from '@/icons/SvgIcon.vue';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
-  columns, DataSource, DML, Params, columnConfig, Condition,
+  columns, DataSource, DML, Params,
 } from '@/types/common';
 import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType,
+  reactive, computed, ref, defineComponent, Ref, watch,
 } from '@vue/composition-api';
 import { Message, MessageBox } from 'element-ui';
 import GenerateFormDialog from './GenerateFormDialog.vue';
@@ -113,7 +111,6 @@ export default defineComponent({
   name: 'CrudTable',
   components: {
     GenerateFormDialog,
-    SvgIcon,
     ProTable,
   },
   props: {

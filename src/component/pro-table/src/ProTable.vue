@@ -122,7 +122,7 @@ import Vue from 'vue';
 import SvgIcon from '@/icons/SvgIcon.vue';
 
 import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType, nextTick,
+  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, PropType, nextTick,
 } from '@vue/composition-api';
 import {
   columnConfig, columns, Condition, DataSource, Params,
