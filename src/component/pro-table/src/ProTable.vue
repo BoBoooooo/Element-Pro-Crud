@@ -122,7 +122,7 @@ import Vue from 'vue';
 import SvgIcon from '@/icons/SvgIcon.vue';
 
 import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType,
+  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, toRefs, getCurrentInstance, Data, PropType, nextTick,
 } from '@vue/composition-api';
 import {
   columnConfig, columns, Condition, DataSource, Params,
@@ -371,8 +371,11 @@ export default defineComponent({
           if (tableRefs.value) {
             tableRefs.value.clearSelection();
           }
-          // 初始化表格高度
-          setMaxHeight();
+          nextTick(() => {
+            // 初始化表格高度
+            setMaxHeight();
+          });
+
           emit('done', {
             total: count,
             data,
