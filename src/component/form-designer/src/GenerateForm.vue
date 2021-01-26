@@ -372,7 +372,7 @@ export default class GenerateForm extends Vue {
 
   // 生成的按钮点击
   btnOnClick(event) {
-    this.$emit('btnOnClick', {
+    this.$emit('btn-on-click', {
       event,
       model: this.models,
     });
@@ -380,7 +380,7 @@ export default class GenerateForm extends Vue {
 
   // 图表点击
   chartOnClick(chart) {
-    this.$emit('chartOnClick', {
+    this.$emit('chart-on-click', {
       chart,
       model: this.models,
     });
