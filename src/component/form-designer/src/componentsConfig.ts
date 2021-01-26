@@ -481,13 +481,13 @@ export const layoutComponents = [
 ];
 
 
-// export const chartComponents = [
-//   {
-//     type: 'chart-pie',
-//     name: '饼图',
-//     icon: 'th',
-//     options: {
+export const chartComponents = [
+  {
+    type: 'chart-pie',
+    name: '饼图',
+    icon: 'th',
+    options: {
 
-//     },
-//   },
-// ];
+    },
+  },
+];
