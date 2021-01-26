@@ -369,8 +369,11 @@ export default class GenerateForm extends Vue {
   }
 
   // 生成的按钮点击
-  btnOnClick(widget) {
-    this.$emit('btnOnClick', widget);
+  btnOnClick(event) {
+    this.$emit('btnOnClick', {
+      event,
+      model: this.models,
+    });
   }
 
   // 表单默认值回填单独拉出来封装

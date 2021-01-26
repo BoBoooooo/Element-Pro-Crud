@@ -51,6 +51,22 @@
               </a>
             </li>
           </Draggable>
+          <div class="widget-cate">图表示例</div>
+          <Draggable tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+            <li
+              class="form-edit-widget-label"
+              :class="{
+                'data-grid': item.name !== '分割线',
+              }"
+              v-for="(item, index) in chartComponents"
+              :key="index"
+            >
+              <a>
+                <Icon class="icon" :name="item.icon"></Icon>
+                <span>{{ item.name }}</span>
+              </a>
+            </li>
+          </Draggable>
         </div>
       </el-aside>
       <!-- 中间区域 -->
@@ -162,7 +178,9 @@ import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
 import GenerateForm from './GenerateForm.vue';
-import { basicComponents, layoutComponents, advanceComponents } from './componentsConfig';
+import {
+  basicComponents, layoutComponents, advanceComponents, chartComponents,
+} from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
 import 'vue-awesome/icons/regular/keyboard';
 import 'vue-awesome/icons/sign';
@@ -229,6 +247,7 @@ export default {
       basicComponents,
       layoutComponents,
       advanceComponents,
+      chartComponents,
       widgetForm: {
         list: [],
         config: {

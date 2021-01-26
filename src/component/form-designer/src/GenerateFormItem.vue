@@ -54,9 +54,14 @@
                   <span slot="prepend" v-if="widget.options.prepend">
                     {{widget.options.prepend}}
                   </span>
-                  <span slot="append" v-if="widget.options.append">
-                    {{widget.options.append}}
-                  </span>
+                  <template slot="append" v-if="widget.options.append || widget.options.appendButton">
+                    <span v-if="!widget.options.appendButton">
+                      {{widget.options.append}}
+                    </span>
+                    <el-button icon="el-icon-info" v-else  @click="btnOnClick(widget)">
+                      {{widget.options.append}}
+                    </el-button>
+                  </template>
       </el-input>
     </template>
     <template v-if="widget.type == 'button'">
@@ -640,7 +645,7 @@ export default class GenerateFormItem extends Vue {
 
   // 按钮点击
   btnOnClick(widget) {
-    this.$emit('btnOnClick', widget);
+    this.$emit('btnOnClick', widget.options.eventName);
   }
 
   getTableSelection(selection) {

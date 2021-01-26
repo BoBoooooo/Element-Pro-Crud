@@ -24,9 +24,14 @@
                   <span slot="prepend" v-if="element.options.prepend">
                     {{element.options.prepend}}
                   </span>
-                  <span slot="append" v-if="element.options.append">
-                    {{element.options.append}}
-                  </span>
+                  <template slot="append" v-if="element.options.append || element.options.appendButton">
+                    <span v-if="!element.options.appendButton">
+                      {{element.options.append}}
+                    </span>
+                    <el-button icon="el-icon-info" v-else>
+                      {{element.options.append}}
+                    </el-button>
+                  </template>
       </el-input>
     </template>
      <template v-if="element.type === 'text'">

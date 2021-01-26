@@ -17,6 +17,7 @@ export const basicComponents = [
       maxLength: '',
       placeholder: '',
       hiddenLabel: false,
+      appendButton: false, // 后缀功能按钮
     },
   },
   {
@@ -281,7 +282,7 @@ export const basicComponents = [
     hidden: false,
     options: {
       text: '确认',
-      btnCommand: 'btnCallback',
+      eventName: 'btnCallback',
       hiddenLabel: true,
     },
   },
@@ -478,3 +479,15 @@ export const layoutComponents = [
     },
   },
 ];
+
+
+// export const chartComponents = [
+//   {
+//     type: 'chart-pie',
+//     name: '饼图',
+//     icon: 'th',
+//     options: {
+
+//     },
+//   },
+// ];

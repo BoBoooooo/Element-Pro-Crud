@@ -19,7 +19,7 @@
       <el-input size="mini" v-model="elementConfig.model"></el-input>
     </el-form-item>
       <el-form-item label="标题"
-                    v-if="elementConfig.type !=='grid'">
+                    v-if="elementConfig.type !=='grid' && elementConfig.type !== 'button'">
         <el-input size="mini" v-model="elementConfig.name"></el-input>
       </el-form-item>
       <el-form-item label="显示文本"
@@ -27,8 +27,8 @@
         <el-input size="mini" v-model="elementConfig.options.text"></el-input>
       </el-form-item>
       <el-form-item label="回调方法"
-                    v-if="Object.keys(elementConfig.options).indexOf('btnCommand')>=0">
-        <el-input size="mini" v-model="elementConfig.options.btnCommand"></el-input>
+                    v-if="Object.keys(elementConfig.options).indexOf('eventName')>=0 && elementConfig.type === 'button'">
+        <el-input size="mini" v-model="elementConfig.options.eventName"></el-input>
       </el-form-item>
       <el-form-item label="标签宽度" v-if="elementConfig.labelWidth !== undefined">
          <el-input-number size="mini" v-model="elementConfig.labelWidth"
@@ -40,7 +40,7 @@
                         placeholder="自定义标签宽度"></el-input-number>
       </el-form-item>
       <el-form-item label="隐藏标签" v-if="elementConfig.options.hiddenLabel !== undefined">
-        <el-switch v-model="elementConfig.options.hiddenLabel"></el-switch>
+        <el-switch :disabled="elementConfig.type === 'button'" v-model="elementConfig.options.hiddenLabel"></el-switch>
       </el-form-item>
       <el-form-item label="组件宽度"
                     v-if="Object.keys(elementConfig.options).indexOf('width')>=0">
@@ -311,7 +311,13 @@
           </el-input>
         </el-form-item>
         <el-form-item label="后缀">
-          <el-input v-model="elementConfig.options.append" placeholder="请输入后缀">
+          <el-input style="width: 50%" v-model="elementConfig.options.append">
+          </el-input>
+           <el-switch style="margin-left: 10px" inactive-text="功能按钮" v-model="elementConfig.options.appendButton">
+          </el-switch>
+        </el-form-item>
+        <el-form-item v-if="elementConfig.options.appendButton" label="回调事件名称">
+          <el-input v-model="elementConfig.options.eventName" placeholder="回调事件名">
           </el-input>
         </el-form-item>
       </template>
