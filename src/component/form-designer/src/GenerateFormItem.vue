@@ -319,6 +319,34 @@
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget"></GenerateSubForm>
     </template>
+    <!-- 饼图组件 -->
+    <template v-if="widget.type === 'chart-pie'">
+       <pieChart
+          @click="chartOnClick"
+          :data="widget.options.data"
+          :style="{
+            height: widget.options.height
+          }"
+          :title="widget.name"
+          :hollow="widget.options.hollow"
+        />
+    </template>
+    <!-- 柱状图组件 -->
+    <template v-if="widget.type === 'chart-line'">
+      <lineChart
+       :style="{
+            height: widget.options.height
+          }"
+        @click="chartOnClick"
+        :data="widget.options.data"
+        :title="widget.name"
+        :rotate="widget.options.rotate"
+        :type="widget.options.type"
+        :yAxisMax="widget.options.yAxisMax"
+        :xUnit="widget.options.xUnit"
+        :yUnit="widget.options.yUnit"
+    />
+    </template>
   </el-form-item>
 </template>
 
@@ -335,6 +363,8 @@ import FileUpload from './components/FileUpload/FileUpload.vue';
 import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
 // 高级查询单个查询内容
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+import lineChart from './components/Charts/lineChart.vue';
+import pieChart from './components/Charts/pieChart.vue';
 
 
 @Component({
@@ -343,6 +373,8 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
     Tinymce,
     FileUpload,
     GenerateSubForm,
+    pieChart,
+    lineChart,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
   model: {
@@ -646,6 +678,11 @@ export default class GenerateFormItem extends Vue {
   // 按钮点击
   btnOnClick(widget) {
     this.$emit('btnOnClick', widget.options.eventName);
+  }
+
+  // 图表点击
+  chartOnClick(chartObj) {
+    this.$emit('chartOnClick', chartObj);
   }
 
   getTableSelection(selection) {

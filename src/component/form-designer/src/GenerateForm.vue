@@ -66,6 +66,7 @@
                                   :widget="citem"
                                   :readOnly="readOnly"
                                   @btnOnClick="btnOnClick"
+                                  @chartOnClick="chartOnClick"
                                   v-show="!citem.hidden"
                                   :formTableConfig="formTableConfig">
                   <template slot="tree-select-value-label"
@@ -118,6 +119,7 @@
                             :widget="item"
                             :rules="rules[item.model]"
                             :readOnly="readOnly"
+                            @chartOnClick="chartOnClick"
                             @btnOnClick="btnOnClick"
                             v-show="!item.hidden"
                             :formTableConfig="formTableConfig">
@@ -372,6 +374,14 @@ export default class GenerateForm extends Vue {
   btnOnClick(event) {
     this.$emit('btnOnClick', {
       event,
+      model: this.models,
+    });
+  }
+
+  // 图表点击
+  chartOnClick(chart) {
+    this.$emit('chartOnClick', {
+      chart,
       model: this.models,
     });
   }

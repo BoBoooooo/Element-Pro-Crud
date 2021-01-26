@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.8.3-53",
+  "version": "0.8.4",
   "main": "lib/ProCrud.umd.min.js",
   "files": [
     "lib",
@@ -116,6 +116,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1"
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "echarts": "^4.8.0"
   }
 }

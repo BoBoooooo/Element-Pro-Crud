@@ -301,7 +301,7 @@ export const basicComponents = [
   {
     type: 'html',
     name: 'HTML',
-    icon: 'sign',
+    icon: 'heading',
     labelWidth: '',
     options: {
       defaultValue: '',
@@ -485,9 +485,61 @@ export const chartComponents = [
   {
     type: 'chart-pie',
     name: '饼图',
-    icon: 'th',
+    icon: 'chart-pie',
     options: {
-
+      className: '',
+      width: '100%',
+      // title: '饼图',
+      option: '',
+      hiddenLabel: true,
+      hollow: true,
+      height: '300px',
+      data: [
+        {
+          name: '商品一',
+          value: '20',
+        },
+        {
+          name: '商品二',
+          value: '5',
+        },
+        {
+          name: '商品三',
+          value: '10',
+        },
+      ],
+    },
+  },
+  {
+    type: 'chart-line',
+    name: '柱状/折线图',
+    icon: 'chart-line',
+    options: {
+      className: '',
+      yAxisMax: null,
+      width: '100%',
+      type: 'bar',
+      // title: '饼图',
+      option: '',
+      rotate: false, // x,y轴互换
+      xUnit: '', // x轴单位
+      yUnit: '个', // y轴单位
+      hiddenLabel: true,
+      height: '300px',
+      data: [
+        {
+          name: '商品一',
+          value: '20',
+        },
+        {
+          name: '商品二',
+          value: '5',
+        },
+        {
+          name: '商品三',
+          value: '10',
+        },
+      ],
     },
   },
 ];

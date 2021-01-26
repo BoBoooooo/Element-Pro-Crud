@@ -51,7 +51,7 @@
               </a>
             </li>
           </Draggable>
-          <div class="widget-cate">图表示例</div>
+          <div class="widget-cate">基础图表</div>
           <Draggable tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
             <li
               class="form-edit-widget-label"
@@ -169,7 +169,6 @@
 
 <script>
 import SvgIcon from '@/icons/SvgIcon.vue';
-import { DML } from '@/types/common';
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
@@ -182,32 +181,8 @@ import {
   basicComponents, layoutComponents, advanceComponents, chartComponents,
 } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
-import 'vue-awesome/icons/regular/keyboard';
-import 'vue-awesome/icons/sign';
-import 'vue-awesome/icons/regular/trash-alt';
-import 'vue-awesome/icons/regular/clone';
-import 'vue-awesome/icons/regular/dot-circle';
-import 'vue-awesome/icons/regular/check-square';
-import 'vue-awesome/icons/bars';
-import 'vue-awesome/icons/clock';
-import 'vue-awesome/icons/regular/calendar-alt';
-import 'vue-awesome/icons/regular/clock';
-import 'vue-awesome/icons/th';
-import 'vue-awesome/icons/sort-numeric-up';
-import 'vue-awesome/icons/regular/star';
-import 'vue-awesome/icons/palette';
-import 'vue-awesome/icons/regular/caret-square-down';
-import 'vue-awesome/icons/toggle-off';
-import 'vue-awesome/icons/sliders-h';
-import 'vue-awesome/icons/regular/image';
-import 'vue-awesome/icons/chalkboard';
-import 'vue-awesome/icons/upload';
-import 'vue-awesome/icons/comment';
-import 'vue-awesome/icons/tree';
-import 'vue-awesome/icons/random';
-import 'vue-awesome/icons/text-width';
-import 'vue-awesome/icons/mouse-pointer';
-import 'vue-awesome/icons/file-word';
+// 导入左侧组件面板图标
+import './icon';
 import generateCode from './generateCode.js';
 
 const STATUS = {

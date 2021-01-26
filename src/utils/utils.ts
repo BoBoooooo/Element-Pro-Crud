@@ -34,3 +34,19 @@ export function chunk(array, size) {
   // 输出新数组
   return result;
 }
+
+/**
+ * 防抖函数
+ * @param method
+ * @param params
+ */
+export function debounce(method, params) {
+  let timer:any = null;
+  // eslint-disable-next-line func-names
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      method(params); // 即调用handlerResize，params即传入的参数eleArr
+    }, 300);
+  };
+}

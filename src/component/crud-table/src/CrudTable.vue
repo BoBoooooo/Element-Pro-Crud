@@ -84,9 +84,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Emit, Prop, Watch,
-} from 'vue-property-decorator';
+import Vue from 'vue';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
   columns, DataSource, DML, Params,

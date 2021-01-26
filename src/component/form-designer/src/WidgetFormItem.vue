@@ -196,7 +196,7 @@
      <template v-if="element.type ==='table'">
        <h4 style="text-align:center;margin:0">表格({{element.model}})</h4>
     </template>
-      <template v-if="element.type === 'treeselect'">
+    <template v-if="element.type === 'treeselect'">
        <h4 style="text-align:center;margin:0">树形下拉框({{element.model}})</h4>
     </template>
     <template v-if="element.type === 'richtext'">
@@ -205,6 +205,30 @@
     </template>
     <template v-if="element.type === 'upload'">
       <h4 style="text-align:center;margin:0">附件上传</h4>
+    </template>
+    <template v-if="element.type === 'chart-pie'">
+       <pieChart
+          :data="element.options.data"
+          :style="{
+            height: element.options.height
+          }"
+          :title="element.name"
+          :hollow="element.options.hollow"
+        />
+    </template>
+    <template v-if="element.type === 'chart-line'">
+      <lineChart
+        :style="{
+            height: element.options.height
+        }"
+        :data="element.options.data"
+        :title="element.name"
+        :rotate="element.options.rotate"
+        :type="element.options.type"
+        :yAxisMax="element.options.yAxisMax"
+        :xUnit="element.options.xUnit"
+        :yUnit="element.options.yUnit"
+    />
     </template>
     <!-- <template v-if="element.type === 'form'">
       <WidgetSubForm :element="element" :select="select" :index="index" :data="data"></WidgetSubForm>
@@ -223,6 +247,8 @@
 <script>
 import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
+import lineChart from './components/Charts/lineChart.vue';
+import pieChart from './components/Charts/pieChart.vue';
 
 export default {
   name: 'WidgetFormItem',
@@ -251,6 +277,8 @@ export default {
   components: {
     Tinymce,
     // WidgetSubForm,
+    pieChart,
+    lineChart,
   },
   data() {
     return {
