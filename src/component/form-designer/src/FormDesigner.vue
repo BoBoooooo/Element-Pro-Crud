@@ -215,10 +215,6 @@ export default {
   data() {
     return {
       // 表单名/使用位置
-      formValues: {
-        tableName: '',
-        position: '',
-      },
       basicComponents,
       layoutComponents,
       advanceComponents,
@@ -270,14 +266,10 @@ export default {
   methods: {
     // 返回当前表单设计器对象
     getData() {
-      this.widgetForm.name = this.formValues.tableName;
-      this.widgetForm.position = this.formValues.position;
       return this.widgetForm;
     },
     setJSON(json) {
       this.widgetForm = json;
-      this.$set(this.formValues, 'tableName', json.name);
-      this.$set(this.formValues, 'position', json.position);
       if (json.list.length > 0) {
         [this.widgetFormSelect] = json.list;
       }

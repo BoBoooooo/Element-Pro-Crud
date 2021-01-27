@@ -21,7 +21,7 @@
                   :readOnly="isReadOnly"
                   :remote="remoteFuncs"
                   :entity.sync="entity"
-                  @btnOnClick="btnOnClick"
+                  @btn-on-click="btnOnClick"
                   :formTableConfig="formTableConfig" />
     <el-row type="flex"
             justify="end"
