@@ -140,18 +140,6 @@ export default {
       minColumnWidth: 140,
       // 获取表单实体
       entity: {},
-      remoteFuncs: {
-        getTablesOfDB: (resolve) => {
-          // 请求表名列表
-          this.$PROCRUD.getTables().then((res) => {
-            const options = res.data.map(item => ({
-              label: item.TABLE_NAME,
-              value: item.TABLE_NAME,
-            }));
-            resolve(options);
-          });
-        },
-      },
     };
   },
   methods: {
