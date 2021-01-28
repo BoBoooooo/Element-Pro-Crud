@@ -48,7 +48,7 @@
        </h3>
     </template>
     <template v-if="element.type === 'html'">
-       <div style="margin-left:30px" v-html="element.options.defaultValue"></div>
+       <div style="margin-left:30px" v-html="element.options.html"></div>
     </template>
     <template v-if="element.type === 'divider'">
       <el-divider :content-position="element.options.align">{{element.name}}</el-divider>
@@ -209,18 +209,14 @@
     <template v-if="element.type === 'chart-pie'">
        <pieChart
           :data="element.options.data"
-          :style="{
-            height: element.options.height
-          }"
+          :height="element.options.height"
           :title="element.name"
           :hollow="element.options.hollow"
         />
     </template>
     <template v-if="element.type === 'chart-line'">
       <lineChart
-        :style="{
-            height: element.options.height
-        }"
+        :height="element.options.height"
         :data="element.options.data"
         :title="element.name"
         :rotate="element.options.rotate"
@@ -230,9 +226,7 @@
         :yUnit="element.options.yUnit"
     />
     </template>
-    <!-- <template v-if="element.type === 'form'">
-      <WidgetSubForm :element="element" :select="select" :index="index" :data="data"></WidgetSubForm>
-    </template> -->
+
     <div class="widget-view-action" v-if="selectWidget.key == element.key">
           <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
           <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
@@ -245,7 +239,6 @@
 </template>
 
 <script>
-import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
@@ -276,7 +269,6 @@ export default {
   },
   components: {
     Tinymce,
-    // WidgetSubForm,
     pieChart,
     lineChart,
   },

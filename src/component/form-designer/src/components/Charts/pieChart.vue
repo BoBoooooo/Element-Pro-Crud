@@ -4,7 +4,12 @@
  * @Description: 基于echarts的饼图组件
  -->
 <template>
-  <div :class="className" ref="chart" :style="{ height: '100%', width: width }" />
+  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width ,padding: 0}">
+    <div slot="header">
+      <span>{{ title }}</span>
+    </div>
+    <div :class="className" ref="chart" :style="{ height: '100%', width: width, padding: '20px' }" />
+  </el-card>
 </template>
 
 <script>
@@ -18,6 +23,11 @@ export default {
     width: {
       type: String,
       default: '100%',
+    },
+    // 柱状图宽度
+    height: {
+      type: String,
+      default: '300px',
     },
     data: {
       type: Array,
@@ -52,7 +62,7 @@ export default {
     },
     chartOption() {
       const defaultOption = {
-        // color: ['#81E0CF', '#227969', '#82C7E4', '#A1AFFB', '#7190FF', '#163abe'],
+        color: ['#82C7E4', '#A1AFFB', '#7190FF', '#163abe'],
         title: {
           // eslint-disable-next-line no-eval
           text: `总数${eval(this.data.map(item => item.value).join('+')) || 0}`,
@@ -150,7 +160,6 @@ export default {
       if (this.hollow) {
         defaultOption.series[0].radius = ['46%', '66%'];
       }
-      defaultOption.color = ['#EEF09A', '#CDEAB7', '#99E0AD', '#72C6A4', '0B8A82'];
       defaultOption.series[0].center = ['50%', '50%'];
       defaultOption.series[0].label.normal.textStyle.color = '#000';
       defaultOption.series[0].label.normal.formatter = '{a}{b}\n占比:{d}%';
@@ -217,3 +226,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.card{
+  ::v-deep {
+    .el-card__header{
+      padding: 5px 20px;
+    }
+  }
+}
+</style>

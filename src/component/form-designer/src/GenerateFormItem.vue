@@ -10,7 +10,8 @@
 <template>
   <el-form-item :prop="widget.type == 'button'?undefined:widget.model"
                 :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
-                :rules="rules">
+                :rules="rules"
+                :class="widget.options.className">
     <template #label>
       <template v-if="widget.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
@@ -27,7 +28,7 @@
       </template>
     </template>
     <template v-if="widget.type === 'html'">
-       <div style="margin-left:10px" v-html="widget.options.defaultValue"></div>
+       <div style="margin-left:10px" v-html="widget.options.html"></div>
     </template>
     <template v-if="widget.type === 'divider'">
       <el-divider :content-position="widget.options.align">{{widget.name}}</el-divider>
@@ -323,10 +324,8 @@
     <template v-if="widget.type === 'chart-pie'">
        <pieChart
           @click="chartOnClick"
+          :height="widget.options.height"
           :data="widget.options.data"
-          :style="{
-            height: widget.options.height
-          }"
           :title="widget.name"
           :hollow="widget.options.hollow"
         />
@@ -334,9 +333,7 @@
     <!-- 柱状图组件 -->
     <template v-if="widget.type === 'chart-line'">
       <lineChart
-       :style="{
-            height: widget.options.height
-          }"
+        :height="widget.options.height"
         @click="chartOnClick"
         :data="widget.options.data"
         :title="widget.name"

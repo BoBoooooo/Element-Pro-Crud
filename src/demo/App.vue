@@ -112,7 +112,7 @@
                     <el-switch v-model="visibleList.searchForm"
                                inactive-text="查询区域"></el-switch>
                     <el-switch v-model="visibleList.seniorSearchBtn"
-                               inactive-text="高级查询按钮"></el-switch>
+                               inactive-text="高级查询"></el-switch>
                   </el-form>
                 </div>
                 <el-divider></el-divider>

@@ -305,7 +305,7 @@ export const basicComponents = [
     icon: 'heading',
     labelWidth: '',
     options: {
-      defaultValue: '',
+      html: null,
       hiddenLabel: false,
     },
   },

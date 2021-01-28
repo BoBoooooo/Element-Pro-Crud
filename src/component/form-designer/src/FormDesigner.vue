@@ -18,7 +18,7 @@
             </span>
           </div>
           <div class="widget-cate">基础组件</div>
-          <Draggable tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+          <Draggable tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -27,7 +27,7 @@
             </li>
           </Draggable>
           <div class="widget-cate">高级组件</div>
-          <Draggable tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+          <Draggable tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -36,7 +36,7 @@
             </li>
           </Draggable>
           <div class="widget-cate">布局组件</div>
-          <Draggable tag="ul" :list="layoutComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+          <Draggable tag="ul" :list="layoutComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li
               class="form-edit-widget-label"
               :class="{
@@ -52,12 +52,9 @@
             </li>
           </Draggable>
           <div class="widget-cate">基础图表</div>
-          <Draggable tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
+          <Draggable tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li
               class="form-edit-widget-label"
-              :class="{
-                'data-grid': item.name !== '分割线',
-              }"
               v-for="(item, index) in chartComponents"
               :key="index"
             >
@@ -102,7 +99,7 @@
             </div>
           </el-header>
           <el-main class="config-content">
-            <WidgetConfig v-show="configTab == 'widget'" :elementConfig="widgetFormSelect"></WidgetConfig>
+            <WidgetConfig v-show="configTab == 'widget'" v-if="Object.keys(widgetFormSelect).length>0" :elementConfig="widgetFormSelect"></WidgetConfig>
             <FormConfig v-show="configTab == 'form'" :data="widgetForm.config"></FormConfig>
           </el-main>
         </el-container>
@@ -116,11 +113,12 @@
           </template>
         </GenerateForm>
       </CusDialog>
+      <!-- 导入JSON对话框 -->
       <CusDialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
         <el-alert type="info" title="在此处导入JSON"></el-alert>
         <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
       </CusDialog>
-
+      <!-- 查看JSON对话框 -->
       <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
         <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
 
@@ -128,7 +126,7 @@
           <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
         </template>
       </CusDialog>
-
+      <!-- 生成代码对话框 -->
       <CusDialog :visible="codeVisible" @on-close="codeVisible = false" ref="codePreview" width="800px" form :action="false">
         <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
         <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
@@ -140,10 +138,12 @@
           </el-tab-pane>
         </el-tabs>
       </CusDialog>
+      <!-- 自动绑定对话框 -->
       <CusDialog
+        v-if="allTables"
         ref="bindKeys"
         :visible="formVisible"
-        title="绑定后端key/自动初始化表单(根据数据库字段备注)"
+        title="自动生成表单(根据数据库表字段及备注自动生成)"
         @on-close="
           formVisible = false;
           formKeys.tableName = '';
@@ -152,17 +152,10 @@
         width="800px"
         :action="false"
       >
-        <template v-if="allTables">
-          <el-select v-model="formKeys.tableName" filterable style="width:100%" placeholder="选择数据源">
-            <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-          <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
-        </template>
-        <template v-else>
-          <p>
-            初始化时请先设置getTables方法
-          </p>
-        </template>
+        <el-select v-model="formKeys.tableName" filterable style="width:100%" placeholder="选择数据源">
+          <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+        <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
       </CusDialog>
     </el-container>
 </template>
@@ -228,7 +221,7 @@ export default {
         },
       },
       configTab: 'widget',
-      widgetFormSelect: null,
+      widgetFormSelect: {},
       // 预览 对话框显示/隐藏
       previewVisible: false,
       // 生成json 对话框显示/隐藏
@@ -388,12 +381,6 @@ export default {
     },
     handleConfigSelect(value) {
       this.configTab = value;
-    },
-    handleMoveEnd(evt) {
-      console.log('end', evt);
-    },
-    handleMoveStart({ oldIndex }) {
-      console.log('start', oldIndex, this.basicComponents);
     },
     handleMove() {
       return true;

@@ -4,7 +4,12 @@
  * @Description: 基于echarts的柱状图组件
  -->
 <template>
-  <div :class="className" ref="chart" :style="{ height: '100%', width: width }" />
+  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width ,padding: 0}">
+    <div slot="header">
+      <span>{{ title }}</span>
+    </div>
+    <div :class="className" ref="chart" :style="{ height: '100%', width: width, padding: '20px' }" />
+  </el-card>
 </template>
 
 <script>
@@ -25,6 +30,11 @@ export default {
     width: {
       type: String,
       default: '100%',
+    },
+    // 柱状图宽度
+    height: {
+      type: String,
+      default: '300px',
     },
     // 柱状图/折线图
     type: {
@@ -90,7 +100,7 @@ export default {
     },
     chartOption() {
       const option = {
-        color: ['#EEF09A', '#CDEAB7', '#99E0AD', '#72C6A4', '0B8A82'],
+        color: ['#7190FF'],
         tooltip: {
           textStyle: {
             fontSize: 18,
@@ -194,33 +204,6 @@ export default {
                 lineStyle: {
                   color: '#66e0ef', // 改变折线颜色
                 },
-                // 每根柱子颜色设置
-                color(params) {
-                  // 顺时针，第一个参数代表右
-                  //  ['#EEF09A', '#CDEAB7', '#99E0AD', '#72C6A4', '0B8A82']
-                  const color = new echarts.graphic.LinearGradient(
-                    0,
-                    1,
-                    0,
-                    0,
-                    [
-                      {
-                        offset: 0,
-                        color: '#99E0AD', // 0% 处的颜色
-                      },
-                      {
-                        offset: 0.6,
-                        color: '#72C6A4', // 60% 处的颜色
-                      },
-                      {
-                        offset: 1,
-                        color: '#0B8A82', // 100% 处的颜色
-                      },
-                    ],
-                    false,
-                  );
-                  return color;
-                },
                 label: { show: true, color: '#fff' },
               },
             },
@@ -287,7 +270,6 @@ export default {
       // }
       return option;
     },
-
   },
   methods: {
     initChart() {
@@ -326,3 +308,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.card{
+  ::v-deep {
+    .el-card__header{
+      padding: 5px 20px;
+    }
+  }
+}
+</style>

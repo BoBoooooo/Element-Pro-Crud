@@ -23,11 +23,15 @@
       <el-form-item label="标题" v-if="elementConfig.type !== 'grid' && elementConfig.type !== 'button'">
         <el-input size="mini" v-model="elementConfig.name"></el-input>
       </el-form-item>
-      <el-form-item label="自定义className">
+      <el-form-item label="自定义className" v-if="Object.keys(elementConfig.options).indexOf('className') >= 0">
         <el-input size="mini" v-model="elementConfig.options.className"></el-input>
       </el-form-item>
       <el-form-item label="显示文本" v-if="Object.keys(elementConfig.options).indexOf('text') >= 0">
         <el-input size="mini" v-model="elementConfig.options.text"></el-input>
+      </el-form-item>
+      <el-form-item :label="elementConfig.type === 'html'  ?'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
+        <el-button style="float:right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
+        <div id="jsoneditor2" style="height: 300px;width: 100%;">{{ jsonTemplate }}</div>
       </el-form-item>
       <el-form-item label="是否空心" v-if="Object.keys(elementConfig.options).indexOf('hollow') >= 0">
         <el-switch v-model="elementConfig.options.hollow"></el-switch>
@@ -35,12 +39,6 @@
       <el-form-item label="高度" v-if="Object.keys(elementConfig.options).indexOf('height') >= 0">
         <el-input size="mini" v-model="elementConfig.options.height"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="自定义option" v-if="Object.keys(elementConfig.options).indexOf('option') >= 0">
-        <el-input size="mini" type="textarea" placeholder="请输入自定义图表json" v-model="elementConfig.options.option"></el-input>
-      </el-form-item> -->
-       <!-- <el-form-item label="图表数据" v-if="Object.keys(elementConfig.options).indexOf('data') >= 0">
-        <el-input size="mini" type="textarea" placeholder="图表数据" v-model="elementConfig.options.data"></el-input>
-      </el-form-item> -->
       <!-- 柱状/折线图特有属性 -->
       <template v-if="elementConfig.type == 'chart-line'">
         <el-form-item label="图表类型">
@@ -396,6 +394,7 @@
         <el-form-item label="操作属性"
           v-if="!elementConfig.type.includes('chart-')
           && elementConfig.type !== 'table'
+          && elementConfig.type !== 'html'
           && elementConfig.type !== 'blank'
           && elementConfig.type !== 'text'
           && elementConfig.type !== 'button'">
@@ -413,12 +412,13 @@
           elementConfig.type != 'button' &&
           elementConfig.type != 'table' &&
           elementConfig.type !== 'blank' &&
+          elementConfig.type != 'html' &&
           elementConfig.type != 'upload' &&
           elementConfig.type != 'text'"
           label="校验"
         >
           <div>
-            <el-checkbox v-model="elementConfig.options.required">必填</el-checkbox>
+            <el-checkbox v-if="Object.keys(elementConfig.options).indexOf('required') >= 0" v-model="elementConfig.options.required">必填</el-checkbox>
           </div>
           <el-select v-if="Object.keys(elementConfig.options).indexOf('dataType') >= 0" v-model="elementConfig.options.dataType" size="mini">
             <el-option value="password" label="密码"></el-option>
@@ -539,6 +539,9 @@ export default {
   },
   data() {
     return {
+      jsonTemplate: '',
+      htmlTemplate: '',
+      jsonEditor: null,
       // 字典类型
       dictType: [],
       validator: {
@@ -574,6 +577,13 @@ export default {
     }
   },
   methods: {
+    saveJson() {
+      if (this.elementConfig.type === 'html') {
+        this.elementConfig.options.html = this.jsonEditor.getValue();
+      } else {
+        this.elementConfig.options.data = JSON.parse(this.jsonEditor.getValue());
+      }
+    },
     getDraggableOptions() {
       return {
         group: { name: 'options' },
@@ -686,6 +696,26 @@ export default {
       }
     },
     // eslint-disable-next-line func-names
+    'elementConfig.type': function (val) {
+      if (val.includes('chart-')) {
+        this.jsonTemplate = JSON.stringify(this.elementConfig.options.data || '', null, 2);
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.jsonEditor = ace.edit('jsoneditor2');
+            this.jsonEditor.session.setMode('ace/mode/json');
+          }, 0);
+        });
+      } else if (val === 'html') {
+        this.jsonTemplate = JSON.stringify(this.elementConfig.options.html || '', null, 2);
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.jsonEditor = ace.edit('jsoneditor2');
+            this.jsonEditor.session.setMode('ace/mode/html');
+          }, 0);
+        });
+      }
+    },
+    // eslint-disable-next-line func-names
     'elementConfig.options.isRange': function (val) {
       if (typeof val !== 'undefined') {
         if (val) {
@@ -695,21 +725,15 @@ export default {
     },
     // eslint-disable-next-line func-names
     'elementConfig.options.required': function (val) {
-      if (this.elementConfig) {
-        this.validateRequired(val);
-      }
+      this.validateRequired(val);
     },
     // eslint-disable-next-line func-names
     'elementConfig.options.dataType': function (val) {
-      if (this.elementConfig) {
-        this.validateDataType(val);
-      }
+      this.validateDataType(val);
     },
     // eslint-disable-next-line func-names
     'elementConfig.options.pattern': function (val) {
-      if (this.elementConfig) {
-        this.valiatePattern(val);
-      }
+      this.valiatePattern(val);
     },
     // eslint-disable-next-line func-names
     'elementConfig.name': function (val) {

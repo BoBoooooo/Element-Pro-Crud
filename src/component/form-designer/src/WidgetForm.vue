@@ -64,7 +64,6 @@
                         <widget-form-item
                           v-for="(el, i) in col.list"
                           :key="el.key"
-                          v-if="el.key"
                           :element="el"
                           :select.sync="selectWidget"
                           :index="i"
@@ -98,21 +97,10 @@
                     <i class="el-icon el-icon-rank"></i>
                   </div>
                 </el-row>
-                <!-- <el-button title="删除"
-                         style="bottom: -20px;"
-                         @click.stop="handleWidgetDelete(index)"
-                         class="widget-action-delete"
-                         v-if="selectWidget.key == element.key"
-                         circle
-                         plain
-                         type="danger">
-                <Icon name="regular/trash-alt"
-                      style="width: 12px;height: 12px;"></Icon>
-              </el-button> -->
               </div>
             </template>
             <template v-else-if="element.type === 'form'">
-                <WidgetSubForm
+            <WidgetSubForm
                    v-if="element && element.key"
                   :key="element.key"
                   :element="element"
@@ -212,11 +200,9 @@ export default {
           })),
         });
       }
-
       this.selectWidget = this.data.list[newIndex];
     },
     handleWidgetColAdd($event, row, colIndex) {
-      // console.log('元素被拖到内层handleWidgetAdd`);
       const { newIndex } = $event;
       const { oldIndex } = $event;
       const { item } = $event;
@@ -270,7 +256,6 @@ export default {
           },
         });
       }
-
       this.selectWidget = row.columns[colIndex].list[newIndex];
       return null;
     },
