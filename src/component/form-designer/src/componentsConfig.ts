@@ -229,7 +229,8 @@ export const basicComponents = [
         },
         {
           value: '下拉框2',
-        }, {
+        },
+        {
           value: '下拉框3',
         },
       ],
@@ -479,7 +480,6 @@ export const layoutComponents = [
     },
   },
 ];
-
 
 export const chartComponents = [
   {
