@@ -113,7 +113,7 @@
         <el-container class="container">
           <el-header
             ><el-tag>CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
-            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="warning" class="json-btn"  size="small">
+            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="warning" class="json-btn" size="small">
               当前表格json
             </el-button>
           </el-header>
@@ -211,7 +211,7 @@
         <el-container class="container">
           <el-header>
             <el-tag>GenerateForm渲染图表示例</el-tag>
-            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn"  type="warning" size="small">
+            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="warning" size="small">
               当前表单JSON
             </el-button>
           </el-header>
@@ -445,7 +445,7 @@ h3 {
   background: white;
 }
 .top {
-  box-shadow: 0 8px 24px -2px ;
+  box-shadow: 0 8px 24px -2px;
   padding: 0 8rem;
   position: fixed;
   display: flex;
@@ -518,9 +518,9 @@ h3 {
   }
 }
 
-.json-btn{
-  float:right;
-  margin-top:12px;
+.json-btn {
+  float: right;
+  margin-top: 12px;
 }
 
 .el-radio-group {
@@ -587,6 +587,11 @@ h3 {
       border-left-color: #34538b;
       color: #34538b;
       opacity: 1;
+    }
+    &:hover {
+      color: #34538b;
+      opacity: 1;
+      font-weight: 500;
     }
   }
 }
