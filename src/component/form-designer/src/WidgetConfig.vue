@@ -31,13 +31,16 @@
       </el-form-item>
       <el-form-item :label="elementConfig.type === 'html'  ?'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
         <el-button style="float:right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
-        <div id="jsoneditor2" style="height: 300px;width: 100%;">{{ jsonTemplate }}</div>
+        <div id="jsoneditor2" ref="jsoneditor2" style="height: 300px;width: 100%;"></div>
       </el-form-item>
       <el-form-item label="是否空心" v-if="Object.keys(elementConfig.options).indexOf('hollow') >= 0">
         <el-switch v-model="elementConfig.options.hollow"></el-switch>
       </el-form-item>
       <el-form-item label="高度" v-if="Object.keys(elementConfig.options).indexOf('height') >= 0">
         <el-input size="mini" v-model="elementConfig.options.height"></el-input>
+      </el-form-item>
+        <el-form-item label="是否循环" v-if="Object.keys(elementConfig.options).indexOf('loop') >= 0">
+        <el-switch v-model="elementConfig.options.loop"></el-switch>
       </el-form-item>
       <!-- 柱状/折线图特有属性 -->
       <template v-if="elementConfig.type == 'chart-line'">
@@ -540,7 +543,6 @@ export default {
   data() {
     return {
       jsonTemplate: '',
-      htmlTemplate: '',
       jsonEditor: null,
       // 字典类型
       dictType: [],
@@ -578,8 +580,11 @@ export default {
   },
   methods: {
     saveJson() {
-      if (this.elementConfig.type === 'html') {
+      const { type } = this.elementConfig;
+      if (type === 'html') {
         this.elementConfig.options.html = this.jsonEditor.getValue();
+      } else if (type === 'chart-common') {
+        this.elementConfig.options.option = JSON.parse(this.jsonEditor.getValue());
       } else {
         this.elementConfig.options.data = JSON.parse(this.jsonEditor.getValue());
       }
@@ -698,21 +703,20 @@ export default {
     // eslint-disable-next-line func-names
     'elementConfig.type': function (val) {
       if (val.includes('chart-')) {
-        this.jsonTemplate = JSON.stringify(this.elementConfig.options.data || '', null, 2);
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.jsonEditor = ace.edit('jsoneditor2');
-            this.jsonEditor.session.setMode('ace/mode/json');
-          }, 0);
-        });
+        const jsonData = val === 'chart-common' ? this.elementConfig.options.option : this.elementConfig.options.data;
+        const jsonString = JSON.stringify(jsonData || '', null, 2);
+        setTimeout(() => {
+          this.jsonEditor = ace.edit('jsoneditor2');
+          this.jsonEditor.session.setMode('ace/mode/json');
+          this.jsonEditor.setValue(jsonString);
+        }, 100);
       } else if (val === 'html') {
-        this.jsonTemplate = JSON.stringify(this.elementConfig.options.html || '', null, 2);
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.jsonEditor = ace.edit('jsoneditor2');
-            this.jsonEditor.session.setMode('ace/mode/html');
-          }, 0);
-        });
+        const jsonString = JSON.stringify(this.elementConfig.options.html || '', null, 2);
+        setTimeout(() => {
+          this.jsonEditor = ace.edit('jsoneditor2');
+          this.jsonEditor.setValue(jsonString);
+          this.jsonEditor.session.setMode('ace/mode/html');
+        }, 100);
       }
     },
     // eslint-disable-next-line func-names

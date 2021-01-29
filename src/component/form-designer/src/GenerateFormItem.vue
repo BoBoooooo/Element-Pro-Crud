@@ -344,6 +344,14 @@
         :yUnit="widget.options.yUnit"
     />
     </template>
+    <template v-if="widget.type === 'chart-common'">
+      <Echarts
+        :title="widget.name"
+        :height="widget.options.height"
+        :option="widget.options.option"
+        :loop="widget.options.loop">
+      </Echarts>
+    </template>
   </el-form-item>
 </template>
 
@@ -362,6 +370,7 @@ import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
+import Echarts from './components/Charts/Echarts.vue';
 
 
 @Component({
@@ -370,6 +379,7 @@ import pieChart from './components/Charts/pieChart.vue';
     Tinymce,
     FileUpload,
     GenerateSubForm,
+    Echarts,
     pieChart,
     lineChart,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),

@@ -525,7 +525,7 @@ export const chartComponents = [
       xUnit: '', // x轴单位
       yUnit: '个', // y轴单位
       hiddenLabel: true,
-      height: '300px',
+      height: '400px',
       data: [
         {
           name: '商品一',
@@ -540,6 +540,32 @@ export const chartComponents = [
           value: '10',
         },
       ],
+    },
+  },
+  {
+    type: 'chart-common',
+    name: '通用图表',
+    icon: 'chart-bar',
+
+    options: {
+      className: '',
+      height: '400px',
+      hiddenLabel: true,
+      width: '100%',
+      loop: false,
+      option: {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [{
+          data: [150, 230, 224, 218, 135, 147, 260],
+          type: 'line',
+        }],
+      },
     },
   },
 ];

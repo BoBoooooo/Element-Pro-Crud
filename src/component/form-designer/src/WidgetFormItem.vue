@@ -226,7 +226,14 @@
         :yUnit="element.options.yUnit"
     />
     </template>
-
+    <template v-if="element.type === 'chart-common'">
+      <Echarts
+        :title="element.name"
+        :height="element.options.height"
+        :option="element.options.option"
+        :loop="element.options.loop">
+      </Echarts>
+    </template>
     <div class="widget-view-action" v-if="selectWidget.key == element.key">
           <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
           <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
@@ -242,6 +249,8 @@
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
+import Echarts from './components/Charts/Echarts.vue';
+
 
 export default {
   name: 'WidgetFormItem',
@@ -271,6 +280,7 @@ export default {
     Tinymce,
     pieChart,
     lineChart,
+    Echarts,
   },
   data() {
     return {

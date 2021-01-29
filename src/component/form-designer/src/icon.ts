@@ -33,3 +33,4 @@ import 'vue-awesome/icons/random';
 import 'vue-awesome/icons/text-width';
 import 'vue-awesome/icons/mouse-pointer';
 import 'vue-awesome/icons/file-word';
+import 'vue-awesome/icons/chart-bar';
