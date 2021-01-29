@@ -569,6 +569,7 @@ h3 {
   right: 0;
   z-index: 200;
   li {
+    cursor: pointer;
     display: block;
     padding: 0 8px;
     line-height: 24px;
