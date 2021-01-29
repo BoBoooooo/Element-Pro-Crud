@@ -88,9 +88,9 @@ export default {
       this.initEvent();
       // 运行配置参数
       this.setOption();
-      if (this.loop) {
-        this.initLoopFn();
-      }
+      // if (this.loop) {
+      //   this.initLoopFn();
+      // }
     },
     initLoopFn() {
       const timer = setInterval(() => {

@@ -41,7 +41,7 @@
 
       <el-main class="content">
         <el-container class="container">
-          <el-header>表格设计器(TableDesigner)</el-header>
+          <el-header><el-tag>表格设计器(TableDesigner)</el-tag></el-header>
           <el-main>
             <TableDesigner :dictList="dictList"
                            :formList="formList"
@@ -50,7 +50,7 @@
         </el-container>
 
         <el-container class="container">
-          <el-header>表单设计器(FormDesigner)</el-header>
+          <el-header><el-tag>表单设计器(FormDesigner)</el-tag></el-header>
           <el-main>
             <FormDesigner ref="formDesigner"
                           :getFormKey="getTableFields">
@@ -65,7 +65,7 @@
           </el-main>
         </el-container>
           <el-container class="container">
-          <el-header>ProTable组件 (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
+          <el-header><el-tag>ProTable组件</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
             <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
               当前表格json
             </el-button>
@@ -145,7 +145,7 @@
           </el-main>
         </el-container>
         <el-container class="container">
-          <el-header>CrudTable组件 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
+          <el-header><el-tag>CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
             <el-button  @click="handleGenerateJson" icon="el-icon-tickets" type="warning" size="small">
               当前表格json
             </el-button>
@@ -275,6 +275,22 @@
             </el-row>
           </el-main>
         </el-container>
+
+           <el-container class="container">
+          <el-header>
+            <el-tag>GenerateForm渲染图表示例</el-tag>
+            <el-button  @click="handleGenerateJson('chart')" icon="el-icon-tickets" type="warning" size="small">
+              当前表单JSON
+            </el-button>
+          </el-header>
+          <el-main class="demo-actions">
+            <el-row :gutter="10">
+              <el-col :span="24">
+                <ChartScreen></ChartScreen>
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
       </el-main>
       <el-footer height="80px"
                  class="footer">
@@ -295,7 +311,8 @@ import {
 import CusDialog from '@/component/common/CusDialog.vue';
 import PersonCrudTable from './component/PersonCrudTable.vue';
 import PersonProTable from './component/PersonProTable.vue';
-
+import ChartScreen from './component/ChartScreen.vue';
+import chartData from './component/data';
 
 export default {
   name: 'app',
@@ -303,9 +320,13 @@ export default {
     getRowData(row) {
       this.$alert(JSON.stringify(row));
     },
-    handleGenerateJson() {
+    handleGenerateJson(type) {
       this.jsonVisible = true;
-      this.jsonTemplate = JSON.stringify(this.columns, null, 2);
+      if (type === 'chart') {
+        this.jsonTemplate = JSON.stringify(this.chartData, null, 2);
+      } else {
+        this.jsonTemplate = JSON.stringify(this.columns, null, 2);
+      }
 
       this.$nextTick(() => {
         const editor = ace.edit('jsoneditor');
@@ -354,6 +375,7 @@ export default {
   },
   data() {
     return {
+      chartData,
       jsonVisible: false,
       jsonTemplate: '',
       dictList: [],
@@ -395,6 +417,7 @@ export default {
     CusDialog,
     PersonCrudTable,
     PersonProTable,
+    ChartScreen,
   },
 };
 </script>

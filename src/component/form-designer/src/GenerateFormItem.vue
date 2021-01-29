@@ -425,14 +425,6 @@ export default class GenerateFormItem extends Vue {
   })
   readOnly!: boolean;
 
-  // 子表单单个组件value
-  @Prop()
-  value: any;
-
-  // 子表单单个组件初始值model
-  @Prop()
-  model: any;
-
   // 组件校验规则
   @Prop()
   rules: any;
@@ -448,32 +440,45 @@ export default class GenerateFormItem extends Vue {
   normalizer: any;
 
   initData() {
-    // 如果是子表单
-    if (this.model) {
-      if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
-        this.dataModel = typeof this.model === 'string' ? this.model.split(',') : this.model;
-      } else {
-        this.dataModel = this.model;
-      }
-      return;
-    }
+    const { type, model } = this.widget;
+    // if (this.model) {
+    //   // 多选组件需要初始化值为数组
+    //   if (this.widget.options.multiple || 'cascader,checkbox'.includes(type)) {
+    //     this.dataModel = typeof this.model === 'string' ? this.model.split(',') : this.model;
+    //   } else {
+    //     this.dataModel = this.model;
+    //   }
+    //   return;
+    // }
     let normalizer;
-    if (this.widget.type === 'treeselect') {
+    // tree-select组件初始化
+    if (type === 'treeselect') {
       const { value, label } = this.widget.options.props;
       normalizer = (node) => {
         // 去掉children=null的属性
         if (node.children === null || node.children === 'null') {
           delete node.children;
         }
-        // 此处暂时写反了...暂时不做修改
         return {
           id: node[value],
           label: node[label],
         };
       };
+    } else if (type.includes('chart-')) { // 图表预设option
+      // 如果是通用图表则传入的值为option
+      if (type === 'chart-common') {
+        if (this.models[model]) {
+          this.widget.options.option = this.models[model];
+        }
+      } else { // 指定图表默认转入data
+        // eslint-disable-next-line no-lonely-if
+        if (this.models[model]) {
+          this.widget.options.data = this.models[model];
+        }
+      }
     }
     this.normalizer = normalizer;
-    this.dataModel = this.models[this.widget.model];
+    this.dataModel = this.models[model];
   }
 
   created() {
