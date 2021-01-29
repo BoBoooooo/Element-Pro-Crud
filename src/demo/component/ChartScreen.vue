@@ -6,9 +6,7 @@
 -->
 
 <template>
-  <div class="page-container">
-    <GenerateForm :data="data" :value="value"></GenerateForm>
-  </div>
+  <GenerateForm :data="data"></GenerateForm>
 </template>
 
 <script>
@@ -20,23 +18,5 @@ import data from './data';
 })
 export default class ChartScreen extends Vue {
   data = data
-
-  value = {
-    chart2: {
-      xAxis: {
-        type: 'category',
-        data: ['1', '2', '3', '4', '5', '6', '7'],
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line',
-        },
-      ],
-    },
-  }
 }
 </script>

@@ -4,15 +4,14 @@
  * @copyright: NanJing Anshare Tech .Com
  * @Date: 2021-01-29 13:48:22
  */
-const xAxisData:any = [];
-const data1:any = [];
-const data2:any = [];
+const xAxisData: any = [];
+const data1: any = [];
+const data2: any = [];
 for (let i = 0; i < 100; i += 1) {
   xAxisData.push(`类目${i}`);
   data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
   data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
 }
-
 
 export default {
   list: [
@@ -171,34 +170,36 @@ export default {
                 option: {
                   xAxis: {},
                   yAxis: {},
-                  series: [{
-                    symbolSize: 20,
-                    data: [
-                      [10.0, 8.04],
-                      [8.07, 6.95],
-                      [13.0, 7.58],
-                      [9.05, 8.81],
-                      [11.0, 8.33],
-                      [14.0, 7.66],
-                      [13.4, 6.81],
-                      [10.0, 6.33],
-                      [14.0, 8.96],
-                      [12.5, 6.82],
-                      [9.15, 7.20],
-                      [11.5, 7.20],
-                      [3.03, 4.23],
-                      [12.2, 7.83],
-                      [2.02, 4.47],
-                      [1.05, 3.33],
-                      [4.05, 4.96],
-                      [6.03, 7.24],
-                      [12.0, 6.26],
-                      [12.0, 8.84],
-                      [7.08, 5.82],
-                      [5.02, 5.68],
-                    ],
-                    type: 'scatter',
-                  }],
+                  series: [
+                    {
+                      symbolSize: 20,
+                      data: [
+                        [10.0, 8.04],
+                        [8.07, 6.95],
+                        [13.0, 7.58],
+                        [9.05, 8.81],
+                        [11.0, 8.33],
+                        [14.0, 7.66],
+                        [13.4, 6.81],
+                        [10.0, 6.33],
+                        [14.0, 8.96],
+                        [12.5, 6.82],
+                        [9.15, 7.2],
+                        [11.5, 7.2],
+                        [3.03, 4.23],
+                        [12.2, 7.83],
+                        [2.02, 4.47],
+                        [1.05, 3.33],
+                        [4.05, 4.96],
+                        [6.03, 7.24],
+                        [12.0, 6.26],
+                        [12.0, 8.84],
+                        [7.08, 5.82],
+                        [5.02, 5.68],
+                      ],
+                      type: 'scatter',
+                    },
+                  ],
                 },
                 remoteFunc: 'func_chart-common_26877',
               },
@@ -245,21 +246,23 @@ export default {
                       { name: '市场（Marketing）', max: 25000 },
                     ],
                   },
-                  series: [{
-                    name: '预算 vs 开销（Budget vs spending）',
-                    type: 'radar',
-                    // areaStyle: {normal: {}},
-                    data: [
-                      {
-                        value: [4300, 10000, 28000, 35000, 50000, 19000],
-                        name: '预算分配（Allocated Budget）',
-                      },
-                      {
-                        value: [5000, 14000, 28000, 31000, 42000, 21000],
-                        name: '实际开销（Actual Spending）',
-                      },
-                    ],
-                  }],
+                  series: [
+                    {
+                      name: '预算 vs 开销（Budget vs spending）',
+                      type: 'radar',
+                      // areaStyle: {normal: {}},
+                      data: [
+                        {
+                          value: [4300, 10000, 28000, 35000, 50000, 19000],
+                          name: '预算分配（Allocated Budget）',
+                        },
+                        {
+                          value: [5000, 14000, 28000, 31000, 42000, 21000],
+                          name: '实际开销（Actual Spending）',
+                        },
+                      ],
+                    },
+                  ],
                 },
                 remoteFunc: 'func_chart-common_76476',
               },
@@ -306,29 +309,31 @@ export default {
                       show: false,
                     },
                   },
-                  yAxis: {
-                  },
-                  series: [{
-                    name: 'bar',
-                    type: 'bar',
-                    data: data1,
-                    emphasis: {
-                      focus: 'series',
+                  yAxis: {},
+                  series: [
+                    {
+                      name: 'bar',
+                      type: 'bar',
+                      data: data1,
+                      emphasis: {
+                        focus: 'series',
+                      },
+                      animationDelay(idx) {
+                        return idx * 10;
+                      },
                     },
-                    animationDelay(idx) {
-                      return idx * 10;
+                    {
+                      name: 'bar2',
+                      type: 'bar',
+                      data: data2,
+                      emphasis: {
+                        focus: 'series',
+                      },
+                      animationDelay(idx) {
+                        return idx * 10 + 100;
+                      },
                     },
-                  }, {
-                    name: 'bar2',
-                    type: 'bar',
-                    data: data2,
-                    emphasis: {
-                      focus: 'series',
-                    },
-                    animationDelay(idx) {
-                      return idx * 10 + 100;
-                    },
-                  }],
+                  ],
                   animationEasing: 'elasticOut',
                   animationDelayUpdate(idx) {
                     return idx * 5;
