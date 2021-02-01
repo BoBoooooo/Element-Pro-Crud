@@ -373,7 +373,9 @@ export default defineComponent({
           }
           nextTick(() => {
             // 初始化表格高度
-            setMaxHeight();
+            setTimeout(() => {
+              setMaxHeight();
+            }, 0);
           });
 
           emit('done', {
