@@ -156,6 +156,10 @@ export default defineComponent({
       default: () => ({}),
       type: Object,
     },
+    promiseForSelect: {
+      default: null,
+      type: Function,
+    },
     promiseForDel: {
       default: null,
       type: Function,
