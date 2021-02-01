@@ -7,6 +7,7 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -43,6 +44,7 @@ module.exports = {
   },
   configureWebpack: (config) => {
     const plugins = [
+      new webpack.BannerPlugin('@author BoBo<boboooooo159@gmail.com>'),
       new TerserPlugin({
         terserOptions: {
           compress: {
