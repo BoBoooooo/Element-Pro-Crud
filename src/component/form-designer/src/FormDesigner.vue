@@ -20,19 +20,19 @@
           <div class="widget-cate">基础组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
-              <a>
+              <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
-              </a>
+              </div>
             </li>
           </Draggable>
           <div class="widget-cate">高级组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
-              <a>
+              <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
-              </a>
+              </div>
             </li>
           </Draggable>
           <div class="widget-cate">布局组件</div>
@@ -45,10 +45,10 @@
               v-for="(item, index) in layoutComponents"
               :key="index"
             >
-              <a>
+              <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
-              </a>
+              </div>
             </li>
           </Draggable>
           <div class="widget-cate">基础图表</div>
@@ -58,10 +58,10 @@
               v-for="(item, index) in chartComponents"
               :key="index"
             >
-              <a>
+              <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
-              </a>
+              </div>
             </li>
           </Draggable>
         </div>
