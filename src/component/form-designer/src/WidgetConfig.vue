@@ -371,6 +371,7 @@
               <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
             </li>
           </Draggable>
+          <el-button size="mini" type="text" @click="handleAddColumn">添加栅格</el-button>
         </el-form-item>
         <el-form-item label="水平排列方式">
           <el-select size="mini" v-model="elementConfig.options.justify">
@@ -412,7 +413,7 @@
               <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
             </li>
           </Draggable>
-          <el-button size="mini" type="text" @click="handleAddOption">添加选项</el-button>
+          <el-button size="mini" type="text" @click="handleAddOption">添加标签</el-button>
         </el-form-item>
       </template>
 
@@ -670,8 +671,9 @@ export default {
     },
     handleAddColumn() {
       this.elementConfig.columns.push({
-        span: '',
+        span: 24,
         list: [],
+        key: `grid_${Math.ceil(Math.random() * 99999)}`,
       });
     },
     generateRule() {
