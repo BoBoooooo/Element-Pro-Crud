@@ -280,7 +280,7 @@ export default defineComponent({
     const view = computed(() => {
       const viewObj = {
         searchForm: true,
-        tableTitle: false,
+        tableTitle: true,
         actionColumn: true,
         seniorSearchBtn: true,
         ...props.visibleList,
