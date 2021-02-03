@@ -18,7 +18,7 @@
             </span>
           </div>
           <div class="widget-cate">基础组件</div>
-          <Draggable tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
+          <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -27,7 +27,7 @@
             </li>
           </Draggable>
           <div class="widget-cate">高级组件</div>
-          <Draggable tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
+          <Draggable :clone="handleClone" tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
               <a>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -36,7 +36,7 @@
             </li>
           </Draggable>
           <div class="widget-cate">布局组件</div>
-          <Draggable tag="ul" :list="layoutComponents" v-bind="getDraggableOptions()" :move="handleMove">
+          <Draggable :clone="handleClone" tag="ul" :list="layoutComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li
               class="form-edit-widget-label"
               :class="{
@@ -52,7 +52,7 @@
             </li>
           </Draggable>
           <div class="widget-cate">基础图表</div>
-          <Draggable tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
+          <Draggable :clone="handleClone" tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li
               class="form-edit-widget-label"
               v-for="(item, index) in chartComponents"
@@ -147,7 +147,6 @@
         @on-close="
           formVisible = false;
           formKeys.tableName = '';
-          formKeys.prefill = '';
         "
         width="800px"
         :action="false"
@@ -249,7 +248,6 @@ export default {
       }`,
       formKeys: {
         tableName: '',
-        prefill: '',
         // 成功自动识别的字段
         success: [],
       },
@@ -257,6 +255,24 @@ export default {
     };
   },
   methods: {
+    // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
+    handleClone(origin) {
+      const { type = 'type', options: { remoteOptions } } = origin;
+      const key = `${type}_${Math.ceil(Math.random() * 99999)}`;
+
+      const cloneOrigin = JSON.parse(JSON.stringify({
+        ...origin,
+        key,
+        model: key,
+        rules: [],
+      }));
+      if (remoteOptions) {
+        cloneOrigin.options.remoteFunc = `func_${key}`;
+      }
+
+
+      return cloneOrigin;
+    },
     // 返回当前表单设计器对象
     getData() {
       return this.widgetForm;
@@ -267,6 +283,7 @@ export default {
         [this.widgetFormSelect] = json.list;
       }
     },
+    // 导入json
     handleUpload() {
       this.uploadVisible = true;
       this.$nextTick(() => {
@@ -274,6 +291,7 @@ export default {
         this.uploadEditor.session.setMode('ace/mode/json');
       });
     },
+    // 导入json
     handleUploadJson() {
       try {
         this.setJSON(JSON.parse(this.uploadEditor.getValue()));
@@ -299,7 +317,7 @@ export default {
         let flag = false;
         const { COLUMN_COMMENT } = rows[i];
         // 遍历整个form
-        const COLUMN_NAME = `${this.formKeys.prefill + rows[i].COLUMN_NAME.toLowerCase()}`;
+        const COLUMN_NAME = `${rows[i].COLUMN_NAME.toLowerCase()}`;
         let COLUMN_NAME2 = null;
         let COLUMN_COMMENT2 = null;
         if (i + 1 <= rows.length && rows[i + 1]) {
@@ -307,7 +325,7 @@ export default {
 
           COLUMN_COMMENT2 = rows[i + 1].COLUMN_COMMENT;
           // 遍历整个form
-          COLUMN_NAME2 = `${this.formKeys.prefill + rows[i + 1].COLUMN_NAME.toLowerCase()}`;
+          COLUMN_NAME2 = `${rows[i + 1].COLUMN_NAME.toLowerCase()}`;
           i += 1;
         }
         const row = {
@@ -350,7 +368,7 @@ export default {
               rules: [
                 {
                   type: 'string',
-                  message: '单行文本格式不正确',
+                  message: `${COLUMN_COMMENT}格式不正确`,
                 },
               ],
             },
@@ -370,15 +388,18 @@ export default {
     },
     getDraggableOptions() {
       return {
+        // 分组设置
         group: {
           name: 'people',
           pull: 'clone',
           put: false,
         },
+        // 禁止组内拖动
         sort: false,
         ghostClass: 'ghost',
       };
     },
+    // 字段配置还是表单配置
     handleConfigSelect(value) {
       this.configTab = value;
     },
@@ -389,6 +410,7 @@ export default {
     handlePreview() {
       this.previewVisible = true;
     },
+    // 预览点确定获取表单数据
     handleTest() {
       this.$refs.generateForm
         .getData()
@@ -400,6 +422,7 @@ export default {
           this.$refs.widgetPreview.end();
         });
     },
+    // 生成json
     handleGenerateJson() {
       this.jsonVisible = true;
       this.jsonTemplate = JSON.stringify(this.widgetForm, null, 2);
@@ -417,6 +440,7 @@ export default {
         this.jsonCopyValue = JSON.stringify(this.widgetForm);
       });
     },
+    // 生成代码
     handleGenerateCode() {
       this.codeVisible = true;
       this.htmlTemplate = generateCode(JSON.stringify(this.widgetForm), 'html');
@@ -428,45 +452,15 @@ export default {
         vueeditor.session.setMode('ace/mode/html');
       });
     },
-    // 自动同步后端key
-    async handleGenerateKey(generateForm = false) {
+    // 自动绑定
+    async handleGenerateKey() {
       this.formKeys.success = [];
       const res = await this.getFormKey(this.formKeys.tableName);
-      if (generateForm) {
-        this.autoGenerateFormByBackend(res.data);
-        this.$alert('成功表格(默认为一行两列)');
-      } else {
-        for (const row of res.data) {
-          const { COLUMN_COMMENT } = row;
-          // 遍历整个form
-          const COLUMN_NAME = `${this.formKeys.prefill + row.COLUMN_NAME.toLowerCase()}`;
-          this.generateModle(this.widgetForm.list, COLUMN_COMMENT, COLUMN_NAME);
-        }
-        this.$alert(`识别成功以下字段:${this.formKeys.success.join(',')}`);
-        this.$refs.bindKeys.end();
-      }
+      this.autoGenerateFormByBackend(res.data);
+      this.$alert('成功表格(默认为一行两列)');
       this.formVisible = false;
     },
-
-    // 表单动态切换显示隐藏
-    generateModle(list, name, model) {
-      // 遍历设计的结构
-      for (let i = 0; i < list.length; i += 1) {
-        if (list[i].type === 'grid') {
-          list[i].columns.forEach((item) => {
-            this.generateModle(item.list, name, model);
-          });
-        } else {
-          const obj = list[i];
-          // 如果找到该组件并且后端key还未设置
-          if (obj.name === name && obj.model.includes(1)) {
-            // 抛出结果,意见区域显示在表单下方
-            this.formKeys.success.push(obj.name);
-            obj.model = model;
-          }
-        }
-      }
-    },
+    // 清空按钮
     handleClear() {
       this.widgetForm = {
         list: [],

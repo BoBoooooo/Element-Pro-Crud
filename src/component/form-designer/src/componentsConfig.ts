@@ -234,7 +234,7 @@ export const basicComponents = [
           value: '下拉框3',
         },
       ],
-      remote: 'dict',
+      remote: 'static',
       remoteOptions: [],
       props: {
         value: 'value',
@@ -350,8 +350,9 @@ export const advanceComponents = [
       disabled: false,
       clearable: false,
       checkStrictly: false,
-      remote: 'dict',
+      remote: 'static',
       remoteOptions: [],
+      options: [],
       props: {
         value: 'value',
         label: 'label',
@@ -470,6 +471,23 @@ export const layoutComponents = [
     },
   },
   {
+    type: 'tabs',
+    name: '标签页',
+    icon: 'tags',
+    items: [
+      {
+        name: '标签页1',
+        label: '标签页1',
+        list: [],
+      },
+    ],
+    options: {
+      type: '',
+      hiddenLabel: true,
+      tabPosition: 'top',
+    },
+  },
+  {
     type: 'divider',
     name: '分割线',
     icon: 'divide',
@@ -569,3 +587,12 @@ export const chartComponents = [
     },
   },
 ];
+
+
+// 组件配置信息枚举
+export const elementComponentConfig = {
+  tabs: {
+    type: [{ label: '普通', value: '' }, { label: '选项卡', value: 'card' }, { label: '卡片化', value: 'border-card' }],
+    position: [{ label: '顶部', value: 'top' }, { label: '左侧', value: 'left' }, { label: '右侧', value: 'right' }, { label: '底部', value: 'bottom' }],
+  },
+};

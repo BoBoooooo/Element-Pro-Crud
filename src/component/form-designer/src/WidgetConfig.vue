@@ -29,7 +29,7 @@
       <el-form-item label="显示文本" v-if="Object.keys(elementConfig.options).indexOf('text') >= 0">
         <el-input size="mini" v-model="elementConfig.options.text"></el-input>
       </el-form-item>
-      <el-form-item :label="elementConfig.type === 'html'  ?'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
+      <el-form-item :label="elementConfig.type === 'html' ? 'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
         <el-button style="float:right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
         <div id="jsoneditor2" ref="jsoneditor2" style="height: 300px;width: 100%;"></div>
       </el-form-item>
@@ -39,7 +39,7 @@
       <el-form-item label="高度" v-if="Object.keys(elementConfig.options).indexOf('height') >= 0">
         <el-input size="mini" v-model="elementConfig.options.height"></el-input>
       </el-form-item>
-        <el-form-item label="是否循环" v-if="Object.keys(elementConfig.options).indexOf('loop') >= 0">
+      <el-form-item label="是否循环" v-if="Object.keys(elementConfig.options).indexOf('loop') >= 0">
         <el-switch v-model="elementConfig.options.loop"></el-switch>
       </el-form-item>
       <!-- 柱状/折线图特有属性 -->
@@ -203,7 +203,10 @@
               </Draggable>
             </el-checkbox-group>
           </template>
-          <div style="margin-left: 22px;">
+          <template v-if="elementConfig.type == 'cascader'">
+            <el-input type="textarea" v-model="elementConfig.options.options"></el-input>
+          </template>
+          <div style="margin-left: 22px;" v-if="elementConfig.type !== 'cascader'">
             <el-button size="mini" type="text" @click="handleAddOption">添加选项</el-button>
             <el-button size="mini" type="text" @click="handleClearOption">清除默认选中项</el-button>
           </div>
@@ -387,6 +390,32 @@
         </el-form-item>
       </template>
 
+      <!-- tab布局 -->
+      <template v-if="elementConfig.type == 'tabs'">
+        <el-form-item label="选项卡样式">
+          <el-radio-group v-model="elementConfig.options.type" size="small">
+            <el-radio-button v-for="item in elementComponentConfig.tabs.type" :label="item.value" :key="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="选项卡位置">
+          <el-radio-group v-model="elementConfig.options.position" size="small">
+            <el-radio-button v-for="item in elementComponentConfig.tabs.position" :label="item.value" :key="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="标签配置项">
+          <Draggable tag="ul" :list="elementConfig.items" v-bind="getDraggableOptions()">
+            <li v-for="(item, index) in elementConfig.items" :key="index">
+              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+                <Icon name="bars"></Icon>
+              </i>
+              <el-input size="mini" placeholder="标签名" style="width: 100px;"  v-model="item.label"></el-input>
+              <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+            </li>
+          </Draggable>
+          <el-button size="mini" type="text" @click="handleAddOption">添加选项</el-button>
+        </el-form-item>
+      </template>
+
       <template v-if="elementConfig.type !== 'grid'">
         <el-form-item v-if="elementConfig.type === 'upload'" label="关联字段名">
           <el-input size="mini" v-model="elementConfig.options.resourceId"></el-input>
@@ -394,13 +423,18 @@
         <el-form-item v-if="elementConfig.type === 'upload'" label="附件类型">
           <el-input size="mini" v-model="elementConfig.options.fileType" placeholder="关联多个附件的情况下需要填写"></el-input>
         </el-form-item>
-        <el-form-item label="操作属性"
-          v-if="!elementConfig.type.includes('chart-')
-          && elementConfig.type !== 'table'
-          && elementConfig.type !== 'html'
-          && elementConfig.type !== 'blank'
-          && elementConfig.type !== 'text'
-          && elementConfig.type !== 'button'">
+        <el-form-item
+          label="操作属性"
+          v-if="
+            !elementConfig.type.includes('chart-') &&
+              elementConfig.type !== 'table' &&
+              elementConfig.type !== 'html' &&
+              elementConfig.type !== 'blank' &&
+              elementConfig.type !== 'text' &&
+              elementConfig.type !== 'button' &&
+              elementConfig.type !== 'tabs'
+          "
+        >
           <el-checkbox v-model="elementConfig.options.readonly" v-if="Object.keys(elementConfig.options).indexOf('readonly') >= 0">完全只读</el-checkbox>
           <el-checkbox v-model="elementConfig.options.disabled" v-if="Object.keys(elementConfig.options).indexOf('disabled') >= 0">禁用 </el-checkbox>
           <el-checkbox v-model="elementConfig.options.editable" v-if="Object.keys(elementConfig.options).indexOf('editable') >= 0">文本框可输入</el-checkbox>
@@ -411,13 +445,16 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item
-          v-if="!elementConfig.type.includes('chart-') &&
-          elementConfig.type != 'button' &&
-          elementConfig.type != 'table' &&
-          elementConfig.type !== 'blank' &&
-          elementConfig.type != 'html' &&
-          elementConfig.type != 'upload' &&
-          elementConfig.type != 'text'"
+          v-if="
+            !elementConfig.type.includes('chart-') &&
+              elementConfig.type != 'button' &&
+              elementConfig.type != 'table' &&
+              elementConfig.type !== 'blank' &&
+              elementConfig.type != 'html' &&
+              elementConfig.type != 'upload' &&
+              elementConfig.type != 'text' &&
+              elementConfig.type !== 'tabs'
+          "
           label="校验"
         >
           <div>
@@ -527,6 +564,7 @@ import 'vue-awesome/icons/chalkboard';
 import 'vue-awesome/icons/divide';
 
 import { DML } from '@/types/common';
+import { elementComponentConfig } from './componentsConfig';
 
 export default {
   name: 'WidgetConfig',
@@ -542,6 +580,7 @@ export default {
   },
   data() {
     return {
+      elementComponentConfig,
       jsonTemplate: '',
       jsonEditor: null,
       // 字典类型
@@ -564,7 +603,7 @@ export default {
     },
     // 依赖自定义数据源组件
     isRemoteComponent() {
-      return this.elementConfig && ['cascader', 'treeselect'].includes(this.elementConfig.type);
+      return this.elementConfig && ['treeselect'].includes(this.elementConfig.type);
     },
   },
   created() {
@@ -599,6 +638,8 @@ export default {
     handleOptionsRemove(index) {
       if (this.elementConfig.type === 'grid') {
         this.elementConfig.columns.splice(index, 1);
+      } else if (this.elementConfig.type === 'tabs') {
+        this.elementConfig.items.splice(index, 1);
       } else {
         this.elementConfig.options.options.splice(index, 1);
       }
@@ -609,6 +650,13 @@ export default {
         this.elementConfig.options.options.push({
           value: 'value',
           label: 'label',
+        });
+      } else if (this.elementConfig.items) {
+        const { length } = this.elementConfig.items;
+        this.elementConfig.items.push({
+          name: `标签页${length + 1}`,
+          label: `标签页${length + 1}`,
+          list: [],
         });
       } else {
         this.elementConfig.options.options.push({

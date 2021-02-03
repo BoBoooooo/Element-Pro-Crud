@@ -1,5 +1,5 @@
 <template>
-  <el-form-item class="widget-view "
+  <el-form-item class="widget-view"
                 v-if="element && element.key"
                 :class="{
                   active: selectWidget.key == element.key,

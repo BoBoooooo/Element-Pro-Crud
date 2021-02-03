@@ -10,7 +10,7 @@
       "
       :size="data.config.size"
     >
-      <draggable
+      <Draggable
         v-model="data.list"
         v-bind="{
           group: 'people',
@@ -18,7 +18,6 @@
           animation: 200,
           handle: '.drag-widget',
         }"
-        @end="handleMoveEnd"
         @add="handleWidgetAdd"
       >
         <transition-group name="fade" tag="div" class="widget-form-list">
@@ -44,7 +43,7 @@
                     :key="colIndex"
                     :span="col.span ? col.span : 0"
                   >
-                    <draggable
+                    <Draggable
                       v-model="col.list"
                       v-bind="{
                         group: 'people',
@@ -53,7 +52,6 @@
                         handle: '.drag-widget',
                       }"
                       :no-transition-on-drag="true"
-                      @end="handleMoveEnd"
                       @add="handleWidgetColAdd($event, element, colIndex)"
                     >
                       <transition-group
@@ -61,16 +59,16 @@
                         tag="div"
                         class="widget-col-list"
                       >
-                        <widget-form-item
+                        <WidgetFormItem
                           v-for="(el, i) in col.list"
                           :key="el.key"
                           :element="el"
                           :select.sync="selectWidget"
                           :index="i"
                           :data="col"
-                        ></widget-form-item>
+                        ></WidgetFormItem>
                       </transition-group>
-                    </draggable>
+                    </Draggable>
                   </el-col>
                   <div
                     class="widget-view-action widget-col-action"
@@ -101,7 +99,7 @@
             </template>
             <template v-else-if="element.type === 'form'">
             <WidgetSubForm
-                   v-if="element && element.key"
+                  v-if="element && element.key"
                   :key="element.key"
                   :element="element"
                   :select.sync="selectWidget"
@@ -109,19 +107,29 @@
                   :data="data"
                   @click.native.stop="handleSelectWidget(index)"></WidgetSubForm>
             </template>
+            <template v-else-if="element.type === 'tabs'">
+              <WidgetTabs
+                    v-if="element && element.key"
+                    :key="element.key"
+                    :element="element"
+                    :select.sync="selectWidget"
+                    :index="index"
+                    :data="data"
+                    @click.native.stop="handleSelectWidget(index)"></WidgetTabs>
+            </template>
             <template v-else>
-              <widget-form-item
+              <WidgetFormItem
                 v-if="element && element.key"
                 :key="element.key"
                 :element="element"
                 :select.sync="selectWidget"
                 :index="index"
                 :data="data"
-              ></widget-form-item>
+              ></WidgetFormItem>
             </template>
           </template>
         </transition-group>
-      </draggable>
+      </Draggable>
     </el-form>
 
   </div>
@@ -131,12 +139,14 @@
 import Draggable from 'vuedraggable';
 import WidgetFormItem from './WidgetFormItem.vue';
 import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
+import WidgetTabs from './components/Tabs/WidgetTabs.vue';
 
 export default {
   components: {
     Draggable,
     WidgetFormItem,
     WidgetSubForm,
+    WidgetTabs,
   },
   // 这里的data从父组件接收和设计器实时对应的json
   props: ['data', 'select'],
@@ -146,60 +156,14 @@ export default {
     };
   },
   methods: {
-    // 参数：{ newIndex, oldIndex }
-    handleMoveEnd() {
-      // console.log(`拖拽完成，从${oldIndex}行到${newIndex}行`);
-    },
     handleSelectWidget(index) {
-      console.log(`el-row被点击:${index}`);
+      console.log(`子项被点击:${index}`);
       this.selectWidget = this.data.list[index];
     },
     handleWidgetAdd(evt) {
       // console.log('元素被拖到外层handleWidgetAdd，evt:', evt);
       const { newIndex } = evt;
-      // const { to } = evt;
-      // console.log(to);
-      // 获取之前的数据key
-      const { model, type } = this.data.list[newIndex];
-      // 为拖拽到容器的元素添加唯一 key
-      const key = model
-        || `${type}_${Math.ceil(Math.random() * 99999)}`;
-      this.$set(this.data.list, newIndex, {
-        ...this.data.list[newIndex],
-        options: {
-          ...this.data.list[newIndex].options,
-          remoteFunc: `func_${key}`,
-        },
-        key,
-        // 绑定键值
-        // model: this.data.list[newIndex].type + '_' + key,
-        model: key,
-        rules: [],
-      });
-
-      if (
-        this.data.list[newIndex].type === 'radio'
-        || this.data.list[newIndex].type === 'checkbox'
-      ) {
-        this.$set(this.data.list, newIndex, {
-          ...this.data.list[newIndex],
-          options: {
-            ...this.data.list[newIndex].options,
-            options: this.data.list[newIndex].options.options.map(item => ({
-              ...item,
-            })),
-          },
-        });
-      }
-
-      if (this.data.list[newIndex].type === 'grid') {
-        this.$set(this.data.list, newIndex, {
-          ...this.data.list[newIndex],
-          columns: this.data.list[newIndex].columns.map(item => ({
-            ...item,
-          })),
-        });
-      }
+      console.log(this.data.list[newIndex]);
       this.selectWidget = this.data.list[newIndex];
     },
     handleWidgetColAdd($event, row, colIndex) {
@@ -219,44 +183,8 @@ export default {
         row.columns[colIndex].list.splice(newIndex, 1);
         return false;
       }
-      // 获取之前的数据key
-      const { model, type } = row.columns[colIndex].list[newIndex];
-      const key = model
-        || `${type}_${Math.ceil(Math.random() * 99999)}`;
-      const { remoteFunc } = row.columns[colIndex].list[newIndex].options;
-      this.$set(row.columns[colIndex].list, newIndex, {
-        ...row.columns[colIndex].list[newIndex],
-        options: {
-          ...row.columns[colIndex].list[newIndex].options,
-          remoteFunc: `func_${key}`,
-        },
-        key,
-        // 绑定键值
-        // model: row.columns[colIndex].list[newIndex].type + '_' + key,
-        model: key,
-        rules: [],
-      });
-      // 避免拖动后remoteFunc被重置问题
-      if (remoteFunc) {
-        row.columns[colIndex].list[newIndex].options.remoteFunc = remoteFunc;
-      }
-      if (
-        row.columns[colIndex].list[newIndex].type === 'radio'
-        || row.columns[colIndex].list[newIndex].type === 'checkbox'
-      ) {
-        this.$set(row.columns[colIndex].list, newIndex, {
-          ...row.columns[colIndex].list[newIndex],
-          options: {
-            ...row.columns[colIndex].list[newIndex].options,
-            options: row.columns[colIndex].list[newIndex].options.options.map(
-              o => ({
-                ...o,
-              }),
-            ),
-          },
-        });
-      }
       this.selectWidget = row.columns[colIndex].list[newIndex];
+      console.log(row.columns[colIndex].list[newIndex]);
       return null;
     },
     handleWidgetDelete(index) {

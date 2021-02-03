@@ -15,7 +15,7 @@
       <div class="header">#</div>
       <div class="content">1</div>
     </div>
-    <draggable
+    <Draggable
       v-model="element.tableColumns"
       v-bind="{
         group: 'people',
@@ -36,7 +36,7 @@
             width: `${element.options.width}px`
           }"
           v-for="(element, index) in tableColumns"
-          :key="element.key || Math.random()"
+          :key="element.key"
         >
           <div class="table-header">{{ element.name }}</div>
           <WidgetFormItem
@@ -50,7 +50,7 @@
           ></WidgetFormItem>
         </div>
       </transition-group>
-    </draggable>
+    </Draggable>
     <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
       <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
     </div>

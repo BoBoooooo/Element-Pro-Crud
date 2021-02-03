@@ -307,7 +307,6 @@
       <Tinymce :height="400"
                v-model="dataModel"
                :readonly="readOnly || widget.options.readonly"></Tinymce>
-
     </template>
     <template v-if="widget.type=='upload'">
       <!-- 附件上传(注意初始值prefill必须传入id) -->
@@ -319,6 +318,9 @@
     </template>
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget"></GenerateSubForm>
+    </template>
+    <template v-if="widget.type === 'tabs'">
+      <GenerateTabs :widget="widget"></GenerateTabs>
     </template>
     <!-- 饼图组件 -->
     <template v-if="widget.type === 'chart-pie'">
@@ -371,7 +373,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
-
+import GenerateTabs from './components/Tabs/GenerateTabs.vue';
 
 @Component({
   components: {
@@ -382,6 +384,7 @@ import Echarts from './components/Charts/Echarts.vue';
     Echarts,
     pieChart,
     lineChart,
+    GenerateTabs,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
   model: {
@@ -563,6 +566,9 @@ export default class GenerateFormItem extends Vue {
   get optionsList() {
     if ('dict,custom,search'.includes(this.widget.options.remote)) {
       return this.widget.options.remoteOptions;
+    }
+    if (typeof this.widget.options.options === 'string') {
+      return JSON.parse(this.widget.options.options);
     }
     return this.widget.options.options;
   }
