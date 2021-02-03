@@ -34,7 +34,6 @@ declare module 'vue/types/vue' {
     install: any;
     HOST_URL: any;
     API_URL: any;
-    $EventBus: any;
     $PROCRUD: optionsType;
   }
   interface VueConstructor {

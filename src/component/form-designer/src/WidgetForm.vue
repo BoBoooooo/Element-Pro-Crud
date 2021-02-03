@@ -167,9 +167,7 @@ export default {
       this.selectWidget = this.data.list[newIndex];
     },
     handleWidgetColAdd($event, row, colIndex) {
-      const { newIndex } = $event;
-      const { oldIndex } = $event;
-      const { item } = $event;
+      const { newIndex, oldIndex, item } = $event;
       // 防止布局元素的嵌套拖拽
       if (item.className.indexOf('data-grid') >= 0) {
         // 如果是列表中拖拽的元素需要还原到原来位置

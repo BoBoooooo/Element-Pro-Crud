@@ -47,15 +47,6 @@
                         :widget="citem"
                         :model="models"></slot>
                 </el-form-item>
-                <!-- 意见框 -->
-                <el-form-item v-else-if="citem.type=='comment'"
-                              label=""
-                              label-width="0px"
-                              :prop="citem.model"
-                              :key="citem.key"
-                              style="margin-top: -10px;margin-bottom: -10px!important;margin-left:-1px">
-                  <slot name="comment"></slot>
-                </el-form-item>
                 <!-- 正常组件通过GenerateFormItem生成 -->
                 <GenerateFormItem v-else
                                   @selection-change="getTableSelection($event,citem)"
@@ -69,31 +60,6 @@
                                   @chartOnClick="chartOnClick"
                                   v-show="!citem.hidden"
                                   :formTableConfig="formTableConfig">
-                  <template slot="tree-select-value-label"
-                            slot-scope="{ node }">
-                    <slot name="tree-select-value-label"
-                          :node="node"></slot>
-                  </template>
-                  <!-- btnBarPrevBtn -->
-                  <template :slot="citem.model+'_btnBarPrevBtn'">
-                    <slot :name="citem.model+'_btnBarPrevBtn'">
-                    </slot>
-                  </template>
-                  <!-- btnCustom -->
-                  <template :slot="citem.model+'_btnCustom'"
-                            slot-scope="{row}">
-                    <slot :name="citem.model+'_btnCustom'"
-                          :row="row">
-                    </slot>
-                  </template>
-                  <!-- columnFormatter -->
-                  <template :slot="citem.model+'_columnFormatter'"
-                            slot-scope="{row,prop}">
-                    <slot :name="citem.model+'_columnFormatter'"
-                          :row="row"
-                          :prop="prop">
-                    </slot>
-                  </template>
                 </GenerateFormItem>
               </template>
             </el-col>
@@ -123,26 +89,6 @@
                             @btnOnClick="btnOnClick"
                             v-show="!item.hidden"
                             :formTableConfig="formTableConfig">
-            <template slot="tree-select-value-label"
-                      slot-scope="{ node }">
-              <slot name="tree-select-value-label"
-                    :node="node"></slot>
-            </template>
-            <!-- btnBarPrevBtn -->
-            <template :slot="item.model">
-              <slot :name="item.model+'_btnBarPrevBtn'">
-              </slot>
-            </template>
-            <!-- btnCustom -->
-            <template :slot="item.model+'_btnCustom'">
-              <slot :name="item.model+'_btnCustom'">
-              </slot>
-            </template>
-            <!-- columnFormatter -->
-            <template :slot="item.model+'_columnFormatter'">
-              <slot :name="item.model+'_columnFormatter'">
-              </slot>
-            </template>
           </GenerateFormItem>
         </template>
       </template>
