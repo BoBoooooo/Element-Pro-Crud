@@ -21,7 +21,6 @@
                   :key="citem.key"
                   :models="models"
                   :remote="remote"
-                  :rules="rules[citem.model]"
                   :widget="citem"
                   :readOnly="readOnly"
                   @btnOnClick="btnOnClick"
@@ -34,7 +33,7 @@
             </el-col>
           </el-row>
         </template>
-        <GenerateFormItem v-else :models="models" :key="item.key" :remote="remote" :widget="item" :rules="item.rules" :readOnly="readOnly ? {} : null" />
+        <GenerateFormItem v-else :models="models" :key="item.key" :remote="remote" :widget="item" :readOnly="readOnly ? {} : null" />
       </template>
     </el-tab-pane>
   </el-tabs>
@@ -76,10 +75,6 @@ export default class GenerateTabs extends Vue {
     default: () => ({}),
   })
   formTableConfig: any
-
-  // 组件校验规则
-  @Prop()
-  rules: any
 
   @Prop({
     type: Object,

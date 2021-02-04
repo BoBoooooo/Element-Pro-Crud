@@ -8,7 +8,10 @@
 感谢大佬!
 -->
 <template>
-  <el-form-item :prop="widget.type == 'button' ? undefined : widget.model" :label-width="widget.options.hiddenLabel ? '0' : labelWidth" :rules="rules" :class="widget.options.className">
+  <el-form-item :rules="widget.rules || []"
+  :prop="widget.type == 'button' ? undefined : widget.model"
+  :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
+  :class="widget.options.className">
     <template #label>
       <template v-if="widget.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
@@ -307,7 +310,6 @@
         @chartOnClick="chartOnClick"
         @btnOnClick="btnOnClick"
         :formTableConfig="formTableConfig"
-        :rules="rules"
         :widget="widget"
       ></GenerateTabs>
     </template>
@@ -409,9 +411,6 @@ export default class GenerateFormItem extends Vue {
   })
   readOnly!: boolean
 
-  // 组件校验规则
-  @Prop()
-  rules: any
 
   // 当前组件对象
   dataModel: string | number | null | object = this.models[this.widget.model] || null

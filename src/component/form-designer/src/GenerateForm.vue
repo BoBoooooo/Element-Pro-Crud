@@ -10,11 +10,6 @@
 -->
 <template>
   <div class="table-form-wrapper">
-      <!-- dev模式,支持直接修改表单,不需要可删除 -->
-      <!-- <div v-if="data.config && data.config.name && $store.getters.config && $store.getters.config.isDev === '1' && !hiddenDevModule" class="dev-module">
-        <el-button type="text" @click="showFormDesigner">当前表单: {{data.config.name}} [点此修改]</el-button>
-        <FormDesigner ref="formDesigner" />
-      </div> -->
       <el-form ref="generateForm"
              :class='{"table-form":data.config && data.config.isTableClass}'
              :model="models"
@@ -53,7 +48,6 @@
                                   :key="citem.key"
                                   :models="models"
                                   :remote="remote"
-                                  :rules="rules[citem.model]"
                                   :widget="citem"
                                   :readOnly="readOnly"
                                   @btnOnClick="btnOnClick"
@@ -83,7 +77,6 @@
                             :remote="remote"
                             @selection-change="getTableSelection($event,item)"
                             :widget="item"
-                            :rules="rules[item.model]"
                             :readOnly="readOnly"
                             @chartOnClick="chartOnClick"
                             @btnOnClick="btnOnClick"
@@ -164,16 +157,7 @@ export default class GenerateForm extends Vue {
   })
   formTableConfig: any;
 
-  // 强制隐藏dev模式
-  @Prop({
-    type: Boolean,
-    default: false,
-  })
-  hiddenDevModule!: Boolean;
-
   models: any = {};
-
-  rules: any = {};
 
   created() {
     if (this.data.list) {
@@ -189,16 +173,6 @@ export default class GenerateForm extends Vue {
   }
 
   generateModel(genList) {
-    const customValidate = (rule, value, callback) => {
-      const { type } = rule;
-      if ('string,number'.includes(type)) {
-        if (rule.required) {
-          callback(new Error(rule.message));
-        } else {
-          callback();
-        }
-      }
-    };
     // 遍历设计的结构
     for (let i = 0; i < genList.length; i += 1) {
       if (genList[i].type === 'grid') {
@@ -214,42 +188,9 @@ export default class GenerateForm extends Vue {
         } else {
           this.setDefaultValue(row);
         }
-
         // 表单隐藏设置
         if (this.setHidden.includes(row.model)) {
           row.hidden = true;
-        }
-        if (this.rules[genList[i].model]) {
-          this.rules[genList[i].model] = [
-            ...this.rules[genList[i].model],
-            ...genList[i].rules.map((item) => {
-              if (item.pattern) {
-                // eslint-disable-next-line no-eval
-                const rule = { ...item, pattern: eval(item.pattern) };
-                rule.trigger = 'blur';
-                return rule;
-              }
-              if ('string,number'.includes(item.type)) {
-                item.validator = customValidate;
-              }
-              return { ...item };
-            }),
-          ];
-        } else {
-          this.rules[genList[i].model] = [
-            ...genList[i].rules.map((item) => {
-              if (item.pattern) {
-                // eslint-disable-next-line no-eval
-                const rule = { ...item, pattern: eval(item.pattern) };
-                rule.trigger = 'blur';
-                return rule;
-              }
-              if ('string,number'.includes(item.type)) {
-                item.validator = customValidate;
-              }
-              return { ...item };
-            }),
-          ];
         }
       }
     }

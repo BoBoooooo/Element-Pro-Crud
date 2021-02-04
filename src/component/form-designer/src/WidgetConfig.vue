@@ -732,7 +732,6 @@ export default {
       if (!this.show) {
         return false;
       }
-
       if (val) {
         // 如果自定义了错误提示语则赋值
         if (this.elementConfig.options && this.elementConfig.options.message) {
@@ -743,7 +742,6 @@ export default {
       } else {
         this.validator.pattern = null;
       }
-
       this.generateRule();
       return null;
     },

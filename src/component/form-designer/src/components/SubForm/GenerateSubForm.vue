@@ -18,17 +18,9 @@
             <!-- prop的规则: 在普通的form表单中是一个对象,prop是对象的属性. 表格是由多个对象组成的数组,在写prop是需要根据索引给值.这里的tableData就相当于对象的属性 !-->
             <!-- rules也要单独给 -->
             <template v-if="readOnly || scope.row._mode === 'DETAIL'">
-              <span>{{scope.row[row.model]}}</span>
+              <span>{{ scope.row[row.model] }}</span>
             </template>
-              <GenerateFormItem
-              v-else
-              :remote="remote"
-              :model="scope.row[row.model]"
-              v-model="inlineFormData[row.model]"
-              :widget="row"
-              :rules="row.rules"
-              :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null"
-            />
+            <GenerateFormItem v-else :remote="remote" :model="scope.row[row.model]" v-model="inlineFormData[row.model]" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
         <el-table-column label="操作" header-align="center" :width="100">
@@ -62,54 +54,52 @@ import { isChinese } from '@/utils/utils';
 })
 export default class GenerateSubForm extends Vue {
   $refs!: {
-    tableForm: HTMLFormElement;
-  };
+    tableForm: HTMLFormElement
+  }
 
   @Prop({
     type: Object as () => {
-      tableColumns: any;
-      options: any;
-      model: string;
+      tableColumns: any
+      options: any
+      model: string
     },
     default: () => ({}),
   })
   widget!: {
-    tableColumns: any;
-    options: any;
-    model: string;
-  };
+    tableColumns: any
+    options: any
+    model: string
+  }
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  remote: any;
+  remote: any
 
   @Prop({
     type: Object,
     default: null,
   })
-  readOnly: any;
+  readOnly: any
 
- @Prop({
-   type: Object,
-   default: () => ({}),
- })
-  formTableConfig: any;
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  formTableConfig: any
 
   // 整个子表单数据
   subTableForm = {
     tableData: [],
-    rules: {
-    },
-  };
+  }
 
   // 单行数据
-  inlineFormData = {};
+  inlineFormData = {}
 
-  mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL';
+  mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL'
 
-  btnSaveIsLoading = false;
+  btnSaveIsLoading = false
 
   models: any = {}
 
@@ -119,7 +109,7 @@ export default class GenerateSubForm extends Vue {
 
   fetchList() {
     if (this.widget.options.tableName) {
-      const searchCondition:any = [];
+      const searchCondition: any = [];
       // 预设查询参数
       if (this.getTableParams) {
         Object.keys(this.getTableParams).forEach((k) => {
@@ -130,18 +120,20 @@ export default class GenerateSubForm extends Vue {
           });
         });
       }
-      this.$PROCRUD.crud(DML.SELECT, this.widget.options.tableName, {
-        searchCondition,
-      }).then((res) => {
-        if (res.data.list.length === 0) {
-          this.addRow();
-        } else {
-          this.subTableForm.tableData = res.data.list.map(item => ({
-            ...item,
-            _mode: 'DETAIL',
-          }));
-        }
-      });
+      this.$PROCRUD
+        .crud(DML.SELECT, this.widget.options.tableName, {
+          searchCondition,
+        })
+        .then((res) => {
+          if (res.data.list.length === 0) {
+            this.addRow();
+          } else {
+            this.subTableForm.tableData = res.data.list.map(item => ({
+              ...item,
+              _mode: 'DETAIL',
+            }));
+          }
+        });
     } else {
       this.addRow();
     }
@@ -344,24 +336,26 @@ export default class GenerateSubForm extends Vue {
 .action-btn {
   height: 22px;
   width: 34px;
-  padding: 0!important;
+  padding: 0 !important;
 }
-.el-icon-plus{
+.el-icon-plus {
   color: rgb(85, 85, 85);
 }
-.add-button{
+.add-button {
   cursor: pointer;
-  &:hover{
+  &:hover {
     color: rgb(16, 16, 16);
-    .el-icon-plus{
+    .el-icon-plus {
       color: rgb(16, 16, 16);
     }
   }
 }
-.subTableForm{
-  ::v-deep.el-form-item__error{
-    right: 30px;
-    bottom: 3px;
+.subTableForm {
+  ::v-deep.el-form-item__error {
+    top: 23px;
+    right: 28px;
+    text-align: right;
+    position: absolute;
   }
 }
 </style>
