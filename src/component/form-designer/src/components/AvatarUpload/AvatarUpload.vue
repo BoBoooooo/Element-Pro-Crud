@@ -21,7 +21,7 @@
     :show-file-list="false"
     :on-success="handleAvatarSuccess"
   >
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <img v-if="hasImage" :src="imageUrl" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
 </template>
@@ -35,7 +35,8 @@ export default {
   },
   data() {
     return {
-      imageUrl: this.value,
+      hasImage: false,
+      prefix: window.__HOST__URL__ + window.__PREFIX__URL__,
     };
   },
   props: {
@@ -57,10 +58,17 @@ export default {
       default: false,
     },
   },
+  created() {
+    if (this.value) {
+      this.hasImage = true;
+    }
+  },
   computed: {
+    imageUrl() {
+      return this.prefix + this.value;
+    },
     action() {
-      const __GLOBAL__URL__ = window.__HOST__URL__ + window.__PREFIX__URL__;
-      return __GLOBAL__URL__ + this.widget.options.uploadUrl;
+      return this.prefix + this.widget.options.uploadUrl;
     },
     headers() {
       return { Authorization: sessionStorage.getItem('token') };
@@ -68,9 +76,9 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      const __GLOBAL__URL__ = window.__HOST__URL__ + window.__PREFIX__URL__;
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.$emit('change', __GLOBAL__URL__ + res.data);
+      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.hasImage = true;
+      this.$emit('change', res.data);
     },
     beforeUpload() {
       // 只读时禁止上传
@@ -88,6 +96,7 @@ export default {
   border-radius: 6px;
   cursor: pointer;
   position: relative;
+  margin: 0 auto;
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {

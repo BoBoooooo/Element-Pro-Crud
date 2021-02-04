@@ -640,6 +640,7 @@ export default defineComponent({
   background: white;
   padding: 10px;
   position: relative;
+  width: 100%;
   h4 {
     margin: 2px 30px 0px 0px;
     padding-left: 15px;

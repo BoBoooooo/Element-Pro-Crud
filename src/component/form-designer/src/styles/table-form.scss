@@ -44,6 +44,8 @@
             height: 100%;
             margin-left: 0px !important;
             flex: 1;
+            display: flex;
+            align-items: center;
             padding: 10px 0;
             .el-checkbox-group{
               padding-left:10px;
@@ -51,9 +53,6 @@
               .el-checkbox-button__inner{
                 border:none;
               }
-            }
-            .el-select,.el-input{
-              height:100%;
             }
             input,
             textarea {
