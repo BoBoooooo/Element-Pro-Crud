@@ -216,6 +216,9 @@
     </template>
     <template v-if="widget.type == 'cascader'">
       <el-cascader
+        ref="cascader"
+        @visible-change="elCascaderOnlick"
+        @expand-change="elCascaderOnlick"
         v-model="dataModel"
         :disabled="readOnly || widget.options.disabled"
         :clearable="widget.options.clearable"
@@ -373,6 +376,7 @@ import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
 export default class GenerateFormItem extends Vue {
   $refs!: {
     table: HTMLFormElement
+    cascader: HTMLFormElement
   }
 
   @Prop({
@@ -666,6 +670,27 @@ export default class GenerateFormItem extends Vue {
       // eslint-disable-next-line no-unused-expressions
       item.children === '' || item.children === undefined || item.children === null ? delete item.children : this.diGuiTree(item.children);
     });
+  }
+
+  elCascaderOnlick() {
+    const that = this;
+    setTimeout(() => {
+      document.querySelectorAll('.el-cascader-node__label').forEach((el) => {
+        // eslint-disable-next-line func-names
+        (el as any).onclick = function () {
+          this.previousElementSibling.click();
+          that.$refs.cascader.dropDownVisible = false;
+        };
+      });
+      document
+        .querySelectorAll('.el-cascader-panel .el-radio')
+        .forEach((el) => {
+          // eslint-disable-next-line func-names
+          (el as any).onclick = function () {
+            that.$refs.cascader.dropDownVisible = false;
+          };
+        });
+    }, 100);
   }
 
   // 按钮点击
