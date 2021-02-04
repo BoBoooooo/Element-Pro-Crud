@@ -198,6 +198,7 @@ export default {
 .tinymce-container {
   position: relative;
   line-height: normal;
+  width: 100%;
 }
 .tinymce-container>>>.mce-fullscreen {
   z-index: 10000;
