@@ -436,6 +436,7 @@
               elementConfig.type !== 'blank' &&
               elementConfig.type !== 'text' &&
               elementConfig.type !== 'button' &&
+              elementConfig.type !== 'avatar' &&
               elementConfig.type !== 'tabs'
           "
         >
@@ -457,6 +458,7 @@
               elementConfig.type != 'html' &&
               elementConfig.type != 'upload' &&
               elementConfig.type != 'text' &&
+              elementConfig.type !== 'avatar' &&
               elementConfig.type !== 'tabs'
           "
           label="校验"
