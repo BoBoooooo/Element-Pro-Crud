@@ -291,6 +291,9 @@
         :resourceid="models[widget.options.resourceId]"
       ></FileUpload>
     </template>
+    <template v-if="widget.type === 'avatar'">
+     <AvatarUpload :uploadUrl="widget.options.uploadUrl"></AvatarUpload>
+    </template>
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget"></GenerateSubForm>
     </template>
@@ -346,6 +349,7 @@ import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
 import GenerateTabs from './components/Tabs/GenerateTabs.vue';
+import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
 
 @Component({
   components: {
@@ -357,6 +361,7 @@ import GenerateTabs from './components/Tabs/GenerateTabs.vue';
     pieChart,
     lineChart,
     GenerateTabs,
+    AvatarUpload,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
   model: {

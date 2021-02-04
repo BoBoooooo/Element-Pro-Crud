@@ -418,8 +418,11 @@
       </template>
 
       <template v-if="elementConfig.type !== 'grid'">
-        <el-form-item v-if="elementConfig.type === 'upload'" label="关联字段名">
+        <el-form-item v-if="Object.keys(elementConfig.options).indexOf('resourceId') >= 0" label="关联字段名">
           <el-input size="mini" v-model="elementConfig.options.resourceId"></el-input>
+        </el-form-item>
+        <el-form-item  v-if="Object.keys(elementConfig.options).indexOf('uploadUrl') >= 0" label="接口地址">
+          <el-input size="mini" v-model="elementConfig.options.uploadUrl"></el-input>
         </el-form-item>
         <el-form-item v-if="elementConfig.type === 'upload'" label="附件类型">
           <el-input size="mini" v-model="elementConfig.options.fileType" placeholder="关联多个附件的情况下需要填写"></el-input>

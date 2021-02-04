@@ -206,6 +206,9 @@
     <template v-if="element.type === 'upload'">
       <h4 style="text-align:center;margin:0">附件上传</h4>
     </template>
+    <template v-if="element.type === 'avatar'">
+     <AvatarUpload :uploadUrl="element.options.uploadUrl"></AvatarUpload>
+    </template>
     <template v-if="element.type === 'chart-pie'">
        <pieChart
           :data="element.options.data"
@@ -250,7 +253,7 @@ import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
-
+import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
 
 export default {
   name: 'WidgetFormItem',
@@ -281,6 +284,7 @@ export default {
     pieChart,
     lineChart,
     Echarts,
+    AvatarUpload,
   },
   data() {
     return {

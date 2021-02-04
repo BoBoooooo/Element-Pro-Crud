@@ -337,6 +337,18 @@ export const advanceComponents = [
     },
   },
   {
+    type: 'avatar',
+    name: '头像',
+    icon: 'user',
+    labelWidth: '',
+    options: {
+      resourceId: 'id',
+      uploadUrl: '',
+      width: '180px',
+      hiddenLabel: true,
+    },
+  },
+  {
     type: 'cascader',
     name: '级联选择器',
     icon: 'random',
