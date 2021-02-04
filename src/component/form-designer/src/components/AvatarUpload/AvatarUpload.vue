@@ -6,30 +6,60 @@
 -->
 
 <template>
-  <el-upload class="avatar-uploader" :headers="headers" :action="action" :show-file-list="false" :on-success="handleAvatarSuccess">
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+  <el-upload
+    :style="{
+      width: widget.options.width,
+      height: widget.options.width,
+    }"
+    class="avatar-uploader"
+    :class="{
+      'is-disabled' : readOnly
+    }"
+    :headers="headers"
+    :action="action"
+    :before-upload="beforeUpload"
+    :show-file-list="false"
+    :on-success="handleAvatarSuccess"
+  >
+    <img :src="imageUrl" class="avatar" />
   </el-upload>
 </template>
 
 <script>
 export default {
   name: 'AvatarUpload',
+  model: {
+    prop: 'value',
+    event: 'change',
+  },
   data() {
     return {
-      imageUrl: '',
+      imageUrl: this.value,
     };
   },
   props: {
-    uploadUrl: {
+    // 初始值
+    value: {
       type: String,
       default: '',
+    },
+    widget: {
+      type: Object,
+      default: () => ({
+        options: {
+          width: '',
+        },
+      }),
+    },
+    readOnly: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
     action() {
       const __GLOBAL__URL__ = window.__HOST__URL__ + window.__PREFIX__URL__;
-      return __GLOBAL__URL__ + this.uploadUrl;
+      return __GLOBAL__URL__ + this.widget.options.uploadUrl;
     },
     headers() {
       return { Authorization: sessionStorage.getItem('token') };
@@ -38,6 +68,14 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.$emit('change', res.data);
+    },
+    beforeUpload() {
+      // 只读时禁止上传
+      if (this.readOnly) {
+        return false;
+      }
+      return true;
     },
   },
 };
@@ -56,14 +94,18 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  position: absolute;
   text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 100%;
+  height: 100%;
   display: block;
+}
+.is-disabled{
+  cursor: not-allowed;
 }
 </style>

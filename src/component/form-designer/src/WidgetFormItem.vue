@@ -207,7 +207,7 @@
       <h4 style="text-align:center;margin:0">附件上传</h4>
     </template>
     <template v-if="element.type === 'avatar'">
-     <AvatarUpload :uploadUrl="element.options.uploadUrl"></AvatarUpload>
+     <AvatarUpload :widget="element"></AvatarUpload>
     </template>
     <template v-if="element.type === 'chart-pie'">
        <pieChart

@@ -286,13 +286,13 @@
       <FileUpload
         :visibleList="fileVisibleList"
         :fileType="widget.options.fileType"
-        :readOnly="widget.options.readonly || readOnly === {}"
+        :readOnly="readOnly || widget.options.readonly"
         showPagination
         :resourceid="models[widget.options.resourceId]"
       ></FileUpload>
     </template>
     <template v-if="widget.type === 'avatar'">
-     <AvatarUpload :uploadUrl="widget.options.uploadUrl"></AvatarUpload>
+     <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="dataModel"></AvatarUpload>
     </template>
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget"></GenerateSubForm>
