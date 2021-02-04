@@ -67,18 +67,15 @@ Vue.use(ElementProCrud)
   <head>
     <meta charset="UTF-8" />
     <!-- 引入ProCrud CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud@0.5.0/lib/ProCrud.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.css" />
     <!-- 引入ElementUI CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
     />
   </head>
   <body>
     <div id="app">
-      <el-button @click="showDialog('form')" type="primary">打开表单设计器</el-button>
-      <el-button @click="showDialog('table')" type="danger">打开表格设计器</el-button>
-      <form-designer-dialog ref="form"></form-designer-dialog>
-      <table-designer-dialog ref="table"></table-designer-dialog>
-      <crud-table tableName="dept" tableTitle="表格示例"></crud-table>
+      <form-designer ref="form"></form-designer>
+      <table-designer ref="table"></table-designer>
     </div>
   </body>
   <!-- import Vue before Element -->
@@ -87,15 +84,10 @@ Vue.use(ElementProCrud)
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <!-- import ElementProCrud -->
   <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@latest/lib/ProCrud.umd.js"></script>
-
+  
   <script>
     new Vue({
-      el: "#app",
-      methods:{
-        showDialog(name){
-          this.$refs[name].showDialog();
-        }
-      }
+      el: "#app"
     });
   </script>
 </html>
