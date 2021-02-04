@@ -343,7 +343,7 @@ export const advanceComponents = [
     labelWidth: '',
     options: {
       resourceId: 'id',
-      uploadUrl: '',
+      uploadUrl: '/file/upload',
       width: '180px',
       hiddenLabel: true,
     },

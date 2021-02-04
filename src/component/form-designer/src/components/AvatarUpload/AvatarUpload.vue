@@ -68,8 +68,9 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
+      const __GLOBAL__URL__ = window.__HOST__URL__ + window.__PREFIX__URL__;
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.$emit('change', res.data);
+      this.$emit('change', __GLOBAL__URL__ + res.data);
     },
     beforeUpload() {
       // 只读时禁止上传
