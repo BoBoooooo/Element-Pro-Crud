@@ -371,13 +371,12 @@ export default defineComponent({
           if (tableRefs.value) {
             tableRefs.value.clearSelection();
           }
-          nextTick(() => {
-            // 初始化表格高度
-            setTimeout(() => {
-              setMaxHeight();
-            }, 0);
-          });
-
+          setTimeout(() => {
+            setMaxHeight();
+            nextTick(() => {
+              tableRefs.value!.doLayout();
+            });
+          }, 300);
           emit('done', {
             total: count,
             data,
