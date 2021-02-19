@@ -41,7 +41,7 @@
         <el-container class="container">
           <el-header><el-tag>表单设计器(FormDesigner)</el-tag></el-header>
           <el-main>
-            <FormDesigner ref="formDesigner" :getFormKey="getTableFields"> </FormDesigner>
+            <FormDesigner ref="formDesigner" :dictType="dictType" :getFormKey="getTableFields"> </FormDesigner>
           </el-main>
         </el-container>
         <el-container class="container">
@@ -281,6 +281,7 @@ export default {
       jsonTemplate: '',
       dictList: [],
       formList: [],
+      dictType: [],
       columns: {},
       allTables: null,
       btnSaveIsLoading: false,
@@ -316,6 +317,12 @@ export default {
   },
 
   created() {
+    crud(DML.SELECT, 'ad_codelist_type').then((res) => {
+      this.dictType = res.data.list.map(item => ({
+        label: item.typeName,
+        value: item.id,
+      }));
+    });
     getTables().then((res) => {
       this.allTables = res.data.map(item => ({
         label: item.TABLE_NAME,

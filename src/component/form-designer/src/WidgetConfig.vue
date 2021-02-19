@@ -143,11 +143,11 @@
       </el-form-item>
       <el-form-item label="数据来源" v-if="Object.keys(elementConfig.options).indexOf('options') >= 0 || Object.keys(elementConfig.options).indexOf('remoteOptions') >= 0">
         <el-radio-group v-model="elementConfig.options.remote" size="mini" style="margin-bottom:10px;">
-          <el-radio-button v-if="!isRemoteComponent" label="dict">字典</el-radio-button>
+          <el-radio-button v-if="!isRemoteComponent && dictType && dictType.length > 0" label="dict">字典</el-radio-button>
           <el-radio-button v-if="!isRemoteComponent" label="static">静态</el-radio-button>
           <el-radio-button label="custom">自定义</el-radio-button>
         </el-radio-group>
-        <template v-if="elementConfig.options.remote == 'dict'">
+        <template v-if="elementConfig.options.remote == 'dict' && dictType && dictType.length > 0">
           <el-select size="mini" v-model="elementConfig.options.dictType" placeholder="字典类型" filterable style="width: 100%">
             <el-option v-for="item in dictType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
@@ -583,14 +583,16 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    dictType: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
       elementComponentConfig,
       jsonTemplate: '',
       jsonEditor: null,
-      // 字典类型
-      dictType: [],
       validator: {
         type: null,
         required: null,
@@ -611,17 +613,6 @@ export default {
     isRemoteComponent() {
       return this.elementConfig && ['treeselect'].includes(this.elementConfig.type);
     },
-  },
-  created() {
-    // 请求字典分类
-    if (this.$PROCRUD && this.$PROCRUD.crud) {
-      this.$PROCRUD.crud(DML.SELECT, 'ad_codelist_type').then((res) => {
-        this.dictType = res.data.list.map(item => ({
-          label: item.typeName,
-          value: item.id,
-        }));
-      });
-    }
   },
   methods: {
     saveJson() {
