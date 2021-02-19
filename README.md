@@ -24,6 +24,7 @@ npm i element-pro-crud -s
 完整引入
 
 ```javascript
+import Vue from 'vue';
 import ElementProCrud from 'element-pro-crud'
 import ElementUI from 'element-ui'
 import 'element-pro-crud/lib/ProCrud.css'
@@ -38,8 +39,6 @@ Vue.use(ElementProCrud)
 ```javascript
   import Vue from 'vue';
   import { GenerateForm, ProTable, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
-  import App from './App.vue';
-
   Vue.use(GenerateForm);
   Vue.use(ProTable);
   Vue.use(FormDesigner);
@@ -49,11 +48,6 @@ Vue.use(ElementProCrud)
       getTableDetail: (tablename) => AxiosPromise(tableJSON);// 获取某个表格设计json
       crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise; // 通用CRUD封装
   })
-
-  new Vue({
-    el: '#app',
-    render: h => h(App)
-  });
 ```
 
 ### CDN
