@@ -36,9 +36,6 @@ Vue.use(ElementProCrud)
 按需引入
 
 ```javascript
-  import { GenerateForm } from 'element-pro-crud';
-  Vue.use(GenerateForm);
-
   import Vue from 'vue';
   import { GenerateForm, ProTable, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
   import App from './App.vue';
