@@ -19,8 +19,6 @@ declare enum DML {
 }
 
 interface optionsType {
-  getTables: Function;
-  getFormKey: Function;
   getFormDetail: Function;
   getTableDetail: Function;
   crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise
