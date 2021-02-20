@@ -22,7 +22,9 @@
     :on-success="handleAvatarSuccess"
   >
     <img v-if="hasImage" :src="imageUrl" class="avatar" />
-    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    <div v-else class="uploader-container">
+      <i class="el-icon-plus avatar-uploader-icon"></i>
+    </div>
   </el-upload>
 </template>
 
@@ -99,8 +101,17 @@ export default {
   margin: 0 auto;
   overflow: hidden;
 }
+.avatar-uploader >>> .el-upload{
+  height:100%;
+  display: block;
+}
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
+}
+
+.upload-container{
+  height:100%;
+  width: 100%;
 }
 .avatar-uploader-icon {
   font-size: 28px;
@@ -108,6 +119,7 @@ export default {
   position: absolute;
   text-align: center;
   left: 50%;
+  cursor: pointer;
   top: 50%;
   transform: translate(-50%, -50%);
 }
