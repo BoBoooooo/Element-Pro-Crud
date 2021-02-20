@@ -190,14 +190,11 @@
                    :options="element.options.remoteOptions">
       </el-cascader>
     </template>
-      <template v-if="element.type ==='comment'">
-       <h4 style="text-align:center;margin:0">意见框</h4>
-    </template>
      <template v-if="element.type ==='table'">
        <h4 style="text-align:center;margin:0">表格({{element.model}})</h4>
     </template>
     <template v-if="element.type === 'treeselect'">
-       <h4 style="text-align:center;margin:0">树形下拉框({{element.model}})</h4>
+      <TreeSelect v-model="element.options.defaultValue"  :options="[]" />
     </template>
     <template v-if="element.type === 'richtext'">
       <Tinymce :height="400"
@@ -249,6 +246,7 @@
 </template>
 
 <script>
+import TreeSelect from '@riophae/vue-treeselect';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
@@ -285,6 +283,7 @@ export default {
     lineChart,
     Echarts,
     AvatarUpload,
+    TreeSelect,
   },
   data() {
     return {

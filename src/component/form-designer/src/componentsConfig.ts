@@ -427,6 +427,7 @@ export const advanceComponents = [
       remoteFunc: '',
       placeholder: '',
       width: '100%',
+      defaultValue: null,
       maxHeight: 300,
       multiple: false,
       remote: 'custom',
@@ -447,7 +448,23 @@ export const advanceComponents = [
       disabled: false,
       showCount: false,
       disableBranchNodes: true,
-      remoteOptions: [],
+      remoteOptions: [{
+        value: '测试数据A',
+        label: '测试数据A',
+        children: [{
+          value: '测试数据AA',
+          label: '测试数据AA',
+        }, {
+          value: '测试数据AB',
+          label: '测试数据AB',
+        }],
+      }, {
+        value: '测试数据B',
+        label: '测试数据B',
+      }, {
+        value: '测试数据C',
+        label: '测试数据C',
+      }],
       hiddenLabel: false,
     },
   },

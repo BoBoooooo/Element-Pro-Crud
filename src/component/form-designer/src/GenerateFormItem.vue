@@ -517,6 +517,8 @@ export default class GenerateFormItem extends Vue {
         }
         this.copyOption = this.widget.options.remoteOptions;
       });
+    } else if (this.widget.options.remote === 'custom') {
+      this.visible = true;
     }
   }
 
