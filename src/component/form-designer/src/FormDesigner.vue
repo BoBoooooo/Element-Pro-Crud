@@ -6,17 +6,29 @@
 @createDate 2018年11月15日16:11:09
 -->
 <template>
+  <el-container style="height:100%">
+    <el-header height="54px" class="header">
+      <div class="logo-container">
+        <SvgIcon icon-class="logo" class="logo"></SvgIcon>
+        <span class="title">
+          Form Generate
+        </span>
+      </div>
+      <div class="btn-bar">
+        <el-button type="primary" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
+        <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
+        <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
+        <el-button type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
+        <el-button type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
+        <el-button type="normal" size="small" icon="el-icon-attract" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
+        <slot name="custom-btn"></slot>
+      </div>
+    </el-header>
     <!-- 对话框 -->
     <el-container style="height:100%">
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%;max-width:250px">
         <div class="components-list">
-          <div class="logo-container">
-            <SvgIcon icon-class="logo" class="logo"></SvgIcon>
-            <span class="title">
-              Form Generate
-            </span>
-          </div>
           <div class="widget-cate">基础组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
@@ -53,11 +65,7 @@
           </Draggable>
           <div class="widget-cate">基础图表</div>
           <Draggable :clone="handleClone" tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
-            <li
-              class="form-edit-widget-label"
-              v-for="(item, index) in chartComponents"
-              :key="index"
-            >
+            <li class="form-edit-widget-label" v-for="(item, index) in chartComponents" :key="index">
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -68,20 +76,6 @@
       </el-aside>
       <!-- 中间区域 -->
       <el-container class="center-container" direction="vertical">
-        <!-- 中间区域顶部按钮栏 -->
-        <el-header class="btn-bar" style="height: 60px;">
-          <el-row :gutter="15">
-            <el-col :span="24" style="text-align:right;margin-top:5px">
-              <el-button type="primary" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
-              <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
-              <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
-              <el-button type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
-              <el-button type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
-              <el-button type="normal" size="small" icon="el-icon-form" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
-              <slot name="custom-btn"></slot>
-            </el-col>
-          </el-row>
-        </el-header>
         <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
           <WidgetForm ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
@@ -99,7 +93,7 @@
             </div>
           </el-header>
           <el-main class="config-content">
-            <WidgetConfig v-show="configTab == 'widget'" v-if="Object.keys(widgetFormSelect).length>0" :dictType="dictType" :elementConfig="widgetFormSelect"></WidgetConfig>
+            <WidgetConfig v-show="configTab == 'widget'" v-if="Object.keys(widgetFormSelect).length > 0" :dictType="dictType" :elementConfig="widgetFormSelect"></WidgetConfig>
             <FormConfig v-show="configTab == 'form'" :data="widgetForm.config"></FormConfig>
           </el-main>
         </el-container>
@@ -145,8 +139,8 @@
         :visible="formVisible"
         title="自动生成表单(根据数据库表字段及备注自动生成)"
         @on-close="
-          formVisible = false;
-          formKeys.tableName = '';
+          formVisible = false
+          formKeys.tableName = ''
         "
         width="800px"
         :action="false"
@@ -157,6 +151,7 @@
         <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
       </CusDialog>
     </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -261,19 +256,23 @@ export default {
   methods: {
     // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
     handleClone(origin) {
-      const { type = 'type', options: { remoteOptions } } = origin;
+      const {
+        type = 'type',
+        options: { remoteOptions },
+      } = origin;
       const key = `${type}_${Math.ceil(Math.random() * 99999)}`;
 
-      const cloneOrigin = JSON.parse(JSON.stringify({
-        ...origin,
-        key,
-        model: key,
-        rules: [],
-      }));
+      const cloneOrigin = JSON.parse(
+        JSON.stringify({
+          ...origin,
+          key,
+          model: key,
+          rules: [],
+        }),
+      );
       if (remoteOptions) {
         cloneOrigin.options.remoteFunc = `func_${key}`;
       }
-
 
       return cloneOrigin;
     },
@@ -485,24 +484,6 @@ export default {
 <style lang="scss">
 @import './styles/cover.scss';
 @import './styles/index.scss';
-
-.logo-container {
-  padding: 0 10px 10px;
-  border-bottom: 1px solid #f2f2f2;
-  .logo {
-    width: 36px;
-    height: 36px;
-    display: inline-block;
-  }
-  .title {
-    font-size: 24px;
-    vertical-align: top;
-    margin-left: 10px;
-    color: #9e9e9e;
-    line-height: 40px;
-    display: inline-block;
-  }
-}
 </style>
 <style scoped>
 .dialog >>> .el-dialog__body {

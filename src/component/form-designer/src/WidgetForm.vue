@@ -9,8 +9,10 @@
         data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'
       "
       :size="data.config.size"
+      class="widget-form"
     >
       <Draggable
+      class="widget-form"
         v-model="data.list"
         v-bind="{
           group: 'people',

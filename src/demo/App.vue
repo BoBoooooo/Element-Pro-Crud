@@ -33,7 +33,7 @@
       <el-main class="content">
         <el-container class="container">
           <el-header><el-tag>表格设计器(TableDesigner)</el-tag></el-header>
-          <el-main>
+          <el-main style="padding: 10px">
             <TableDesigner :dictList="dictList" :formList="formList" ref="tableDesigner"></TableDesigner>
           </el-main>
         </el-container>
@@ -445,6 +445,9 @@ h3 {
   border: 1px solid rgb(92, 92, 92);
   margin: 2rem 0;
   background: white;
+  .el-main{
+    padding:0;
+  }
 }
 .el-header {
   color: #333;
