@@ -187,17 +187,10 @@ export default class GenerateForm extends Vue {
                   case 'show': field.hidden = false; this.models[_.field] = _.value; break;
                   case 'hidden': field.hidden = true; break;
                   case 'required':
-                    field.options.required = true;
-                    field.rules.push({
-                      message: `${field.name}必须填写`,
-                      required: true,
-                      trigger: 'blur',
-                    });
+                    this.setRequired(field);
                     break;
                   case 'unrequired':
-                    field.options.required = false;
-                    // eslint-disable-next-line no-shadow
-                    field.rules.shift(field.rules.findIndex(_ => _.required));
+                    this.setUnRequired(field);
                     break;
                   default: break;
                 }
@@ -207,6 +200,22 @@ export default class GenerateForm extends Vue {
         }
       }
     });
+  }
+
+  setRequired(field:any) {
+    if (!field.options.required) {
+      field.options.required = true;
+      field.rules.push({
+        message: `${field.name}必须填写`,
+        required: true,
+        trigger: 'blur',
+      });
+    }
+  }
+
+  setUnRequired(field: any) {
+    field.options.required = false;
+    field.rules = field.rules.filter(_ => !_.required);
   }
 
   getTableSelection($event, item) {
