@@ -489,7 +489,7 @@ export default defineComponent({
   background: white;
   padding: 10px;
   position: relative;
-  ::v-deep {
+  /deep/ {
     .el-table__empty-text {
       line-height: 10px;
       margin-bottom: 15px;

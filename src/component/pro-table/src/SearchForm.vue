@@ -228,13 +228,13 @@ export default class SearchForm extends Vue {
     height: 29px;
     border-radius: 0;
   }
-  ::v-deep.el-input__suffix {
+  /deep/.el-input__suffix {
     top: -5px;
   }
   .input {
     display: inline-block;
     width: 300px;
-    ::v-deep .el-input__inner {
+    /deep/ .el-input__inner {
       height: 29px;
       line-height: 29px;
       border-radius: 0;
@@ -245,7 +245,7 @@ export default class SearchForm extends Vue {
     display: inline-block;
     vertical-align: 1px;
     margin-left: 5px;
-    ::v-deep.el-tag {
+    /deep/.el-tag {
       border-radius: 0;
       margin-right: 5px;
     }

@@ -15,7 +15,27 @@
         </span>
       </div>
       <div class="btn-bar">
-        <el-button type="primary" size="small" icon="el-icon-view" @click="handlePreview">预览</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          icon="el-icon-picture-outline"
+          @click="changeMode('design')"
+          :class="{
+            active: currentMode === 'design',
+          }"
+          >布局模式</el-button
+        >
+        <el-button
+          type="primary"
+          size="small"
+          icon="el-icon-view"
+          @click="changeMode('preview')"
+          :class="{
+            active: currentMode === 'preview',
+          }"
+          >预览模式</el-button
+        >
+        <el-divider direction="vertical"></el-divider>
         <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
         <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
         <el-button type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
@@ -78,7 +98,11 @@
       <el-container class="center-container" direction="vertical">
         <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
-          <WidgetForm ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
+          <WidgetForm v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
+          <template v-else>
+            <el-alert type="warning" :closable="false" style="margin-bottom:15px">组件依赖远端数据需要结合代码!</el-alert>
+            <GenerateForm :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
+          </template>
         </el-main>
       </el-container>
       <!-- 右侧边栏 -->
@@ -98,15 +122,6 @@
           </el-main>
         </el-container>
       </el-aside>
-      <!-- 预览对话框 -->
-      <CusDialog :visible="previewVisible" @on-close="previewVisible = false" ref="widgetPreview" @on-submit="handleTest" width="1000px" form>
-        <el-alert type="warning" :closable="false" style="margin-bottom:15px">组件依赖远端数据需要结合代码!</el-alert>
-        <GenerateForm v-if="previewVisible" :data="widgetForm" :value="widgetModels" ref="generateForm">
-          <template slot="blank" slot-scope="scope">
-            宽度：<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input> 高度：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
-          </template>
-        </GenerateForm>
-      </CusDialog>
       <!-- 导入JSON对话框 -->
       <CusDialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
         <el-alert type="info" title="在此处导入JSON"></el-alert>
@@ -220,8 +235,6 @@ export default {
       },
       configTab: 'widget',
       widgetFormSelect: {},
-      // 预览 对话框显示/隐藏
-      previewVisible: false,
       // 生成json 对话框显示/隐藏
       jsonVisible: false,
       codeVisible: false,
@@ -251,9 +264,16 @@ export default {
         success: [],
       },
       dialogStatus: null,
+      // 当前模式
+      currentMode: 'design',
     };
   },
   methods: {
+    // 切换布局
+    changeMode(mode) {
+      console.log(mode);
+      this.currentMode = mode;
+    },
     // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
     handleClone(origin) {
       const {
@@ -503,5 +523,8 @@ export default {
 }
 .form {
   margin-top: 6px;
+}
+.el-divider--vertical {
+  background: #333;
 }
 </style>

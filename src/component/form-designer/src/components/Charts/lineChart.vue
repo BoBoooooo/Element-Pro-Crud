@@ -283,7 +283,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .card{
-  ::v-deep {
+  /deep/ {
     .el-card__header{
       padding: 5px 20px;
     }

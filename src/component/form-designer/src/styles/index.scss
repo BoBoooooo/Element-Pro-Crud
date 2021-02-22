@@ -67,7 +67,7 @@ $primary-background-color: #ecf5ff;
   .el-main {
     padding: 0;
     position: relative;
-    background: #f7f7f7;
+    background: white;
   }
 }
 
@@ -699,11 +699,12 @@ $primary-background-color: #ecf5ff;
     // flex-direction: column;
     align-items: center;
     justify-content: center;
-    ::v-deep.el-button{
-      margin:0;
+    /deep/.el-button{
+      margin-right:5px;
       background: none!important;
       border: none!important;
-      color: #666;
+      color: #666!important;
+      padding: 9px!important;
       flex: 1;
       i{
         display: block;
@@ -712,6 +713,10 @@ $primary-background-color: #ecf5ff;
       }
       &:hover{
         color: #333!important;
+      }
+      &.active{
+        background: #2d88f8!important;
+        color: #fff!important;
       }
     }
   }  

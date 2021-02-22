@@ -351,7 +351,7 @@ export default class GenerateSubForm extends Vue {
   }
 }
 .subTableForm {
-  ::v-deep.el-form-item__error {
+  /deep/.el-form-item__error {
     top: 23px;
     right: 28px;
     text-align: right;
