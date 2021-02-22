@@ -5,8 +5,8 @@
  * @Date: 2020年10月30 15:58:48
 -->
 <template>
-  <div id="app">
-    <el-container>
+  <div>
+    <el-container class="page-container">
       <!-- 顶部导航 start -->
       <el-header height="64px" class="top">
         <div class="logo">
@@ -23,6 +23,9 @@
           <el-link target="_blank" :underline="false" href="https://crud.boboooooo.top/" type="primary">
             <h3>文档</h3>
           </el-link>
+
+          <router-link to="/form" tag="a"><h3>表单设计器</h3></router-link>
+
           <el-link target="_blank" :underline="false" href="https://github.com/BoBoooooo/Element-Pro-Crud" type="primary">
             <img style="marign-top:10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
           </el-link>
@@ -32,22 +35,22 @@
       <!-- demo区域 start -->
       <el-main class="content">
         <el-container class="container">
-          <el-header><el-tag>表格设计器(TableDesigner)</el-tag></el-header>
+          <el-header><el-tag effect="plain" type="info">表格设计器(TableDesigner)</el-tag></el-header>
           <el-main style="padding: 10px">
             <TableDesigner :dictList="dictList" :formList="formList" ref="tableDesigner"></TableDesigner>
           </el-main>
         </el-container>
 
         <el-container class="container">
-          <el-header><el-tag>表单设计器(FormDesigner)</el-tag></el-header>
+          <el-header><el-tag effect="plain" type="info">表单设计器(FormDesigner)</el-tag></el-header>
           <el-main>
             <FormDesigner ref="formDesigner" :dictType="dictType" :getFormKey="getTableFields"> </FormDesigner>
           </el-main>
         </el-container>
         <el-container class="container">
           <el-header
-            ><el-tag>ProTable</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
-            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="warning" class="json-btn" size="small">
+            ><el-tag effect="plain" type="info">ProTable</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
+            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
               当前表格json
             </el-button>
           </el-header>
@@ -112,8 +115,8 @@
         </el-container>
         <el-container class="container">
           <el-header
-            ><el-tag>CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
-            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="warning" class="json-btn" size="small">
+            ><el-tag effect="plain" type="info">CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
+            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
               当前表格json
             </el-button>
           </el-header>
@@ -210,8 +213,8 @@
 
         <el-container class="container">
           <el-header>
-            <el-tag>GenerateForm渲染图表示例</el-tag>
-            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="warning" size="small">
+            <el-tag effect="plain" type="info">GenerateForm渲染图表示例</el-tag>
+            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="primary" size="small">
               当前表单JSON
             </el-button>
           </el-header>
@@ -422,7 +425,7 @@ export default {
 </script>
 
 <style scoped>
-#app {
+.page-container {
   background: #f2f2f2;
 }
 h2,
@@ -486,9 +489,16 @@ h3 {
     }
   }
   .right {
+    display: flex;
+    align-items: center;
     line-height: 10px;
     & > * {
       margin-left: 10px;
+      font-size: 14px;
+      color: #6171cd;
+      &:hover{
+        color:#4d2afc;
+      }
     }
   }
 }
@@ -498,7 +508,7 @@ h3 {
   margin: 0 auto;
   padding-top: 60px;
   .el-header {
-    background: #97c8ff;
+    background: #FF9798;
   }
   .demo-actions {
     text-align: left;
