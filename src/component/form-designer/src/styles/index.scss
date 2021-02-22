@@ -658,7 +658,7 @@ $primary-background-color: #ecf5ff;
   text-align: center;
   width: 300px;
   font-size: 20px;
-  top: 200px;
+  top: 40%;
   left: 50%;
   margin-left: -150px;
   color: #aaa;
@@ -699,7 +699,7 @@ $primary-background-color: #ecf5ff;
     // flex-direction: column;
     align-items: center;
     justify-content: center;
-    /deep/.el-button{
+    ::v-deep.el-button{
       margin:0;
       background: none!important;
       border: none!important;

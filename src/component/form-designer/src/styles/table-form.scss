@@ -12,7 +12,7 @@
       border-#{$position}: $style;
     }
   }
-  /deep/.table-form {
+  ::v-deep.table-form {
     .el-row {
       @include border-style('left');
       margin: 0 !important;

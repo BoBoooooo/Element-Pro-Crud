@@ -228,7 +228,7 @@ export default class SearchForm extends Vue {
     height: 29px;
     border-radius: 0;
   }
-  /deep/.el-input__suffix {
+  ::v-deep.el-input__suffix {
     top: -5px;
   }
   .input {

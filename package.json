@@ -84,6 +84,7 @@
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-commitlint": "^1.0.12",
     "vue-property-decorator": "^8.5.0",
+    "vue-router": "3.4.3",
     "vue-template-compiler": "2.6.11",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",

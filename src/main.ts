@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import router from '@/demo/router';
 import App from '@/demo/App.vue';
 // 引入ElementUI
 import '@/demo/element';
@@ -7,7 +8,6 @@ import * as pluginsApis from '@/demo/api/plugin';
 import { crud } from '@/demo/api/crud';
 // 导入ElementProCrud
 import plugin from './index';
-
 
 Vue.use(plugin, {
   ...pluginsApis,
@@ -33,5 +33,6 @@ axios({
   sessionStorage.setItem('token', res.data.token);
   new Vue({
     render: h => h(App),
+    router,
   }).$mount('#app');
 });
