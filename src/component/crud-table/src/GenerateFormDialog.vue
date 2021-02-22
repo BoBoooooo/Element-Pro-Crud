@@ -18,6 +18,7 @@
     <GenerateForm ref="generateDialogForm"
                   :value="formValues"
                   :data="formDesign"
+                  :rules="rules"
                   :readOnly="isReadOnly"
                   :remote="remoteFuncs"
                   :entity.sync="entity"
@@ -116,6 +117,13 @@ export default class GenerateFormDialog extends Vue {
 
   // 表单是否全屏
   @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
+
+  // 组件联动规则
+  @Prop({
+    type: Array,
+    default: () => [],
+  })
+  rules!: any[];
 
   $refs!: {
     generateDialogForm: HTMLFormElement;

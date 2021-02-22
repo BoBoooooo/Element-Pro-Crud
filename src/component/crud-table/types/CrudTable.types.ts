@@ -88,6 +88,7 @@ interface CrudTableProps {
     dialogFullscreen: boolean // 表单是否全屏
     formValuesAsync: AnyObject // 异步更新表单数据
     formTableConfig: AnyObject // 子表tableConfig
+    formRules: AnyObject // 子表tableConfig
     actionColumnWidth: number // 操作列宽度
     totalField: string // totalField
   }

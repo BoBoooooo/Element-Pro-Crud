@@ -62,6 +62,7 @@
         :dialogFormDesignerName="dialogFormDesignerName"
         :tableParams="tableParams"
         @afterSave="tableReload"
+        :rules="formRules"
         :textMap="text"
         @change="formChange"
         :formValuesAsync="formValuesAsync"
@@ -219,6 +220,10 @@ export default defineComponent({
     dialogFullscreen: {
       default: false,
       type: Boolean,
+    },
+    formRules: {
+      default: () => [],
+      type: Array,
     },
     formValuesAsync: {
       default: () => ({}),

@@ -56,7 +56,7 @@
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%;max-width:250px">
         <div class="components-list">
-          <div class="widget-cate">基础组件</div>
+          <div class="widget-cate">表单组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
               <div>
@@ -65,7 +65,7 @@
               </div>
             </li>
           </Draggable>
-          <div class="widget-cate">高级组件</div>
+          <div class="widget-cate">高级/异步组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
             <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
               <div>
@@ -107,8 +107,9 @@
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
           <WidgetForm v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
           <template v-else>
-            <el-alert type="warning" :closable="false" style="margin-bottom:15px">组件依赖远端数据需要结合代码!</el-alert>
+            <el-alert type="warning" :closable="false" style="margin-bottom:15px">异步及依赖远端数据的组件需要结合代码!</el-alert>
             <GenerateForm :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
+            <el-button size="small" style="float:right;margin-top: 15px" type="primary" @click="handleTest">获取表单数据</el-button>
           </template>
         </el-main>
       </el-container>
@@ -436,20 +437,12 @@ export default {
     handleMove() {
       return true;
     },
-    // 预览按钮
-    handlePreview() {
-      this.previewVisible = true;
-    },
     // 预览点确定获取表单数据
     handleTest() {
       this.$refs.generateForm
         .getData()
         .then((data) => {
           this.$alert(data, '').catch(() => {});
-          this.$refs.widgetPreview.end();
-        })
-        .catch(() => {
-          this.$refs.widgetPreview.end();
         });
     },
     // 生成json

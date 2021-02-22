@@ -123,25 +123,25 @@ export default class GenerateForm extends Vue {
   value: any;
 
   // 表单当前实时对象
-
   @Prop({
     type: Object,
     default: () => ({}),
   })
   entity: any;
 
+  // 是否只读
   @Prop({
     type: Boolean,
     default: false,
   })
   readOnly!: boolean;
 
-  // 设置隐藏区域
+  // 组件联动规则
   @Prop({
     type: Array,
     default: () => [],
   })
-  setHidden: any;
+  rules!: any[];
 
   // 远端数据
   @Prop({
@@ -157,13 +157,56 @@ export default class GenerateForm extends Vue {
   })
   formTableConfig: any;
 
+  // 当前表单实体对象
   models: any = {};
+
+  // 内部属性记录字段对应组件,用于联动时快速修改
+  fieldMap :any = {};
+
 
   created() {
     if (this.data.list) {
       // 根据数据结构生成给子组件的数据源
       this.generateModel(this.data.list);
     }
+  }
+
+  // 组件联动handler
+  controlFieldHandler(model) {
+    this.rules.forEach((r) => {
+      const value = this.models[r.field];
+      if (value) {
+        const controlRule = r.control.find(_ => _.value === value);
+        if (controlRule) {
+          const { rule: insideRule } = controlRule;
+          if (insideRule) {
+            insideRule.forEach((_) => {
+              const field = this.fieldMap[_.field];
+              if (field) {
+                switch (_.operator) {
+                  case 'show': field.hidden = false; this.models[_.field] = _.value; break;
+                  case 'hidden': field.hidden = true; break;
+                  case 'required':
+                    field.options.required = true;
+                    field.rules.push({
+                      message: `${field.name}必须填写`,
+                      required: true,
+                      trigger: 'blur',
+                    });
+                    break;
+                  case 'unrequired':
+                    field.options.required = false;
+                    // eslint-disable-next-line no-shadow
+                    field.rules.shift(field.rules.findIndex(_ => _.required));
+                    break;
+                  default: break;
+                }
+              }
+            });
+          }
+        }
+      }
+    });
   }
 
   getTableSelection($event, item) {
@@ -188,17 +231,15 @@ export default class GenerateForm extends Vue {
         } else {
           this.setDefaultValue(row);
         }
-        // 表单隐藏设置
-        if (this.setHidden.includes(row.model)) {
-          row.hidden = true;
-        }
+        // 组件option跟字段映射
+        this.$set(this.fieldMap, row.model, row);
       }
     }
     this.models = { ...this.value, ...this.models };
   }
 
   // 多选情况下数组转字符串
-  formValueToString() {
+  filterFormData() {
     const model = { ...this.models };
     Object.keys(model).forEach((k) => {
       if (Array.isArray(model[k])) {
@@ -233,7 +274,7 @@ export default class GenerateForm extends Vue {
     return new Promise((resolve, reject) => {
       this.$refs.generateForm.validate((valid) => {
         if (valid) {
-          resolve(this.formValueToString());
+          resolve(this.filterFormData());
         } else {
           // 校验失败时focus到文本框
           // 注意此处没有考虑textarea的情况,多行文本会失败
@@ -254,7 +295,7 @@ export default class GenerateForm extends Vue {
 
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
-    return new Promise(resolve => resolve(this.formValueToString()));
+    return new Promise(resolve => resolve(this.filterFormData()));
   }
 
   // 生成的按钮点击
@@ -307,6 +348,10 @@ export default class GenerateForm extends Vue {
     // immediate: true,
   })
   modelsOnChange(val) {
+    // 组件值改变时检查是否需要联动其他组件
+    if (this.rules.length > 0) {
+      this.controlFieldHandler(val);
+    }
     this.$emit('update:entity', val);
   }
 
