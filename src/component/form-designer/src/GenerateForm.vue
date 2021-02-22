@@ -351,6 +351,9 @@ export default class GenerateForm extends Vue {
     // 组件值改变时检查是否需要联动其他组件
     if (this.rules.length > 0) {
       this.controlFieldHandler(val);
+      if (this.$refs.generateForm) {
+        this.$refs.generateForm.clearValidate();
+      }
     }
     this.$emit('update:entity', val);
   }
