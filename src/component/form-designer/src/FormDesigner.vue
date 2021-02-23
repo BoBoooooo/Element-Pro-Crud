@@ -241,7 +241,7 @@ export default {
           columnList: [],
         },
       },
-      configTab: 'widget',
+      configTab: 'form',
       widgetFormSelect: {},
       // 生成json 对话框显示/隐藏
       jsonVisible: false,
