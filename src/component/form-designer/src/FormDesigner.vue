@@ -498,6 +498,13 @@ export default {
       this.widgetFormSelect = {};
     },
   },
+  watch: {
+    widgetFormSelect(val) {
+      if (val) {
+        this.configTab = 'widget';
+      }
+    },
+  },
 };
 </script>
 

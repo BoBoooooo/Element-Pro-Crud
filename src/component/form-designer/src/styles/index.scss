@@ -1,4 +1,4 @@
-$primary-color: #409eff;
+$primary-color: #1861d5;
 $primary-background-color: #ecf5ff;
 
 *,
@@ -243,7 +243,7 @@ $primary-background-color: #ecf5ff;
         outline-offset: 0px;
 
         &.active {
-          outline: 2px solid $primary-color;
+          outline: 1px solid $primary-color;
           border: 1px solid $primary-color;
           outline-offset: 0;
         }
@@ -254,13 +254,13 @@ $primary-background-color: #ecf5ff;
       }
 
       &.active {
-        outline: 2px solid $primary-color;
+        outline: 1px solid $primary-color;
         border: 1px solid $primary-color;
       }
 
       &.ghost {
         background: #f56c6c;
-        border: 2px solid #f56c6c;
+        border: 1px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
@@ -377,28 +377,28 @@ $primary-background-color: #ecf5ff;
       }
 
       &.active {
-        outline: 2px solid #e6a23c;
-        border: 2px solid #e6a23c;
+        outline: 1px solid #c11e72;
+        border: 1px solid #c11e72;
       }
 
       &:hover {
         background: #fdf6ec;
-        outline: 1px solid #e6a23c;
+        outline: 1px solid #c11e72;
         outline-offset: 0px;
 
         &.active {
-          outline: 2px solid #e6a23c;
-          border: 1px solid #e6a23c;
+          outline: 1px solid #c11e72;
+          border: 1px solid #c11e72;
           outline-offset: 0;
         }
       }
 
       .widget-view-action.widget-col-action {
-        background: #e6a23c;
+        background: #c11e72;
       }
 
       .widget-view-drag.widget-col-drag {
-        background: #e6a23c;
+        background: #c11e72;
       }
 
       &::after {
@@ -440,18 +440,18 @@ $primary-background-color: #ecf5ff;
       background-color: rgba(253, 246, 236, 0.3);
 
       &.active {
-        outline: 2px solid #e6a23c;
-        border: 1px solid #e6a23c;
+        outline: 1px solid #c11e72;
+        border: 1px solid #c11e72;
       }
 
       &:hover {
         background: #fdf6ec;
-        outline: 1px solid #e6a23c;
+        outline: 1px solid #c11e72;
         outline-offset: 0px;
 
         &.active {
-          outline: 2px solid #e6a23c;
-          border: 1px solid #e6a23c;
+          outline: 1px solid #c11e72;
+          border: 1px solid #c11e72;
           outline-offset: 0;
         }
       }
@@ -462,7 +462,7 @@ $primary-background-color: #ecf5ff;
 
       &.ghost {
         background: #f56c6c;
-        border: 2px solid #f56c6c;
+        border: 1px solid #f56c6c;
         outline-width: 0;
         height: 3px;
         box-sizing: border-box;
@@ -473,7 +473,7 @@ $primary-background-color: #ecf5ff;
       }
 
       .widget-view-action.widget-col-action {
-        background: #e6a23c;
+        background: #c11e72;
         i {
           color: white !important;
           &:hover {
@@ -483,7 +483,7 @@ $primary-background-color: #ecf5ff;
       }
 
       .widget-view-drag.widget-col-drag {
-        background: #e6a23c;
+        background: #c11e72;
       }
 
       &::after {
@@ -493,7 +493,7 @@ $primary-background-color: #ecf5ff;
 
     .ghost {
       background: #f56c6c;
-      border: 2px solid #f56c6c;
+      border: 1px solid #f56c6c;
       outline-width: 0;
       height: 3px;
       box-sizing: border-box;
@@ -506,7 +506,7 @@ $primary-background-color: #ecf5ff;
 
   .ghost {
     background: #f56c6c;
-    border: 2px solid #f56c6c;
+    border: 1px solid #f56c6c;
     position: relative;
 
     &::after {
@@ -537,7 +537,7 @@ $primary-background-color: #ecf5ff;
   .widget-grid-container {
     &.ghost {
       background: #f56c6c;
-      border: 2px solid #f56c6c;
+      border: 1px solid #f56c6c;
       outline-width: 0;
       height: 3px;
       box-sizing: border-box;
@@ -550,7 +550,7 @@ $primary-background-color: #ecf5ff;
 
   .ghost {
     background: #f56c6c;
-    border: 2px solid #f56c6c;
+    border: 1px solid #f56c6c;
     position: relative;
 
     &::after {
@@ -594,7 +594,7 @@ $primary-background-color: #ecf5ff;
     &.active {
       background: none;
       box-sizing: border-box;
-      border-top: 2px solid #1861d5;
+      border-top: 1px solid #1861d5;
       border-bottom: none!important;
     }
     &:not(.active):hover{
@@ -658,10 +658,14 @@ $primary-background-color: #ecf5ff;
   text-align: center;
   width: 300px;
   font-size: 20px;
-  top: 40%;
+  top: 24%;
   left: 50%;
   margin-left: -150px;
   color: #aaa;
+  .form-empty-icon{
+    width: 16em;
+    height: 16em;
+  }
 }
 
 .header {

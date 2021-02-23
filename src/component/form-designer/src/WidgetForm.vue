@@ -1,7 +1,7 @@
 <template>
   <div class="widget-form-container">
     <div v-if="data.list.length == 0" class="form-empty">
-      拖拽左侧组件添加字段!
+      <SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽组件至这里吧!
     </div>
     <el-form
       :label-position="data.config.labelPosition"
@@ -139,6 +139,7 @@
 
 <script>
 import Draggable from 'vuedraggable';
+import SvgIcon from '@/icons/SvgIcon.vue';
 import WidgetFormItem from './WidgetFormItem.vue';
 import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 import WidgetTabs from './components/Tabs/WidgetTabs.vue';
@@ -149,6 +150,7 @@ export default {
     WidgetFormItem,
     WidgetSubForm,
     WidgetTabs,
+    SvgIcon,
   },
   // 这里的data从父组件接收和设计器实时对应的json
   props: ['data', 'select'],
