@@ -184,8 +184,8 @@ export default class GenerateForm extends Vue {
               const field = this.fieldMap[_.field];
               if (field) {
                 switch (_.operator) {
-                  case 'show': field.hidden = false; this.models[_.field] = _.value; break;
-                  case 'hidden': field.hidden = true; break;
+                  case 'show': this.$set(field, 'hidden', false); this.models[_.field] = _.value; break;
+                  case 'hidden': this.$set(field, 'hidden', true); break;
                   case 'required':
                     this.setRequired(field);
                     break;
