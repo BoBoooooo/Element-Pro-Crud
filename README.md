@@ -11,7 +11,7 @@ ElementProCrud 快速搭建 CRUD 的利器
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 ## Documentation
-[文档地址](https://crud.boboooooo.top)
+[文档地址](http://procrud.fun/)
 
 ## Install
 
