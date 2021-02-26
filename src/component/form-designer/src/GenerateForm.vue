@@ -163,6 +163,8 @@ export default class GenerateForm extends Vue {
   // 内部属性记录字段对应组件,用于联动时快速修改
   fieldMap :any = {};
 
+  // 内部属性记录字段已联动的组件,用于字段值切换时重置原先组件状态
+  linkEffect:any = {};
 
   created() {
     if (this.data.list) {
@@ -175,11 +177,16 @@ export default class GenerateForm extends Vue {
   controlFieldHandler(model) {
     this.rules.forEach((r) => {
       const value = this.models[r.field];
+      // 若该字段已经联动其他组件,先恢复被联动组件为原先状态
+      if (this.linkEffect[r.field]) {
+        this.resetComponent(this.linkEffect[r.field]);
+      }
       if (value) {
         const controlRule = r.control.find(_ => _.value === value);
         if (controlRule) {
           const { rule: insideRule } = controlRule;
           if (insideRule) {
+            this.linkEffect[r.field] = [];
             insideRule.forEach((_) => {
               const field = this.fieldMap[_.field];
               if (field) {
@@ -194,6 +201,8 @@ export default class GenerateForm extends Vue {
                     break;
                   default: break;
                 }
+                // linkEffect 缓存当前字段跟其他组件联动的关系
+                this.linkEffect[r.field].push(_);
               }
             });
           }
@@ -211,6 +220,25 @@ export default class GenerateForm extends Vue {
         trigger: 'blur',
       });
     }
+  }
+
+  resetComponent(effect) {
+    effect.forEach((_) => {
+      const field = this.fieldMap[_.field];
+      if (field) {
+        switch (_.operator) {
+          case 'show': this.$set(field, 'hidden', true); break;
+          case 'hidden': this.$set(field, 'hidden', false); this.models[_.field] = _.value; break;
+          case 'required':
+            this.setUnRequired(field);
+            break;
+          case 'unrequired':
+            this.setRequired(field);
+            break;
+          default: break;
+        }
+      }
+    });
   }
 
   setUnRequired(field: any) {
