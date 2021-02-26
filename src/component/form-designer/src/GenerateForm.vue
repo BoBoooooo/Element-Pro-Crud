@@ -182,7 +182,7 @@ export default class GenerateForm extends Vue {
         this.resetComponent(this.linkEffect[r.field]);
       }
       if (value) {
-        const controlRule = r.control.find(_ => _.value === value);
+        const controlRule = r.control.find(_ => value.includes(_.value));
         if (controlRule) {
           const { rule: insideRule } = controlRule;
           if (insideRule) {
