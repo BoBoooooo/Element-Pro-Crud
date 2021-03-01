@@ -262,7 +262,7 @@ export default {
         "list": [],
         "config": {
           "labelWidth": 100,
-          "labelPosition": "top",
+          "labelPosition": "right",
           "size": "small"
         }
       }`,
@@ -279,7 +279,6 @@ export default {
   methods: {
     // 切换布局
     changeMode(mode) {
-      console.log(mode);
       this.currentMode = mode;
     },
     // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
@@ -300,6 +299,27 @@ export default {
       );
       if (remoteOptions) {
         cloneOrigin.options.remoteFunc = `func_${key}`;
+      }
+
+      // 如果为表格布局,默认添加一个 <td></td>
+      if (type === 'grid-table') {
+        const tdKey = `td_${Math.ceil(Math.random() * 99999)}`;
+        cloneOrigin.rows[0].columns.push(
+          {
+            type: 'td',
+            options: {
+              colspan: 1,
+              rowspan: 1,
+              align: 'left',
+              valign: 'top',
+              width: '',
+              height: '',
+            },
+            list: [],
+            key: tdKey,
+            model: tdKey,
+          },
+        );
       }
 
       return cloneOrigin;

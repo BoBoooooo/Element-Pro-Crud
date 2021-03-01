@@ -500,6 +500,23 @@ export const layoutComponents = [
     },
   },
   {
+    type: 'grid-table',
+    name: '表格布局',
+    icon: 'th',
+    options: {
+      borderWidth: 1,
+      borderColor: '#999',
+      width: '100%',
+      sumColSpan: 1,
+      sumRowSpan: 1,
+    },
+    rows: [
+      {
+        columns: [],
+      },
+    ],
+  },
+  {
     type: 'tabs',
     name: '标签页',
     icon: 'tags',

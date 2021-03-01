@@ -73,6 +73,46 @@
                   :widget="item"></slot>
           </el-form-item>
         </template>
+        <!-- 表格布局 -->
+          <template v-else-if="item.type === 'grid-table'">
+            <table class="grid-table"
+            :key="item.key"
+            style="width: 100%;border: solid"
+            :style="{
+              'border-width':item.options.borderWidth.toString()+'px',
+              borderColor:item.options.borderColor,
+            }">
+              <tr v-for="(row,rowIndex) in item.rows" :key="rowIndex">
+                <td
+                  v-for="(col,colIndex) in row.columns" :key="colIndex"
+                  :colspan="col.options.colspan || 1"
+                  :rowspan="col.options.rowspan || 1"
+                  valign="middle"
+                  align="left"
+                  class="grid-table-td"
+                  :style="{
+                    'border-width':item.options.borderWidth.toString()+'px',
+                    borderColor:item.options.borderColor,
+                    width: col.options.width,
+                    height: col.options.height
+                  }">
+                  <GenerateFormItem
+                    v-for="(citem) in col.list"
+                    @selection-change="getTableSelection($event,citem)"
+                    :key="citem.key"
+                    :models="models"
+                    :remote="remote"
+                    :widget="citem"
+                    :readOnly="readOnly"
+                    @btnOnClick="btnOnClick"
+                    @chartOnClick="chartOnClick"
+                    v-show="!citem.hidden"
+                    :formTableConfig="formTableConfig">
+                </GenerateFormItem>
+                </td>
+              </tr>
+            </table>
+        </template>
         <!-- 普通行布局方式 -->
         <template v-else>
           <GenerateFormItem :key="item.key"
@@ -429,5 +469,18 @@ export default class GenerateForm extends Vue {
 }
 .no-border{
   border:none!important;
+}
+
+.grid-table{
+  border-collapse: collapse;
+}
+.grid-table-td{
+  border-right-width: 1px;
+    border-right-color: rgb(153, 153, 153);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(153, 153, 153);
+        border-bottom-style: solid;
+    border-right-style: solid;
+    padding: 5px;
 }
 </style>

@@ -20,7 +20,7 @@
       >
         <el-input size="mini" v-model="elementConfig.model"></el-input>
       </el-form-item>
-      <el-form-item label="标题" v-if="elementConfig.type !== 'grid' && elementConfig.type !== 'button'">
+      <el-form-item label="标题" v-if="!elementConfig.type.includes('grid') && elementConfig.type !== 'td' && elementConfig.type !== 'button'">
         <el-input size="mini" v-model="elementConfig.name"></el-input>
       </el-form-item>
       <el-form-item label="自定义className" v-if="Object.keys(elementConfig.options).indexOf('className') >= 0">
@@ -82,7 +82,7 @@
       <el-form-item label="隐藏标签" v-if="elementConfig.options.hiddenLabel !== undefined">
         <el-switch :disabled="elementConfig.type === 'button'" v-model="elementConfig.options.hiddenLabel"></el-switch>
       </el-form-item>
-      <el-form-item label="组件宽度" v-if="Object.keys(elementConfig.options).indexOf('width') >= 0">
+      <el-form-item label="宽度" v-if="Object.keys(elementConfig.options).indexOf('width') >= 0">
         <el-input size="mini" v-model="elementConfig.options.width"></el-input>
       </el-form-item>
       <el-form-item label="大小" v-if="Object.keys(elementConfig.options).indexOf('size') >= 0">
@@ -437,7 +437,9 @@
               elementConfig.type !== 'text' &&
               elementConfig.type !== 'button' &&
               elementConfig.type !== 'avatar' &&
-              elementConfig.type !== 'tabs'
+              elementConfig.type !== 'tabs' &&
+              elementConfig.type !== 'grid-table' &&
+              elementConfig.type !== 'td'
           "
         >
           <el-checkbox v-model="elementConfig.options.readonly" v-if="Object.keys(elementConfig.options).indexOf('readonly') >= 0">完全只读</el-checkbox>
@@ -459,7 +461,9 @@
               elementConfig.type != 'upload' &&
               elementConfig.type != 'text' &&
               elementConfig.type !== 'avatar' &&
-              elementConfig.type !== 'tabs'
+              elementConfig.type !== 'tabs' &&
+              elementConfig.type !== 'grid-table' &&
+              elementConfig.type !== 'td'
           "
           label="校验"
         >
@@ -537,6 +541,17 @@
           <el-radio-group v-model="elementConfig.options.align" size="small">
             <el-radio-button v-for="align in ['left', 'center', 'right']" :label="align" :key="align">{{ align }}</el-radio-button>
           </el-radio-group>
+        </template>
+        <!-- 表格布局table属性配置 支持配置边框宽度 边框颜色  -->
+        <template v-if="elementConfig.type === 'grid-table'">
+          <el-form-item label="边框宽度">
+            <el-input v-model.number="elementConfig.options.borderWidth" placeholder="请输入边框宽度">
+              <template slot="append">px</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="边框颜色">
+            <el-color-picker v-model="elementConfig.options.borderColor"></el-color-picker>
+          </el-form-item>
         </template>
       </template>
     </el-form>

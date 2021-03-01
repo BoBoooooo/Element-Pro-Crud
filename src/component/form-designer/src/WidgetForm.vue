@@ -1,18 +1,9 @@
 <template>
   <div class="widget-form-container">
-    <div v-if="data.list.length == 0" class="form-empty">
-      <SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽组件至这里吧!
-    </div>
-    <el-form
-      :label-position="data.config.labelPosition"
-      :label-width="
-        data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'
-      "
-      :size="data.config.size"
-      class="widget-form"
-    >
+    <div v-if="data.list.length == 0" class="form-empty"><SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽组件至这里吧!</div>
+    <el-form :label-position="data.config.labelPosition" :label-width="data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'" :size="data.config.size" class="widget-form">
       <Draggable
-      class="widget-form"
+        class="widget-form"
         v-model="data.list"
         v-bind="{
           group: 'people',
@@ -25,12 +16,7 @@
         <transition-group name="fade" tag="div" class="widget-form-list">
           <template v-for="(element, index) in data.list">
             <template v-if="element.type == 'grid'">
-              <div
-                v-if="element && element.key"
-                class="widget-grid-container data-grid"
-                :key="element.key"
-                style="position: relative;"
-              >
+              <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative;">
                 <el-row
                   class="widget-col widget-view"
                   type="flex"
@@ -40,11 +26,7 @@
                   :align="element.options.align"
                   @click.native="handleSelectWidget(index)"
                 >
-                  <el-col
-                    v-for="(col, colIndex) in element.columns"
-                    :key="colIndex"
-                    :span="col.span ? col.span : 0"
-                  >
+                  <el-col v-for="(col, colIndex) in element.columns" :key="colIndex" :span="col.span ? col.span : 0">
                     <Draggable
                       v-model="col.list"
                       v-bind="{
@@ -56,84 +38,141 @@
                       :no-transition-on-drag="true"
                       @add="handleWidgetColAdd($event, element, colIndex)"
                     >
-                      <transition-group
-                        name="fade"
-                        tag="div"
-                        class="widget-col-list"
-                      >
-                        <WidgetFormItem
-                          v-for="(el, i) in col.list"
-                          :key="el.key"
-                          :element="el"
-                          :select.sync="selectWidget"
-                          :index="i"
-                          :data="col"
-                        ></WidgetFormItem>
+                      <transition-group name="fade" tag="div" class="widget-col-list">
+                        <WidgetFormItem v-for="(el, i) in col.list" :key="el.key" :element="el" :select.sync="selectWidget" :index="i" :data="col"></WidgetFormItem>
                       </transition-group>
                     </Draggable>
                   </el-col>
-                  <div
-                    class="widget-view-action widget-col-action"
-                    v-if="selectWidget.key == element.key"
-                  >
+                  <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
                     <!-- 栅格布局自动加减 -->
                     <template v-if="element.type === 'grid'">
-                      <i
-                        class="el-icon el-icon-circle-plus"
-                        @click.stop="handleGridAdd(element)"
-                      ></i>
-                      <i class="el-icon el-icon-document-copy" @click.stop="handleGridClone(index)"></i>
+                      <i class="el-icon el-icon-circle-plus" title="添加列" @click.stop="handleGridAdd(element)"></i>
+                      <i class="el-icon el-icon-document-copy" title="复制" @click.stop="handleGridClone(index)"></i>
                     </template>
-                    <i
-                      class="el-icon el-icon-delete-solid"
-                      @click.stop="handleWidgetDelete(index)"
-                    ></i>
+                    <i class="el-icon el-icon-delete-solid" title="删除" @click.stop="handleWidgetDelete(index)"></i>
                   </div>
 
-                  <div
-                    class="drag-widget widget-view-drag widget-col-drag"
-                    v-if="selectWidget.key == element.key"
-                  >
+                  <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
                     <i class="el-icon el-icon-rank"></i>
                   </div>
                 </el-row>
               </div>
             </template>
             <template v-else-if="element.type === 'form'">
-            <WidgetSubForm
-                  v-if="element && element.key"
-                  :key="element.key"
-                  :element="element"
-                  :select.sync="selectWidget"
-                  :index="index"
-                  :data="data"
-                  @click.native.stop="handleSelectWidget(index)"></WidgetSubForm>
-            </template>
-            <template v-else-if="element.type === 'tabs'">
-              <WidgetTabs
-                    v-if="element && element.key"
-                    :key="element.key"
-                    :element="element"
-                    :select.sync="selectWidget"
-                    :index="index"
-                    :data="data"
-                    @click.native.stop="handleSelectWidget(index)"></WidgetTabs>
-            </template>
-            <template v-else>
-              <WidgetFormItem
+              <WidgetSubForm
                 v-if="element && element.key"
                 :key="element.key"
                 :element="element"
                 :select.sync="selectWidget"
                 :index="index"
                 :data="data"
-              ></WidgetFormItem>
+                @click.native.stop="handleSelectWidget(index)"
+              ></WidgetSubForm>
+            </template>
+            <template v-else-if="element.type === 'tabs'">
+              <WidgetTabs
+                v-if="element && element.key"
+                :key="element.key"
+                :element="element"
+                :select.sync="selectWidget"
+                :index="index"
+                :data="data"
+                @click.native.stop="handleSelectWidget(index)"
+              ></WidgetTabs>
+            </template>
+            <template v-else-if="element.type === 'grid-table'">
+              <div
+                class="data-grid widget-grid-table-container widget-col widget-view"
+                :key="element && element.key"
+                :class="{ active: selectWidget.key == element.key }"
+                @click="handleSelectWidget(index)"
+              >
+                <table
+                  class="widget-grid-table"
+                  :style="{
+                    'border-width': element.options.borderWidth.toString() + 'px',
+                    borderColor: element.options.borderColor,
+                  }"
+                >
+                  <tr v-for="(row, rowIndex) in element.rows" :key="rowIndex">
+                    <td
+                      v-for="(col, colIndex) in row.columns"
+                      :key="colIndex"
+                      :colspan="col.options.colspan || 1"
+                      @click.stop="handleSelectTdWidget(col)"
+                      :rowspan="col.options.rowspan || 1"
+                      valign="middle"
+                      :style="{
+                        width: col.options.width,
+                        height: col.options.height
+                      }"
+                      align="left"
+                      :class="{ active: selectWidget.key == col.key }"
+                      class="widget-grid-table__td"
+                    >
+                      <Draggable
+                        v-model="col.list"
+                        v-bind="{
+                          group: 'people',
+                          ghostClass: 'ghost',
+                          animation: 200,
+                          handle: '.drag-widget',
+                        }"
+                        :no-transition-on-drag="true"
+                        @add="handleWidgetTdAdd($event, col)"
+                      >
+                        <transition-group name="fade" tag="div" class="widget-col-list">
+                          <WidgetFormItem v-for="(el, i) in col.list" :key="el.key" :element="el" :select.sync="selectWidget" :index="i" :data="col"></WidgetFormItem>
+                        </transition-group>
+                      </Draggable>
+                      <!-- td设置 -->
+                      <div class="widget-td-setting" v-if="selectWidget.key == col.key">
+                         <el-dropdown size="mini" trigger="click" @command="handleTdSettingCommand($event, element, row, rowIndex, col, colIndex)">
+                          <span class="el-dropdown-link">
+                            <i class="el-icon-setting el-icon--right" title="详细设置"></i>
+                          </span>
+                          <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="left-col">左插入列</el-dropdown-item>
+                            <el-dropdown-item command="right-col">右插入列</el-dropdown-item>
+                            <el-dropdown-item command="top-row">上插入行</el-dropdown-item>
+                            <el-dropdown-item command="bottom-row">下插入行</el-dropdown-item>
+                            <el-divider class="widget-td-setting-divider"></el-divider>
+                            <el-dropdown-item command="merge-right" :disabled="col.options.colspan + colIndex === row.columns.length || col.options.rowspan > 1">向右合并</el-dropdown-item>
+                            <el-dropdown-item command="merge-bottom" :disabled="rowIndex + col.options.rowspan === element.rows.length || col.options.colspan > 1">向下合并</el-dropdown-item>
+                            <el-divider class="widget-td-setting-divider"></el-divider>
+                            <el-dropdown-item command="split-row" :disabled="col.options.rowspan === 1">拆分为行</el-dropdown-item>
+                            <el-dropdown-item command="split-col" :disabled="col.options.colspan === 1">拆分为列</el-dropdown-item>
+                            <el-divider class="widget-td-setting-divider"></el-divider>
+                            <el-dropdown-item command="remove-col">删除当前列</el-dropdown-item>
+                            <el-dropdown-item command="remove-row" :disabled="col.options.rowspan>1">删除当前行</el-dropdown-item>
+                          </el-dropdown-menu>
+                        </el-dropdown>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
+                  <!-- 栅格布局自动加减 -->
+                  <template v-if="element.type === 'grid-table'">
+                    <i class="el-icon el-icon-document-add" title="添加列" @click.stop="handleColAdd(element)"></i>
+                    <i class="el-icon el-icon-folder-add" title="添加行" @click.stop="handleRowAdd(element)"></i>
+                    <i class="el-icon el-icon-document-copy" title="复制" @click.stop="handleTableClone(index)"></i>
+                  </template>
+                  <i class="el-icon el-icon-delete-solid" title="删除" @click.stop="handleWidgetDelete(index)"></i>
+                </div>
+                <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+                  <i class="el-icon el-icon-rank"></i>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <WidgetFormItem v-if="element && element.key" :key="element.key" :element="element" :select.sync="selectWidget" :index="index" :data="data"></WidgetFormItem>
             </template>
           </template>
         </transition-group>
       </Draggable>
     </el-form>
-
   </div>
 </template>
 
@@ -160,9 +199,101 @@ export default {
     };
   },
   methods: {
+    // 处理TD设置
+    handleTdSettingCommand(command, table, row, rowIndex, col, colIndex) {
+      switch (command) {
+        case 'left-col': this.handleColAdd(table, row, 'left'); break;
+        case 'right-col': this.handleColAdd(table, row, 'right'); break;
+        case 'top-row': this.handleRowAdd(table, 'top'); break;
+        case 'bottom-row': this.handleRowAdd(table, 'bottom'); break;
+        case 'merge-right': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'right'); break;
+        case 'merge-bottom': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'bottom'); break;
+        case 'split-col': this.handleTdSplitToCol(table, row, rowIndex, col, colIndex); break;
+        case 'split-row': this.handleTdSplitToRow(table, row, rowIndex, col, colIndex); break;
+        case 'remove-col': this.handleTdRemove(table, row, rowIndex, col, colIndex, 'col'); break;
+        case 'remove-row': this.handleTdRemove(table, row, rowIndex, col, colIndex, 'row'); break;
+        // eslint-disable-next-line no-unused-expressions
+        default: () => this.$message('暂无此功能');
+          break;
+      }
+    },
+    generateNewTd() {
+      return {
+        type: 'td',
+        options: {
+          colspan: 1,
+          rowspan: 1,
+          align: 'left',
+          valign: 'middle',
+          width: '',
+          height: '',
+        },
+        list: [],
+        key: `td_${Math.ceil(Math.random() * 99999)}`,
+      };
+    },
+    handleTdSplitToRow(table, row, rowIndex, col, colIndex) {
+      const { rowspan } = col.options;
+      const newCol = this.generateNewTd();
+      const rows = table.rows.slice(rowIndex + 1, rowIndex + rowspan);
+      rows.forEach((_) => {
+        _.columns.splice(colIndex, 0, newCol);
+      });
+      col.options.rowspan = 1;
+    },
+    handleTdSplitToCol(table, row, rowIndex, col, colIndex) {
+      const { colspan } = col.options;
+      for (let i = 0; i < colspan - 1; i += 1) {
+        const newCol = this.generateNewTd();
+        row.columns.splice(colIndex, 0, newCol);
+      }
+      col.options.colspan = 1;
+    },
+    // 处理删除当前行当前列
+    handleTdRemove(table, row, rowIndex, col, colIndex, direction) {
+      if (direction === 'col') {
+        table.rows.forEach((_) => {
+          _.columns.splice(colIndex, 1);
+        });
+      } else {
+        table.rows.splice(rowIndex, 1);
+      }
+    },
+    // 处理TD合并问题
+    handleTdSpanMerge(table, row, rowIndex, col, colIndex, direction) {
+      // 当前td向右合并
+      if (direction === 'right') {
+        const { length } = row.columns;
+        const nextColIndex = colIndex + col.options.colspan;
+        if (nextColIndex < length) {
+          // 当前td colspsan改为2
+          col.options.colspan += 1;
+          // 删除右侧元素
+          row.columns.splice(nextColIndex, 1);
+        } else {
+          this.$message.error('当前列已是最后一列');
+        }
+      } else {
+        const { length } = table.rows;
+        // 注意此处不能直接+1,否则删除的td一直是第二行的,在合并了之后继续向下合并时会有问题
+        const nextRowIndex = rowIndex + col.options.rowspan;
+        if (nextRowIndex < length) {
+          // 当前td rowspan改为2
+          col.options.rowspan += 1;
+          // 删除下一行当前列元素
+          table.rows[nextRowIndex].columns.splice(colIndex, 1);
+        } else {
+          this.$message.error('当前行已是最后一列');
+        }
+      }
+    },
     handleSelectWidget(index) {
       console.log(`子项被点击:${index}`);
       this.selectWidget = this.data.list[index];
+    },
+    handleSelectTdWidget(col) {
+      console.log(`td项被点击:${col.key}`);
+      this.selectWidget = col;
     },
     handleWidgetAdd(evt) {
       // console.log('元素被拖到外层handleWidgetAdd，evt:', evt);
@@ -170,17 +301,23 @@ export default {
       console.log(this.data.list[newIndex]);
       this.selectWidget = this.data.list[newIndex];
     },
+    handleWidgetTdAdd($event, col) {
+      const { newIndex, oldIndex, item } = $event;
+      // 防止布局元素的嵌套拖拽
+      if (item.className.indexOf('data-grid') >= 0) {
+        col.list[newIndex].splice(newIndex, 1);
+        return false;
+      }
+      this.selectWidget = col.list[newIndex];
+      return null;
+    },
     handleWidgetColAdd($event, row, colIndex) {
       const { newIndex, oldIndex, item } = $event;
       // 防止布局元素的嵌套拖拽
       if (item.className.indexOf('data-grid') >= 0) {
         // 如果是列表中拖拽的元素需要还原到原来位置
         if (item.tagName === 'DIV') {
-          this.data.list.splice(
-            oldIndex,
-            0,
-            row.columns[colIndex].list[newIndex],
-          );
+          this.data.list.splice(oldIndex, 0, row.columns[colIndex].list[newIndex]);
         }
         row.columns[colIndex].list.splice(newIndex, 1);
         return false;
@@ -204,6 +341,36 @@ export default {
         this.data.list.splice(index, 1);
       });
     },
+    handleColAdd(table, rowIndex, direction = 'right') {
+      const { rows } = table;
+      rows.forEach((row) => {
+        const { columns } = row;
+        const newCol = this.generateNewTd();
+        // 此处判断是左添加列还是右添加列
+        if (direction === 'right') {
+          columns.push(newCol);
+        } else {
+          columns.unshift(newCol);
+        }
+      });
+      table.options.sumColSpan += 1;
+    },
+    handleRowAdd(table, direction = 'bottom') {
+      const row = {
+        columns: [],
+      };
+      for (let i = 0; i < table.options.sumColSpan; i += 1) {
+        const newCol = this.generateNewTd();
+        row.columns.push(newCol);
+      }
+      // 此处判断是上方添加行还是下方添加行
+      if (direction === 'bottom') {
+        table.rows.push(row);
+      } else {
+        table.rows.unshift(row);
+      }
+      table.options.sumRowSpan += 1;
+    },
     handleGridAdd(grid) {
       grid.columns.push({
         span: 24,
@@ -221,6 +388,26 @@ export default {
       }
       const cloneData = {
         ...grid,
+        key: `grid_${Math.ceil(Math.random() * 99999)}`,
+      };
+      this.data.list.splice(index + 1, 0, cloneData);
+      this.$nextTick(() => {
+        this.selectWidget = this.data.list[index + 1];
+      });
+    },
+    handleTableClone(index) {
+      const table = JSON.parse(JSON.stringify(this.data.list[index]));
+      for (const row of table.rows) {
+        for (const col of row.columns) {
+          col.key = `td_${Math.ceil(Math.random() * 99999)}`;
+          for (const item of col.list) {
+            item.key = `${item.type}_${Math.ceil(Math.random() * 99999)}`;
+            item.model = item.key;
+          }
+        }
+      }
+      const cloneData = {
+        ...table,
         key: `grid_${Math.ceil(Math.random() * 99999)}`,
       };
       this.data.list.splice(index + 1, 0, cloneData);
