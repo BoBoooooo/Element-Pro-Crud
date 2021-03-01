@@ -29,7 +29,10 @@
             <!-- 生成每一行中的每一列元素 -->
             <el-col v-for="(col, colIndex) in item.columns"
                     :key="colIndex"
-                    :span="col.span">
+                    :span="col.span"
+                    :style="{
+                      'border': isNoBorder(col,item) ? 'none!important':'unset'
+                    }">>
               <!-- 遍历生成该列所有组件 -->
               <template v-for="citem in col.list">
                 <!-- 如果一个元素的type是blank就加载插槽 -->
@@ -171,6 +174,12 @@ export default class GenerateForm extends Vue {
       // 根据数据结构生成给子组件的数据源
       this.generateModel(this.data.list);
     }
+  }
+
+  // 若为表格布局并且当前栅格内只有一个元素并且为隐藏状态,隐藏边框线
+  isNoBorder(col, item) {
+    const { list } = col;
+    return this.data.config && this.data.config.isTableClass && list.every(_ => _.hidden) && item.columns.length === 1;
   }
 
   // 组件联动handler
@@ -417,5 +426,8 @@ export default class GenerateForm extends Vue {
   left: 20px;
   top: 30px;
   z-index: 2;
+}
+.no-border{
+  border:none!important;
 }
 </style>
