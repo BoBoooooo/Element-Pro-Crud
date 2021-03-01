@@ -31,7 +31,7 @@
                     :key="colIndex"
                     :span="col.span"
                     :style="{
-                      'border': isNoBorder(col,item) ? 'none!important':'unset'
+                      'border': isNoBorder(col,item) ? 'none!important':''
                     }">>
               <!-- 遍历生成该列所有组件 -->
               <template v-for="citem in col.list">
