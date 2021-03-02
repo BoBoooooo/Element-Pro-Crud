@@ -43,10 +43,15 @@
               <template v-for="citem in col.list">
                 <!-- 如果一个元素的type是blank就加载插槽 -->
                 <el-form-item v-if="citem.type=='blank'"
+                              :label-width="citem.options.hiddenLabel ? '0' : labelWidth(citem)"
                               v-show="!citem.hidden"
-                              :label="citem.name"
                               :prop="citem.model"
                               :key="citem.key">
+                  <template slot="label">
+                    <template v-if="!citem.options.hiddenLabel">
+                      <span>{{citem.name}}</span>
+                    </template>
+                  </template>
                   <slot :name="citem.model"
                         :widget="citem"
                         :model="models"></slot>
@@ -70,10 +75,15 @@
         </template>
         <!-- 不嵌套栅格布局时自定义组件 -->
         <template v-else-if="item.type === 'blank'">
-          <el-form-item :label="item.name"
+          <el-form-item :label-width="item.options.hiddenLabel ? '0' : labelWidth(item)"
                         :prop="item.model"
                         :key="item.key"
                         v-show="!item.hidden">
+            <template slot="label">
+                    <template v-if="!citem.options.hiddenLabel">
+                      <span>{{citem.name}}</span>
+                    </template>
+                  </template>
             <slot :name="item.model"
                   :model="models"
                   :widget="item"></slot>
@@ -386,6 +396,19 @@ export default class GenerateForm extends Vue {
       });
     });
   }
+
+  labelWidth(item) {
+    const { type, labelWidth } = item;
+    let label = 'text,comment'.includes(type) ? '0px' : labelWidth || undefined;
+    if (label) {
+      label = label.toString();
+      if (!label.includes('px')) {
+        label += 'px';
+      }
+    }
+    return label;
+  }
+
 
   // 重置表单
   resetForm() {
