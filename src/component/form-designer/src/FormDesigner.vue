@@ -14,6 +14,40 @@
           Form Generate
         </span>
       </div>
+      <!-- 选择设备型号 -->
+      <div class="device-bar btn-bar">
+         <el-button
+          type="primary"
+          class="device-btn"
+          size="small"
+          icon="el-icon-monitor"
+          @click="setDeviceMode('pc')"
+          :class="{
+            active: deviceMode === 'pc',
+          }"
+          ></el-button
+        >
+         <el-button
+          type="primary"
+          class="device-btn"
+          size="small"
+          icon="el-icon-mobile"
+          @click="setDeviceMode('pad')"
+          :class="{
+            active: deviceMode === 'pad',
+          }"
+          ></el-button>
+        <el-button
+          type="primary"
+          size="small"
+          class="device-btn"
+          icon="el-icon-mobile-phone"
+          @click="setDeviceMode('mobile')"
+          :class="{
+            active: deviceMode === 'mobile',
+          }"
+          ></el-button>
+      </div>
       <div class="btn-bar">
         <el-button
           type="primary"
@@ -106,10 +140,10 @@
       <el-container class="center-container" direction="vertical">
         <!-- 中间区域中央设计区域，data:widgetForm用于保存生成后的json -->
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
-          <WidgetForm v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
+          <WidgetForm :deviceMode="deviceMode" v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
           <template v-else>
             <el-alert type="warning" :closable="false" style="margin-bottom:15px">异步及依赖远端数据的组件需要结合代码!</el-alert>
-            <GenerateForm :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
+            <GenerateForm :deviceMode="deviceMode" :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
             <el-button size="small" style="float:right;margin-top: 15px" type="primary" @click="handleTest">获取表单数据</el-button>
           </template>
         </el-main>
@@ -273,11 +307,17 @@ export default {
         success: [],
       },
       dialogStatus: null,
-      // 当前模式
+      // 当前设计模式
       currentMode: 'design',
+      // 当前设备
+      deviceMode: 'pc',
     };
   },
   methods: {
+    // 切换设备型号
+    setDeviceMode(mode) {
+      this.deviceMode = mode;
+    },
     // 切换布局
     changeMode(mode) {
       this.currentMode = mode;

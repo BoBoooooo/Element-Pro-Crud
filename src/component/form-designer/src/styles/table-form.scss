@@ -12,6 +12,29 @@
       border-#{$position}: $style;
     }
   }
+  .form{
+    padding: 10px;
+    &.pad,&.mobile{
+      position: absolute;
+      margin: auto;
+      background: #fafafa;
+      box-shadow: 0 4px 12px #ebedf0;
+      top: 60px;
+      padding: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 100px;
+      border: 1px dashed #606266;    
+    }
+    &.pad{
+      width: 770px;
+      border-radius: 5px;
+    }
+    &.mobile{
+      width: 375px;
+      border-radius: 12px;
+    }
+  }
   /deep/.table-form {
     .el-row {
       @include border-style('left');

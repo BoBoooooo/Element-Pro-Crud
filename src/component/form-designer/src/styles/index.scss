@@ -139,6 +139,25 @@ $primary-background-color: #ecf5ff;
   left: 0;
   right: 0;
   bottom: 0;
+  &.pad,&.mobile{
+    margin: auto;
+    background: #fafafa;
+    box-shadow: 0 4px 12px #ebedf0;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+  &.pad{
+    width: 770px;
+    border: 0;
+    border-radius: 5px;
+  }
+  &.mobile{
+    width: 375px;
+    border: 0;
+    border-radius: 12px;
+  }
   .widget-form{
     height: 100%;
   }
@@ -693,6 +712,20 @@ $primary-background-color: #ecf5ff;
       display: inline-block;
     }
   }
+  .device-bar{
+    left: 260px;
+    right: unset!important;
+    .device-btn{
+      padding: 10px;
+      &:hover{
+        color: #333!important;
+      }
+      &.active{
+        background: transparent!important;
+        color: #2d88f8!important;
+      }
+    }
+  }
   .btn-bar {
     // height: 45px;
     // line-height: 45px;
@@ -708,7 +741,7 @@ $primary-background-color: #ecf5ff;
       background: none!important;
       border: none!important;
       color: #666!important;
-      padding: 9px!important;
+      padding: 9px;
       flex: 1;
       i{
         display: block;

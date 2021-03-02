@@ -11,11 +11,17 @@
 <template>
   <div class="table-form-wrapper">
       <el-form ref="generateForm"
-             :class='{"table-form":data.config && data.config.isTableClass}'
+             :class='{
+                "table-form":data.config && data.config.isTableClass,
+                "pad": deviceMode === "pad",
+                "mobile": deviceMode ==="mobile",
+             }'
+             class="form"
              :model="models"
              :label-position="data.config && data.config.labelPosition"
              :label-width="data.config && data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
-             :size="data.config.size">
+             :size="data.config.size"
+             >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="item in this.data.list">
         <!-- 如果这一行时网格grid布局 -->
@@ -32,7 +38,7 @@
                     :span="col.span"
                     :style="{
                       'border': isNoBorder(col,item) ? 'none!important':''
-                    }">>
+                    }">
               <!-- 遍历生成该列所有组件 -->
               <template v-for="citem in col.list">
                 <!-- 如果一个元素的type是blank就加载插槽 -->
@@ -199,6 +205,13 @@ export default class GenerateForm extends Vue {
     default: () => ({}),
   })
   formTableConfig: any;
+
+  // deviceMode
+  @Prop({
+    type: String,
+    default: 'pc',
+  })
+  deviceMode!: string;
 
   // 当前表单实体对象
   models: any = {};
