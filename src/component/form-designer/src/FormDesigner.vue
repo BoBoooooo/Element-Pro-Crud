@@ -86,7 +86,7 @@
       </div>
     </el-header>
     <!-- 对话框 -->
-    <el-container style="height:100%">
+    <el-container style="height: calc(100% - 54px)">
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%;max-width:250px">
         <div class="components-list">
@@ -150,7 +150,7 @@
       </el-container>
       <!-- 右侧边栏 -->
       <el-aside class="widget-config-container" style="width:300px;">
-        <el-container class="full-height">
+        <el-container style="height: 100%">
           <el-header height="45px" style="width: 300px">
             <div class="config-tab" :class="{ active: configTab == 'widget' }" @click="handleConfigSelect('widget')">
               字段属性
@@ -272,7 +272,7 @@ export default {
         list: [],
         config: {
           labelWidth: 140,
-          labelPosition: 'top',
+          labelPosition: 'right',
           columnList: [],
         },
       },

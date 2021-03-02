@@ -474,6 +474,8 @@ export default class GenerateForm extends Vue {
 </script>
 <style lang="scss" scoped>
 @import './styles/table-form.scss';
+@import './styles/grid-table-form.scss';
+
 .dev-module{
   position: absolute;
   left: 20px;
@@ -482,18 +484,5 @@ export default class GenerateForm extends Vue {
 }
 .no-border{
   border:none!important;
-}
-
-.grid-table{
-  border-collapse: collapse;
-}
-.grid-table-td{
-  border-right-width: 1px;
-    border-right-color: rgb(153, 153, 153);
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(153, 153, 153);
-        border-bottom-style: solid;
-    border-right-style: solid;
-    padding: 5px;
 }
 </style>

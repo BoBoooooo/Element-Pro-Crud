@@ -139,6 +139,7 @@ $primary-background-color: #ecf5ff;
   left: 0;
   right: 0;
   bottom: 0;
+  border: 1px dashed #999;
   &.pad,&.mobile{
     margin: auto;
     background: #fafafa;
@@ -163,7 +164,6 @@ $primary-background-color: #ecf5ff;
   }
   .widget-form-list {
     background: #fff;
-    border: 1px dashed #999;
     height: 100%;
     padding-bottom: 20px;
     // margin: 2px;
@@ -175,6 +175,7 @@ $primary-background-color: #ecf5ff;
 
     .widget-view {
       // padding-bottom: 18px;
+      padding: 5px;
       position: relative;
       border: 1px dashed hsla(0, 0%, 66.7%, 0.7);
       background-color: rgba(236, 245, 255, 0.3);
@@ -453,7 +454,7 @@ $primary-background-color: #ecf5ff;
 
     .widget-col {
       padding-bottom: 0;
-      padding: 3px;
+      padding: 5px;
       // margin-left: 2px !important;
       // margin-right: 2px !important;
       background-color: rgba(253, 246, 236, 0.3);

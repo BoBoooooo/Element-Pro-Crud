@@ -141,13 +141,13 @@
                             <el-dropdown-item command="top-row">上插入行</el-dropdown-item>
                             <el-dropdown-item command="bottom-row">下插入行</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
-                            <el-dropdown-item command="merge-right" :disabled="col.options.colspan + colIndex === row.columns.length || col.options.rowspan > 1">向右合并</el-dropdown-item>
-                            <el-dropdown-item command="merge-bottom" :disabled="rowIndex + col.options.rowspan === element.rows.length || col.options.colspan > 1">向下合并</el-dropdown-item>
+                            <el-dropdown-item command="merge-right" :disabled="!row.columns[colIndex + 1]|| col.options.rowspan > 1">向右合并</el-dropdown-item>
+                            <el-dropdown-item command="merge-bottom" :disabled="rowIndex + col.options.rowspan >= element.rows.length || col.options.colspan > 1">向下合并</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
                             <el-dropdown-item command="split-row" :disabled="col.options.rowspan === 1">拆分为行</el-dropdown-item>
                             <el-dropdown-item command="split-col" :disabled="col.options.colspan === 1">拆分为列</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
-                            <el-dropdown-item command="remove-col">删除当前列</el-dropdown-item>
+                            <el-dropdown-item command="remove-col" :disabled="col.options.colspan>1">删除当前列</el-dropdown-item>
                             <el-dropdown-item command="remove-row" :disabled="col.options.rowspan>1">删除当前行</el-dropdown-item>
                           </el-dropdown-menu>
                         </el-dropdown>
@@ -222,6 +222,7 @@ export default {
       }
     },
     generateNewTd() {
+      const key = `td_${Math.ceil(Math.random() * 99999)}`;
       return {
         type: 'td',
         options: {
@@ -233,7 +234,8 @@ export default {
           height: '',
         },
         list: [],
-        key: `td_${Math.ceil(Math.random() * 99999)}`,
+        key,
+        model: key,
       };
     },
     handleTdSplitToRow(table, row, rowIndex, col, colIndex) {
@@ -253,14 +255,64 @@ export default {
       }
       col.options.colspan = 1;
     },
-    // 处理删除当前行当前列
+    // 处理删除当前行/当前列
     handleTdRemove(table, row, rowIndex, col, colIndex, direction) {
       if (direction === 'col') {
+        // 1. 找出当前列相对sumColSpan位置
+        let relativeIndex;
+        // 如果当前行列数跟总列数相等,表名该行所有列没有合并列
+        if (row.columns.length === table.options.sumColSpan) {
+          relativeIndex = colIndex;
+        } else {
+          // 判断该列的左侧是否有合并列
+          const leftCols = row.columns.slice(0, colIndex);
+          // 如果没有默认为当前列index
+          if (leftCols.every(_ => _.options.colspan === 1)) {
+            relativeIndex = colIndex;
+          } else {
+            // 如果左侧存在合并列 通过各列colspan求和得到当前列的相对序号
+            relativeIndex = leftCols.map(_ => _.options.colspan).reduce((preValue, curValue) => preValue + curValue);
+          }
+        }
         table.rows.forEach((_) => {
-          _.columns.splice(colIndex, 1);
+          const lastCol = _.columns[_.columns.length - 1];
+          // 判断是否存在相对位置列,存在则直接删除,不存在则直接读取最后一列
+          const currentCol = _.columns[relativeIndex] || lastCol;
+          if (currentCol) {
+            if (currentCol.options.colspan === 1) {
+              _.columns.splice(colIndex, 1);
+            } else {
+              currentCol.options.colspan -= 1;
+            }
+          }
         });
-      } else {
+        table.options.sumColSpan -= 1;
+      }
+
+      if (direction === 'row') {
+        // 如果当前行列总数小于整个table列总数,说明存在合并行情况
+        if (row.columns.length < table.options.sumColSpan) {
+          // 如果当前行没有合并其他行
+          if (row.columns.every(_ => _.options.rowspan === 1)) {
+            let mergedRow;
+            for (let i = rowIndex - 1; i > 0 && i < rowIndex; i -= 1) {
+              const currentRow = table.rows[i].columns;
+              const targetRow = currentRow.filter(_ => _.options.rowspan > 1).pop();
+              if (targetRow) {
+                mergedRow = targetRow;
+                break;
+              }
+            }
+            if (mergedRow) {
+              mergedRow.options.rowspan -= 1;
+            }
+            console.log('mergedRow', mergedRow);
+          } else { // 如果当前行存在合并其他行的情况
+            console.log('todo');
+          }
+        }
         table.rows.splice(rowIndex, 1);
+        table.options.sumRowSpan -= 1;
       }
     },
     // 处理TD合并问题
@@ -268,12 +320,12 @@ export default {
       // 当前td向右合并
       if (direction === 'right') {
         const { length } = row.columns;
-        const nextColIndex = colIndex + col.options.colspan;
+        const nextColIndex = colIndex + 1;
         if (nextColIndex < length) {
           // 当前td colspsan改为2
-          col.options.colspan += 1;
+          row.columns[nextColIndex].options.colspan += col.options.colspan;
           // 删除右侧元素
-          row.columns.splice(nextColIndex, 1);
+          row.columns.splice(colIndex, 1);
         } else {
           this.$message.error('当前列已是最后一列');
         }
@@ -283,11 +335,11 @@ export default {
         const nextRowIndex = rowIndex + col.options.rowspan;
         if (nextRowIndex < length) {
           // 当前td rowspan改为2
-          col.options.rowspan += 1;
+          col.options.rowspan += table.rows[nextRowIndex].columns[colIndex].options.rowspan;
           // 删除下一行当前列元素
           table.rows[nextRowIndex].columns.splice(colIndex, 1);
         } else {
-          this.$message.error('当前行已是最后一列');
+          this.$message.error('当前行已是最后一行');
         }
       }
     },
