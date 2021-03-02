@@ -80,8 +80,8 @@
                         :key="item.key"
                         v-show="!item.hidden">
             <template slot="label">
-                    <template v-if="!citem.options.hiddenLabel">
-                      <span>{{citem.name}}</span>
+                    <template v-if="!item.options.hiddenLabel">
+                      <span>{{item.name}}</span>
                     </template>
                   </template>
             <slot :name="item.model"
