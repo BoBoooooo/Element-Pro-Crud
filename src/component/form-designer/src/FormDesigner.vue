@@ -58,7 +58,7 @@
         <div class="components-list">
           <div class="widget-cate">表单组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
-            <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index">
+            <li class="form-edit-widget-label" v-for="(item, index) in basicComponents" :key="index" @click="addWidget(item)">
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -67,7 +67,7 @@
           </Draggable>
           <div class="widget-cate">高级/异步组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="advanceComponents" v-bind="getDraggableOptions()" :move="handleMove">
-            <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index">
+            <li class="form-edit-widget-label" v-for="(item, index) in advanceComponents" :key="index" @click="addWidget(item)">
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -83,6 +83,7 @@
               }"
               v-for="(item, index) in layoutComponents"
               :key="index"
+               @click="addWidget(item)"
             >
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -92,7 +93,7 @@
           </Draggable>
           <div class="widget-cate">基础图表</div>
           <Draggable :clone="handleClone" tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
-            <li class="form-edit-widget-label" v-for="(item, index) in chartComponents" :key="index">
+            <li class="form-edit-widget-label" v-for="(item, index) in chartComponents" :key="index"  @click="addWidget(item)">
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -280,6 +281,12 @@ export default {
     // 切换布局
     changeMode(mode) {
       this.currentMode = mode;
+    },
+    // 点击添加组件
+    addWidget(item) {
+      this.widgetForm.list.push(
+        this.handleClone(item),
+      );
     },
     // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
     handleClone(origin) {

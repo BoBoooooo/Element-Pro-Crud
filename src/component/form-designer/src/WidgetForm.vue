@@ -1,6 +1,6 @@
 <template>
   <div class="widget-form-container">
-    <div v-if="data.list.length == 0" class="form-empty"><SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽组件至这里吧!</div>
+    <div v-if="data.list.length == 0" class="form-empty"><SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽 或 点击 添加组件至此处!</div>
     <el-form :label-position="data.config.labelPosition" :label-width="data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'" :size="data.config.size" class="widget-form">
       <Draggable
         class="widget-form"
