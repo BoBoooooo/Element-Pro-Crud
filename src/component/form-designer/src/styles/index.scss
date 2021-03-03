@@ -177,6 +177,7 @@ $primary-background-color: #ecf5ff;
     .widget-view {
       // padding-bottom: 18px;
       padding: 5px;
+      overflow: hidden;
       position: relative;
       border: 1px dashed hsla(0, 0%, 66.7%, 0.7);
       background-color: rgba(236, 245, 255, 0.3);
