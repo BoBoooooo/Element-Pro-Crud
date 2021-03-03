@@ -103,6 +103,7 @@
                   v-for="(col,colIndex) in row.columns" :key="colIndex"
                   :colspan="col.options.colspan || 1"
                   :rowspan="col.options.rowspan || 1"
+                  @click.stop="clickTdAutoFocus($event,col)"
                   valign="middle"
                   align="left"
                   class="grid-table-td"
@@ -409,6 +410,31 @@ export default class GenerateForm extends Vue {
     return label;
   }
 
+  // 单元格中为input,select,textarea时会默认聚焦
+  clickTdAutoFocus(event, td) {
+    // 判断单元格中是否有组件
+    if (td.list.length > 0) {
+      const dom = event.target;
+      const [target] = td.list;
+      // 当点击单元格时,聚焦组件
+      if (dom.tagName === 'TD') {
+        switch (target.type) {
+          case 'input':
+            dom.getElementsByTagName('INPUT')[0].focus();
+            break;
+          case 'select':
+            dom.getElementsByTagName('INPUT')[0].focus();
+            break;
+          case 'textarea':
+            dom.getElementsByTagName('TEXTAREA')[0].focus();
+            break;
+          default: return false;
+        }
+      }
+      return false;
+    }
+    return false;
+  }
 
   // 重置表单
   resetForm() {
