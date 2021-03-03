@@ -29,8 +29,8 @@ export interface Params {
   pageSize: number;
 }
 export interface DataSource {
-  data: any[]
-  total: number
+  data: any[];
+  total: number;
 }
 
 export interface columns {
@@ -40,22 +40,22 @@ export interface columns {
 }
 
 export interface columnConfig {
-  prop: string // 字段名
-  label: string // 表头
-  width?: number // 宽度
-  minWidth: number // 最小宽度
-  align: boolean // 内容对齐方式
-  headerAlign: boolean // 表头对齐方式
-  slotName: string // 自定义插槽名
-  fixed: string // 列对齐方式
-  sortable: 'false' | 'custom' // 是否可排序
-  searchable: boolean // 是否可查询
+  prop: string; // 字段名
+  label: string; // 表头
+  width?: number; // 宽度
+  minWidth: number; // 最小宽度
+  align: boolean; // 内容对齐方式
+  headerAlign: boolean; // 表头对齐方式
+  slotName: string; // 自定义插槽名
+  fixed: string; // 列对齐方式
+  sortable: 'false' | 'custom'; // 是否可排序
+  searchable: boolean; // 是否可查询
 }
 
 export interface fn {
-  (...args: any[]): any
+  (...args: any[]): any;
 }
 
 export interface AnyObject {
-  [key: string]: any
+  [key: string]: any;
 }

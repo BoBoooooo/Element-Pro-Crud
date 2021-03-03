@@ -41,7 +41,7 @@ export function chunk(array, size) {
  * @param params
  */
 export function debounce(method, params) {
-  let timer:any = null;
+  let timer: any = null;
   // eslint-disable-next-line func-names
   return function () {
     clearTimeout(timer);

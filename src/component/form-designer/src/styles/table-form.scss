@@ -12,9 +12,10 @@
       border-#{$position}: $style;
     }
   }
-  .form{
+  .form {
     padding: 10px;
-    &.pad,&.mobile{
+    &.pad,
+    &.mobile {
       position: absolute;
       margin: auto;
       background: #fafafa;
@@ -24,13 +25,13 @@
       left: 10px;
       right: 10px;
       bottom: 100px;
-      border: 1px dashed #606266;    
+      border: 1px dashed #606266;
     }
-    &.pad{
+    &.pad {
       width: 770px;
       border-radius: 5px;
     }
-    &.mobile{
+    &.mobile {
       width: 375px;
       border-radius: 12px;
     }
@@ -51,11 +52,11 @@
           margin-bottom: 0;
           display: flex;
           width: 100%;
-          height:100%;
+          height: 100%;
           box-sizing: border-box;
           align-items: center;
           .el-form-item__label {
-            font-family: KaiTi,STKaiti;
+            font-family: KaiTi, STKaiti;
             font-size: 16px;
             flex-shrink: 0;
             text-align: center;
@@ -70,11 +71,11 @@
             display: flex;
             align-items: center;
             padding: 10px 0;
-            .el-checkbox-group{
-              padding-left:10px;
-              padding-right:10px;
-              .el-checkbox-button__inner{
-                border:none;
+            .el-checkbox-group {
+              padding-left: 10px;
+              padding-right: 10px;
+              .el-checkbox-button__inner {
+                border: none;
               }
             }
             input,
@@ -85,14 +86,14 @@
                 box-shadow: none;
               }
             }
-            .el-date-editor{
+            .el-date-editor {
               border: none;
             }
-            .vue-treeselect__control{
-              border:none;
-              outline:none;
+            .vue-treeselect__control {
+              border: none;
+              outline: none;
             }
-            >.el-form-item__error{
+            > .el-form-item__error {
               top: calc(100% - 18px);
               left: 15px;
               overflow: hidden;

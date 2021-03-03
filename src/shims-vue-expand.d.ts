@@ -21,7 +21,7 @@ declare enum DML {
 interface optionsType {
   getFormDetail: Function;
   getTableDetail: Function;
-  crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise
+  crud: (dml: DML, tableName: string, data?: object, params?: object) => AxiosPromise;
 }
 declare module 'vue/types/vue' {
   interface Vue {
@@ -38,7 +38,6 @@ declare module 'vue/types/vue' {
     install: any;
   }
 }
-
 
 declare global {
   interface Window {

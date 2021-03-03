@@ -355,23 +355,30 @@ export const basicComponents = [
       disabled: false,
       showCount: false,
       disableBranchNodes: true,
-      remoteOptions: [{
-        value: '测试数据A',
-        label: '测试数据A',
-        children: [{
-          value: '测试数据AA',
-          label: '测试数据AA',
-        }, {
-          value: '测试数据AB',
-          label: '测试数据AB',
-        }],
-      }, {
-        value: '测试数据B',
-        label: '测试数据B',
-      }, {
-        value: '测试数据C',
-        label: '测试数据C',
-      }],
+      remoteOptions: [
+        {
+          value: '测试数据A',
+          label: '测试数据A',
+          children: [
+            {
+              value: '测试数据AA',
+              label: '测试数据AA',
+            },
+            {
+              value: '测试数据AB',
+              label: '测试数据AB',
+            },
+          ],
+        },
+        {
+          value: '测试数据B',
+          label: '测试数据B',
+        },
+        {
+          value: '测试数据C',
+          label: '测试数据C',
+        },
+      ],
       hiddenLabel: false,
     },
   },
@@ -625,20 +632,30 @@ export const chartComponents = [
         yAxis: {
           type: 'value',
         },
-        series: [{
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line',
-        }],
+        series: [
+          {
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: 'line',
+          },
+        ],
       },
     },
   },
 ];
 
-
 // 组件配置信息枚举
 export const elementComponentConfig = {
   tabs: {
-    type: [{ label: '普通', value: '' }, { label: '选项卡', value: 'card' }, { label: '卡片化', value: 'border-card' }],
-    position: [{ label: '顶部', value: 'top' }, { label: '左侧', value: 'left' }, { label: '右侧', value: 'right' }, { label: '底部', value: 'bottom' }],
+    type: [
+      { label: '普通', value: '' },
+      { label: '选项卡', value: 'card' },
+      { label: '卡片化', value: 'border-card' },
+    ],
+    position: [
+      { label: '顶部', value: 'top' },
+      { label: '左侧', value: 'left' },
+      { label: '右侧', value: 'right' },
+      { label: '底部', value: 'bottom' },
+    ],
   },
 };

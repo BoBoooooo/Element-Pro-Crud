@@ -8,7 +8,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-
 const originalPush = VueRouter.prototype.push;
 
 // 处理路由跳转会报错的问题
@@ -17,7 +16,6 @@ VueRouter.prototype.push = function push(...rest) {
 };
 
 Vue.use(VueRouter);
-
 
 export default new VueRouter({
   routes: [

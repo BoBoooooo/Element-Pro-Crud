@@ -17,7 +17,4 @@ GenerateForm.install = function (Vue, options) {
   Vue.component(GenerateForm.name, GenerateForm);
 };
 
-export {
-  FormDesigner,
-  GenerateForm,
-};
+export { FormDesigner, GenerateForm };

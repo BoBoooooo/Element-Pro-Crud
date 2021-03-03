@@ -14,7 +14,6 @@ import CrudTable from './component/crud-table';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
-
   {
     name: 'CrudTable',
     component: CrudTable,

@@ -22,27 +22,25 @@ export default function (url, name, params, requestType = 'get') {
   } else {
     axiosObj = Vue.prototype.$PROCRUD.axios.post(url, params, { responseType: 'blob' });
   }
-  axiosObj
-    .then((res) => {
-      if (!res) {
-        return;
-      }
-      const blob = new Blob([res]);
-      const date = new Date();
-      let fileName;
-      if (/^.*\..{1,4}$/.test(name)) {
-        fileName = name;
-      } else {
-        fileName = `${name} ${date.getFullYear()}年${date.getMonth()
-          + 1}月${date.getDate()}日${date.getHours()}时${date.getMinutes()}分${date.getSeconds()}秒.xls`;
-      }
-      const aTag = document.createElement('a');
-      aTag.style.display = 'none';
-      aTag.download = fileName;
-      aTag.href = URL.createObjectURL(blob);
-      document.body.appendChild(aTag);
-      aTag.click();
-      URL.revokeObjectURL(aTag.href);
-      document.body.removeChild(aTag);
-    });
+  axiosObj.then((res) => {
+    if (!res) {
+      return;
+    }
+    const blob = new Blob([res]);
+    const date = new Date();
+    let fileName;
+    if (/^.*\..{1,4}$/.test(name)) {
+      fileName = name;
+    } else {
+      fileName = `${name} ${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日${date.getHours()}时${date.getMinutes()}分${date.getSeconds()}秒.xls`;
+    }
+    const aTag = document.createElement('a');
+    aTag.style.display = 'none';
+    aTag.download = fileName;
+    aTag.href = URL.createObjectURL(blob);
+    document.body.appendChild(aTag);
+    aTag.click();
+    URL.revokeObjectURL(aTag.href);
+    document.body.removeChild(aTag);
+  });
 }

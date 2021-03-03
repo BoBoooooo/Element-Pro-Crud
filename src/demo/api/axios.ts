@@ -5,7 +5,7 @@
  * @createDate 2018年11月13日10:52:32
  */
 import axios from 'axios';
-import { Message, MessageBox } from "element-ui"; // eslint-disable-line
+import { Message, MessageBox } from 'element-ui'; // eslint-disable-line
 // axios详细配置参考：
 // https://github.com/axios/axios#request-config
 
@@ -50,17 +50,13 @@ service.interceptors.response.use(
       window.location.reload(); // 为了重新实例化vue-router对象，避免bug
     } else if (code === 500) {
       // 极端情况服务器错误
-      ElMessageBox.alert(
-        `状态码：500<br>接口：${response.request.responseURL}<br>原因：${message}`,
-        '请截图并联系运维人员',
-        {
-          confirmButtonText: '我知道了',
-          type: 'warning',
-          dangerouslyUseHTMLString: true,
-          customClass: 'msgBox',
-          showClose: true,
-        },
-      );
+      ElMessageBox.alert(`状态码：500<br>接口：${response.request.responseURL}<br>原因：${message}`, '请截图并联系运维人员', {
+        confirmButtonText: '我知道了',
+        type: 'warning',
+        dangerouslyUseHTMLString: true,
+        customClass: 'msgBox',
+        showClose: true,
+      });
     } else if (code === 400) {
       // 业务失败情况统一拦截
       ElMessageBox.alert(`原因：${message}`, '操作失败', {

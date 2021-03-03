@@ -32,6 +32,7 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "prettier": "prettier --write 'src/**/*.{ts,js,scss}'",
     "report": "cross-env IS_REPORT=true vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish",
@@ -39,7 +40,6 @@
     "cz": "npm run log && git add . && git cz"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-umd": "^7.12.1",
     "@riophae/vue-treeselect": "^0.4.0",
     "@types/ace": "0.0.42",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -71,7 +71,7 @@
     "longest": "^2.0.1",
     "node-sass": "^4.12.0",
     "path": "^0.12.7",
-    "pinyin-match": "^1.0.9",
+    "prettier": "^2.2.1",
     "right-pad": "^1.0.1",
     "sass-loader": "^7.1.0",
     "svg-sprite-loader": "^4.1.6",
@@ -99,6 +99,8 @@
   "lint-staged": {
     "src/**/*.{js,vue,ts}": [
       "npm run lint",
+      "npm run prettier",
+      "eslint --fix",
       "git add"
     ]
   },
