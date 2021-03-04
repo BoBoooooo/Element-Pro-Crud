@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.8.8-13",
+  "version": "0.8.8-14",
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "main": "lib/ProCrud.umd.min.js",
   "files": [
@@ -99,7 +99,6 @@
   "lint-staged": {
     "src/**/*.{js,vue,ts}": [
       "npm run lint",
-      "npm run prettier",
       "eslint --fix",
       "git add"
     ]

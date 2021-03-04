@@ -266,7 +266,14 @@ export default class GenerateForm extends Vue {
                 switch (_.operator) {
                   case 'show':
                     this.$set(field, 'hidden', false);
-                    this.models[_.field] = _.value;
+                    // 如果被联动组件值为空,默认显示规则中默认值
+                    if ((!this.models[_.field] || this.models[_.field].length === 0) && _.value) {
+                      if (Array.isArray(this.models[_.field])) {
+                        this.models[_.field].push(_.value);
+                      } else {
+                        this.models[_.field] = _.value;
+                      }
+                    }
                     break;
                   case 'hidden':
                     this.$set(field, 'hidden', true);
