@@ -10,64 +10,59 @@
 -->
 <template>
   <div class="table-form-wrapper">
-      <el-form ref="generateForm"
-             :class='{
-                "table-form":data.config && data.config.isTableClass,
-                "pad": deviceMode === "pad",
-                "mobile": deviceMode ==="mobile",
-             }'
-             class="form"
-             :model="models"
-             :label-position="data.config && data.config.labelPosition"
-             :label-width="data.config && data.config.labelWidth?data.config.labelWidth+ 'px':'140px'"
-             :size="data.config.size"
-             >
+    <el-form
+      ref="generateForm"
+      :class="{
+        'table-form': data.config && data.config.isTableClass,
+        pad: deviceMode === 'pad',
+        mobile: deviceMode === 'mobile',
+      }"
+      class="form"
+      :model="models"
+      :label-position="data.config && data.config.labelPosition"
+      :label-width="data.config && data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'"
+      :size="data.config.size"
+    >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="item in this.data.list">
         <!-- 如果这一行时网格grid布局 -->
         <template v-if="item.type == 'grid'">
           <!-- 每一行元素与基于el-row和el-col生成 -->
-          <el-row :key="item.key"
-                  type="flex"
-                  :gutter="item.options.gutter ? item.options.gutter : 0"
-                  :justify="item.options.justify"
-                  :align="item.options.align">
+          <el-row :key="item.key" type="flex" :gutter="item.options.gutter ? item.options.gutter : 0" :justify="item.options.justify" :align="item.options.align">
             <!-- 生成每一行中的每一列元素 -->
-            <el-col v-for="(col, colIndex) in item.columns"
-                    :key="colIndex"
-                    :span="col.span"
-                    :style="{
-                      'border': isNoBorder(col,item) ? 'none!important':''
-                    }">
+            <el-col
+              v-for="(col, colIndex) in item.columns"
+              :key="colIndex"
+              :span="col.span"
+              :style="{
+                border: isNoBorder(col, item) ? 'none!important' : '',
+              }"
+            >
               <!-- 遍历生成该列所有组件 -->
               <template v-for="citem in col.list">
                 <!-- 如果一个元素的type是blank就加载插槽 -->
-                <el-form-item v-if="citem.type=='blank'"
-                              :label-width="citem.options.hiddenLabel ? '0' : labelWidth(citem)"
-                              v-show="!citem.hidden"
-                              :prop="citem.model"
-                              :key="citem.key">
+                <el-form-item v-if="citem.type == 'blank'" :label-width="citem.options.hiddenLabel ? '0' : labelWidth(citem)" v-show="!citem.hidden" :prop="citem.model" :key="citem.key">
                   <template slot="label">
                     <template v-if="!citem.options.hiddenLabel">
-                      <span>{{citem.name}}</span>
+                      <span>{{ citem.name }}</span>
                     </template>
                   </template>
-                  <slot :name="citem.model"
-                        :widget="citem"
-                        :model="models"></slot>
+                  <slot :name="citem.model" :widget="citem" :model="models"></slot>
                 </el-form-item>
                 <!-- 正常组件通过GenerateFormItem生成 -->
-                <GenerateFormItem v-else
-                                  @selection-change="getTableSelection($event,citem)"
-                                  :key="citem.key"
-                                  :models="models"
-                                  :remote="remote"
-                                  :widget="citem"
-                                  :readOnly="readOnly"
-                                  @btnOnClick="btnOnClick"
-                                  @chartOnClick="chartOnClick"
-                                  v-show="!citem.hidden"
-                                  :formTableConfig="formTableConfig">
+                <GenerateFormItem
+                  v-else
+                  @selection-change="getTableSelection($event, citem)"
+                  :key="citem.key"
+                  :models="models"
+                  :remote="remote"
+                  :widget="citem"
+                  :readOnly="readOnly"
+                  @btnOnClick="btnOnClick"
+                  @chartOnClick="chartOnClick"
+                  v-show="!citem.hidden"
+                  :formTableConfig="formTableConfig"
+                >
                 </GenerateFormItem>
               </template>
             </el-col>
@@ -75,73 +70,75 @@
         </template>
         <!-- 不嵌套栅格布局时自定义组件 -->
         <template v-else-if="item.type === 'blank'">
-          <el-form-item :label-width="item.options.hiddenLabel ? '0' : labelWidth(item)"
-                        :prop="item.model"
-                        :key="item.key"
-                        v-show="!item.hidden">
+          <el-form-item :label-width="item.options.hiddenLabel ? '0' : labelWidth(item)" :prop="item.model" :key="item.key" v-show="!item.hidden">
             <template slot="label">
-                    <template v-if="!item.options.hiddenLabel">
-                      <span>{{item.name}}</span>
-                    </template>
-                  </template>
-            <slot :name="item.model"
-                  :model="models"
-                  :widget="item"></slot>
+              <template v-if="!item.options.hiddenLabel">
+                <span>{{ item.name }}</span>
+              </template>
+            </template>
+            <slot :name="item.model" :model="models" :widget="item"></slot>
           </el-form-item>
         </template>
         <!-- 表格布局 -->
-          <template v-else-if="item.type === 'grid-table'">
-            <table class="grid-table"
+        <template v-else-if="item.type === 'grid-table'">
+          <table
+            class="grid-table"
             :key="item.key"
-            style="width: 100%;border: solid"
+            style="width: 100%; border: solid"
             :style="{
-              'border-width':item.options.borderWidth.toString()+'px',
-              borderColor:item.options.borderColor,
-            }">
-              <tr v-for="(row,rowIndex) in item.rows" :key="rowIndex">
-                <td
-                  v-for="(col,colIndex) in row.columns" :key="colIndex"
-                  :colspan="col.options.colspan || 1"
-                  :rowspan="col.options.rowspan || 1"
-                  @click.stop="clickTdAutoFocus($event,col)"
-                  valign="middle"
-                  align="left"
-                  class="grid-table-td"
-                  :style="{
-                    'border-width':item.options.borderWidth.toString()+'px',
-                    borderColor:item.options.borderColor,
-                    width: col.options.width,
-                    height: col.options.height
-                  }">
-                  <GenerateFormItem
-                    v-for="(citem) in col.list"
-                    @selection-change="getTableSelection($event,citem)"
-                    :key="citem.key"
-                    :models="models"
-                    :remote="remote"
-                    :widget="citem"
-                    :readOnly="readOnly"
-                    @btnOnClick="btnOnClick"
-                    @chartOnClick="chartOnClick"
-                    v-show="!citem.hidden"
-                    :formTableConfig="formTableConfig">
+              'border-width': item.options.borderWidth.toString() + 'px',
+              borderColor: item.options.borderColor,
+            }"
+          >
+            <tr v-for="(row, rowIndex) in item.rows" :key="rowIndex">
+              <td
+                v-for="(col, colIndex) in row.columns"
+                :key="colIndex"
+                :colspan="col.options.colspan || 1"
+                :rowspan="col.options.rowspan || 1"
+                @click.stop="clickTdAutoFocus($event, col)"
+                valign="middle"
+                align="left"
+                class="grid-table-td"
+                :style="{
+                  'border-width': item.options.borderWidth.toString() + 'px',
+                  borderColor: item.options.borderColor,
+                  width: col.options.width,
+                  height: col.options.height,
+                }"
+              >
+                <GenerateFormItem
+                  v-for="citem in col.list"
+                  @selection-change="getTableSelection($event, citem)"
+                  :key="citem.key"
+                  :models="models"
+                  :remote="remote"
+                  :widget="citem"
+                  :readOnly="readOnly"
+                  @btnOnClick="btnOnClick"
+                  @chartOnClick="chartOnClick"
+                  v-show="!citem.hidden"
+                  :formTableConfig="formTableConfig"
+                >
                 </GenerateFormItem>
-                </td>
-              </tr>
-            </table>
+              </td>
+            </tr>
+          </table>
         </template>
         <!-- 普通行布局方式 -->
         <template v-else>
-          <GenerateFormItem :key="item.key"
-                            :models="models"
-                            :remote="remote"
-                            @selection-change="getTableSelection($event,item)"
-                            :widget="item"
-                            :readOnly="readOnly"
-                            @chartOnClick="chartOnClick"
-                            @btnOnClick="btnOnClick"
-                            v-show="!item.hidden"
-                            :formTableConfig="formTableConfig">
+          <GenerateFormItem
+            :key="item.key"
+            :models="models"
+            :remote="remote"
+            @selection-change="getTableSelection($event, item)"
+            :widget="item"
+            :readOnly="readOnly"
+            @chartOnClick="chartOnClick"
+            @btnOnClick="btnOnClick"
+            v-show="!item.hidden"
+            :formTableConfig="formTableConfig"
+          >
           </GenerateFormItem>
         </template>
       </template>
@@ -228,10 +225,10 @@ export default class GenerateForm extends Vue {
   models: any = {};
 
   // 内部属性记录字段对应组件,用于联动时快速修改
-  fieldMap :any = {};
+  fieldMap: any = {};
 
   // 内部属性记录字段已联动的组件,用于字段值切换时重置原先组件状态
-  linkEffect:any = {};
+  linkEffect: any = {};
 
   created() {
     if (this.data.list) {
@@ -255,24 +252,33 @@ export default class GenerateForm extends Vue {
         this.resetComponent(this.linkEffect[r.field]);
       }
       if (value) {
-        const controlRule = r.control.find(_ => value.includes(_.value));
-        if (controlRule) {
-          const { rule: insideRule } = controlRule;
-          if (insideRule) {
+        const controlRule = r.control.filter(_ => value.includes(_.value));
+        if (controlRule.length > 0) {
+          const insideRule: any = [];
+          for (const rules of controlRule) {
+            insideRule.push(...rules.rule);
+          }
+          if (insideRule.length > 0) {
             this.linkEffect[r.field] = [];
-            insideRule.forEach((_) => {
+            insideRule.forEach((_: any) => {
               const field = this.fieldMap[_.field];
               if (field) {
                 switch (_.operator) {
-                  case 'show': this.$set(field, 'hidden', false); this.models[_.field] = _.value; break;
-                  case 'hidden': this.$set(field, 'hidden', true); break;
+                  case 'show':
+                    this.$set(field, 'hidden', false);
+                    this.models[_.field] = _.value;
+                    break;
+                  case 'hidden':
+                    this.$set(field, 'hidden', true);
+                    break;
                   case 'required':
                     this.setRequired(field);
                     break;
                   case 'unrequired':
                     this.setUnRequired(field);
                     break;
-                  default: break;
+                  default:
+                    break;
                 }
                 // linkEffect 缓存当前字段跟其他组件联动的关系
                 this.linkEffect[r.field].push(_);
@@ -284,7 +290,7 @@ export default class GenerateForm extends Vue {
     });
   }
 
-  setRequired(field:any) {
+  setRequired(field: any) {
     if (!field.options.required) {
       field.options.required = true;
       field.rules.push({
@@ -300,15 +306,21 @@ export default class GenerateForm extends Vue {
       const field = this.fieldMap[_.field];
       if (field) {
         switch (_.operator) {
-          case 'show': this.$set(field, 'hidden', true); break;
-          case 'hidden': this.$set(field, 'hidden', false); this.models[_.field] = _.value; break;
+          case 'show':
+            this.$set(field, 'hidden', true);
+            break;
+          case 'hidden':
+            this.$set(field, 'hidden', false);
+            this.models[_.field] = _.value;
+            break;
           case 'required':
             this.setUnRequired(field);
             break;
           case 'unrequired':
             this.setRequired(field);
             break;
-          default: break;
+          default:
+            break;
         }
       }
     });
@@ -358,7 +370,6 @@ export default class GenerateForm extends Vue {
     });
     return model;
   }
-
 
   /**
    * 如果select,radio,checkbox等组件为多选情况  后台返回逗号分隔字符串 => 数组
@@ -428,7 +439,8 @@ export default class GenerateForm extends Vue {
           case 'textarea':
             dom.getElementsByTagName('TEXTAREA')[0].focus();
             break;
-          default: return false;
+          default:
+            return false;
         }
       }
       return false;
@@ -506,7 +518,6 @@ export default class GenerateForm extends Vue {
     this.$emit('update:entity', val);
   }
 
-
   /**
    * 下列为dev模式代码,不需要可自行删除
    *
@@ -525,13 +536,13 @@ export default class GenerateForm extends Vue {
 @import './styles/table-form.scss';
 @import './styles/grid-table-form.scss';
 
-.dev-module{
+.dev-module {
   position: absolute;
   left: 20px;
   top: 30px;
   z-index: 2;
 }
-.no-border{
-  border:none!important;
+.no-border {
+  border: none !important;
 }
 </style>
