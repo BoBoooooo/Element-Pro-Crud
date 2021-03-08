@@ -18,12 +18,6 @@
         <el-dropdown-item command="generateTableByForm" v-if="formList.length > 0">
           [请先设置表单]根据表单生成表格
         </el-dropdown-item>
-        <el-dropdown-item command="autoSetSearchable">
-          检索状态：除了操作列，默认所有列都可以作为查询条件。
-        </el-dropdown-item>
-        <el-dropdown-item command="autoSetAlign">
-          对齐方式：表头居中，数字靠右、变长靠左
-        </el-dropdown-item>
         <el-dropdown-item command="autoSetSearchOption" v-if="formList.length > 0">
           [请先设置表单]分析表单配置以设置表格高级搜索options
         </el-dropdown-item>
@@ -204,30 +198,6 @@ export default {
     // 自动设置
     autoSet(command) {
       switch (command) {
-        // 自动设置检索状态
-        case 'autoSetSearchable':
-          this.designedJSON.columns = this.designedJSON.columns.map((item) => {
-            item.searchable = item.slotName === '' || item.slotName == null;
-            return item;
-          });
-          break;
-        // 自动设置表头居中对齐
-        case 'autoSetAlign':
-          this.designedJSON.columns = this.designedJSON.columns.map((item) => {
-            // 操作列
-            if ((item.slotName !== '' && item.slotName != null) || ['年', '时间', '期'].some(c => item.label.includes(c))) {
-              // 列按钮居中
-              item.align = 'center';
-            } else if ((item.slotName !== '' && item.slotName != null) || ['万元', '得票数', '百分比', '人数', '数量'].some(c => item.label.includes(c))) {
-              item.align = 'right';
-            } else {
-              item.align = 'center';
-            }
-            // 表头居中
-            item.headerAlign = 'center';
-            return item;
-          });
-          break;
         // 根据表单设置表格高级搜索
         case 'autoSetSearchOption':
           this.autoSetSearchOption();

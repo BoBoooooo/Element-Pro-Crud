@@ -23,14 +23,14 @@
       </el-col>
       <el-col :span="12">
         <!-- 菜单栏 -->
-        <MenuBar style="float:right" :designedJSON.sync="objJSON" :fieldConfig="fieldConfig" :formList="formList" :minColumnWidth="minColumnWidth" />
+        <MenuBar style="float: right" :designedJSON.sync="objJSON" :fieldConfig="fieldConfig" :formList="formList" :minColumnWidth="minColumnWidth" />
       </el-col>
     </el-row>
 
     <table class="tableDesigner">
       <thead>
         <!-- 遍历columns生成表头 -->
-        <th v-for="column in fieldConfig" :key="column.name" v-if="column.show">
+        <th v-for="column in fieldConfig" :key="column.name">
           <el-tooltip v-if="column.tootip" class="item" effect="dark" :content="column.tootip" placement="top">
             <span>{{ column.name }}</span>
           </el-tooltip>
@@ -42,7 +42,7 @@
         <!-- 遍历生成每一行 -->
         <tr v-for="(item, index) in objJSON.columns" :key="index" class="row">
           <!-- 遍历生成一行中的每一个单元格 -->
-          <td v-for="column in fieldConfig" :key="column.name" v-if="column.show && column.is">
+          <td v-for="column in fieldConfig" :key="column.name">
             <!-- 第一列只有排序图标 -->
             <i v-if="column.is === 'i'" class="el-icon-sort"></i>
             <!-- 只有文本框的列，“最小宽度”字段列特殊处理 -->
@@ -54,7 +54,7 @@
               :class="{ notDefaultWidth: column.field === 'minWidth' && item[column.field] !== 140 }"
             />
             <!-- 下拉菜单列 -->
-            <el-select size="small"  v-else-if="column.is === 'select'" v-model="item[column.field]" :placeholder="column.field">
+            <el-select size="small" v-else-if="column.is === 'select'" v-model="item[column.field]" :placeholder="column.field">
               <el-option v-for="o in column.list" :key="o.label" :label="o.label" :value="o.value"></el-option>
             </el-select>
             <!-- 开关 -->
@@ -63,17 +63,11 @@
             <el-popover v-else-if="column.is === 'popover' && item[column.field]" placement="bottom-start" width="400" trigger="click">
               <!-- 下拉菜单配置 -->
               <SelectConfig :dictList="dictList" :sourceOption.sync="item[column.field]" />
-              <el-button size="small" slot="reference" type="primary">
-                编辑菜单
-              </el-button>
+              <el-button size="small" slot="reference" type="primary"> 编辑菜单 </el-button>
             </el-popover>
-            <el-button size="small" v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(index)">
-              转为菜单
-            </el-button>
-          </td>
-          <td>
-            <el-tooltip class="item" effect="dark" content="删除当前行" placement="left">
-              <i style="color: red;cursor:pointer" class="el-icon el-icon-delete" @click="removeColumn(index)"></i>
+            <el-button size="small" v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(index)"> 转为菜单 </el-button>
+            <el-tooltip v-else-if="column.is === 'delete'" class="item" effect="dark" content="删除当前行" placement="left">
+              <i style="color: red; cursor: pointer" class="el-icon el-icon-delete" @click="removeColumn(index)"></i>
             </el-tooltip>
           </td>
         </tr>

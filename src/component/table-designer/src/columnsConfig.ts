@@ -35,13 +35,6 @@ export default [
     tootip: '默认为文本框，可转为下拉菜单',
   },
   {
-    name: '列宽',
-    field: 'width',
-    is: 'input',
-    headStyle: 'width:70px',
-    show: false,
-  },
-  {
     name: '最小宽',
     field: 'minWidth',
     is: 'input',
@@ -164,5 +157,6 @@ export default [
   {
     name: '操作',
     show: true,
+    is: 'delete',
   },
 ];
