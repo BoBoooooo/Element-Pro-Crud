@@ -760,23 +760,27 @@ export default {
       }
     },
     // eslint-disable-next-line func-names
-    'elementConfig.type': function (val) {
-      if (val.includes('chart-')) {
-        const jsonData = val === 'chart-common' ? this.elementConfig.options.option : this.elementConfig.options.data;
-        const jsonString = JSON.stringify(jsonData || '', null, 2);
-        setTimeout(() => {
-          this.jsonEditor = ace.edit('jsoneditor2');
-          this.jsonEditor.session.setMode('ace/mode/json');
-          this.jsonEditor.setValue(jsonString);
-        }, 100);
-      } else if (val === 'html') {
-        const jsonString = JSON.stringify(this.elementConfig.options.html || '', null, 2);
-        setTimeout(() => {
-          this.jsonEditor = ace.edit('jsoneditor2');
-          this.jsonEditor.setValue(jsonString);
-          this.jsonEditor.session.setMode('ace/mode/html');
-        }, 100);
-      }
+    'elementConfig.type': {
+      immediate: true,
+      handler(val) {
+        if (val.includes('chart-')) {
+          const jsonData = val === 'chart-common' ? this.elementConfig.options.option : this.elementConfig.options.data;
+          const jsonString = JSON.stringify(jsonData || '', null, 2);
+          setTimeout(() => {
+            this.jsonEditor = ace.edit('jsoneditor2');
+            this.jsonEditor.session.setMode('ace/mode/json');
+            this.jsonEditor.setValue(jsonString);
+            console.log(val);
+          }, 100);
+        } else if (val === 'html') {
+          const jsonString = JSON.stringify(this.elementConfig.options.html || '', null, 2);
+          setTimeout(() => {
+            this.jsonEditor = ace.edit('jsoneditor2');
+            this.jsonEditor.setValue(jsonString);
+            this.jsonEditor.session.setMode('ace/mode/html');
+          }, 100);
+        }
+      },
     },
     // eslint-disable-next-line func-names
     'elementConfig.options.isRange': function (val) {

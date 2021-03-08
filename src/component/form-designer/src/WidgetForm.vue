@@ -240,9 +240,9 @@ export default {
     },
     handleTdSplitToRow(table, row, rowIndex, col, colIndex) {
       const { rowspan } = col.options;
-      const newCol = this.generateNewTd();
       const rows = table.rows.slice(rowIndex + 1, rowIndex + rowspan);
       rows.forEach((_) => {
+        const newCol = this.generateNewTd();
         _.columns.splice(colIndex, 0, newCol);
       });
       col.options.rowspan = 1;
@@ -335,9 +335,10 @@ export default {
         const nextRowIndex = rowIndex + col.options.rowspan;
         if (nextRowIndex < length) {
           // 当前td rowspan改为2
-          col.options.rowspan += table.rows[nextRowIndex].columns[colIndex].options.rowspan;
           // 删除下一行当前列元素
-          table.rows[nextRowIndex].columns.splice(colIndex, 1);
+          const removeColumnIndex = table.rows[nextRowIndex].columns.length < table.options.sumColSpan ? 0 : colIndex;
+          col.options.rowspan += table.rows[nextRowIndex].columns[removeColumnIndex].options.rowspan;
+          table.rows[nextRowIndex].columns.splice(removeColumnIndex, 1);
         } else {
           this.$message.error('当前行已是最后一行');
         }
