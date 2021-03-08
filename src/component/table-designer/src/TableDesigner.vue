@@ -1,10 +1,4 @@
 <!--
- * @file:
- * @author: BoBo
- * @copyright: NanJing Anshare Tech .Com
- * @Date: 2021-01-07 11:33:05
--->
-<!--
 @file 表格设计对话框
 @author BoBo
 @copyright BoBo

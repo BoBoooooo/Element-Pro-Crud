@@ -1,8 +1,8 @@
 /**
  * @file 表格设计功能列配置
- * @author ytyang
+ * @author BoBo
  * @copyright BoBo
- * @createDate 2018年12月26日11:28:17
+ * @createDate 2020年03月08日19:30:59
  */
 
 export default [
@@ -131,7 +131,6 @@ export default [
     field: 'sortable',
     is: 'select',
     headStyle: 'width:120px',
-    // 区分客户端和服务端排序，所以value统一使用string
     list: [
       {
         label: '不排序',

@@ -1,6 +1,6 @@
 /**
  * @file ESLint配置，基于aribnb规则 http://airbnb.io/javascript/
- * @author ytyang
+ * @author BoBo
  * @copyright BoBo
  * @createDate 2018年11月13日11:21:51
  */

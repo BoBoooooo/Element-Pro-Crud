@@ -1,6 +1,6 @@
 <!--
 @file SVG图标组件，在src\icons\autoImportSvg.js中加载
-@author ytyang
+@author BoBo
 @copyright BoBo
 @createDate 2018年11月14日09:48:32
 -->
