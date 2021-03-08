@@ -148,7 +148,7 @@
                             <el-dropdown-item command="split-col" :disabled="col.options.colspan === 1">拆分为列</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
                             <el-dropdown-item command="remove-col" :disabled="col.options.colspan>1">删除当前列</el-dropdown-item>
-                            <el-dropdown-item command="remove-row" :disabled="col.options.rowspan>1">删除当前行</el-dropdown-item>
+                            <el-dropdown-item command="remove-row" :disabled="row.columns.length !== element.options.sumColSpan ||col.options.rowspan>1">删除当前行</el-dropdown-item>
                           </el-dropdown-menu>
                         </el-dropdown>
                       </div>
@@ -290,25 +290,12 @@ export default {
       }
 
       if (direction === 'row') {
-        // 如果当前行列总数小于整个table列总数,说明存在合并行情况
-        if (row.columns.length < table.options.sumColSpan) {
-          // 如果当前行没有合并其他行
-          if (row.columns.every(_ => _.options.rowspan === 1)) {
-            let mergedRow;
-            for (let i = rowIndex - 1; i > 0 && i < rowIndex; i -= 1) {
-              const currentRow = table.rows[i].columns;
-              const targetRow = currentRow.filter(_ => _.options.rowspan > 1).pop();
-              if (targetRow) {
-                mergedRow = targetRow;
-                break;
-              }
+        if (row.columns.find(_ => _.options.rowspan > 1)) {
+          // 需要逐列拆分行
+          for (let j = 0; j < row.columns.length; j += 1) {
+            if (row.columns[j].options.rowspan > 1) {
+              this.handleTdSplitToRow(table, row, rowIndex, row.columns[j], j);
             }
-            if (mergedRow) {
-              mergedRow.options.rowspan -= 1;
-            }
-            console.log('mergedRow', mergedRow);
-          } else { // 如果当前行存在合并其他行的情况
-            console.log('todo');
           }
         }
         table.rows.splice(rowIndex, 1);
