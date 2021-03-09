@@ -203,9 +203,6 @@
               </Draggable>
             </el-checkbox-group>
           </template>
-          <template v-if="elementConfig.type == 'cascader'">
-            <el-input type="textarea" v-model="elementConfig.options.options"></el-input>
-          </template>
           <div style="margin-left: 22px;" v-if="elementConfig.type !== 'cascader'">
             <el-button size="mini" type="text" @click="handleAddOption">添加选项</el-button>
             <el-button size="mini" type="text" @click="handleClearOption">清除默认选中项</el-button>
@@ -710,7 +707,10 @@ export default {
     },
     validateRequired(val) {
       if (val) {
-        this.validator.required = { required: true, message: `${this.elementConfig.name}必须填写` };
+        this.validator.required = {
+          required: true,
+          message: `${this.elementConfig.name}必须填写`,
+        };
       } else {
         this.validator.required = null;
       }

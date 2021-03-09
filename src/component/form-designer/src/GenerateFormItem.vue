@@ -9,7 +9,7 @@
 -->
 <template>
   <el-form-item :rules="widget.rules || []"
-  :prop="widget.type == 'button' ? undefined : widget.model"
+  :prop="formElement.includes(widget.type) ? widget.model : undefined"
   :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
   :class="widget.options.className">
     <template #label>
@@ -31,7 +31,7 @@
       <el-input
         v-if="['number', 'integer', 'float'].includes(widget.options.dataType)"
         :type="widget.options.dataType"
-        v-model.number="dataModel"
+        v-model.number="models[widget.model]"
         :placeholder="widget.options.placeholder"
         :readonly="readOnly || widget.options.readonly"
         :disabled="readOnly || widget.options.disabled"
@@ -40,7 +40,7 @@
       <el-input
         v-else
         type="text"
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :show-word-limit="widget.options.showWordLimit"
         :maxlength="widget.options.maxLength"
         :placeholder="widget.options.placeholder"
@@ -82,11 +82,11 @@
       </h3>
     </template>
     <template v-if="widget.type == 'label'">
-      <p>{{ dataModel }}</p>
+      <p>{{ models[widget.model] }}</p>
     </template>
     <template v-if="widget.type == 'select'">
       <el-select
-        v-model="dataModel"
+        v-model="models[widget.model]"
         default-first-option
         :disabled="readOnly || widget.options.disabled"
         :readonly="readOnly || widget.options.readonly"
@@ -107,7 +107,7 @@
       <el-input
         type="textarea"
         :autosize="{ minRows: 5 }"
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :show-word-limit="widget.options.showWordLimit"
         :maxlength="widget.options.maxLength"
         :disabled="readOnly || widget.options.disabled"
@@ -119,7 +119,7 @@
 
     <template v-if="widget.type == 'number'">
       <el-input-number
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :style="{ width: widget.options.width }"
         :step="widget.options.step"
         :disabled="readOnly || widget.options.disabled"
@@ -129,7 +129,7 @@
     </template>
 
     <template v-if="widget.type == 'radio'">
-      <el-radio-group v-model="dataModel" :style="{ width: widget.options.width }" :disabled="readOnly || widget.options.disabled">
+      <el-radio-group v-model="models[widget.model]" :style="{ width: widget.options.width }" :disabled="readOnly || widget.options.disabled">
         <el-radio :style="{ display: widget.options.inline ? 'inline-block' : 'block' }" :label="item.value" v-for="(item, index) in optionsList" :key="index">
           <template v-if="widget.options.showLabel">{{ item.label }}</template>
         </el-radio>
@@ -137,7 +137,7 @@
     </template>
 
     <template v-if="widget.type == 'checkbox'">
-      <el-checkbox-group v-model="dataModel" :style="{ width: widget.options.width }">
+      <el-checkbox-group v-model="models[widget.model]" :style="{ width: widget.options.width }">
         <template v-if="!widget.options.buttonStyle">
           <el-checkbox
             :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
@@ -158,7 +158,7 @@
 
     <template v-if="widget.type == 'time'">
       <el-time-picker
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :is-range="widget.options.isRange"
         :placeholder="widget.options.placeholder"
         :start-placeholder="widget.options.startPlaceholder"
@@ -176,7 +176,7 @@
 
     <template v-if="widget.type == 'date'">
       <el-date-picker
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :type="widget.options.type"
         :placeholder="widget.options.placeholder"
         :start-placeholder="widget.options.startPlaceholder"
@@ -195,20 +195,20 @@
     </template>
 
     <template v-if="widget.type == 'rate'">
-      <el-rate v-model="dataModel" :max="widget.options.max" :disabled="readOnly || widget.options.disabled" :allow-half="widget.options.allowHalf"></el-rate>
+      <el-rate v-model="models[widget.model]" :max="widget.options.max" :disabled="readOnly || widget.options.disabled" :allow-half="widget.options.allowHalf"></el-rate>
     </template>
 
     <template v-if="widget.type == 'color'">
-      <el-color-picker v-model="dataModel" :disabled="readOnly || widget.options.disabled" :show-alpha="widget.options.showAlpha"></el-color-picker>
+      <el-color-picker v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled" :show-alpha="widget.options.showAlpha"></el-color-picker>
     </template>
 
     <template v-if="widget.type == 'switch'">
-      <el-switch v-model="dataModel" :disabled="readOnly || widget.options.disabled"> </el-switch>
+      <el-switch v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled"> </el-switch>
     </template>
 
     <template v-if="widget.type == 'slider'">
       <el-slider
-        v-model="dataModel"
+        v-model="models[widget.model]"
         :min="widget.options.min"
         :max="widget.options.max"
         :disabled="readOnly || widget.options.disabled"
@@ -221,9 +221,9 @@
     <template v-if="widget.type == 'cascader'">
       <el-cascader
         ref="cascader"
+        v-model="models[widget.model]"
         @visible-change="elCascaderOnlick"
         @expand-change="elCascaderOnlick"
-        v-model="dataModel"
         :disabled="readOnly || widget.options.disabled"
         :clearable="widget.options.clearable"
         :placeholder="widget.options.placeholder"
@@ -231,7 +231,7 @@
         :separator="widget.options.separator == null ? '/' : widget.options.separator"
         :options="optionsList"
         filterable
-        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple }"
+        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple,expandTrigger: 'hover' }"
       >
       </el-cascader>
     </template>
@@ -258,7 +258,7 @@
       <!-- 目前暂时提供了几个常用props,有更多需要自行拓展 -->
       <!-- 官网:https://vue-treeselect.js.org -->
       <TreeSelect
-        v-model="dataModel"
+        v-model="models[widget.model]"
         v-if="visible"
         :placeholder="widget.options.placeholder"
         :maxHeight="+widget.options.maxHeight"
@@ -286,7 +286,7 @@
       </TreeSelect>
     </template>
     <template v-if="widget.type == 'richtext'">
-      <Tinymce :height="400" v-model="dataModel" :readonly="readOnly || widget.options.readonly"></Tinymce>
+      <Tinymce :height="400" v-model="models[widget.model]" :readonly="readOnly || widget.options.readonly"></Tinymce>
     </template>
     <template v-if="widget.type == 'upload'">
       <!-- 附件上传(注意初始值prefill必须传入id) -->
@@ -299,7 +299,7 @@
       ></FileUpload>
     </template>
     <template v-if="widget.type === 'avatar'">
-     <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="dataModel"></AvatarUpload>
+     <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="models[widget.model]"></AvatarUpload>
     </template>
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget"></GenerateSubForm>
@@ -356,6 +356,7 @@ import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
 import GenerateTabs from './components/Tabs/GenerateTabs.vue';
 import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
+import { formElement } from './componentsConfig';
 
 @Component({
   components: {
@@ -412,27 +413,16 @@ export default class GenerateFormItem extends Vue {
   })
   readOnly!: boolean
 
-
-  // 当前组件对象
-  dataModel: string | number | null | object = this.models[this.widget.model] || null
-
   copyOption: any = [] // 备份一份初始选项
 
   visible = false
 
   normalizer: any
 
+  formElement = formElement
+
   initData() {
     const { type, model } = this.widget;
-    // if (this.model) {
-    //   // 多选组件需要初始化值为数组
-    //   if (this.widget.options.multiple || 'cascader,checkbox'.includes(type)) {
-    //     this.dataModel = typeof this.model === 'string' ? this.model.split(',') : this.model;
-    //   } else {
-    //     this.dataModel = this.model;
-    //   }
-    //   return;
-    // }
     let normalizer;
     // tree-select组件初始化
     if (type === 'treeselect') {
@@ -463,7 +453,6 @@ export default class GenerateFormItem extends Vue {
       }
     }
     this.normalizer = normalizer;
-    this.dataModel = this.models[model];
   }
 
   created() {
@@ -680,7 +669,9 @@ export default class GenerateFormItem extends Vue {
       document.querySelectorAll('.el-cascader-node__label').forEach((el) => {
         // eslint-disable-next-line func-names
         (el as any).onclick = function () {
-          this.previousElementSibling.click();
+          if (this.previousElementSibling) {
+            this.previousElementSibling.click();
+          }
           that.$refs.cascader.dropDownVisible = false;
         };
       });
@@ -707,27 +698,6 @@ export default class GenerateFormItem extends Vue {
 
   getTableSelection(selection) {
     this.$emit('selection-change', selection);
-  }
-
-  @Watch('dataModel')
-  dataModelHandler(val) {
-    this.$set(this.models, this.widget.model, val);
-    this.$emit('change', val);
-  }
-
-  @Watch('models', {
-    deep: true,
-  })
-  modelsHandler(val) {
-    const updateVal = val[this.widget.model];
-    if (updateVal !== this.dataModel) {
-      if (this.widget.options.multiple || 'cascader,checkbox'.includes(this.widget.type)) {
-        const value = val[this.widget.model];
-        this.dataModel = typeof value === 'string' ? value.split(',') : value;
-      } else {
-        this.dataModel = val[this.widget.model];
-      }
-    }
   }
 
   // 如果表格预设参数发生变化 自动刷新表格

@@ -303,7 +303,6 @@ export default class GenerateForm extends Vue {
       field.rules.push({
         message: `${field.name}必须填写`,
         required: true,
-        trigger: 'blur',
       });
     }
   }

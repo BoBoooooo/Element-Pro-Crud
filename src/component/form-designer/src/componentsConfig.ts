@@ -307,13 +307,31 @@ export const basicComponents = [
       width: '100%',
       separator: '/',
       placeholder: '',
+      required: false,
       multiple: false,
       disabled: false,
       clearable: false,
       checkStrictly: false,
       remote: 'static',
       remoteOptions: [],
-      options: [],
+      options: [
+        {
+          value: 'A',
+          label: 'A',
+          children: [
+            {
+              value: 'AA',
+              label: 'AA',
+              children: [
+                {
+                  value: 'AAA',
+                  label: 'AAA',
+                },
+              ],
+            },
+          ],
+        },
+      ],
       props: {
         value: 'value',
         label: 'label',
@@ -392,6 +410,7 @@ export const basicComponents = [
       defaultValue: '',
       readonly: false,
       hiddenLabel: false,
+      required: false,
     },
   },
 ];
@@ -488,7 +507,6 @@ export const advanceComponents = [
     },
   },
 ];
-
 export const layoutComponents = [
   {
     type: 'grid',
@@ -659,3 +677,6 @@ export const elementComponentConfig = {
     ],
   },
 };
+
+// 表单类组件枚举
+export const formElement = ['input', 'textarea', 'number', 'radio', 'checkbox', 'date', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'cascader', 'treeselect', 'richtext'];
