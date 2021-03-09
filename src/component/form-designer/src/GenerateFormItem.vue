@@ -189,6 +189,7 @@
         :format="widget.options.format"
         :style="{ width: widget.options.width }"
         :picker-options="pickerOptions"
+        :default-value="new Date()"
       >
       </el-date-picker>
     </template>

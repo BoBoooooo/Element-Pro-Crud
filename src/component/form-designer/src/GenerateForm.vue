@@ -484,15 +484,21 @@ export default class GenerateForm extends Vue {
   // 表单默认值回填单独拉出来封装
   setDefaultValue(config) {
     // 如果时间选择器需要默认值,默认回填当前日期
-    if (config.type === 'date' && config.options.defaultValue) {
-      const { format } = config.options;
-      if (format && format !== '') {
-        this.models[config.model] = this.dayjs().format(format.toUpperCase());
+    if (config.type === 'date') {
+      if (config.options.defaultValue) {
+        const { format } = config.options;
+        if (format && format !== '') {
+          this.models[config.model] = this.dayjs().format(format.toUpperCase());
+        }
+      } else {
+        this.models[config.model] = null;
       }
     } else {
       let { defaultValue } = config.options;
-      if (typeof defaultValue === 'boolean') {
-        defaultValue = '';
+      // 如果默认值设置为$开头,则表示要读取vuex中的全局变量
+      // 如设置为 $deptname 则读取 this.$store.getters.deptname
+      if (typeof defaultValue === 'string' && defaultValue.includes('$')) {
+        defaultValue = this.$store.getters[defaultValue.replace('$', '')];
       } else if (defaultValue === '') {
         defaultValue = null;
       }
