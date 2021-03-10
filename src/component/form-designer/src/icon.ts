@@ -36,3 +36,4 @@ import 'vue-awesome/icons/file-word';
 import 'vue-awesome/icons/chart-bar';
 import 'vue-awesome/icons/tags';
 import 'vue-awesome/icons/user';
+import 'vue-awesome/icons/table';

@@ -69,6 +69,7 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Draggable from 'vuedraggable';
+import { formElement } from '../../componentsConfig';
 
 @Component({
   name: 'WidgetSubForm',
@@ -114,6 +115,8 @@ export default class WidgetSubForm extends Vue {
 
   selectWidget = this.select;
 
+  formElement = formElement
+
   handleSelectWidget(index) {
     this.selectWidget = this.element.tableColumns[index];
   }
@@ -121,6 +124,14 @@ export default class WidgetSubForm extends Vue {
   handleWidgetAdd(evt) {
     const { newIndex } = evt;
     const { model, type } = this.element.tableColumns[newIndex];
+
+    // 防止布局元素的嵌套拖拽
+    if (!formElement.includes(type)) {
+      this.element.tableColumns.splice(newIndex, 1);
+      this.$message.warning('仅支持拖拽表单组件');
+      return false;
+    }
+
     // 为拖拽到容器的元素添加唯一 key
     const key = model || `${type}_${Math.ceil(Math.random() * 99999)}`;
     this.$set(this.element.tableColumns, newIndex, {
@@ -153,6 +164,7 @@ export default class WidgetSubForm extends Vue {
     }
     console.log(this.element.tableColumns[newIndex]);
     this.selectWidget = this.element.tableColumns[newIndex];
+    return null;
   }
 
   handleWidgetDelete(index) {

@@ -527,7 +527,7 @@ export const layoutComponents = [
   {
     type: 'grid-table',
     name: '表格布局',
-    icon: 'th',
+    icon: 'table',
     options: {
       borderWidth: 1,
       borderColor: '#999',

@@ -347,12 +347,15 @@ export default {
     },
     handleWidgetTdAdd($event, col) {
       const { newIndex, oldIndex, item } = $event;
+      const newItem = col.list[newIndex];
       // 防止布局元素的嵌套拖拽
-      if (item.className.indexOf('data-grid') >= 0) {
-        col.list[newIndex].splice(newIndex, 1);
+      if (['tabs', 'grid', 'grid-table'].includes(newItem.type)) {
+        col.list.splice(newIndex, 1);
+        this.$message.warning('布局元素暂不支持嵌套');
         return false;
       }
-      this.selectWidget = col.list[newIndex];
+
+      this.selectWidget = newItem;
       return null;
     },
     handleWidgetColAdd($event, row, colIndex) {
@@ -364,6 +367,7 @@ export default {
           this.data.list.splice(oldIndex, 0, row.columns[colIndex].list[newIndex]);
         }
         row.columns[colIndex].list.splice(newIndex, 1);
+        this.$message.warning('布局元素暂不支持嵌套');
         return false;
       }
       this.selectWidget = row.columns[colIndex].list[newIndex];

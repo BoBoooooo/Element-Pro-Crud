@@ -160,7 +160,7 @@
             </div>
           </el-header>
           <el-main class="config-content">
-            <WidgetConfig v-show="configTab == 'widget'" v-if="Object.keys(widgetFormSelect).length > 0" :dictType="dictType" :elementConfig="widgetFormSelect"></WidgetConfig>
+            <WidgetConfig v-show="configTab == 'widget'" v-if="widgetFormSelect && Object.keys(widgetFormSelect).length > 0" :dictType="dictType" :elementConfig="widgetFormSelect"></WidgetConfig>
             <FormConfig v-show="configTab == 'form'" :data="widgetForm.config"></FormConfig>
           </el-main>
         </el-container>
