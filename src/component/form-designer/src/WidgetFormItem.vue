@@ -193,6 +193,9 @@
      <template v-if="element.type ==='table'">
        <h4 style="text-align:center;margin:0">表格({{element.model}})</h4>
     </template>
+    <template v-if="element.type == 'blank'">
+      <h4 style="text-align:center;margin:0">自定义插槽({{ element.model }})</h4>
+    </template>
     <template v-if="element.type === 'treeselect'">
       <TreeSelect v-model="element.options.defaultValue"  :options="[]" />
     </template>
