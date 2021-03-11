@@ -98,7 +98,6 @@ export default {
       // eslint-disable-next-line no-underscore-dangle
       const _this = this;
       window.tinymce.init({
-        language: 'zh_CN',
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
