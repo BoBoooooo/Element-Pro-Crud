@@ -93,7 +93,6 @@ import {
 import VueCompositionApi, {
   reactive, computed, ref, defineComponent, Ref, watch,
 } from '@vue/composition-api';
-import { Message, MessageBox } from 'element-ui';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import ProTable from '../../pro-table';
 import { CrudTableProps } from '../types/CrudTable.types';
@@ -254,7 +253,9 @@ export default defineComponent({
   setup(props: CrudTableProps, {
     listeners, attrs, emit, root,
   }) {
-    const { $PROCRUD } = root;
+    const {
+      $PROCRUD, $message, $alert, $confirm,
+    } = root;
 
     // 当前行
     let currentRow = reactive<any>({});
@@ -399,9 +400,6 @@ export default defineComponent({
       };
     };
 
-    const ElMessage = Message;
-    const ElMessageBox = MessageBox;
-
     // 增删改查按钮方法定义
     const handlerButtonMethods = {
       // 添加
@@ -493,7 +491,7 @@ export default defineComponent({
       btnDeletesOnClick() {
         const { length } = selectedRows.value || [];
         if (length > 0) {
-          ElMessageBox.confirm(`已选中${length}项,确认删除？`, '提示', {
+          $confirm(`已选中${length}项,确认删除？`, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning',
@@ -508,22 +506,20 @@ export default defineComponent({
                 );
               promiseForDels.then(() => {
                 tableReload();
-                ElMessage.success('批量删除成功');
+                $message.success('批量删除成功');
               });
             })
             .catch(() => {
-              ElMessage.info('已取消删除');
+              $message.info('已取消删除');
             });
         } else {
-          console.log(ElMessage);
-
-          ElMessage('请先选择删除项');
+          $message.info('请先选择删除项');
         }
       },
 
       // 操作列-删除
       actionColumnDel(row) {
-        ElMessageBox.confirm('确认删除？', '提示', {
+        $confirm('确认删除？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -534,14 +530,14 @@ export default defineComponent({
             const promiseForDel = props.promiseForDel ? props.promiseForDel(row.id) : $PROCRUD.crud(DML.DELETE, props.tableName, {}, { id: row.id });
             promiseForDel.then(() => {
               tableReload();
-              ElMessage({
+              $alert({
                 type: 'success',
                 message: '删除成功',
               });
             });
           })
           .catch(() => {
-            ElMessage.info('已取消删除');
+            $message.info('已取消删除');
           });
       },
 
