@@ -52,6 +52,7 @@
         <el-button
           type="primary"
           size="small"
+          class="button"
           icon="el-icon-picture-outline"
           @click="changeMode('design')"
           :class="{
@@ -62,6 +63,7 @@
         <el-button
           type="primary"
           size="small"
+          class="button"
           icon="el-icon-view"
           @click="changeMode('preview')"
           :class="{
@@ -70,16 +72,16 @@
           >预览模式</el-button
         >
         <el-divider direction="vertical"></el-divider>
-        <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
-        <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
-        <el-button type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
-        <el-button type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
+        <el-button class="button" type="primary" size="small" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
+        <el-button class="button" type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
+        <el-button class="button" type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
+        <el-button class="button" type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
         <el-tooltip placement="bottom" effect="dark">
           <div slot="content">
             需传入getFormKey方法,详见文档
           </div>
           <div style="display: inline-block">
-            <el-button type="normal" size="small" icon="el-icon-attract" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
+            <el-button class="button" type="normal" size="small" icon="el-icon-attract" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
           </div>
         </el-tooltip>
         <slot name="custom-btn"></slot>

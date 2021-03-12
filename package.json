@@ -118,7 +118,6 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1",
-    "echarts": "^4.8.0"
+    "@vue/composition-api": "^1.0.0-rc.1"
   }
 }
