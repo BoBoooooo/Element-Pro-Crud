@@ -18,7 +18,7 @@
       <div class="device-bar btn-bar">
          <el-button
           type="primary"
-          class="device-btn"
+          class="device-btn button"
           size="small"
           icon="el-icon-monitor"
           @click="setDeviceMode('pc')"
@@ -29,7 +29,7 @@
         >
          <el-button
           type="primary"
-          class="device-btn"
+          class=" button"
           size="small"
           icon="el-icon-mobile"
           @click="setDeviceMode('pad')"
@@ -40,7 +40,7 @@
         <el-button
           type="primary"
           size="small"
-          class="device-btn"
+          class="device-btn button"
           icon="el-icon-mobile-phone"
           @click="setDeviceMode('mobile')"
           :class="{
