@@ -459,6 +459,19 @@ export default class GenerateForm extends Vue {
     this.$refs.generateForm.resetFields();
   }
 
+  // 校验表单
+  validate() {
+    return new Promise((resolve, reject) => {
+      this.$refs.generateForm.validate((valid) => {
+        if (valid) {
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    });
+  }
+
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
     return new Promise(resolve => resolve(this.filterFormData()));

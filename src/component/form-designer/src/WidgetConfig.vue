@@ -10,10 +10,6 @@
 <template>
   <div v-if="show">
     <el-form label-position="top" class="form" size="mini">
-      <!-- <el-form-item label="是否隐藏"
-                    v-if="elementConfig.type != 'table'">
-        <el-switch v-model="elementConfig.hidden"></el-switch>
-      </el-form-item> -->
       <el-form-item
         v-if="elementConfig.type != 'button' && elementConfig.type != 'upload' && elementConfig.type != 'text' && elementConfig.type != 'grid'"
         :label="elementConfig.type === 'blank' ? '插槽名(需结合代码)' : '字段标识'"
@@ -128,6 +124,9 @@
       </el-form-item>
       <el-form-item label="是否可创建" v-if="elementConfig.type == 'select'">
         <el-switch v-model="elementConfig.options.allowCreate"></el-switch>
+      </el-form-item>
+      <el-form-item label="默认隐藏">
+        <el-switch v-model="elementConfig.hidden"></el-switch>
       </el-form-item>
       <el-form-item label="启用按钮样式" v-if="elementConfig.type == 'checkbox'">
         <el-switch v-model="elementConfig.options.buttonStyle"></el-switch>
