@@ -20,7 +20,7 @@
           <el-link target="_blank" :underline="false" href="http://server.boboooooo.top:9998/" type="primary">
             <h3>生产环境示例</h3>
           </el-link>
-          <el-link target="_blank" :underline="false" href="https://crud.boboooooo.top/" type="primary">
+          <el-link target="_blank" :underline="false" href="http://procrud.fun/" type="primary">
             <h3>文档</h3>
           </el-link>
 
