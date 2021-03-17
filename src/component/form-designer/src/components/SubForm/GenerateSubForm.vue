@@ -88,6 +88,12 @@ export default class GenerateSubForm extends Vue {
   })
   formTableConfig: any
 
+    @Prop({
+      type: Object,
+      default: () => ({}),
+    })
+  models: any
+
   // 整个子表单数据
   subTableForm = {
     tableData: [],
@@ -99,8 +105,6 @@ export default class GenerateSubForm extends Vue {
   mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL'
 
   btnSaveIsLoading = false
-
-  models: any = {}
 
   created() {
     this.fetchList();

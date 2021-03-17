@@ -302,7 +302,7 @@
      <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="models[widget.model]"></AvatarUpload>
     </template>
     <template v-if="widget.type === 'form'">
-      <GenerateSubForm :widget="widget"></GenerateSubForm>
+      <GenerateSubForm :widget="widget" :models="models"></GenerateSubForm>
     </template>
     <template v-if="widget.type === 'tabs'">
       <GenerateTabs
