@@ -24,7 +24,7 @@
                 <el-row
                   class="widget-col widget-view"
                   type="flex"
-                  :class="{ active: selectWidget.key == element.key }"
+                  :class="{ active: selectWidget && selectWidget.key == element.key }"
                   :gutter="element.options.gutter ? element.options.gutter : 0"
                   :justify="element.options.justify"
                   :align="element.options.align"
@@ -47,7 +47,7 @@
                       </transition-group>
                     </Draggable>
                   </el-col>
-                  <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
+                  <div class="widget-view-action widget-col-action" v-if="selectWidget && selectWidget.key == element.key">
                     <!-- 栅格布局自动加减 -->
                     <template v-if="element.type === 'grid'">
                       <i class="el-icon el-icon-circle-plus" title="添加列" @click.stop="handleGridAdd(element)"></i>
@@ -56,22 +56,11 @@
                     <i class="el-icon el-icon-delete-solid" title="删除" @click.stop="handleWidgetDelete(index)"></i>
                   </div>
 
-                  <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+                  <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget && selectWidget.key == element.key">
                     <i class="el-icon el-icon-rank"></i>
                   </div>
                 </el-row>
               </div>
-            </template>
-            <template v-else-if="element.type === 'form'">
-              <WidgetSubForm
-                v-if="element && element.key"
-                :key="element.key"
-                :element="element"
-                :select.sync="selectWidget"
-                :index="index"
-                :data="data"
-                @click.native.stop="handleSelectWidget(index)"
-              ></WidgetSubForm>
             </template>
             <template v-else-if="element.type === 'tabs'">
               <WidgetTabs
@@ -156,7 +145,7 @@
                   </tr>
                 </table>
 
-                <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
+                <div class="widget-view-action widget-col-action" v-if="selectWidget && selectWidget.key == element.key">
                   <!-- 栅格布局自动加减 -->
                   <template v-if="element.type === 'grid-table'">
                     <i class="el-icon el-icon-document-add" title="添加列" @click.stop="handleColAdd(element)"></i>
@@ -165,7 +154,7 @@
                   </template>
                   <i class="el-icon el-icon-delete-solid" title="删除" @click.stop="handleWidgetDelete(index)"></i>
                 </div>
-                <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+                <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget && selectWidget.key == element.key">
                   <i class="el-icon el-icon-rank"></i>
                 </div>
               </div>
@@ -184,14 +173,12 @@
 import Draggable from 'vuedraggable';
 import SvgIcon from '@/icons/SvgIcon.vue';
 import WidgetFormItem from './WidgetFormItem.vue';
-import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 import WidgetTabs from './components/Tabs/WidgetTabs.vue';
 
 export default {
   components: {
     Draggable,
     WidgetFormItem,
-    WidgetSubForm,
     WidgetTabs,
     SvgIcon,
   },

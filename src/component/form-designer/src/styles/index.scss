@@ -250,14 +250,14 @@ $primary-background-color: #ecf5ff;
         z-index: 9;
         font-weight: 500;
       }
-      &:after {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        display: block;
-      }
+      // &:after {
+      //   position: absolute;
+      //   left: 0;
+      //   right: 0;
+      //   top: 0;
+      //   bottom: 0;
+      //   display: block;
+      // }
 
       &:hover {
         background: $primary-background-color;
@@ -333,7 +333,7 @@ $primary-background-color: #ecf5ff;
         z-index: 9;
         i {
           font-size: 14px;
-          color: white;
+          color: $primary-color;
           margin: 0 5px;
           cursor: pointer;
           &:hover {
@@ -398,22 +398,6 @@ $primary-background-color: #ecf5ff;
         }
       }
 
-      &.active {
-        outline: 1px solid #c11e72;
-        border: 1px solid #c11e72;
-      }
-
-      &:hover {
-        background: #fdf6ec;
-        outline: 1px solid #c11e72;
-        outline-offset: 0px;
-
-        &.active {
-          outline: 1px solid #c11e72;
-          border: 1px solid #c11e72;
-          outline-offset: 0;
-        }
-      }
 
       .widget-view-action.widget-col-action {
         background: #c11e72;

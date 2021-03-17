@@ -51,16 +51,6 @@
         </div>
       </transition-group>
     </Draggable>
-    <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
-      <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
-    </div>
-    <div class="widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
-      <i class="drag-widget el-icon el-icon-rank"></i>
-    </div>
-    <div class="widget-view-model">
-      <span>{{ element.model }}</span>
-      <span v-if="element.options.tableName"> | {{ element.options.tableName }}表</span>
-    </div>
   </div>
 </template>
 
@@ -167,11 +157,6 @@ export default class WidgetSubForm extends Vue {
     return null;
   }
 
-  handleWidgetDelete(index) {
-    this.$nextTick(() => {
-      this.data.list.splice(index, 1);
-    });
-  }
 
   get tableColumns() {
     return this.element.tableColumns;

@@ -63,7 +63,7 @@
                         </transition-group>
                       </Draggable>
                     </el-col>
-                    <div class="widget-view-action widget-col-action" v-if="selectWidget.key == element.key">
+                    <div class="widget-view-action widget-col-action" v-if="selectWidget && selectWidget.key == element.key">
                       <!-- 栅格布局自动加减 -->
                       <template v-if="element.type === 'grid'">
                         <i class="el-icon el-icon-circle-plus" @click.stop="handleGridAdd(element)"></i>
@@ -72,7 +72,7 @@
                       <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
                     </div>
 
-                    <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+                    <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget && selectWidget.key == element.key">
                       <i class="el-icon el-icon-rank"></i>
                     </div>
                   </el-row>
@@ -93,10 +93,10 @@
         </Draggable>
       </el-tab-pane>
     </el-tabs>
-    <div class="widget-view-drag widget-col-drag" v-if="selectWidget.key == element.key">
+    <div class="widget-view-drag widget-col-drag" v-if="selectWidget && selectWidget.key == element.key">
       <i class="drag-widget el-icon el-icon-rank"></i>
     </div>
-    <div class="widget-view-action" v-if="selectWidget.key == element.key">
+    <div class="widget-view-action" v-if="selectWidget && selectWidget.key == element.key">
       <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete()"></i>
     </div>
   </div>

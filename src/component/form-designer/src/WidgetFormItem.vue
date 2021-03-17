@@ -2,7 +2,7 @@
   <el-form-item class="widget-view"
                 v-if="element && element.key"
                 :class="{
-                  active: selectWidget.key == element.key,
+                  active:element && selectWidget && selectWidget.key == element.key,
                   'is_req': element.options.required
                   }"
                 :label-width="element.options.hiddenLabel ? '0' : labelWidth"
@@ -237,11 +237,22 @@
         :loop="element.options.loop">
       </Echarts>
     </template>
-    <div class="widget-view-action" v-if="selectWidget.key == element.key">
+    <template v-if="element.type === 'form'">
+          <WidgetSubForm
+            v-if="element && element.key"
+            :key="element.key"
+            :element="element"
+            :select.sync="selectWidget"
+            :index="index"
+            :data="data"
+            @click.native.stop="handleSelectWidget(index)"
+          ></WidgetSubForm>
+    </template>
+    <div class="widget-view-action" v-if="selectWidget && selectWidget.key == element.key">
           <i class="el-icon el-icon-document-copy" @click.stop="handleWidgetClone(index)"></i>
           <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
     </div>
-    <div class="widget-view-drag" v-if="selectWidget.key == element.key">
+    <div class="widget-view-drag" v-if="selectWidget && selectWidget.key == element.key">
       <i class="drag-widget el-icon el-icon-rank"></i>
     </div>
     <div class="widget-view-model"><span>{{element.model}}</span></div>
@@ -255,6 +266,7 @@ import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
 import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
+import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 
 export default {
   name: 'WidgetFormItem',
@@ -287,6 +299,7 @@ export default {
     Echarts,
     AvatarUpload,
     TreeSelect,
+    WidgetSubForm,
   },
   data() {
     return {
