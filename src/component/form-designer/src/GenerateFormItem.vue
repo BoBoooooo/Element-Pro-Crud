@@ -371,10 +371,6 @@ import { formElement } from './componentsConfig';
     AvatarUpload,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
-  model: {
-    prop: 'value',
-    event: 'change',
-  },
   name: 'GenerateFormItem',
 })
 export default class GenerateFormItem extends Vue {

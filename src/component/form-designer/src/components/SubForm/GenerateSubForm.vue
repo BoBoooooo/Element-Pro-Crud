@@ -1,7 +1,6 @@
 <!--
  * @file: 子表单
  * GenerateFormItem如果想拿到整个子表单所有行数据改写如下
- * v-model="subTableForm.tableData[scope.$index][row.model]"
  * <el-form :model="subTableForm"></el-form>
  * @author: BoBo
  * @copyright: BoBo
@@ -20,7 +19,7 @@
             <template v-if="readOnly || scope.row._mode === 'DETAIL'">
               <span>{{ scope.row[row.model] }}</span>
             </template>
-            <GenerateFormItem v-else :remote="remote" :model="scope.row[row.model]" v-model="inlineFormData[row.model]" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
+            <GenerateFormItem v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
         <el-table-column label="操作" header-align="center" :width="100">
@@ -151,11 +150,11 @@ export default class GenerateSubForm extends Vue {
       return;
     }
     this.mode = 'ADD';
-    this.inlineFormData = {};
     const [obj] = this.widget.tableColumns.map(item => ({
       [item.model]: item.options.defaultValue || '',
       _mode: 'ADD',
     }));
+    this.inlineFormData = obj;
     (this.subTableForm.tableData as any).push(obj);
   }
 
@@ -168,19 +167,11 @@ export default class GenerateSubForm extends Vue {
       .then(() => {
         const promise = this.$PROCRUD.crud(DML.DELETE, this.widget.options.tableName, {}, { id: row.id });
         promise.then(() => {
-          this.remote[this.widget.options.remoteFunc]((data) => {
-            if (Array.isArray(data)) {
-              if (data.length === 0) {
-                this.addRow();
-              } else {
-                (this.subTableForm.tableData as any) = data;
-              }
-            }
-          });
           this.$message({
             type: 'success',
             message: '删除成功',
           });
+          this.fetchList();
         });
       })
       .catch(() => {
@@ -228,7 +219,6 @@ export default class GenerateSubForm extends Vue {
             formValue[k] = this.getTablePrefill[k];
           });
         }
-
         // 根据对话框状态判断保存或编辑
         if (formValue._mode === 'ADD') {
           type = DML.INSERT;
