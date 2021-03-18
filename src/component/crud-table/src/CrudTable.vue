@@ -254,7 +254,7 @@ export default defineComponent({
     listeners, attrs, emit, root,
   }) {
     const {
-      $PROCRUD, $message, $alert, $confirm,
+      $PROCRUD, $message, $confirm,
     } = root;
 
     // 当前行
@@ -530,10 +530,7 @@ export default defineComponent({
             const promiseForDel = props.promiseForDel ? props.promiseForDel(row.id) : $PROCRUD.crud(DML.DELETE, props.tableName, {}, { id: row.id });
             promiseForDel.then(() => {
               tableReload();
-              $alert({
-                type: 'success',
-                message: '删除成功',
-              });
+              $message.success('删除成功');
             });
           })
           .catch(() => {
