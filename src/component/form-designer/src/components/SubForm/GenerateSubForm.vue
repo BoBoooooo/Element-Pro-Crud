@@ -190,10 +190,13 @@ export default class GenerateSubForm extends Vue {
     if (row._mode === 'ADD') {
       this.subTableForm.tableData.splice(index, 1);
     }
+    // 取消后需要还原编辑前的数据
+    Object.keys(this.initialData).forEach((k) => {
+      row[k] = this.initialData[k];
+    });
     row._mode = 'DETAIL';
     this.mode = 'DETAIL';
-    // 取消后需要还原编辑前的数据
-    this.inlineFormData = this.initialData;
+    this.inlineFormData = row;
   }
 
   // 编辑当前行数据
@@ -205,11 +208,11 @@ export default class GenerateSubForm extends Vue {
     row._mode = 'EDIT';
     this.mode = 'EDIT';
     this.inlineFormData = row;
-    this.initialData = row;
+    this.initialData = JSON.parse(JSON.stringify(row));
   }
 
   // 保存按钮点击
-  handleSaveOnClick() {
+  handleSaveOnClick(row) {
     this.btnSaveIsLoading = true;
     // 调用此方法验证表单数据和获取表单数据
     this.$refs.tableForm.validate((valid) => {
@@ -255,6 +258,7 @@ export default class GenerateSubForm extends Vue {
               message: msg,
             });
             formValue._mode = 'DETAIL';
+            row._mode = 'DETAIL';
             this.mode = 'DETAIL';
             this.fetchList();
           })
