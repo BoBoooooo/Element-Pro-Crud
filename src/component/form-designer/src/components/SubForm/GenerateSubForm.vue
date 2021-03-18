@@ -10,8 +10,12 @@
   <div class="table_box">
     <!-- 如果不想展示错误提示信息,可以加上show-message参数 -->
     <el-form status-icon :model="inlineFormData" ref="tableForm" class="subTableForm">
-      <el-table :data="subTableForm.tableData" border fit style="width: 100%">
-        <el-table-column type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
+      <el-table :data="subTableForm.tableData" border fit style="width: calc(100% - 10px)">
+        <template slot="empty">
+          <SvgIcon icon-class="table_empty" class="empty_icon"></SvgIcon>
+          <span>暂无数据</span>
+        </template>
+        <el-table-column type="index" align="center" label="#" header-align="center" min-width="50"> </el-table-column>
         <el-table-column v-for="(row, index) in widget.tableColumns" :key="index" :min-width="row.options.width" :prop="row.model" :label="row.name">
           <template slot-scope="scope">
             <!-- prop的规则: 在普通的form表单中是一个对象,prop是对象的属性. 表格是由多个对象组成的数组,在写prop是需要根据索引给值.这里的tableData就相当于对象的属性 !-->
@@ -22,7 +26,7 @@
             <GenerateFormItem v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
-        <el-table-column label="操作" header-align="center" width="100">
+        <el-table-column label="操作" header-align="center" min-width="100">
           <template slot="header">
             <span class="add-button" @click="addRow"><i type="primary" size="mini" class="el-icon el-icon-plus" v-if="!readOnly"></i>添加</span>
           </template>
@@ -44,11 +48,13 @@ import {
 } from 'vue-property-decorator';
 import { DML } from '@/types/common';
 import { isChinese } from '@/utils/utils';
+import SvgIcon from '@/icons/SvgIcon.vue';
 
 @Component({
   name: 'GenerateSubForm',
   components: {
     GenerateFormItem: () => import('../../GenerateFormItem.vue'),
+    SvgIcon,
   },
 })
 export default class GenerateSubForm extends Vue {
@@ -131,17 +137,13 @@ export default class GenerateSubForm extends Vue {
           searchCondition,
         })
         .then((res) => {
-          if (res.data.list.length === 0) {
-            this.addRow();
-          } else {
+          if (res.data.list.length > 0) {
             this.subTableForm.tableData = res.data.list.map(item => ({
               ...item,
               _mode: 'DETAIL',
             }));
           }
         });
-    } else {
-      this.addRow();
     }
   }
 
@@ -359,6 +361,18 @@ export default class GenerateSubForm extends Vue {
 }
 .subTableForm {
   width: 100%;
+  /deep/.el-table__empty-text {
+    line-height: 10px;
+    margin-bottom: 15px;
+    color: rgba(0, 0, 0, 0.25) !important;
+    font-size: 14px;
+  }
+  .empty_icon {
+    width: 4em;
+    height: 4em;
+    display: block;
+    margin: 0 auto;
+  }
   /deep/.el-form-item__error {
     top: 23px;
     right: 28px;
