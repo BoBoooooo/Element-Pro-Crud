@@ -102,6 +102,9 @@ export default class GenerateSubForm extends Vue {
   // 单行数据
   inlineFormData = {}
 
+  // 原始数据
+  initialData = {}
+
   mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL'
 
   btnSaveIsLoading = false
@@ -189,6 +192,8 @@ export default class GenerateSubForm extends Vue {
     }
     row._mode = 'DETAIL';
     this.mode = 'DETAIL';
+    // 取消后需要还原编辑前的数据
+    this.inlineFormData = this.initialData;
   }
 
   // 编辑当前行数据
@@ -200,6 +205,7 @@ export default class GenerateSubForm extends Vue {
     row._mode = 'EDIT';
     this.mode = 'EDIT';
     this.inlineFormData = row;
+    this.initialData = row;
   }
 
   // 保存按钮点击
