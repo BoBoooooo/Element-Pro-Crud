@@ -10,7 +10,7 @@
   <div class="table_box">
     <!-- 如果不想展示错误提示信息,可以加上show-message参数 -->
     <el-form status-icon :model="inlineFormData" ref="tableForm" class="subTableForm">
-      <el-table :data="subTableForm.tableData" border>
+      <el-table :data="subTableForm.tableData" border fit style="width: 100%">
         <el-table-column type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
         <el-table-column v-for="(row, index) in widget.tableColumns" :key="index" :min-width="row.options.width" :prop="row.model" :label="row.name">
           <template slot-scope="scope">
@@ -22,7 +22,7 @@
             <GenerateFormItem v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
-        <el-table-column label="操作" header-align="center" :width="100">
+        <el-table-column label="操作" header-align="center" width="100">
           <template slot="header">
             <span class="add-button" @click="addRow"><i type="primary" size="mini" class="el-icon el-icon-plus" v-if="!readOnly"></i>添加</span>
           </template>
@@ -354,7 +354,11 @@ export default class GenerateSubForm extends Vue {
     }
   }
 }
+.table_box{
+  width: 100%;
+}
 .subTableForm {
+  width: 100%;
   /deep/.el-form-item__error {
     top: 23px;
     right: 28px;
