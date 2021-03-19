@@ -337,7 +337,6 @@ export default {
         options: { remoteOptions },
       } = origin;
       const key = `${type}_${Math.ceil(Math.random() * 99999)}`;
-
       const cloneOrigin = JSON.parse(
         JSON.stringify({
           ...origin,
@@ -549,7 +548,7 @@ export default {
       this.formKeys.success = [];
       const res = await this.getFormKey(this.formKeys.tableName);
       this.autoGenerateFormByBackend(res.data);
-      this.$alert('成功表格(默认为一行两列)');
+      this.$message('生成成功');
       this.formVisible = false;
     },
     // 清空按钮

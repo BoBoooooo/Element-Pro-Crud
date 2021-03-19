@@ -63,11 +63,11 @@
       <el-form-item label="回调方法" v-if="Object.keys(elementConfig.options).indexOf('eventName') >= 0 && elementConfig.type === 'button'">
         <el-input size="mini" v-model="elementConfig.options.eventName"></el-input>
       </el-form-item>
-      <el-form-item label="标签宽度" v-if="elementConfig.labelWidth !== undefined">
+      <el-form-item label="标签宽度">
         <el-input-number
           size="mini"
-          v-model="elementConfig.labelWidth"
-          :min="100"
+          v-model.number="elementConfig.labelWidth"
+          :min="50"
           :max="180"
           :step="10"
           style="width: 100%"
@@ -800,6 +800,10 @@ export default {
     // eslint-disable-next-line func-names
     'elementConfig.options.pattern': function (val) {
       this.valiatePattern(val);
+    },
+    // eslint-disable-next-line func-names
+    'elementConfig.options.message': function () {
+      this.valiatePattern(this.elementConfig.options.pattern);
     },
     // eslint-disable-next-line func-names
     'elementConfig.name': function (val) {

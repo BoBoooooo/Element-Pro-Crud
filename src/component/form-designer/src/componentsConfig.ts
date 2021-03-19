@@ -2,7 +2,7 @@ export const basicComponents = [
   {
     type: 'input',
     name: '单行文本',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     icon: 'regular/keyboard',
     options: {
@@ -24,7 +24,7 @@ export const basicComponents = [
     type: 'textarea',
     name: '多行文本',
     icon: 'regular/keyboard',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       width: '100%',
@@ -43,7 +43,7 @@ export const basicComponents = [
     type: 'number',
     name: '计数器',
     icon: 'sort-numeric-up',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       width: '',
@@ -61,7 +61,7 @@ export const basicComponents = [
     type: 'radio',
     name: '单选框组',
     icon: 'regular/dot-circle',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       inline: true,
@@ -98,7 +98,7 @@ export const basicComponents = [
     type: 'checkbox',
     name: '多选框组',
     icon: 'regular/check-square',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       inline: true,
@@ -134,7 +134,7 @@ export const basicComponents = [
   {
     type: 'date',
     name: '日期选择器',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     icon: 'regular/calendar-alt',
     options: {
@@ -157,7 +157,7 @@ export const basicComponents = [
   {
     type: 'date',
     name: '时间选择器',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     icon: 'clock',
     options: {
@@ -181,7 +181,7 @@ export const basicComponents = [
     type: 'rate',
     name: '评分',
     icon: 'regular/star',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       hiddenLabel: false,
@@ -196,7 +196,7 @@ export const basicComponents = [
     type: 'color',
     name: '颜色选择器',
     icon: 'palette',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       hiddenLabel: false,
@@ -209,7 +209,7 @@ export const basicComponents = [
   {
     type: 'select',
     name: '下拉选择框',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     icon: 'regular/caret-square-down',
     options: {
@@ -246,7 +246,7 @@ export const basicComponents = [
   {
     type: 'switch',
     name: '开关',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     icon: 'toggle-off',
     options: {
@@ -260,7 +260,7 @@ export const basicComponents = [
     type: 'slider',
     name: '滑块',
     icon: 'sliders-h',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       hiddenLabel: false,
@@ -291,7 +291,7 @@ export const basicComponents = [
     type: 'html',
     name: 'HTML',
     icon: 'heading',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       html: null,
       hiddenLabel: false,
@@ -301,7 +301,7 @@ export const basicComponents = [
     type: 'cascader',
     name: '级联选择器',
     icon: 'random',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       defaultValue: [],
       width: '100%',
@@ -347,7 +347,7 @@ export const basicComponents = [
     type: 'treeselect',
     name: '树形下拉框',
     icon: 'tree',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       remoteFunc: '',
       placeholder: '',
@@ -404,7 +404,7 @@ export const basicComponents = [
     type: 'richtext',
     name: '富文本',
     icon: 'text-width',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       defaultValue: '',
@@ -420,7 +420,7 @@ export const advanceComponents = [
     type: 'blank',
     name: '自定义(插槽)',
     icon: 'chalkboard',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       defaultType: 'String',
       hiddenLabel: false,
@@ -430,7 +430,7 @@ export const advanceComponents = [
     type: 'button',
     name: '按钮',
     icon: 'mouse-pointer',
-    labelWidth: '',
+    labelWidth: undefined,
     hidden: false,
     options: {
       text: '确认',
@@ -442,7 +442,7 @@ export const advanceComponents = [
     type: 'upload',
     name: '附件',
     icon: 'upload',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       resourceId: 'id',
       fileType: '',
@@ -456,7 +456,7 @@ export const advanceComponents = [
     type: 'avatar',
     name: '头像',
     icon: 'user',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       resourceId: 'id',
       uploadUrl: '/file/upload',
@@ -468,7 +468,7 @@ export const advanceComponents = [
     type: 'table',
     name: '子表格',
     icon: 'table',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       remoteFunc: '',
       visibleList: {
@@ -495,7 +495,7 @@ export const advanceComponents = [
     type: 'form',
     name: '子表单',
     icon: 'file-word',
-    labelWidth: '',
+    labelWidth: undefined,
     tableColumns: [],
     options: {
       hiddenLabel: true,
@@ -562,7 +562,7 @@ export const layoutComponents = [
     type: 'divider',
     name: '分割线',
     icon: 'divide',
-    labelWidth: '',
+    labelWidth: undefined,
     options: {
       align: 'center',
       hiddenLabel: true,

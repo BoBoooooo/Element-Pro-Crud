@@ -251,6 +251,8 @@
         :tableParams="getTableParams"
         :prefill="getTablePrefill"
         :remoteFuncs="remote"
+        border
+        stripe
       >
       </CrudTable>
     </template>
