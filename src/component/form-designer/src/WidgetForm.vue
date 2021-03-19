@@ -77,7 +77,7 @@
               <div
                 class="data-grid widget-grid-table-container widget-col widget-view"
                 :key="element && element.key"
-                :class="{ active: selectWidget.key == element.key }"
+                :class="{ active: selectWidget && selectWidget.key == element.key }"
                 @click="handleSelectWidget(index)"
               >
                 <table
@@ -100,7 +100,7 @@
                         height: col.options.height
                       }"
                       align="left"
-                      :class="{ active: selectWidget.key == col.key }"
+                      :class="{ active: selectWidget &&  selectWidget.key == col.key }"
                       class="widget-grid-table__td"
                     >
                       <Draggable
@@ -119,7 +119,7 @@
                         </transition-group>
                       </Draggable>
                       <!-- td设置 -->
-                      <div class="widget-td-setting" v-if="selectWidget.key == col.key">
+                      <div class="widget-td-setting" v-if="selectWidget && selectWidget.key == col.key">
                          <el-dropdown size="mini" trigger="click" @command="handleTdSettingCommand($event, element, row, rowIndex, col, colIndex)">
                           <span class="el-dropdown-link">
                             <i class="el-icon-setting el-icon--right" title="详细设置"></i>

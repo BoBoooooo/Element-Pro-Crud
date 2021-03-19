@@ -459,7 +459,7 @@ export default {
                 required: false,
                 dataType: 'string',
                 pattern: '',
-                placeholder: '',
+                placeholder: `请填写${COLUMN_COMMENT}`,
                 remoteFunc: 'func_1575516931000_89639',
               },
               key: `1575516931000_${Math.random()}`,

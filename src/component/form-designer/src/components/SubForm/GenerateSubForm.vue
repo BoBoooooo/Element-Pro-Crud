@@ -23,7 +23,7 @@
             <template v-if="readOnly || scope.row._mode === 'DETAIL'">
               <span>{{ scope.row[row.model] }}</span>
             </template>
-            <GenerateFormItem v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
+            <GenerateFormItem class="form-item" v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
         <el-table-column label="操作" header-align="center" min-width="100">
@@ -59,61 +59,61 @@ import SvgIcon from '@/icons/SvgIcon.vue';
 })
 export default class GenerateSubForm extends Vue {
   $refs!: {
-    tableForm: HTMLFormElement
-  }
+    tableForm: HTMLFormElement;
+  };
 
   @Prop({
     type: Object as () => {
-      tableColumns: any
-      options: any
-      model: string
+      tableColumns: any;
+      options: any;
+      model: string;
     },
     default: () => ({}),
   })
   widget!: {
-    tableColumns: any
-    options: any
-    model: string
-  }
+    tableColumns: any;
+    options: any;
+    model: string;
+  };
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  remote: any
+  remote: any;
 
   @Prop({
     type: Object,
     default: null,
   })
-  readOnly: any
+  readOnly: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  formTableConfig: any
+  formTableConfig: any;
 
-    @Prop({
-      type: Object,
-      default: () => ({}),
-    })
-  models: any
+  @Prop({
+    type: Object,
+    default: () => ({}),
+  })
+  models: any;
 
   // 整个子表单数据
   subTableForm = {
     tableData: [],
-  }
+  };
 
   // 单行数据
-  inlineFormData = {}
+  inlineFormData = {};
 
   // 原始数据
-  initialData = {}
+  initialData = {};
 
-  mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL'
+  mode: 'ADD' | 'EDIT' | 'DETAIL' | '' = 'DETAIL';
 
-  btnSaveIsLoading = false
+  btnSaveIsLoading = false;
 
   created() {
     this.fetchList();
@@ -356,16 +356,28 @@ export default class GenerateSubForm extends Vue {
     }
   }
 }
-.table_box{
+.table_box {
   width: 100%;
 }
 .subTableForm {
   width: 100%;
+  .form-item{
+    background: #f3fefa;
+  }
   /deep/.el-table__empty-text {
     line-height: 10px;
     margin-bottom: 15px;
     color: rgba(0, 0, 0, 0.25) !important;
     font-size: 14px;
+  }
+  /deep/.el-form-item__content {
+    .el-select,
+    .el-input {
+      width: 100% !important;
+    }
+    .el-input__inner,.el-textarea__inner{
+      background: none!important;
+    }
   }
   .empty_icon {
     width: 4em;

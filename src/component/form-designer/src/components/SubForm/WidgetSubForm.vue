@@ -46,7 +46,7 @@
             :select.sync="selectWidget"
             :index="index"
             :data="data"
-            @click.native="handleSelectWidget(index)"
+            @click.native.stop="handleSelectWidget(index)"
           ></WidgetFormItem>
         </div>
       </transition-group>

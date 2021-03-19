@@ -78,7 +78,7 @@
       <el-form-item label="隐藏标签" v-if="elementConfig.options.hiddenLabel !== undefined">
         <el-switch :disabled="elementConfig.type === 'button'" v-model="elementConfig.options.hiddenLabel"></el-switch>
       </el-form-item>
-      <el-form-item label="宽度" v-if="Object.keys(elementConfig.options).indexOf('width') >= 0">
+      <el-form-item label="组件宽度" v-if="Object.keys(elementConfig.options).indexOf('width') >= 0">
         <el-input size="mini" v-model="elementConfig.options.width"></el-input>
       </el-form-item>
       <el-form-item label="大小" v-if="Object.keys(elementConfig.options).indexOf('size') >= 0">
@@ -579,9 +579,9 @@ import 'vue-awesome/icons/sliders-h';
 import 'vue-awesome/icons/regular/image';
 import 'vue-awesome/icons/chalkboard';
 import 'vue-awesome/icons/divide';
-
 import { DML } from '@/types/common';
-import { elementComponentConfig } from './componentsConfig';
+import { formElement, elementComponentConfig } from './componentsConfig';
+
 
 export default {
   name: 'WidgetConfig',
@@ -811,6 +811,9 @@ export default {
         this.validateRequired(this.elementConfig.options.required);
         this.validateDataType(this.elementConfig.options.dataType);
         this.valiatePattern(this.elementConfig.options.pattern);
+      }
+      if (formElement.includes(this.elementConfig.type)) {
+        this.elementConfig.options.placeholder = `请填写${val}`;
       }
     },
   },
