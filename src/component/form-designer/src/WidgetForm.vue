@@ -193,10 +193,10 @@ export default {
     // 处理TD设置
     handleTdSettingCommand(command, table, row, rowIndex, col, colIndex) {
       switch (command) {
-        case 'left-col': this.handleColAdd(table, row, 'left'); break;
-        case 'right-col': this.handleColAdd(table, row, 'right'); break;
-        case 'top-row': this.handleRowAdd(table, 'top'); break;
-        case 'bottom-row': this.handleRowAdd(table, 'bottom'); break;
+        case 'left-col': this.handleColAdd(table, row, rowIndex, col, colIndex, 'left'); break;
+        case 'right-col': this.handleColAdd(table, row, rowIndex, col, colIndex, 'right'); break;
+        case 'top-row': this.handleRowAdd(table, row, rowIndex, 'top'); break;
+        case 'bottom-row': this.handleRowAdd(table, row, rowIndex, 'bottom'); break;
         case 'merge-right': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'right'); break;
         case 'merge-bottom': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'bottom'); break;
         case 'split-col': this.handleTdSplitToCol(table, row, rowIndex, col, colIndex); break;
@@ -376,33 +376,37 @@ export default {
         this.data.list.splice(index, 1);
       });
     },
-    handleColAdd(table, rowIndex, direction = 'right') {
+    handleColAdd(table, row, rowIndex, col, colIndex = null, direction = 'right') {
       const { rows } = table;
-      rows.forEach((row) => {
-        const { columns } = row;
+      rows.forEach((_row, _index) => {
+        const { columns } = _row;
         const newCol = this.generateNewTd();
         // 此处判断是左添加列还是右添加列
         if (direction === 'right') {
-          columns.push(newCol);
+          // eslint-disable-next-line no-unused-expressions
+          colIndex !== null ? columns.splice(colIndex + 1, 0, newCol) : columns.push(newCol);
         } else {
-          columns.unshift(newCol);
+          // eslint-disable-next-line no-unused-expressions
+          colIndex !== null ? columns.splice(colIndex, 0, newCol) : columns.unshift(newCol);
         }
       });
       table.options.sumColSpan += 1;
     },
-    handleRowAdd(table, direction = 'bottom') {
-      const row = {
+    handleRowAdd(table, row, rowIndex = null, direction = 'bottom') {
+      const _row = {
         columns: [],
       };
       for (let i = 0; i < table.options.sumColSpan; i += 1) {
         const newCol = this.generateNewTd();
-        row.columns.push(newCol);
+        _row.columns.push(newCol);
       }
       // 此处判断是上方添加行还是下方添加行
       if (direction === 'bottom') {
-        table.rows.push(row);
+        // eslint-disable-next-line no-unused-expressions
+        rowIndex !== null ? table.rows.splice(rowIndex + 1, 0, _row) : table.rows.push(_row);
       } else {
-        table.rows.unshift(row);
+        // eslint-disable-next-line no-unused-expressions
+        rowIndex !== null ? table.rows.splice(rowIndex, 0, _row) : table.rows.unshift(_row);
       }
       table.options.sumRowSpan += 1;
     },
