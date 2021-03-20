@@ -5,54 +5,37 @@
  * @Date: 2019年12月10 14:27:03
  -->
 <template>
-  <el-popover width="800"
-              placement="bottom"
-              trigger="manual"
-              v-model="visible">
-    <el-card style="margin:-12px;"
-             :body-style="{
-      padding:'5px 10px',
-      maxHeight:'60vh',
-      overflow:'auto'
-    }">
-      <div slot="header"
-           class="clearfix">
-        <i class="el-icon el-icon-search"
-           style="margin-right:10px"></i>
+  <el-popover width="800" placement="bottom" trigger="manual" v-model="visible">
+    <el-card
+      style="margin: -13px"
+      class="card"
+      :body-style="{
+        padding: '5px 10px',
+        maxHeight: '60vh',
+        overflow: 'auto',
+      }"
+    >
+      <div slot="header" class="clearfix">
+        <i class="el-icon el-icon-search" style="margin-right: 10px"></i>
         <span>高级查询</span>
       </div>
       <div>
-        <GenerateForm ref="generateDialogForm"
-                      :data="formDesign"
-                      :remote="remoteFuncs"
-                      :entity.sync="entity" />
-        <el-button size="mini"
-                   type="primary"
-                   icon="el-icon-search"
-                   style="float:right"
-                   @click="getSearchFormData()">查询</el-button>
-        <el-button size="mini"
-                   icon="el-icon-search"
-                   style="float:right"
-                   @click="resetForm">关闭</el-button>
+        <GenerateForm ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
+        <div style="float: right">
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
+          <el-button size="mini" style="margin-right: 10px" icon="el-icon-close" @click="resetForm">关闭</el-button>
+        </div>
       </div>
     </el-card>
-    <el-tooltip class="item"
-                slot="reference"
-                effect="dark"
-                content="高级查询"
-                placement="top">
-      <el-button type="primary"
-                 size="mini"
-                 icon="el-icon-s-help"
-                 style="border-radius:0"
-                 @click="visible = true">高级查询</el-button>
+    <el-tooltip class="item" slot="reference" effect="dark" content="高级查询" placement="top">
+      <el-button type="primary" size="mini" class="tool-btn" icon="el-icon-s-help" @click="visible = true">高级查询</el-button>
     </el-tooltip>
   </el-popover>
 </template>
 
 <script lang="ts">
 import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
+import { diGuiTree } from '@/utils/utils';
 
 import {
   Component, Vue, Prop, Watch,
@@ -112,8 +95,9 @@ export default class SeniorSearchForm extends Vue {
         isTableClass: false,
       },
     };
+    const columns = diGuiTree()(this.columns);
 
-    for (const column of this.columns.filter(item => item.searchable)) {
+    for (const column of columns) {
       const {
         type, label, prop, option,
       } = column;
@@ -183,3 +167,11 @@ export default class SeniorSearchForm extends Vue {
   }
 }
 </script>
+<style scoped>
+.card >>> .el-card__header {
+  background: #b7ddff !important;
+}
+.card{
+  border: none!important;
+}
+</style>

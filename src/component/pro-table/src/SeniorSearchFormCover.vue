@@ -6,37 +6,21 @@
  -->
 <template>
   <div ref="container">
-    <GenerateForm ref="generateDialogForm"
-                  :data="searchFormJson"
-                  class="form"
-                  :remote="remoteFuncs"
-                  :entity.sync="entity" />
+    <GenerateForm ref="generateDialogForm" :data="searchFormJson" class="form" :remote="remoteFuncs" :entity.sync="entity" />
     <slot></slot>
-    <el-button size="mini"
-               icon="el-icon-delete"
-               style="float:right"
-               @click="btnRemoveOnClick()">清空</el-button>
-    <el-button size="mini"
-               type="primary"
-               icon="el-icon-search"
-               style="float:right"
-               @click="getSearchFormData()">查询</el-button>
-    <el-tooltip class="item"
-                effect="dark"
-                :content="collpaseButtonText"
-                placement="bottom">
-      <el-button size="mini"
-                 v-if="formDesign.list.length>2"
-                 icon="el-icon-sort"
-                 style="float:right;margin-right:10px;"
-                 @click="collpase()">更多查询</el-button>
-    </el-tooltip>
+    <div style="float: right">
+      <el-button size="mini" icon="el-icon-delete" @click="btnRemoveOnClick()">清空</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
+      <el-tooltip class="item" effect="dark" :content="collpaseButtonText" placement="bottom">
+        <el-button size="mini" v-if="formDesign.list.length > 2" icon="el-icon-sort" style="float: right; margin-right: 10px" @click="collpase()">更多查询</el-button>
+      </el-tooltip>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { GenerateForm } from '@/component/form-designer';
-import { chunk } from '@/utils/utils';
+import { chunk, diGuiTree } from '@/utils/utils';
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
@@ -115,7 +99,9 @@ export default class SeniorSearchFormCover extends Vue {
   // 暂时默认时间类型的为起止范围查询
   // 输入框类型的为手动输入
   autoGenerateFormByBackend() {
-    if (this.columns.length === 0) {
+    const columns = diGuiTree()(this.columns);
+
+    if (columns.length === 0) {
       return;
     }
     const formJson: any = {
@@ -127,10 +113,7 @@ export default class SeniorSearchFormCover extends Vue {
         isTableClass: false,
       },
     };
-    const chunkArr = chunk(
-      this.columns.filter(item => item.searchable),
-      4,
-    );
+    const chunkArr = chunk(columns, 4);
     for (const arr of chunkArr.filter(item => item)) {
       const row: any = {
         type: 'grid',
@@ -209,12 +192,7 @@ export default class SeniorSearchFormCover extends Vue {
             },
           ],
         };
-        if (
-          prop.includes('date')
-          || prop.includes('time')
-          || label.includes('日期')
-          || label.includes('时间')
-        ) {
+        if (prop.includes('date') || prop.includes('time') || label.includes('日期') || label.includes('时间')) {
           row.columns.push(date);
         } else if (option && option.type === 'select') {
           row.columns.push(select);

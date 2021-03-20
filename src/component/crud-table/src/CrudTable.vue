@@ -639,38 +639,5 @@ export default defineComponent({
   padding: 10px;
   position: relative;
   width: 100%;
-  h4 {
-    margin: 2px 30px 0px 0px;
-    padding-left: 15px;
-    font-weight: 500;
-    font-size: 18px;
-  }
-  .table-title {
-    float: left;
-    margin-left: 5px;
-  }
-  .table-title-absolute {
-    position: absolute;
-    top: 110px;
-    left: 10px;
-  }
-  .btn-bar {
-    float: right;
-    width: auto;
-    text-align: right;
-    & > div,
-    button {
-      float: right;
-      margin-left: 10px;
-    }
-  }
-  .dev-module {
-    display: inline-block;
-    margin-left: 20px;
-    line-height: 28px;
-    button {
-      padding: 0;
-    }
-  }
 }
 </style>

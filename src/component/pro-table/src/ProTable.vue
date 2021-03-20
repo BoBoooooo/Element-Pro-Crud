@@ -51,52 +51,13 @@
       </template>
       <el-table-column v-if="isMultiple" type="selection" reserve-selection align="center" header-align="center" width="55" :selectable="selectableFunc"> </el-table-column>
       <el-table-column v-if="showColumnIndex" type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
-      <el-table-column
-        v-for="(column, columnIndex) in tableConfig.columns"
-        :key="columnIndex"
-        :column-key="column.columnKey"
-        :prop="column.prop"
-        :label="column.label"
-        :width="column.minWidth ? '-' : column.width || 140"
-        :min-width="column.minWidth || column.width || 140"
-        :fixed="column.fixed"
-        :render-header="column.renderHeader"
-        :sortable="column.sortable == 'false' ? false : column.sortable"
-        :sort-by="column.sortBy"
-        :sort-method="column.method"
-        :resizable="column.resizable"
-        :formatter="column.formatter"
-        :show-overflow-tooltip="column.showOverflowTooltip"
-        :align="column.align"
-        :header-align="column.headerAlign || column.align"
-        :class-name="column.className"
-        :label-class-name="column.labelClassName"
-        :selectable="column.selectable"
-        :reserve-selection="column.reserveSelection"
-        :filters="column.filters"
-        :filter-placement="column.filterPlacement"
-        :filter-multiple="column.filterMultiple"
-        :filter-method="column.filterMethod"
-        :filtered-value="column.filteredValue"
-      >
-        <!-- 操作列表头插槽 -->
-        <template slot="header" slot-scope="scope">
-          <slot v-if="$scopedSlots[`${column.prop}_header`]" :name="`${column.prop}_header`" :column="scope.column"></slot>
-          <span v-else>
-            {{ column.label }}
-          </span>
+      <!-- el-table-column单独封装,便于支持多级表头 -->
+      <Column :column="column" :key="columnIndex" v-for="(column, columnIndex) in tableConfig.columns">
+         <!-- 表格插槽 -->
+        <template :slot="slotName" slot-scope="scope"  v-for="(slotName) in Object.keys($scopedSlots)">
+          <slot :name="slotName"  :column="scope.column" :row="scope.row" :prop="scope.prop"></slot>
         </template>
-        <!-- 插槽情况 -->
-        <template slot-scope="scope">
-          <!-- 自定义插槽 -->
-          <span v-if="column.slotName">
-            <slot :name="column.slotName" :row="scope.row" :prop="column.prop" :$index="scope.$index" />
-          </span>
-          <span v-else>
-            {{ scope.row[column.prop] }}
-          </span>
-        </template>
-      </el-table-column>
+      </Column>
     </el-table>
     <!-- 分页 -->
     <div class="mt-8">
@@ -111,7 +72,7 @@
         :total="total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        style="float:right"
+        style="float: right"
       />
     </div>
   </div>
@@ -131,6 +92,7 @@ import { Notification } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import SearchForm from './SearchForm.vue';
 import { ProTableProps } from '../types/ProTable.types';
+import Column from './Column.vue';
 
 const STATUS = {
   CREATE: 0,
@@ -145,6 +107,7 @@ export default defineComponent({
   components: {
     SearchForm,
     SvgIcon,
+    Column,
   },
   props: {
     // 查询模式
@@ -514,7 +477,7 @@ export default defineComponent({
     }
     .table-title-container-absolute {
       position: absolute;
-      top: 110px;
+      top: 130px;
       left: 10px;
     }
     .btn-bar {

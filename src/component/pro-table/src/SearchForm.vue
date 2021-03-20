@@ -6,56 +6,37 @@
  -->
 
 <template>
-  <div class="search-form-container"
-       :style="{
-    float: searchMode === 'cover' ? 'none' : 'left'
-  }">
+  <div
+    class="search-form-container"
+    :style="{
+      float: searchMode === 'cover' ? 'none' : 'left',
+    }"
+  >
     <template v-if="searchMode === 'popover'">
-      <el-input placeholder="请输入查询内容"
-                @clear="clearEvent"
-                clearable
-                @change="changeEvent"
-                v-model="searchContent"
-                class="input">
-      </el-input>
-      <el-button-group>
-        <el-button size="mini"
-                   type="primary"
-                   icon="el-icon-search"
-                   @click="btnSearchOnClick()"
-                   class="tool-btn">查询</el-button>
-        <!-- 高级查询表单 -->
-        <SeniorSearchForm v-if="showSeniorSearchFormButton"
-                          :remoteFuncs="remoteFuncs"
-                          @fetchSearch="getFetchParamsSearch"
-                          :columns="columns">
-        </SeniorSearchForm>
-        <el-button size="mini"
-                   icon="el-icon-refresh"
-                   @click="clearEvent()"
-                   class="tool-btn">清空</el-button>
-      </el-button-group>
+      <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="mini" @change="changeEvent" v-model="searchContent" class="input"> </el-input>
+      <el-button size="mini" type="primary" icon="el-icon-search" @click="btnSearchOnClick()" class="tool-btn">查询</el-button>
+      <!-- 高级查询表单 -->
+      <SeniorSearchForm v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchForm>
+      <el-button size="mini" icon="el-icon-refresh" @click="clearEvent()" class="tool-btn">清空</el-button>
     </template>
     <template v-else>
       <!-- 高级查询表单 -->
-      <SeniorSearchFormCover v-if="showSeniorSearchFormButton"
-                             :remoteFuncs="remoteFuncs"
-                             @fetchSearch="getFetchParamsSearch"
-                             :columns="columns">
+      <SeniorSearchFormCover v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns">
         <slot></slot>
       </SeniorSearchFormCover>
     </template>
 
-    <div class="tips">
+    <div
+      class="tips"
+      :style="{
+        float: searchMode === 'cover' ? 'right' : 'none',
+      }"
+    >
       <!-- 提示当前查询内容 -->
       <template v-if="isArray">
-        <el-tag v-for="(item, index) in paramsTips"
-                size="small"
-                effect="plain"
-                :key="index"
-                closable
-                @close="handleClose(item)">
-          {{ item.label + ":" + item.value }}
+        <span v-if="paramsTips && paramsTips.length > 0">当前查询: </span>
+        <el-tag v-for="(item, index) in paramsTips" size="small" effect="plain" :key="index" closable @close="handleClose(item)">
+          {{ item.label + ':' + item.value }}
         </el-tag>
       </template>
       <template v-else>
@@ -66,6 +47,7 @@
 </template>
 
 <script lang="ts">
+import { diGuiTree } from '@/utils/utils';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import SeniorSearchForm from './SeniorSearchForm.vue';
 import SeniorSearchFormCover from './SeniorSearchFormCover.vue';
@@ -111,6 +93,10 @@ export default class SearchForm extends Vue {
     return Array.isArray(this.paramsTips);
   }
 
+  get seachableColumns() {
+    return diGuiTree()(this.columns);
+  }
+
   // 标签关闭事件
   handleClose(tag) {
     this.paramsTips = this.paramsTips.filter(item => item.field !== tag.field);
@@ -144,7 +130,7 @@ export default class SearchForm extends Vue {
   getParams() {
     let params: any = [];
     // 拿到所有字段
-    const props = this.columns.filter(item => item.searchable).map(item => item.prop);
+    const props = this.seachableColumns.map(item => item.prop);
     const str = props.toString();
     if (this.searchContent) {
       params = [
@@ -201,7 +187,7 @@ export default class SearchForm extends Vue {
       field: item.field,
       value: item.value,
       operator: item.operator,
-      label: this.columns.find(s => s.prop === item.field).label,
+      label: this.seachableColumns.find(s => s.prop === item.field).label,
     }));
     this.$emit('update:searchFormCondition', params);
     this.$emit('click');
@@ -223,10 +209,9 @@ export default class SearchForm extends Vue {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-form-container {
   float: left;
-  .tool-btn {
+  /deep/.tool-btn {
     display: inline;
-    height: 29px;
-    border-radius: 0;
+    margin-left: 10px;
   }
   /deep/.el-input__suffix {
     top: -5px;
@@ -234,20 +219,14 @@ export default class SearchForm extends Vue {
   .input {
     display: inline-block;
     width: 300px;
-    /deep/ .el-input__inner {
-      height: 29px;
-      line-height: 29px;
-      border-radius: 0;
-      display: inline-block;
-    }
   }
   .tips {
     display: inline-block;
-    vertical-align: 1px;
-    margin-left: 5px;
+    margin-left: 10px;
     /deep/.el-tag {
-      border-radius: 0;
       margin-right: 5px;
+      height: 28px!important;
+      line-height: 28px!important;
     }
   }
 }

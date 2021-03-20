@@ -50,3 +50,23 @@ export function debounce(method, params) {
     }, 300);
   };
 }
+
+/**
+ * 递归获取可查询字段名
+ * @param columns columns json
+ */
+export function diGuiTree() {
+  const result:any = [];
+  // eslint-disable-next-line no-shadow
+  return function getProp(columns) {
+    for (const column of columns) {
+      if (column.prop && column.searchable) {
+        result.push(column);
+      }
+      if (column.children) {
+        getProp(column.children);
+      }
+    }
+    return result;
+  };
+}

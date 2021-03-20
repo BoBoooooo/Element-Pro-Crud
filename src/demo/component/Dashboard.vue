@@ -50,7 +50,7 @@
         <el-container class="container">
           <el-header
             ><el-tag effect="plain" type="info">ProTable</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
-            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
+            <el-button @click="handleGenerateJson('ProTable')" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
               当前表格json
             </el-button>
           </el-header>
@@ -96,7 +96,7 @@
               <el-col :span="20">
                 <PersonProTable
                   :searchMode="searchMode ? 'cover' : 'popover'"
-                  tableTitle="人员管理"
+                  tableTitle="员工管理(多级表头示例)"
                   :size="size"
                   :columns="columns"
                   :readOnly="readOnly"
@@ -267,6 +267,7 @@ import CusDialog from '@/component/common/CusDialog.vue';
 import {
   PersonCrudTable, PersonProTable, ChartScreen, chartData,
 } from '@/demo/component';
+import { proTableJson } from './data';
 
 export default {
   name: 'Dashboard',
@@ -359,6 +360,8 @@ export default {
       this.jsonVisible = true;
       if (type === 'chart') {
         this.jsonTemplate = JSON.stringify(this.chartData, null, 2);
+      } else if (type === 'ProTable') {
+        this.jsonTemplate = JSON.stringify(proTableJson, null, 2);
       } else {
         this.jsonTemplate = JSON.stringify(this.columns, null, 2);
       }
