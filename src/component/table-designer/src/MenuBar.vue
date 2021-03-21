@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import _forEach from 'lodash/forEach';
-import _pick from 'lodash/pick';
 import { DML } from '@/types/common';
 import CusDialog from '@/component/common/CusDialog.vue';
 import Clipboard from 'clipboard';
@@ -103,9 +101,8 @@ export default {
           const jsonObj = JSON.parse(res.data.formJson);
           const done = [];
           // 遍历行
-          _forEach(jsonObj.list, (row) => {
-            // 遍历列
-            _forEach(row.columns, (column) => {
+          jsonObj.list.forEach((row) => {
+            row.columns.forEach((column) => {
               const first = column.list[0];
               if (first && 'date,select'.includes(first.type)) {
                 // 从表单复制到表格的属性
@@ -121,7 +118,12 @@ export default {
                   'props',
                   'options',
                 ];
-                const option = _pick(first.options, keyList);
+                const option = {};
+                Object.keys(first.options).forEach((key) => {
+                  if (keyList.includes(key)) {
+                    option[key] = first.options[key];
+                  }
+                });
                 option.type = first.type;
                 // 遍历当前表格配置，加入option
                 for (const col of this.designedJSON.columns) {
@@ -152,6 +154,7 @@ export default {
         // 普通列
         case 'addColumn':
           this.designedJSON.columns.push({
+            id: Math.random(),
             prop: '',
             label: '',
             align: 'center',
@@ -160,12 +163,14 @@ export default {
             minWidth: this.minColumnWidth,
             sortable: 'custom',
             searchable: true,
+            hasChildren: true,
           });
           break;
         // 普通列x10
         case 'addColumnx5':
           for (let i = 0; i < 5; i += 1) {
             this.designedJSON.columns.push({
+              id: Math.random(),
               prop: '',
               label: '',
               align: 'center',
@@ -180,6 +185,7 @@ export default {
         // 操作列
         case 'addActionColumn':
           this.designedJSON.columns.push({
+            id: Math.random(),
             prop: '_action',
             label: '操作',
             minWidth: 180,
@@ -220,6 +226,7 @@ export default {
                 for (const column of row.columns) {
                   const { model } = column.list[0];
                   this.designedJSON.columns.push({
+                    id: Math.random(),
                     prop: model.split('_')[1] || model.split('_')[0],
                     label: column.list[0].name,
                     minWidth: this.minColumnWidth,

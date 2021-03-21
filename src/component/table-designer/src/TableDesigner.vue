@@ -26,59 +26,52 @@
         <MenuBar style="float: right" :designedJSON.sync="objJSON" :fieldConfig="fieldConfig" :formList="formList" :minColumnWidth="minColumnWidth" />
       </el-col>
     </el-row>
-
-    <table class="tableDesigner">
-      <thead>
-        <!-- 遍历columns生成表头 -->
-        <th v-for="column in fieldConfig" :key="column.name">
-          <el-tooltip v-if="column.tootip" class="item" effect="dark" :content="column.tootip" placement="top">
-            <span>{{ column.name }}</span>
-          </el-tooltip>
-          <span v-else :style="column.headStyle">{{ column.name }}</span>
-        </th>
-      </thead>
-      <!-- 包含可拖动元素的外部标签 -->
-      <Draggable tag="tbody" v-model="objJSON.columns" handle=".el-icon-sort">
-        <!-- 遍历生成每一行 -->
-        <tr v-for="(item, index) in objJSON.columns" :key="index" class="row">
-          <!-- 遍历生成一行中的每一个单元格 -->
-          <td v-for="column in fieldConfig" :key="column.name">
-            <!-- 第一列只有排序图标 -->
-            <i v-if="column.is === 'i'" class="el-icon-sort"></i>
-            <!-- 只有文本框的列，“最小宽度”字段列特殊处理 -->
-            <el-input
-              v-else-if="column.is === 'input'"
-              v-model="item[column.field]"
-              :placeholder="column.field"
-              size="small"
-              :class="{ notDefaultWidth: column.field === 'minWidth' && item[column.field] !== 140 }"
-            />
-            <!-- 下拉菜单列 -->
-            <el-select size="small" v-else-if="column.is === 'select'" v-model="item[column.field]" :placeholder="column.field">
-              <el-option v-for="o in column.list" :key="o.label" :label="o.label" :value="o.value"></el-option>
-            </el-select>
-            <!-- 开关 -->
-            <el-switch size="small" v-else-if="column.is === 'switch'" v-model="item[column.field]"></el-switch>
-            <!-- 高级查询，如果配置了popover同时options存在就显示编辑 -->
-            <el-popover v-else-if="column.is === 'popover' && item[column.field]" placement="bottom-start" width="400" trigger="click">
-              <!-- 下拉菜单配置 -->
-              <SelectConfig :dictList="dictList" :sourceOption.sync="item[column.field]" />
-              <el-button size="small" slot="reference" type="primary"> 编辑菜单 </el-button>
-            </el-popover>
-            <el-button size="small" v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(index)"> 转为菜单 </el-button>
-            <el-tooltip v-else-if="column.is === 'delete'" class="item" effect="dark" content="删除当前行" placement="left">
-              <i style="color: red; cursor: pointer" class="el-icon el-icon-delete" @click="removeColumn(index)"></i>
+    <el-table stripe fit ref="table" :data="objJSON.columns" style="width: 100%; margin-bottom: 20px" :row-key="(row) => row.id || row.prop" border>
+      <!-- 遍历columns生成表头 -->
+      <el-table-column header-align="center" align="center" :label="column.name" v-for="column in fieldConfig" :key="column.name" :min-width="column.headStyle">
+        <template slot-scope="scope">
+          <!-- 第一列只有排序图标 -->
+          <template v-if="column.is === 'i'">
+            <el-tooltip class="item" effect="dark" content="拖拽可以排序哦~" placement="left">
+              <i style="color: blue; cursor: pointer" class="el-icon-sort"></i>
             </el-tooltip>
-          </td>
-        </tr>
-      </Draggable>
-    </table>
+          </template>
+          <!-- 只有文本框的列，“最小宽度”字段列特殊处理 -->
+          <el-input
+            v-if="column.is === 'input'"
+            v-model="scope.row[column.field]"
+            :placeholder="column.field"
+            size="small"
+            :class="{ notDefaultWidth: column.field === 'minWidth' && scope.row[column.field] !== 140 }"
+          />
+          <!-- 下拉菜单列 -->
+          <el-select size="small" v-else-if="column.is === 'select'" v-model="scope.row[column.field]" :placeholder="column.field">
+            <el-option v-for="o in column.list" :key="o.label" :label="o.label" :value="o.value"></el-option>
+          </el-select>
+          <!-- 开关 -->
+          <el-switch size="small" v-else-if="column.is === 'switch'" v-model="scope.row[column.field]"></el-switch>
+          <!-- 高级查询，如果配置了popover同时options存在就显示编辑 -->
+          <el-popover v-else-if="column.is === 'popover' && scope.row[column.field]" placement="bottom-start" width="400" trigger="click">
+            <!-- 下拉菜单配置 -->
+            <SelectConfig :dictList="dictList" :sourceOption.sync="scope.row[column.field]" />
+            <el-button size="small" slot="reference" type="primary"> 编辑菜单 </el-button>
+          </el-popover>
+          <el-button size="small" v-else-if="column.is === 'popover'" slot="reference" @click="addOptionToColumn(scope.$index)"> 转为菜单 </el-button>
+          <!-- 操作列 -->
+          <template v-if="column.is === 'action'">
+            <el-tooltip class="item" effect="dark" content="删除当前行" placement="left">
+              <i style="color: red; cursor: pointer" class="el-icon el-icon-delete" @click="removeColumn(scope.$index)"></i>
+            </el-tooltip>
+          </template>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
-import Draggable from 'vuedraggable';
 import { DML } from '@/types/common';
+import Sortable from 'sortablejs';
 import MenuBar from './MenuBar.vue';
 import columnsConfig from './columnsConfig.ts';
 import SelectConfig from './SelectConfig.vue';
@@ -92,7 +85,6 @@ export default {
   name: 'TableDesigner',
   components: {
     MenuBar,
-    Draggable,
     SelectConfig,
   },
   props: {
@@ -130,7 +122,21 @@ export default {
       entity: {},
     };
   },
+  mounted() {
+    this.rowDrop();
+  },
   methods: {
+    // 行拖拽
+    rowDrop() {
+      const tbody = this.$refs.table.$el.querySelector('.el-table__body-wrapper tbody');
+      const _this = this;
+      Sortable.create(tbody, {
+        onEnd({ newIndex, oldIndex }) {
+          const currRow = _this.objJSON.columns.splice(oldIndex, 1)[0];
+          _this.objJSON.columns.splice(newIndex, 0, currRow);
+        },
+      });
+    },
     // 删除列
     removeColumn(index) {
       this.objJSON.columns.splice(index, 1);

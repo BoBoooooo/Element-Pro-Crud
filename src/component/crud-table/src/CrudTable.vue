@@ -86,7 +86,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import _cloneDeep from 'lodash/cloneDeep';
 import {
   columns, DataSource, DML, Params,
 } from '@/types/common';
@@ -417,7 +416,7 @@ export default defineComponent({
       // 操作列-添加
       actionColumnAdd(row) {
         // 添加成功后需要刷新当前结点的子节点,此处特殊处理
-        currentRow.parentid = _cloneDeep(row).id;
+        currentRow.parentid = JSON.parse(JSON.stringify(row)).id;
         if (props.btnRowAddOnClick) {
           props.btnRowAddOnClick(row);
         } else if (props.prefill) {

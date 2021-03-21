@@ -11,26 +11,28 @@ export default [
     is: 'i',
     show: true,
     bodyStyle: 'el-icon-sort',
-    tootip: '拖拽我上下滑动可以改变字段顺序',
+    tootip: '拖拽可以排序哦~',
+    headStyle: '30',
   },
   {
     name: '字段',
     field: 'prop',
     is: 'input',
+    headStyle: '100',
     show: true,
   },
   {
     name: '列名',
     field: 'label',
     is: 'input',
-    headStyle: 'width:150px',
+    headStyle: '100',
     show: true,
   },
   {
     name: '高级查询',
     field: 'option',
     is: 'popover',
-    headStyle: 'width:90px',
+    headStyle: '60',
     show: true,
     tootip: '默认为文本框，可转为下拉菜单',
   },
@@ -38,7 +40,7 @@ export default [
     name: '最小宽',
     field: 'minWidth',
     is: 'input',
-    headStyle: 'width:50px',
+    headStyle: '60',
     tootip: '加粗黑色表示非默认宽度',
     show: true,
   },
@@ -46,6 +48,7 @@ export default [
     name: '表格对齐',
     field: 'align',
     is: 'select',
+    headStyle: '70',
     list: [
       {
         label: '靠左',
@@ -70,7 +73,7 @@ export default [
     name: '表头对齐',
     field: 'headerAlign',
     is: 'select',
-    headStyle: 'width:50px',
+    headStyle: '70',
     list: [
       {
         label: '靠左',
@@ -95,7 +98,7 @@ export default [
     name: '固定方式',
     field: 'fixed',
     is: 'select',
-    headStyle: 'width:50px',
+    headStyle: '70',
     list: [
       {
         label: '靠左',
@@ -115,7 +118,7 @@ export default [
   {
     name: '溢出隐藏',
     field: 'showOverflowTooltip',
-    headStyle: 'width:80px',
+    headStyle: '50',
     is: 'switch',
     show: true,
   },
@@ -123,7 +126,7 @@ export default [
     name: '排序方式',
     field: 'sortable',
     is: 'select',
-    headStyle: 'width:120px',
+    headStyle: '100',
     list: [
       {
         label: '不排序',
@@ -143,7 +146,7 @@ export default [
   {
     name: '是否检索',
     field: 'searchable',
-    headStyle: 'width:80px',
+    headStyle: '50',
     is: 'switch',
     tootip: '是否在表格顶部高级查询区域显示',
     show: true,
@@ -152,11 +155,14 @@ export default [
     name: '插槽',
     field: 'slotName',
     is: 'input',
+    headStyle: '110',
     show: true,
   },
   {
     name: '操作',
     show: true,
-    is: 'delete',
+    is: 'action',
+    headStyle: '40',
+
   },
 ];

@@ -168,10 +168,6 @@ export default {
       defaultOption.title.right = '38.5%';
       defaultOption.title.textStyle.color = '#000';
       defaultOption.visualMap.inRange = {};
-
-      // if (this.option) {
-      //   this.lodash.merge(defaultOption, this.option);
-      // }
       return defaultOption;
     },
   },

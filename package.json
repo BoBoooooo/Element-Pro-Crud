@@ -67,7 +67,6 @@
     "husky": "^3.0.9",
     "inquirer": "^6.5.2",
     "lint-staged": "^9.2.0",
-    "lodash": "^4.17.14",
     "longest": "^2.0.1",
     "node-sass": "^4.12.0",
     "path": "^0.12.7",
@@ -118,6 +117,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1"
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "sortablejs": "^1.13.0"
   }
 }
