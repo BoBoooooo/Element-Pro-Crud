@@ -14,13 +14,8 @@ ElementProCrud 快速搭建 CRUD 的利器
 [文档地址](http://procrud.fun/)
 ## Demo
 [在线 demo](http://server.boboooooo.top:9997)
-## 表单设计器地址
-[在线 demo](http://server.boboooooo.top:9997/#/form)
-
-## Production
-
-[生产环境 demo](http://server.boboooooo.top:9998)
-
+[表单设计器](http://server.boboooooo.top:9997/#/form)
+[集成示例demo](http://server.boboooooo.top:9998)
 ## Install
 
 ### NPM
