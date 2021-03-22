@@ -414,7 +414,6 @@ export default defineComponent({
     watch(
       () => props.columns,
       (val) => {
-        // 此处语法待优化
         // eslint-disable-next-line no-shadow
         const { columns, name, position } = val;
         tableConfig.columns = columns;

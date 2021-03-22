@@ -195,7 +195,6 @@
                   tableName="person"
                   :size="size"
                   :textMap="textMap"
-                  :columns="columns"
                   :readOnly="readOnly"
                   :show-header="showHeader"
                   :showPagination="showPagination"

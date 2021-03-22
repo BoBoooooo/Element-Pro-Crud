@@ -92,7 +92,7 @@ import {
   columns, DataSource, DML, Params,
 } from '@/types/common';
 import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, Ref, watch,
+  reactive, computed, ref, defineComponent, Ref, watch, PropType,
 } from '@vue/composition-api';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import ProTable from '../../pro-table';
@@ -249,6 +249,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    columns: {
+      type: Object as PropType<columns>,
+      default: null,
+    },
   },
   emits: ['form-btn-on-click', 'form-change', 'selection-change'],
   setup(props: CrudTableProps, {
@@ -314,26 +318,35 @@ export default defineComponent({
     const tableReload = () => {
       proTableRef.value.tableReload();
     };
-
+    const { columns: propsColumns } = props;
+    console.log(propsColumns);
+    // 如果外侧传入了columns则不发起请求
+    if (propsColumns) {
+      tableConfig.columns = propsColumns.columns;
+      tableConfig.name = propsColumns.name;
+      tableConfig.position = propsColumns.position;
+    } else {
     // 初始化表格json
-    const promise = $PROCRUD.getTableDetail(props.tableDesignerName ? props.tableDesignerName : props.tableName);
-    // 加载表格结构
-    promise.then((res) => {
-      const _tableConfig = JSON.parse(res.data.formJson);
-      // eslint-disable-next-line no-shadow
-      const { columns, name, position } = _tableConfig;
-      tableConfig.columns = columns;
-      tableConfig.name = name;
-      tableConfig.position = position;
-      // 如果显示指明了操作列列宽
-      if (props.actionColumnWidth) {
-        const actionColumn = tableConfig.columns.find(_ => _.slotName === 'actionColumn');
-        if (actionColumn) {
-          actionColumn.width = props.actionColumnWidth;
-          actionColumn.minWidth = props.actionColumnWidth;
+      const promise = $PROCRUD.getTableDetail(props.tableDesignerName ? props.tableDesignerName : props.tableName);
+      // 加载表格结构
+      promise.then((res) => {
+        const _tableConfig = JSON.parse(res.data.formJson);
+        // eslint-disable-next-line no-shadow
+        const { columns, name, position } = _tableConfig;
+        tableConfig.columns = columns;
+        tableConfig.name = name;
+        tableConfig.position = position;
+        // 如果显示指明了操作列列宽
+        if (props.actionColumnWidth) {
+          const actionColumn = tableConfig.columns.find(_ => _.slotName === 'actionColumn');
+          if (actionColumn) {
+            actionColumn.width = props.actionColumnWidth;
+            actionColumn.minWidth = props.actionColumnWidth;
+          }
         }
-      }
-    });
+      });
+    }
+
 
     // 懒加载
     const treeload = (tree, treeNode?: any, resolve?: any) => {
@@ -601,6 +614,19 @@ export default defineComponent({
         emit('form-change', val);
       },
     };
+
+    // 监听
+    watch(
+      () => props.columns,
+      (val) => {
+        // eslint-disable-next-line no-shadow
+        const { columns, name, position } = val;
+        tableConfig.columns = columns;
+        tableConfig.name = name;
+        tableConfig.position = position;
+      },
+    );
+
     return {
       tableReload,
       ...handlerButtonMethods,
