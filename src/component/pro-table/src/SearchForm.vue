@@ -22,7 +22,6 @@
     <template v-else>
       <!-- 高级查询表单 -->
       <SeniorSearchFormCover v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns">
-        <slot></slot>
       </SeniorSearchFormCover>
     </template>
 

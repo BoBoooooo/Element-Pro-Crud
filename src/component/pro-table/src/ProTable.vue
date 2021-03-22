@@ -18,7 +18,10 @@
       <h4 class="title">{{ tableTitle }}</h4>
     </div>
     <!-- table右上角按钮 -->
-    <div class="btn-bar" v-if="searchMode === 'popover'">
+    <div class="btn-bar"
+    :class="{
+      'btn-bar-absolute': searchMode === 'cover'
+    }">
       <slot name="btnBarPrevBtn" />
     </div>
     <SearchForm
@@ -33,12 +36,6 @@
       :isLoading="loading"
       @clear="fetchHandler(true)"
     >
-      <template v-if="searchMode === 'cover'">
-        <!-- table右上角按钮 -->
-        <div class="btn-bar">
-          <slot name="btnBarPrevBtn" />
-        </div>
-      </template>
     </SearchForm>
     <!-- 表格主体 -->
     <el-table v-loading.lock="loading" v-bind="$attrs" v-on="tableListeners" :height="tableHeight" :max-height="maxHeight" ref="tableRefs" :row-key="rowKey" :data="tableData">
@@ -482,6 +479,14 @@ export default defineComponent({
       position: absolute;
       top: 130px;
       left: 10px;
+    }
+    .btn-bar-absolute{
+      float:none !important;
+      top: 132px;
+      right: 175px;
+      width: auto;
+      position: absolute;
+      text-align: right;
     }
     .btn-bar {
       float: right;

@@ -27,11 +27,11 @@
           <slot name="append"></slot>
         </template>
         <template #btnBarPrevBtn>
-          <slot name="btnBarPrevBtn" />
           <!-- 批量删除按钮 -->
           <el-button v-if="view.btnDel" @click="btnDeletesOnClick" type="danger" size="mini" icon="el-icon-delete">{{ text.multiDel }}</el-button>
           <!-- 添加按钮 -->
           <el-button v-if="view.btnAdd" type="primary" icon="el-icon-plus" size="mini" @click.stop="btnAdd()">{{ text.add }}</el-button>
+          <slot name="btnBarPrevBtn" />
         </template>
         <!-- 列表头添加按钮 -->
         <template #_action_header v-if="view.btnAddOnColumnHeader">

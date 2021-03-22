@@ -7,10 +7,9 @@
 <template>
   <div ref="container">
     <GenerateForm ref="generateDialogForm" :data="searchFormJson" class="form" :remote="remoteFuncs" :entity.sync="entity" />
-    <slot></slot>
     <div style="float: right">
-      <el-button size="mini" icon="el-icon-delete" @click="btnRemoveOnClick()">清空</el-button>
       <el-button size="mini" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
+      <el-button size="mini" icon="el-icon-delete" @click="btnRemoveOnClick()">清空</el-button>
       <el-tooltip class="item" effect="dark" :content="collpaseButtonText" placement="bottom">
         <el-button size="mini" v-if="formDesign.list.length > 2" icon="el-icon-sort" style="float: right; margin-right: 10px" @click="collpase()">更多查询</el-button>
       </el-tooltip>
