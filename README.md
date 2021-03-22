@@ -12,6 +12,14 @@ ElementProCrud 快速搭建 CRUD 的利器
 
 ## Documentation
 [文档地址](http://procrud.fun/)
+## Demo
+[在线 demo](http://server.boboooooo.top:9997)
+## 表单设计器地址
+[在线 demo](http://server.boboooooo.top:9997/#/form)
+
+## Production
+
+[生产环境 demo](http://server.boboooooo.top:9998)
 
 ## Install
 
@@ -95,14 +103,6 @@ Vue.use(ElementProCrud)
 - `FormDesigner` 表单设计器
 
 - `TableDesigner` 表格设计器
-
-## Demo
-
-[在线 demo](http://server.boboooooo.top:9997)
-
-## Production
-
-[生产环境 demo](http://server.boboooooo.top:9998)
 
 ## License
 
