@@ -204,7 +204,9 @@ export default defineComponent({
     },
   },
   emits: ['done', 'selection-change'],
-  setup(props: ProTableProps, { listeners, emit, attrs }) {
+  setup(props: ProTableProps, {
+    listeners, emit, attrs, root, slots,
+  }) {
     // 表格数据总数
     const total = ref(0);
     // 是否在加载
@@ -404,6 +406,7 @@ export default defineComponent({
       fetchHandler(true);
       // 自适应分页组件按钮;
       window.addEventListener('resize', resizeHandler);
+      console.log(slots);
     });
 
     onBeforeUnmount(() => {

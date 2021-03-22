@@ -27,6 +27,7 @@
           <slot name="append"></slot>
         </template>
         <template #btnBarPrevBtn>
+          <slot name="btnBarPrevBtn" />
           <!-- 批量删除按钮 -->
           <el-button v-if="view.btnDel" @click="btnDeletesOnClick" type="danger" size="mini" icon="el-icon-delete">{{ text.multiDel }}</el-button>
           <!-- 添加按钮 -->
@@ -36,8 +37,9 @@
         <template #_action_header v-if="view.btnAddOnColumnHeader">
           <el-button icon="el-icon-plus" size="mini" type="primary" style="color:white" @click.stop="btnAdd"></el-button>
         </template>
-        <template #columnFormatter="{row,prop}">
-          <slot name="columnFormatter" :row="row" :prop="prop"></slot>
+        <!-- 表格自定义列/表头插槽,动态传入 -->
+        <template :slot="slotName" slot-scope="scope"  v-for="(slotName) in Object.keys(slots).filter(key=> !['btnCustom','append','btnBarPrevBtn','dialogFooter'].includes(key))">
+          <slot :name="slotName"  :row="scope.row" :prop="scope.prop" :column="scope.column"></slot>
         </template>
         <template slot-scope="scope" slot="actionColumn">
           <!-- 操作列-添加按钮 -->
@@ -250,7 +252,7 @@ export default defineComponent({
   },
   emits: ['form-btn-on-click', 'form-change', 'selection-change'],
   setup(props: CrudTableProps, {
-    listeners, attrs, emit, root,
+    listeners, attrs, emit, root, slots,
   }) {
     const {
       $PROCRUD, $message, $confirm,
@@ -302,7 +304,7 @@ export default defineComponent({
       }
       // 操作列是否隐藏
       if (!viewObj.actionColumn) {
-        tableConfig.columns = tableConfig.columns.filter((item: any) => item.slotName !== 'actionColumn');
+        tableConfig.columns = tableConfig.columns.filter(item => item.slotName !== 'actionColumn');
       }
 
       return viewObj;
@@ -611,6 +613,7 @@ export default defineComponent({
       text,
       request,
       treeload,
+      slots: ref(slots),
     };
   },
 });
