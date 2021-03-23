@@ -44,6 +44,7 @@ declare global {
     __HOST__URL__: string;
     __PREFIX__URL__: string;
     ace: any;
+    VueTreeselect:any;
   }
 }
 

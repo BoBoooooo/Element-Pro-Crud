@@ -14,6 +14,10 @@ Vue.use(plugin, {
   crud,
 });
 Vue.config.productionTip = false;
+
+// VueTreeselect为cdn引入
+Vue.component('treeselect', window.VueTreeselect.Treeselect);
+
 // 开启dev编辑模式
 Vue.prototype.$store = {
   getters: {

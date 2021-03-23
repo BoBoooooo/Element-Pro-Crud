@@ -259,7 +259,7 @@
     <template v-if="widget.type === 'treeselect'">
       <!-- 目前暂时提供了几个常用props,有更多需要自行拓展 -->
       <!-- 官网:https://vue-treeselect.js.org -->
-      <TreeSelect
+      <treeselect
         v-model="models[widget.model]"
         v-if="visible"
         :placeholder="widget.options.placeholder"
@@ -285,7 +285,7 @@
         :options="widget.options.remoteOptions"
         :searchNested="widget.options.searchNested"
       >
-      </TreeSelect>
+      </treeselect>
     </template>
     <template v-if="widget.type == 'richtext'">
       <Tinymce :height="400" v-model="models[widget.model]" :readonly="readOnly || widget.options.readonly"></Tinymce>
@@ -344,7 +344,6 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import TreeSelect from '@riophae/vue-treeselect';
 import { DML } from '@/types/common';
 import CrudTable from '@/component/crud-table/src/CrudTable.vue';
 import { isChinese } from '@/utils/utils';
@@ -352,7 +351,6 @@ import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
 import FileUpload from './components/FileUpload/FileUpload.vue';
 import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
 // 高级查询单个查询内容
-import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
@@ -362,7 +360,6 @@ import { formElement } from './componentsConfig';
 
 @Component({
   components: {
-    TreeSelect,
     Tinymce,
     FileUpload,
     GenerateSubForm,

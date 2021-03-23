@@ -19,7 +19,7 @@
       <el-form-item label="标题" v-if="!elementConfig.type.includes('grid') && elementConfig.type !== 'td' && elementConfig.type !== 'button'">
         <el-input size="mini" v-model="elementConfig.name"></el-input>
       </el-form-item>
-      <el-form-item label="自定义className" v-if="Object.keys(elementConfig.options).indexOf('className') >= 0">
+      <el-form-item label="自定义className">
         <el-input size="mini" v-model="elementConfig.options.className"></el-input>
       </el-form-item>
       <el-form-item label="显示文本" v-if="Object.keys(elementConfig.options).indexOf('text') >= 0">
@@ -338,20 +338,6 @@
           </el-time-picker>
         </el-form-item>
       </template>
-
-      <!-- <template v-if="elementConfig.type=='blank'">
-        <el-form-item label="绑定数据类型">
-          <el-select size="mini" v-model="elementConfig.options.defaultType">
-            <el-option value="String"
-                       label="字符"></el-option>
-            <el-option value="Object"
-                       label="对象"></el-option>
-            <el-option value="Array"
-                       label="数组"></el-option>
-          </el-select>
-        </el-form-item>
-      </template> -->
-
       <template v-if="elementConfig.type == 'grid'">
         <el-form-item label="栅格间隔">
           <el-input-number size="mini" :min="0" :max="50" :step="5" v-model="elementConfig.options.gutter"></el-input-number>
@@ -425,19 +411,7 @@
         </el-form-item>
         <el-form-item
           label="操作属性"
-          v-if="
-            !elementConfig.type.includes('chart-') &&
-              elementConfig.type !== 'table' &&
-              elementConfig.type !== 'html' &&
-              elementConfig.type !== 'blank' &&
-              elementConfig.type !== 'text' &&
-              elementConfig.type !== 'button' &&
-              elementConfig.type !== 'avatar' &&
-              elementConfig.type !== 'tabs' &&
-              elementConfig.type !== 'grid-table' &&
-              elementConfig.type !== 'td'
-          "
-        >
+          v-if="formElement.includes(elementConfig.type) || elementConfig.type === 'upload'">
           <el-checkbox v-model="elementConfig.options.readonly" v-if="Object.keys(elementConfig.options).indexOf('readonly') >= 0">完全只读</el-checkbox>
           <el-checkbox v-model="elementConfig.options.disabled" v-if="Object.keys(elementConfig.options).indexOf('disabled') >= 0">禁用 </el-checkbox>
           <el-checkbox v-model="elementConfig.options.editable" v-if="Object.keys(elementConfig.options).indexOf('editable') >= 0">文本框可输入</el-checkbox>
@@ -448,21 +422,8 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item
-          v-if="
-            !elementConfig.type.includes('chart-') &&
-              elementConfig.type != 'button' &&
-              elementConfig.type != 'table' &&
-              elementConfig.type !== 'blank' &&
-              elementConfig.type != 'html' &&
-              elementConfig.type != 'upload' &&
-              elementConfig.type != 'text' &&
-              elementConfig.type !== 'avatar' &&
-              elementConfig.type !== 'tabs' &&
-              elementConfig.type !== 'grid-table' &&
-              elementConfig.type !== 'td'
-          "
-          label="校验"
-        >
+          v-if="formElement.includes(elementConfig.type)"
+          label="校验">
           <div>
             <el-checkbox v-if="Object.keys(elementConfig.options).indexOf('required') >= 0" v-model="elementConfig.options.required">必填</el-checkbox>
           </div>
@@ -557,31 +518,9 @@
 <script>
 import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
-import 'vue-awesome/icons/regular/keyboard';
-import 'vue-awesome/icons/regular/trash-alt';
-import 'vue-awesome/icons/regular/clone';
-import 'vue-awesome/icons/regular/dot-circle';
-import 'vue-awesome/icons/regular/check-square';
 import 'vue-awesome/icons/bars';
-import 'vue-awesome/icons/table';
-
-import 'vue-awesome/icons/regular/calendar-alt';
-import 'vue-awesome/icons/regular/clock';
-import 'vue-awesome/icons/th';
-import 'vue-awesome/icons/language';
-
-import 'vue-awesome/icons/sort-numeric-up';
-import 'vue-awesome/icons/regular/star';
-import 'vue-awesome/icons/palette';
-import 'vue-awesome/icons/regular/caret-square-down';
-import 'vue-awesome/icons/toggle-off';
-import 'vue-awesome/icons/sliders-h';
-import 'vue-awesome/icons/regular/image';
-import 'vue-awesome/icons/chalkboard';
-import 'vue-awesome/icons/divide';
 import { DML } from '@/types/common';
 import { formElement, elementComponentConfig } from './componentsConfig';
-
 
 export default {
   name: 'WidgetConfig',
@@ -611,6 +550,7 @@ export default {
         range: null,
         length: null,
       },
+      formElement,
     };
   },
   computed: {

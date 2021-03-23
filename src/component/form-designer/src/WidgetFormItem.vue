@@ -197,7 +197,7 @@
       <h4 style="text-align:center;margin:0">自定义插槽({{ element.model }})</h4>
     </template>
     <template v-if="element.type === 'treeselect'">
-      <TreeSelect v-model="element.options.defaultValue"  :options="[]" />
+      <treeselect v-model="element.options.defaultValue"  :options="[]" />
     </template>
     <template v-if="element.type === 'richtext'">
       <Tinymce :height="400"
@@ -260,7 +260,6 @@
 </template>
 
 <script>
-import TreeSelect from '@riophae/vue-treeselect';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
@@ -298,7 +297,6 @@ export default {
     lineChart,
     Echarts,
     AvatarUpload,
-    TreeSelect,
     WidgetSubForm,
   },
   data() {
