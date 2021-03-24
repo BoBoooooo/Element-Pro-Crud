@@ -350,6 +350,12 @@ export default class GenerateForm extends Vue {
         genList[i].columns.forEach((item) => {
           this.generateModel(item.list);
         });
+      } else if (genList[i].type === 'grid-table') {
+        genList[i].rows.forEach((item) => {
+          this.generateModel(item.columns);
+        });
+      } else if (genList[i].type === 'td') {
+        this.generateModel(genList[i].list);
       } else {
         // 获取当前组件
         const row = genList[i];
