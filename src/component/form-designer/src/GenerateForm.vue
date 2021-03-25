@@ -105,6 +105,7 @@
                   borderColor: item.options.borderColor,
                   width: col.options.width,
                   height: col.options.height,
+                  display: col.list.every(_=>_.hidden) ? 'none' :''
                 }"
               >
                 <GenerateFormItem
