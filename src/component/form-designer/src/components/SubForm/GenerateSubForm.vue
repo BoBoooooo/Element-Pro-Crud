@@ -137,7 +137,7 @@ export default class GenerateSubForm extends Vue {
           searchCondition,
         })
         .then((res) => {
-          if (res.data.list.length > 0) {
+          if (res.data.list) {
             this.subTableForm.tableData = res.data.list.map(item => ({
               ...item,
               _mode: 'DETAIL',
