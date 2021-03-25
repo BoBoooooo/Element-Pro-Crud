@@ -26,11 +26,11 @@
             <GenerateFormItem class="form-item" v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
-        <el-table-column label="操作" header-align="center" min-width="100">
+        <el-table-column label="操作" header-align="center" min-width="100" v-if="!readOnly">
           <template slot="header">
             <span class="add-button" @click="addRow"><i type="primary" size="mini" class="el-icon el-icon-plus" v-if="!readOnly"></i>添加</span>
           </template>
-          <template slot-scope="scope" v-if="!readOnly">
+          <template slot-scope="scope">
             <el-button class="action-btn" @click="handleEditOnClick(scope.row)" type="primary" size="mini" v-if="!isEditable(scope.row)">编辑</el-button>
             <el-button class="action-btn" :btnSaveIsLoading="btnSaveIsLoading" @click="handleSaveOnClick(scope.row)" type="success" size="mini" v-if="isEditable(scope.row)">保存</el-button>
             <el-button class="action-btn" @click="handleDeleteOnClick(scope.row)" type="danger" size="mini" v-if="!isEditable(scope.row) && scope.row.id">删除</el-button>
