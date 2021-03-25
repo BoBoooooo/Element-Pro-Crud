@@ -356,6 +356,8 @@ export default class GenerateForm extends Vue {
         });
       } else if (genList[i].type === 'td') {
         this.generateModel(genList[i].list);
+      } else if (genList[i].type === 'form') {
+        this.generateModel(genList[i].tableColumns);
       } else {
         // 获取当前组件
         const row = genList[i];
