@@ -6,17 +6,15 @@
 @createDate 2018年11月15日16:11:09
 -->
 <template>
-  <el-container style="height:100%">
+  <el-container style="height: 100%">
     <el-header height="54px" class="header">
       <div class="logo-container">
         <SvgIcon icon-class="logo" class="logo"></SvgIcon>
-        <span class="title">
-          Form Generate
-        </span>
+        <span class="title"> Form Generate </span>
       </div>
       <!-- 选择设备型号 -->
       <div class="device-bar btn-bar">
-         <el-button
+        <el-button
           type="primary"
           class="device-btn button"
           size="small"
@@ -25,18 +23,17 @@
           :class="{
             active: deviceMode === 'pc',
           }"
-          ></el-button
-        >
-         <el-button
+        ></el-button>
+        <el-button
           type="primary"
-          class=" button"
+          class="button"
           size="small"
           icon="el-icon-mobile"
           @click="setDeviceMode('pad')"
           :class="{
             active: deviceMode === 'pad',
           }"
-          ></el-button>
+        ></el-button>
         <el-button
           type="primary"
           size="small"
@@ -46,7 +43,7 @@
           :class="{
             active: deviceMode === 'mobile',
           }"
-          ></el-button>
+        ></el-button>
       </div>
       <div class="btn-bar">
         <el-button
@@ -77,9 +74,7 @@
         <el-button class="button" type="primary" size="small" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
         <el-button class="button" type="danger" size="small" icon="el-icon-delete" @click="handleClear">清空</el-button>
         <el-tooltip placement="bottom" effect="dark">
-          <div slot="content">
-            需传入getFormKey方法,详见文档
-          </div>
+          <div slot="content">需传入getFormKey方法,详见文档</div>
           <div style="display: inline-block">
             <el-button class="button" type="normal" size="small" icon="el-icon-attract" :disabled="!(allTables && getFormKey)" @click="formVisible = true">自动绑定</el-button>
           </div>
@@ -90,7 +85,7 @@
     <!-- 对话框 -->
     <el-container style="height: calc(100% - 54px)">
       <!-- 左侧边栏 -->
-      <el-aside style="width: 20%;max-width:250px">
+      <el-aside style="width: 20%; max-width: 250px">
         <div class="components-list">
           <div class="widget-cate">表单组件</div>
           <Draggable :clone="handleClone" tag="ul" :list="basicComponents" v-bind="getDraggableOptions()" :move="handleMove">
@@ -119,7 +114,7 @@
               }"
               v-for="(item, index) in layoutComponents"
               :key="index"
-               @click="addWidget(item)"
+              @click="addWidget(item)"
             >
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
@@ -129,7 +124,7 @@
           </Draggable>
           <div class="widget-cate">基础图表</div>
           <Draggable :clone="handleClone" tag="ul" :list="chartComponents" v-bind="getDraggableOptions()" :move="handleMove">
-            <li class="form-edit-widget-label" v-for="(item, index) in chartComponents" :key="index"  @click="addWidget(item)">
+            <li class="form-edit-widget-label" v-for="(item, index) in chartComponents" :key="index" @click="addWidget(item)">
               <div>
                 <Icon class="icon" :name="item.icon"></Icon>
                 <span>{{ item.name }}</span>
@@ -144,22 +139,18 @@
         <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
           <WidgetForm :deviceMode="deviceMode" v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
           <template v-else>
-            <el-alert type="warning" :closable="false" style="margin-bottom:15px">异步及依赖远端数据的组件需要结合代码!</el-alert>
+            <el-alert type="warning" :closable="false" style="margin-bottom: 15px">异步及依赖远端数据的组件需要结合代码!</el-alert>
             <GenerateForm :deviceMode="deviceMode" :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
-            <el-button size="small" style="float:right;margin-top: 15px" type="primary" @click="handleTest">获取表单数据</el-button>
+            <el-button size="small" style="float: right; margin-top: 15px" type="primary" @click="handleTest">获取表单数据</el-button>
           </template>
         </el-main>
       </el-container>
       <!-- 右侧边栏 -->
-      <el-aside class="widget-config-container" style="width:300px;">
+      <el-aside class="widget-config-container" style="width: 300px">
         <el-container style="height: 100%">
           <el-header height="45px" style="width: 300px">
-            <div class="config-tab" :class="{ active: configTab == 'widget' }" @click="handleConfigSelect('widget')">
-              字段属性
-            </div>
-            <div class="config-tab" :class="{ active: configTab == 'form' }" @click="handleConfigSelect('form')">
-              表单属性
-            </div>
+            <div class="config-tab" :class="{ active: configTab == 'widget' }" @click="handleConfigSelect('widget')">字段属性</div>
+            <div class="config-tab" :class="{ active: configTab == 'form' }" @click="handleConfigSelect('form')">表单属性</div>
           </el-header>
           <el-main class="config-content">
             <WidgetConfig v-show="configTab == 'widget'" v-if="widgetFormSelect && Object.keys(widgetFormSelect).length > 0" :dictType="dictType" :elementConfig="widgetFormSelect"></WidgetConfig>
@@ -170,11 +161,11 @@
       <!-- 导入JSON对话框 -->
       <CusDialog :visible="uploadVisible" @on-close="uploadVisible = false" @on-submit="handleUploadJson" ref="uploadJson" width="800px" form>
         <el-alert type="info" title="在此处导入JSON"></el-alert>
-        <div id="uploadeditor" style="height: 400px;width: 100%;">{{ jsonEg }}</div>
+        <div id="uploadeditor" style="height: 400px; width: 100%">{{ jsonEg }}</div>
       </CusDialog>
       <!-- 查看JSON对话框 -->
       <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
-        <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+        <div id="jsoneditor" style="height: 400px; width: 100%">{{ jsonTemplate }}</div>
 
         <template slot="action">
           <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
@@ -183,12 +174,12 @@
       <!-- 生成代码对话框 -->
       <CusDialog :visible="codeVisible" @on-close="codeVisible = false" ref="codePreview" width="800px" form :action="false">
         <!-- <div id="codeeditor" style="height: 500px; width: 100%;">{{htmlTemplate}}</div> -->
-        <el-tabs type="border-card" style="box-shadow: none;" v-model="codeActiveName">
+        <el-tabs type="border-card" style="box-shadow: none" v-model="codeActiveName">
           <el-tab-pane label="Vue Component" name="vue">
-            <div id="vuecodeeditor" style="height: 500px; width: 100%;">{{ vueTemplate }}</div>
+            <div id="vuecodeeditor" style="height: 500px; width: 100%">{{ vueTemplate }}</div>
           </el-tab-pane>
           <el-tab-pane label="HTML" name="html">
-            <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
+            <div id="codeeditor" style="height: 500px; width: 100%">{{ htmlTemplate }}</div>
           </el-tab-pane>
         </el-tabs>
       </CusDialog>
@@ -199,16 +190,16 @@
         :visible="formVisible"
         title="自动生成表单(根据数据库表字段及备注自动生成)"
         @on-close="
-          formVisible = false
-          formKeys.tableName = ''
+          formVisible = false;
+          formKeys.tableName = '';
         "
         width="800px"
         :action="false"
       >
-        <el-select v-model="formKeys.tableName" filterable style="width:100%" placeholder="选择数据源">
+        <el-select v-model="formKeys.tableName" filterable style="width: 100%" placeholder="选择数据源">
           <el-option v-for="(item, index) in allTables" :key="index" size="small" :label="item.label" :value="item.value"></el-option>
         </el-select>
-        <el-button type="success" size="small" style="float: right;margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
+        <el-button type="success" size="small" style="float: right; margin-top: 10px" @click="handleGenerateKey(true)">自动生成表单</el-button>
       </CusDialog>
     </el-container>
   </el-container>
@@ -224,9 +215,7 @@ import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
 import GenerateForm from './GenerateForm.vue';
-import {
-  basicComponents, layoutComponents, advanceComponents, chartComponents,
-} from './componentsConfig';
+import { basicComponents, layoutComponents, advanceComponents, chartComponents } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
 // 导入左侧组件面板图标
 import './icon';
@@ -326,9 +315,7 @@ export default {
     },
     // 点击添加组件
     addWidget(item) {
-      this.widgetForm.list.push(
-        this.handleClone(item),
-      );
+      this.widgetForm.list.push(this.handleClone(item));
     },
     // 深拷贝防止拖拽clone后污染原组件,统一给所有拖拽出来的组件设置key,model
     handleClone(origin) {
@@ -352,22 +339,20 @@ export default {
       // 如果为表格布局,默认添加一个 <td></td>
       if (type === 'grid-table') {
         const tdKey = `td_${Math.ceil(Math.random() * 99999)}`;
-        cloneOrigin.rows[0].columns.push(
-          {
-            type: 'td',
-            options: {
-              colspan: 1,
-              rowspan: 1,
-              align: 'left',
-              valign: 'top',
-              width: '',
-              height: '',
-            },
-            list: [],
-            key: tdKey,
-            model: tdKey,
+        cloneOrigin.rows[0].columns.push({
+          type: 'td',
+          options: {
+            colspan: 1,
+            rowspan: 1,
+            align: 'left',
+            valign: 'top',
+            width: '',
+            height: '',
           },
-        );
+          list: [],
+          key: tdKey,
+          model: tdKey,
+        });
       }
 
       return cloneOrigin;
@@ -507,11 +492,9 @@ export default {
     },
     // 预览点确定获取表单数据
     handleTest() {
-      this.$refs.generateForm
-        .getData()
-        .then((data) => {
-          this.$alert(data, '').catch(() => {});
-        });
+      this.$refs.generateForm.getData().then((data) => {
+        this.$alert(data, '').catch(() => {});
+      });
     },
     // 生成json
     handleGenerateJson() {

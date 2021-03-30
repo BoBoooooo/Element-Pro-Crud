@@ -1,7 +1,6 @@
 <template>
   <div class="upload-container">
-    <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">上传图片
-    </el-button>
+    <el-button :style="{ background: color, borderColor: color }" icon="el-icon-upload" size="mini" type="primary" @click="dialogVisible = true">上传图片 </el-button>
     <el-dialog :visible.sync="dialogVisible">
       <el-upload
         :multiple="true"
@@ -13,7 +12,8 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        list-type="picture-card">
+        list-type="picture-card"
+      >
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -38,7 +38,6 @@ export default {
       dialogVisible: false,
       listObj: {},
       fileList: [],
-
     };
   },
   computed: {
@@ -51,10 +50,10 @@ export default {
   },
   methods: {
     checkAllSuccess() {
-      return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess);
+      return Object.keys(this.listObj).every((item) => this.listObj[item].hasSuccess);
     },
     handleSubmit() {
-      const arr = Object.keys(this.listObj).map(v => this.listObj[v]);
+      const arr = Object.keys(this.listObj).map((v) => this.listObj[v]);
       if (!this.checkAllSuccess()) {
         this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！');
         return;
@@ -95,7 +94,10 @@ export default {
         img.src = _URL.createObjectURL(file);
         img.onload = function onload() {
           this.listObj[fileName] = {
-            hasSuccess: false, uid: file.uid, width: this.width, height: this.height,
+            hasSuccess: false,
+            uid: file.uid,
+            width: this.width,
+            height: this.height,
           };
         };
         resolve(true);

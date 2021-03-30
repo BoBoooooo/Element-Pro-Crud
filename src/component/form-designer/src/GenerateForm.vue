@@ -105,7 +105,7 @@
                   borderColor: item.options.borderColor,
                   width: col.options.width,
                   height: col.options.height,
-                  display: col.list.every(_=>_.hidden) ? 'none' :''
+                  display: col.list.every((_) => _.hidden) ? 'none' : '',
                 }"
               >
                 <GenerateFormItem
@@ -148,9 +148,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import GenerateFormItem from './GenerateFormItem.vue';
 
 @Component({
@@ -241,7 +239,7 @@ export default class GenerateForm extends Vue {
   // 若为表格布局并且当前栅格内只有一个元素并且为隐藏状态,隐藏边框线
   isNoBorder(col, item) {
     const { list } = col;
-    return this.data.config && this.data.config.isTableClass && list.every(_ => _.hidden) && item.columns.length === 1;
+    return this.data.config && this.data.config.isTableClass && list.every((_) => _.hidden) && item.columns.length === 1;
   }
 
   // 组件联动handler
@@ -253,7 +251,7 @@ export default class GenerateForm extends Vue {
         this.resetComponent(this.linkEffect[r.field]);
       }
       if (value) {
-        const controlRule = r.control.filter(_ => value.includes(_.value));
+        const controlRule = r.control.filter((_) => value.includes(_.value));
         if (controlRule.length > 0) {
           const insideRule: any = [];
           for (const rules of controlRule) {
@@ -335,7 +333,7 @@ export default class GenerateForm extends Vue {
 
   setUnRequired(field: any) {
     field.options.required = false;
-    field.rules = field.rules.filter(_ => !_.required);
+    field.rules = field.rules.filter((_) => !_.required);
   }
 
   getTableSelection($event, item) {
@@ -483,7 +481,7 @@ export default class GenerateForm extends Vue {
 
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
-    return new Promise(resolve => resolve(this.filterFormData()));
+    return new Promise((resolve) => resolve(this.filterFormData()));
   }
 
   // 生成的按钮点击

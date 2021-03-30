@@ -5,10 +5,10 @@
  * @Date: 2018年6月14 11:12:05
  -->
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
-    <textarea :id="tinymceId" class="tinymce-textarea"/>
-    <div class="editor-custom-btn-container" style="display:none">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"/>
+  <div :class="{ fullscreen: fullscreen }" class="tinymce-container editor-container">
+    <textarea :id="tinymceId" class="tinymce-textarea" />
+    <div class="editor-custom-btn-container" style="display: none">
+      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
     </div>
   </div>
 </template>
@@ -199,7 +199,7 @@ export default {
   line-height: normal;
   width: 100%;
 }
-.tinymce-container>>>.mce-fullscreen {
+.tinymce-container >>> .mce-fullscreen {
   z-index: 10000;
 }
 .tinymce-textarea {

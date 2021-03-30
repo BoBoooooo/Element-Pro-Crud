@@ -163,6 +163,5 @@ export default [
     show: true,
     is: 'action',
     headStyle: '40',
-
   },
 ];

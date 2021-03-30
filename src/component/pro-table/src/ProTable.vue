@@ -18,10 +18,12 @@
       <h4 class="title">{{ tableTitle }}</h4>
     </div>
     <!-- table右上角按钮 -->
-    <div class="btn-bar"
-    :class="{
-      'btn-bar-absolute': searchMode === 'cover'
-    }">
+    <div
+      class="btn-bar"
+      :class="{
+        'btn-bar-absolute': searchMode === 'cover',
+      }"
+    >
       <slot name="btnBarPrevBtn" />
     </div>
     <SearchForm
@@ -50,9 +52,9 @@
       <el-table-column v-if="showColumnIndex" type="index" align="center" label="#" header-align="center" width="50"> </el-table-column>
       <!-- el-table-column单独封装,便于支持多级表头 -->
       <Column :column="column" :key="columnIndex" v-for="(column, columnIndex) in tableConfig.columns">
-         <!-- 表格插槽 -->
-        <template :slot="slotName" slot-scope="scope"  v-for="(slotName) in Object.keys($scopedSlots)">
-          <slot :name="slotName"  :column="scope.column" :row="scope.row" :prop="scope.prop"></slot>
+        <!-- 表格插槽 -->
+        <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+          <slot :name="slotName" :column="scope.column" :row="scope.row" :prop="scope.prop"></slot>
         </template>
       </Column>
     </el-table>
@@ -79,12 +81,8 @@
 import Vue from 'vue';
 import SvgIcon from '@/icons/SvgIcon.vue';
 
-import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, PropType, nextTick,
-} from '@vue/composition-api';
-import {
-  columnConfig, columns, Condition, DataSource, Params,
-} from '@/types/common';
+import VueCompositionApi, { reactive, computed, ref, defineComponent, onBeforeUnmount, onMounted, Ref, watch, PropType, nextTick } from '@vue/composition-api';
+import { columnConfig, columns, Condition, DataSource, Params } from '@/types/common';
 import { Notification } from 'element-ui';
 import { ElTable } from 'element-ui/types/table';
 import SearchForm from './SearchForm.vue';
@@ -197,13 +195,11 @@ export default defineComponent({
     },
     rowKey: {
       type: Function,
-      default: row => row.id,
+      default: (row) => row.id,
     },
   },
   emits: ['done', 'selection-change'],
-  setup(props: ProTableProps, {
-    listeners, emit, attrs, root, slots,
-  }) {
+  setup(props: ProTableProps, { listeners, emit, attrs, root, slots }) {
     // 表格数据总数
     const total = ref(0);
     // 是否在加载
@@ -479,8 +475,8 @@ export default defineComponent({
       top: 130px;
       left: 10px;
     }
-    .btn-bar-absolute{
-      float:none !important;
+    .btn-bar-absolute {
+      float: none !important;
       top: 132px;
       right: 175px;
       width: auto;

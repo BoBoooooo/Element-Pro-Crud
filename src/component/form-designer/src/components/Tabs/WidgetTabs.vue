@@ -27,7 +27,7 @@
           <transition-group name="fade" tag="div" class="widget-col-list">
             <template v-for="(element, index) in item.list">
               <template v-if="element.type == 'grid'">
-                <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative;">
+                <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative">
                   <el-row
                     class="widget-col widget-view"
                     type="flex"
@@ -103,9 +103,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import Draggable from 'vuedraggable';
 
 @Component({
@@ -120,33 +118,33 @@ export default class WidgetTabs extends Vue {
     type: Object,
     default: () => ({}),
   })
-  select!: Object
+  select!: Object;
 
   @Prop({
     type: Object as () => {
-      items: any
+      items: any;
     },
     default: () => ({}),
   })
   element!: {
-    items: any[]
-  }
+    items: any[];
+  };
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  data!: any
+  data!: any;
 
-    @Prop({
-      type: Number,
-      default: null,
-    })
-  index!: number
+  @Prop({
+    type: Number,
+    default: null,
+  })
+  index!: number;
 
-  activeName = '标签页1'
+  activeName = '标签页1';
 
-  selectWidget = this.select
+  selectWidget = this.select;
 
   handleSelectWidget(element) {
     this.selectWidget = element;
@@ -161,11 +159,7 @@ export default class WidgetTabs extends Vue {
     if (item.className.indexOf('data-grid') >= 0) {
       // 如果是列表中拖拽的元素需要还原到原来位置
       if (item.tagName === 'DIV') {
-        this.data.list.splice(
-          oldIndex,
-          0,
-          row.columns[colIndex].list[newIndex],
-        );
+        this.data.list.splice(oldIndex, 0, row.columns[colIndex].list[newIndex]);
       }
       row.columns[colIndex].list.splice(newIndex, 1);
       return false;
@@ -219,7 +213,7 @@ export default class WidgetTabs extends Vue {
 
   handleWidgetAdd(evt) {
     // 找到当前标签页
-    const currentTab = this.element.items.find(_ => _.name === this.activeName);
+    const currentTab = this.element.items.find((_) => _.name === this.activeName);
     const { newIndex, item, oldIndex } = evt;
     const { list } = currentTab;
     const newItem = list[newIndex];

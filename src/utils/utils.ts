@@ -56,7 +56,7 @@ export function debounce(method, params) {
  * @param columns columns json
  */
 export function diGuiTree() {
-  const result:any = [];
+  const result: any = [];
   // eslint-disable-next-line no-shadow
   return function getProp(columns) {
     for (const column of columns) {

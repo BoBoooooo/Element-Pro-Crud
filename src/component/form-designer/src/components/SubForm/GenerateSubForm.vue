@@ -43,9 +43,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { DML } from '@/types/common';
 import { isChinese } from '@/utils/utils';
 import SvgIcon from '@/icons/SvgIcon.vue';
@@ -138,7 +136,7 @@ export default class GenerateSubForm extends Vue {
         })
         .then((res) => {
           if (res.data.list) {
-            this.subTableForm.tableData = res.data.list.map(item => ({
+            this.subTableForm.tableData = res.data.list.map((item) => ({
               ...item,
               _mode: 'DETAIL',
             }));
@@ -159,7 +157,7 @@ export default class GenerateSubForm extends Vue {
       return;
     }
     this.mode = 'ADD';
-    const [obj] = this.widget.tableColumns.map(item => ({
+    const [obj] = this.widget.tableColumns.map((item) => ({
       [item.model]: item.options.defaultValue || '',
       _mode: 'ADD',
     }));
@@ -361,7 +359,7 @@ export default class GenerateSubForm extends Vue {
 }
 .subTableForm {
   width: 100%;
-  .form-item{
+  .form-item {
     background: #f3fefa;
   }
   /deep/.el-table__empty-text {
@@ -375,8 +373,9 @@ export default class GenerateSubForm extends Vue {
     .el-input {
       width: 100% !important;
     }
-    .el-input__inner,.el-textarea__inner{
-      background: none!important;
+    .el-input__inner,
+    .el-textarea__inner {
+      background: none !important;
     }
   }
   .empty_icon {

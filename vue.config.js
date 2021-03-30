@@ -8,9 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const {
-  name, version, author, homepage,
-} = require('./package');
+const { name, version, author, homepage } = require('./package');
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -26,9 +24,7 @@ module.exports = {
         },
       ]);
     }
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'));
+    config.module.rule('svg').exclude.add(resolve('src/icons'));
     // 添加svg-sprite-loader加载器
     config.module
       .rule('svg-sprite-loader')
@@ -61,13 +57,8 @@ module.exports = {
       // 注意位置，必须放在 TerserPlugin 后面，否则生成的注释描述会被 TerserPlugin 或其它压缩插件清掉
       new webpack.BannerPlugin({
         entryOnly: true, // 是否仅在入口包中输出 banner 信息
-        banner: () => `${name} v${version}`
-                  + '\n'
-                  + `Author: ${author}`
-                  + '\n'
-                  + `Documentation: ${homepage}`
-                  + '\n'
-                  + `Date: ${new Date()}`,
+        // eslint-disable-next-line no-useless-concat
+        banner: () => `${name} v${version}` + '\n' + `Author: ${author}` + '\n' + `Documentation: ${homepage}` + '\n' + `Date: ${new Date()}`,
       }),
     ];
     if (process.env.NODE_ENV !== 'development') {

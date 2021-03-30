@@ -33,7 +33,7 @@
             active: selectWidget.key == element.key,
           }"
           :style="{
-            width: `${element.options.width}px`
+            width: `${element.options.width}px`,
           }"
           v-for="(element, index) in tableColumns"
           :key="element.key"
@@ -55,9 +55,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import Draggable from 'vuedraggable';
 import { formElement } from '../../componentsConfig';
 
@@ -105,7 +103,7 @@ export default class WidgetSubForm extends Vue {
 
   selectWidget = this.select;
 
-  formElement = formElement
+  formElement = formElement;
 
   handleSelectWidget(index) {
     this.selectWidget = this.element.tableColumns[index];
@@ -144,7 +142,7 @@ export default class WidgetSubForm extends Vue {
         ...this.element.tableColumns[newIndex],
         options: {
           ...this.element.tableColumns[newIndex].options,
-          options: this.element.tableColumns[newIndex].options.options.map(item => ({
+          options: this.element.tableColumns[newIndex].options.options.map((item) => ({
             ...item,
           })),
           hiddenLabel: true, // 子表单默认隐藏标签
@@ -156,7 +154,6 @@ export default class WidgetSubForm extends Vue {
     this.selectWidget = this.element.tableColumns[newIndex];
     return null;
   }
-
 
   get tableColumns() {
     return this.element.tableColumns;

@@ -20,9 +20,7 @@
 <script lang="ts">
 import { GenerateForm } from '@/component/form-designer';
 import { chunk, diGuiTree } from '@/utils/utils';
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({
   name: 'SeniorSearchFormCover',
@@ -113,7 +111,7 @@ export default class SeniorSearchFormCover extends Vue {
       },
     };
     const chunkArr = chunk(columns, 4);
-    for (const arr of chunkArr.filter(item => item)) {
+    for (const arr of chunkArr.filter((item) => item)) {
       const row: any = {
         type: 'grid',
         columns: [],
@@ -124,9 +122,7 @@ export default class SeniorSearchFormCover extends Vue {
         rules: [],
       };
       for (const column of arr) {
-        const {
-          type, label, prop, option,
-        } = column;
+        const { type, label, prop, option } = column;
         const input: any = {
           span: 6,
           list: [

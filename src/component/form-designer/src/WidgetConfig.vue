@@ -26,8 +26,8 @@
         <el-input size="mini" v-model="elementConfig.options.text"></el-input>
       </el-form-item>
       <el-form-item :label="elementConfig.type === 'html' ? 'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
-        <el-button style="float:right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
-        <div id="jsoneditor2" ref="jsoneditor2" style="height: 300px;width: 100%;"></div>
+        <el-button style="float: right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
+        <div id="jsoneditor2" ref="jsoneditor2" style="height: 300px; width: 100%"></div>
       </el-form-item>
       <el-form-item label="是否空心" v-if="Object.keys(elementConfig.options).indexOf('hollow') >= 0">
         <el-switch v-model="elementConfig.options.hollow"></el-switch>
@@ -82,9 +82,9 @@
         <el-input size="mini" v-model="elementConfig.options.width"></el-input>
       </el-form-item>
       <el-form-item label="大小" v-if="Object.keys(elementConfig.options).indexOf('size') >= 0">
-        宽度：<el-input size="mini" style="width: 90px;" type="number" v-model.number="elementConfig.options.size.width"></el-input> 高度：<el-input
+        宽度：<el-input size="mini" style="width: 90px" type="number" v-model.number="elementConfig.options.size.width"></el-input> 高度：<el-input
           size="mini"
-          style="width: 90px;"
+          style="width: 90px"
           type="number"
           v-model.number="elementConfig.options.size.height"
         ></el-input>
@@ -141,7 +141,7 @@
         <el-switch v-model="elementConfig.options.showLabel"> </el-switch>
       </el-form-item>
       <el-form-item label="数据来源" v-if="Object.keys(elementConfig.options).indexOf('options') >= 0 || Object.keys(elementConfig.options).indexOf('remoteOptions') >= 0">
-        <el-radio-group v-model="elementConfig.options.remote" size="mini" style="margin-bottom:10px;">
+        <el-radio-group v-model="elementConfig.options.remote" size="mini" style="margin-bottom: 10px">
           <el-radio-button v-if="!isRemoteComponent && dictType && dictType.length > 0" label="dict">字典</el-radio-button>
           <el-radio-button v-if="!isRemoteComponent" label="static">静态</el-radio-button>
           <el-radio-button label="custom">自定义</el-radio-button>
@@ -173,14 +173,14 @@
             <el-radio-group v-model="elementConfig.options.defaultValue">
               <Draggable tag="ul" :list="elementConfig.options.options" v-bind="getDraggableOptions()">
                 <li v-for="(item, index) in elementConfig.options.options" :key="index">
-                  <el-radio :label="item.value" style="margin-right: 5px;">
+                  <el-radio :label="item.value" style="margin-right: 5px">
                     <el-input size="mini" :style="{ width: elementConfig.options.showLabel ? '80px' : '170px' }" v-model="item.value"></el-input>
-                    <el-input size="mini" style="width:100px;" v-if="elementConfig.options.showLabel" v-model="item.label"></el-input>
+                    <el-input size="mini" style="width: 100px" v-if="elementConfig.options.showLabel" v-model="item.label"></el-input>
                   </el-radio>
-                  <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+                  <i class="drag-item" style="font-size: 16px; margin: 0 5px; cursor: move">
                     <Icon name="bars"></Icon>
                   </i>
-                  <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+                  <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px; margin-left: 5px"></el-button>
                 </li>
               </Draggable>
             </el-radio-group>
@@ -190,26 +190,26 @@
             <el-checkbox-group v-model="elementConfig.options.defaultValue">
               <Draggable tag="ul" :list="elementConfig.options.options" v-bind="getDraggableOptions()">
                 <li v-for="(item, index) in elementConfig.options.options" :key="index">
-                  <el-checkbox :label="item.value" style="margin-right: 5px;">
+                  <el-checkbox :label="item.value" style="margin-right: 5px">
                     <el-input size="mini" :style="{ width: elementConfig.options.showLabel ? '90px' : '190px' }" v-model="item.value"></el-input>
-                    <el-input size="mini" style="width:100px;" v-if="elementConfig.options.showLabel" v-model="item.label"></el-input>
+                    <el-input size="mini" style="width: 100px" v-if="elementConfig.options.showLabel" v-model="item.label"></el-input>
                   </el-checkbox>
-                  <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+                  <i class="drag-item" style="font-size: 16px; margin: 0 5px; cursor: move">
                     <Icon name="bars"></Icon>
                   </i>
-                  <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+                  <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px; margin-left: 5px"></el-button>
                 </li>
               </Draggable>
             </el-checkbox-group>
           </template>
-          <div style="margin-left: 22px;" v-if="elementConfig.type !== 'cascader'">
+          <div style="margin-left: 22px" v-if="elementConfig.type !== 'cascader'">
             <el-button size="mini" type="text" @click="handleAddOption">添加选项</el-button>
             <el-button size="mini" type="text" @click="handleClearOption">清除默认选中项</el-button>
           </div>
         </template>
       </el-form-item>
       <el-form-item label="对齐方式" v-if="elementConfig.type === 'text'">
-        <el-select size="mini" style="width:100%" v-model="elementConfig.options.align">
+        <el-select size="mini" style="width: 100%" v-model="elementConfig.options.align">
           <el-option value="center" label="居中"></el-option>
           <el-option value="left" label="左对齐"></el-option>
           <el-option value="right" label="右对齐"></el-option>
@@ -222,14 +222,14 @@
         label="默认值"
         v-if="
           Object.keys(elementConfig.options).indexOf('defaultValue') >= 0 &&
-            (elementConfig.type == 'textarea' ||
-              elementConfig.type == 'input' ||
-              elementConfig.type == 'rate' ||
-              elementConfig.type == 'color' ||
-              elementConfig.type == 'switch' ||
-              elementConfig.type == 'date' ||
-              elementConfig.type == 'select' ||
-              elementConfig.type == 'html')
+          (elementConfig.type == 'textarea' ||
+            elementConfig.type == 'input' ||
+            elementConfig.type == 'rate' ||
+            elementConfig.type == 'color' ||
+            elementConfig.type == 'switch' ||
+            elementConfig.type == 'date' ||
+            elementConfig.type == 'select' ||
+            elementConfig.type == 'html')
         "
       >
         <el-input size="mini" v-if="elementConfig.type == 'textarea'" type="textarea" :rows="5" v-model="elementConfig.options.defaultValue"></el-input>
@@ -237,12 +237,12 @@
         <el-input size="mini" placeholder="此处输入html" type="textarea" v-if="elementConfig.type == 'html'" v-model="elementConfig.options.defaultValue"></el-input>
         <el-rate
           v-if="elementConfig.type == 'rate'"
-          style="display:inline-block;vertical-align: middle;"
+          style="display: inline-block; vertical-align: middle"
           :max="elementConfig.options.max"
           :allow-half="elementConfig.options.allowHalf"
           v-model="elementConfig.options.defaultValue"
         ></el-rate>
-        <el-button size="mini" type="text" v-if="elementConfig.type == 'rate'" style="display:inline-block;vertical-align: middle;margin-left: 10px;" @click="elementConfig.options.defaultValue = 0"
+        <el-button size="mini" type="text" v-if="elementConfig.type == 'rate'" style="display: inline-block; vertical-align: middle; margin-left: 10px" @click="elementConfig.options.defaultValue = 0"
           >清空</el-button
         >
         <el-color-picker v-if="elementConfig.type == 'color'" v-model="elementConfig.options.defaultValue" :show-alpha="elementConfig.options.showAlpha"></el-color-picker>
@@ -302,7 +302,7 @@
           label="占位内容"
           v-if="
             (!elementConfig.options.isRange && elementConfig.type == 'time') ||
-              (elementConfig.type != 'time' && elementConfig.options.type != 'datetimerange' && elementConfig.options.type != 'daterange')
+            (elementConfig.type != 'time' && elementConfig.options.type != 'datetimerange' && elementConfig.options.type != 'daterange')
           "
         >
           <el-input size="mini" v-model="elementConfig.options.placeholder"></el-input>
@@ -319,7 +319,7 @@
         <el-form-item label="默认值" v-if="elementConfig.type == 'time' && Object.keys(elementConfig.options).indexOf('isRange') >= 0">
           <el-time-picker
             key="1"
-            style="width: 100%;"
+            style="width: 100%"
             v-if="!elementConfig.options.isRange"
             v-model="elementConfig.options.defaultValue"
             :arrowControl="elementConfig.options.arrowControl"
@@ -329,7 +329,7 @@
           <el-time-picker
             key="2"
             v-if="elementConfig.options.isRange"
-            style="width: 100%;"
+            style="width: 100%"
             v-model="elementConfig.options.defaultValue"
             is-range
             :arrowControl="elementConfig.options.arrowControl"
@@ -345,12 +345,12 @@
         <el-form-item label="列配置项">
           <Draggable tag="ul" :list="elementConfig.columns" v-bind="getDraggableOptions()">
             <li v-for="(item, index) in elementConfig.columns" :key="index">
-              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+              <i class="drag-item" style="font-size: 16px; margin: 0 5px; cursor: move">
                 <Icon name="bars"></Icon>
               </i>
               <span>第{{ index + 1 }}列</span>
-              <el-input size="mini" placeholder="栅格值" style="width: 100px;" type="number" v-model.number="item.span"></el-input>
-              <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+              <el-input size="mini" placeholder="栅格值" style="width: 100px" type="number" v-model.number="item.span"></el-input>
+              <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px; margin-left: 5px"></el-button>
             </li>
           </Draggable>
           <el-button size="mini" type="text" @click="handleAddColumn">添加栅格</el-button>
@@ -388,11 +388,11 @@
         <el-form-item label="标签配置项">
           <Draggable tag="ul" :list="elementConfig.items" v-bind="getDraggableOptions()">
             <li v-for="(item, index) in elementConfig.items" :key="index">
-              <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;">
+              <i class="drag-item" style="font-size: 16px; margin: 0 5px; cursor: move">
                 <Icon name="bars"></Icon>
               </i>
-              <el-input size="mini" placeholder="标签名" style="width: 100px;"  v-model="item.label"></el-input>
-              <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+              <el-input size="mini" placeholder="标签名" style="width: 100px" v-model="item.label"></el-input>
+              <el-button size="mini" @click="handleOptionsRemove(index)" circle plain type="danger" icon="el-icon-minus" style="padding: 4px; margin-left: 5px"></el-button>
             </li>
           </Draggable>
           <el-button size="mini" type="text" @click="handleAddOption">添加标签</el-button>
@@ -403,27 +403,21 @@
         <el-form-item v-if="Object.keys(elementConfig.options).indexOf('resourceId') >= 0" label="关联字段名">
           <el-input size="mini" v-model="elementConfig.options.resourceId"></el-input>
         </el-form-item>
-        <el-form-item  v-if="Object.keys(elementConfig.options).indexOf('uploadUrl') >= 0" label="接口地址">
+        <el-form-item v-if="Object.keys(elementConfig.options).indexOf('uploadUrl') >= 0" label="接口地址">
           <el-input size="mini" v-model="elementConfig.options.uploadUrl"></el-input>
         </el-form-item>
         <el-form-item v-if="elementConfig.type === 'upload'" label="附件类型">
           <el-input size="mini" v-model="elementConfig.options.fileType" placeholder="关联多个附件的情况下需要填写"></el-input>
         </el-form-item>
-        <el-form-item
-          label="操作属性"
-          v-if="formElement.includes(elementConfig.type) || elementConfig.type === 'upload'">
+        <el-form-item label="操作属性" v-if="formElement.includes(elementConfig.type) || elementConfig.type === 'upload'">
           <el-checkbox v-model="elementConfig.options.readonly" v-if="Object.keys(elementConfig.options).indexOf('readonly') >= 0">完全只读</el-checkbox>
           <el-checkbox v-model="elementConfig.options.disabled" v-if="Object.keys(elementConfig.options).indexOf('disabled') >= 0">禁用 </el-checkbox>
           <el-checkbox v-model="elementConfig.options.editable" v-if="Object.keys(elementConfig.options).indexOf('editable') >= 0">文本框可输入</el-checkbox>
           <el-checkbox v-model="elementConfig.options.showWordLimit" v-if="Object.keys(elementConfig.options).indexOf('showWordLimit') >= 0">输入统计</el-checkbox>
           <el-checkbox v-model="elementConfig.options.clearable" v-if="Object.keys(elementConfig.options).indexOf('clearable') >= 0">显示清除按钮</el-checkbox>
-          <el-checkbox v-model="elementConfig.options.arrowControl" v-if="Object.keys(elementConfig.options).indexOf('arrowControl') >= 0">
-            使用箭头进行时间选择
-          </el-checkbox>
+          <el-checkbox v-model="elementConfig.options.arrowControl" v-if="Object.keys(elementConfig.options).indexOf('arrowControl') >= 0"> 使用箭头进行时间选择 </el-checkbox>
         </el-form-item>
-        <el-form-item
-          v-if="formElement.includes(elementConfig.type)"
-          label="校验">
+        <el-form-item v-if="formElement.includes(elementConfig.type)" label="校验">
           <div>
             <el-checkbox v-if="Object.keys(elementConfig.options).indexOf('required') >= 0" v-model="elementConfig.options.required">必填</el-checkbox>
           </div>
@@ -440,8 +434,8 @@
           </el-select>
 
           <div v-if="Object.keys(elementConfig.options).indexOf('pattern') >= 0">
-            <el-input size="mini" v-model.lazy="elementConfig.options.pattern" style=" width: 240px;" placeholder="填写正则表达式"></el-input>
-            <el-input size="mini" v-model.lazy="elementConfig.options.message" style=" width: 240px;" placeholder="自定义错误提示语"></el-input>
+            <el-input size="mini" v-model.lazy="elementConfig.options.pattern" style="width: 240px" placeholder="填写正则表达式"></el-input>
+            <el-input size="mini" v-model.lazy="elementConfig.options.message" style="width: 240px" placeholder="自定义错误提示语"></el-input>
           </div>
         </el-form-item>
         <el-form-item label="后台表名" v-if="elementConfig.options.tableName !== undefined">
@@ -469,12 +463,12 @@
           <el-switch v-model="elementConfig.options.isMultiple"></el-switch>
         </el-form-item>
         <el-form-item label="界面元素控制" v-if="elementConfig.options.visibleList !== undefined">
-          <el-switch v-model="elementConfig.options.visibleList.actionColumn" inactive-text="是否显示操作列" style="margin-right:10px"></el-switch>
-          <el-switch v-model="elementConfig.options.visibleList.btnAdd" inactive-text="新增按钮" style="margin-right:10px"></el-switch>
+          <el-switch v-model="elementConfig.options.visibleList.actionColumn" inactive-text="是否显示操作列" style="margin-right: 10px"></el-switch>
+          <el-switch v-model="elementConfig.options.visibleList.btnAdd" inactive-text="新增按钮" style="margin-right: 10px"></el-switch>
           <el-switch v-model="elementConfig.options.visibleList.actionColumnBtnEdit" inactive-text="编辑按钮"></el-switch>
-          <el-switch v-model="elementConfig.options.visibleList.actionColumnBtnDel" inactive-text="删除按钮" style="margin-right:10px"></el-switch>
+          <el-switch v-model="elementConfig.options.visibleList.actionColumnBtnDel" inactive-text="删除按钮" style="margin-right: 10px"></el-switch>
           <el-switch v-model="elementConfig.options.visibleList.actionColumnBtnDetail" inactive-text="查看按钮"></el-switch>
-          <el-switch v-model="elementConfig.options.visibleList.tableTitle" inactive-text="表格标题" style="margin-right:10px"></el-switch>
+          <el-switch v-model="elementConfig.options.visibleList.tableTitle" inactive-text="表格标题" style="margin-right: 10px"></el-switch>
           <el-switch v-model="elementConfig.options.visibleList.searchForm" inactive-text="查询区域"></el-switch>
         </el-form-item>
         <template v-if="elementConfig.type === 'treeselect'">

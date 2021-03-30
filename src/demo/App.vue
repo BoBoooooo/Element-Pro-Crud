@@ -11,13 +11,14 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class App extends Vue {}
 </script>
 <style>
-html,body{
-  height:100%;
-  width:100%;
-  padding:0;
-  margin:0;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
-#app{
+#app {
   height: 100%;
 }
 </style>

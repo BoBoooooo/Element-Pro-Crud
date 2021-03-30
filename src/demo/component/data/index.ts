@@ -470,7 +470,6 @@ export const proTableJson = {
         },
       ],
     },
-
   ],
   name: 'person',
   position: '员工管理',

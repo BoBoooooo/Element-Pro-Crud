@@ -8,18 +8,18 @@
 <template>
   <CrudTable ref="table" tableName="person" tableTitle="员工管理" fullHeight orderCondition="timestamp desc" :visibleList="visibleList" v-bind="$attrs" v-on="$listeners">
     <template #btnBarPrevBtn>
-      <el-button size="mini" @click="()=>$alert('btnBarPrevBtn插槽可自定义功能按钮')">自定义功能按钮</el-button>
+      <el-button size="mini" @click="() => $alert('btnBarPrevBtn插槽可自定义功能按钮')">自定义功能按钮</el-button>
     </template>
-    <template #columnFormatter="{row,prop}">
-        <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
-        <span v-if="prop === 'personname'"><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
-        <el-image style="width: 50px; height: 50px" fit="fill" v-if="prop === 'avatar'" :src="getAvatarUrl(row)" :preview-src-list="[getAvatarUrl(row)]">
-          <div slot="error" style="height: 100%">
-            <div class="error"><i class="el-icon-picture-outline"></i></div>
-          </div>
-        </el-image>
-      </template>
-    <template #btnCustom="{row}">
+    <template #columnFormatter="{ row, prop }">
+      <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
+      <span v-if="prop === 'personname'"><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
+      <el-image style="width: 50px; height: 50px" fit="fill" v-if="prop === 'avatar'" :src="getAvatarUrl(row)" :preview-src-list="[getAvatarUrl(row)]">
+        <div slot="error" style="height: 100%">
+          <div class="error"><i class="el-icon-picture-outline"></i></div>
+        </div>
+      </el-image>
+    </template>
+    <template #btnCustom="{ row }">
       <el-button size="mini" @click="getRowData(row)">自定义</el-button>
     </template>
   </CrudTable>
@@ -33,7 +33,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 })
 export default class PersonTable extends Vue {
   @Prop(Object)
-  visibleList
+  visibleList;
 
   getRowData(row) {
     this.$alert(JSON.stringify(row));

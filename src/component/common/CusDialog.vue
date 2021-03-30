@@ -1,33 +1,20 @@
 <template>
-  <el-dialog class="cus-dialog-container"
-             :title="title"
-             :visible.sync="dialogVisible"
-             :width="width"
-             ref="elDialog"
-             :id="id"
-             append-to-body>
+  <el-dialog class="cus-dialog-container" :title="title" :visible.sync="dialogVisible" :width="width" ref="elDialog" :id="id" append-to-body>
     <span v-if="show">
       <slot></slot>
     </span>
 
-    <span v-if="action"
-          slot="footer"
-          class="dialog-footer"
-          v-loading="loading"
-          :element-loading-text="loadingText">
+    <span v-if="action" slot="footer" class="dialog-footer" v-loading="loading" :element-loading-text="loadingText">
       <slot name="action">
         <el-button @click="close">取消</el-button>
-        <el-button type="primary"
-                   @click="submit">确 定</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
       </slot>
     </span>
   </el-dialog>
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Watch, Prop,
-} from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 
 @Component
 export default class CusDialog extends Vue {
@@ -115,7 +102,7 @@ export default class CusDialog extends Vue {
 
 <style lang="scss">
 .cus-dialog-container {
-  .el-dialog__body{
+  .el-dialog__body {
     overflow: auto;
   }
   .el-dialog__footer {

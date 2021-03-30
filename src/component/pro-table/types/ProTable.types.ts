@@ -4,9 +4,7 @@
  * @copyright: NanJing Anshare Tech .Com
  * @Date: 2020-12-24 10:47:59
  */
-import {
-  columns, DataSource, Params, fn, AnyObject,
-} from '@/types/common';
+import { columns, DataSource, Params, fn, AnyObject } from '@/types/common';
 
 interface ProTableProps {
   searchMode: 'popover' | 'cover';

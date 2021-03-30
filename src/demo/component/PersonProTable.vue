@@ -7,15 +7,15 @@
 
 <template>
   <ProTable ref="table" :request="request" :columns="columns" :border="false" fullHeight orderCondition="timestamp desc" v-bind="$attrs" v-on="$listeners">
-     <template #columnFormatter="{row,prop}">
-        <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
-        <span v-if="prop === 'personname'"><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
-        <el-image style="width: 50px; height: 50px" fit="fill" v-if="prop === 'avatar'" :src="getAvatarUrl(row)" :preview-src-list="[getAvatarUrl(row)]">
-          <div slot="error" style="height: 100%">
-            <div class="error"><i class="el-icon-picture-outline"></i></div>
-          </div>
-        </el-image>
-      </template>
+    <template #columnFormatter="{ row, prop }">
+      <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
+      <span v-if="prop === 'personname'"><i class="el-icon el-icon-user" style="color: red"></i>{{ row.personname }}</span>
+      <el-image style="width: 50px; height: 50px" fit="fill" v-if="prop === 'avatar'" :src="getAvatarUrl(row)" :preview-src-list="[getAvatarUrl(row)]">
+        <div slot="error" style="height: 100%">
+          <div class="error"><i class="el-icon-picture-outline"></i></div>
+        </div>
+      </el-image>
+    </template>
   </ProTable>
 </template>
 
@@ -24,12 +24,11 @@ import { DataSource, DML, Params } from '@/types/common';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { proTableJson } from './data';
 
-
 @Component({
   name: 'PersonProTable',
 })
 export default class PersonProTable extends Vue {
-  columns = proTableJson
+  columns = proTableJson;
 
   async request(axiosParams: Params): Promise<DataSource> {
     const res = await this.$PROCRUD.crud(DML.SELECT, 'person', axiosParams);

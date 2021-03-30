@@ -6,38 +6,36 @@
 -->
 <template>
   <!-- 对话框 -->
-  <el-dialog v-if="visible"
-             ref="dialog"
-             :title="dialogTitle"
-             :visible.sync="visible"
-             :width="dialogWidth"
-             :append-to-body="dialogAppendToBody"
-             :fullscreen="dialogFullscreen"
-             :close-on-click-modal="dialogCloseOnClickModal">
+  <el-dialog
+    v-if="visible"
+    ref="dialog"
+    :title="dialogTitle"
+    :visible.sync="visible"
+    :width="dialogWidth"
+    :append-to-body="dialogAppendToBody"
+    :fullscreen="dialogFullscreen"
+    :close-on-click-modal="dialogCloseOnClickModal"
+  >
     <!-- 对话框内动态表单 -->
-    <GenerateForm ref="generateDialogForm"
-                  :value="formValues"
-                  :data="formDesign"
-                  :rules="rules"
-                  :readOnly="isReadOnly"
-                  :remote="remoteFuncs"
-                  :entity.sync="entity"
-                  @btn-on-click="btnOnClick"
-                  :formTableConfig="formTableConfig" />
-    <el-row type="flex"
-            justify="end"
-            slot="footer">
+    <GenerateForm
+      ref="generateDialogForm"
+      :value="formValues"
+      :data="formDesign"
+      :rules="rules"
+      :readOnly="isReadOnly"
+      :remote="remoteFuncs"
+      :entity.sync="entity"
+      @btn-on-click="btnOnClick"
+      :formTableConfig="formTableConfig"
+    />
+    <el-row type="flex" justify="end" slot="footer">
       <slot name="dialogFooter"></slot>
       <template v-if="isReadOnly">
-        <el-button @click="visible=false">关 闭</el-button>
+        <el-button @click="visible = false">关 闭</el-button>
       </template>
       <template v-else>
-        <el-button type="primary"
-                   icon="el-icon-check"
-                   @click="btnSaveOnClick()"
-                   :loading="btnSaveIsLoading">保存</el-button>
-        <el-button icon="el-icon-close"
-                   @click="btnCancelOnClick()">取消</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="btnSaveOnClick()" :loading="btnSaveIsLoading">保存</el-button>
+        <el-button icon="el-icon-close" @click="btnCancelOnClick()">取消</el-button>
       </template>
     </el-row>
   </el-dialog>
@@ -46,9 +44,7 @@
 <script lang="ts">
 import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
-import {
-  Component, Vue, Emit, Watch, Prop,
-} from 'vue-property-decorator';
+import { Component, Vue, Emit, Watch, Prop } from 'vue-property-decorator';
 import { DML } from '@/types/common';
 
 const STATUS = {

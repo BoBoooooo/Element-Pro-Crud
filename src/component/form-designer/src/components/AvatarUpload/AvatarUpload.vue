@@ -13,7 +13,7 @@
     }"
     class="avatar-uploader"
     :class="{
-      'is-disabled' : readOnly
+      'is-disabled': readOnly,
     }"
     :headers="headers"
     :action="action"
@@ -101,16 +101,16 @@ export default {
   margin: 0 auto;
   overflow: hidden;
 }
-.avatar-uploader >>> .el-upload{
-  height:100%;
+.avatar-uploader >>> .el-upload {
+  height: 100%;
   display: block;
 }
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
 
-.upload-container{
-  height:100%;
+.upload-container {
+  height: 100%;
   width: 100%;
 }
 .avatar-uploader-icon {
@@ -128,7 +128,7 @@ export default {
   height: 100%;
   display: block;
 }
-.is-disabled{
+.is-disabled {
   cursor: not-allowed;
 }
 </style>

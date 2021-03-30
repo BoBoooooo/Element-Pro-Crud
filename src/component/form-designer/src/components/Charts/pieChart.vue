@@ -4,7 +4,7 @@
  * @Description: 基于echarts的饼图组件
  -->
 <template>
-  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width ,padding: 0}">
+  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width, padding: 0 }">
     <div slot="header">
       <span>{{ title }}</span>
     </div>
@@ -65,7 +65,7 @@ export default {
         color: ['#82C7E4', '#A1AFFB', '#7190FF', '#163abe'],
         title: {
           // eslint-disable-next-line no-eval
-          text: `总数${eval(this.data.map(item => item.value).join('+')) || 0}`,
+          text: `总数${eval(this.data.map((item) => item.value).join('+')) || 0}`,
           top: '10%',
           left: '50%',
           textAlign: 'center',
@@ -87,7 +87,7 @@ export default {
           // 以数组中的最大值为最大值
           max: Math.max.apply(
             null,
-            this.data.map(item => item.value),
+            this.data.map((item) => item.value),
           ),
           // 颜色在 min-max之间自动渐变
           inRange: {
@@ -122,7 +122,7 @@ export default {
             type: 'pie',
             center: ['50%', '50%'],
             // 对数据排序
-            data: this.data.map(item => item).sort((a, b) => a.value - b.value),
+            data: this.data.map((item) => item).sort((a, b) => a.value - b.value),
             // roseType: 'area',
             label: {
               color: '#fff',
@@ -223,9 +223,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.card{
+.card {
   /deep/ {
-    .el-card__header{
+    .el-card__header {
       padding: 5px 20px;
     }
   }

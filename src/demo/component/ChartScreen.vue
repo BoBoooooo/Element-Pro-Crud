@@ -17,6 +17,6 @@ import data from './data';
   name: 'ChartScreen',
 })
 export default class ChartScreen extends Vue {
-  data = data
+  data = data;
 }
 </script>

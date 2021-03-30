@@ -7,81 +7,67 @@
 
 <template>
   <div class="upload-container">
-    <el-upload v-if="view.upload && !readOnly"
-               ref="upload"
-               :action="uploadUrl"
-               :data="uploadParams"
-               :accept="accept"
-               :headers="{ Authorization: this.$store.getters.token }"
-               :show-file-list="false"
-               :before-upload="beforeUpload"
-               :on-success="uploadSuccess"
-               multiple>
-      <el-tooltip class="item"
-                  effect="dark"
-                  content="上传附件"
-                  placement="bottom">
-        <el-button size="mini"
-                   style="float:right;"
-                   :loading="btnSaveIsLoading"
-                   type="primary">上传附件</el-button>
+    <el-upload
+      v-if="view.upload && !readOnly"
+      ref="upload"
+      :action="uploadUrl"
+      :data="uploadParams"
+      :accept="accept"
+      :headers="{ Authorization: this.$store.getters.token }"
+      :show-file-list="false"
+      :before-upload="beforeUpload"
+      :on-success="uploadSuccess"
+      multiple
+    >
+      <el-tooltip class="item" effect="dark" content="上传附件" placement="bottom">
+        <el-button size="mini" style="float: right" :loading="btnSaveIsLoading" type="primary">上传附件</el-button>
       </el-tooltip>
     </el-upload>
-    <ProTable ref="table"
-               v-if="view.list"
-               :listField="listField"
-               emptyText="暂无附件"
-               :tableName="tableName"
-               :maxHeightMinus="290"
-               :pageSize="[10, 20, 50]"
-               :tableTitle="tableTitle"
-               :tableParams="tableParams"
-               :promiseForSelect="promiseForSelect"
-               :fullHeight="fullHeight"
-               :visibleList="{
-                  searchForm: true,
-                  btnAdd: false,
-                  actionColumnBtnEdit: false,
-                  actionColumnBtnDel: false,
-                  tableTitle: false,
-                }"
-               :paginationLayout="paginationLayout"
-               :showPagination="showPagination"
-               @selection="getSelection"
-               :isMultiple="isMultiple">
-      <template #columnFormatter="{prop,row}">
+    <ProTable
+      ref="table"
+      v-if="view.list"
+      :listField="listField"
+      emptyText="暂无附件"
+      :tableName="tableName"
+      :maxHeightMinus="290"
+      :pageSize="[10, 20, 50]"
+      :tableTitle="tableTitle"
+      :tableParams="tableParams"
+      :promiseForSelect="promiseForSelect"
+      :fullHeight="fullHeight"
+      :visibleList="{
+        searchForm: true,
+        btnAdd: false,
+        actionColumnBtnEdit: false,
+        actionColumnBtnDel: false,
+        tableTitle: false,
+      }"
+      :paginationLayout="paginationLayout"
+      :showPagination="showPagination"
+      @selection="getSelection"
+      :isMultiple="isMultiple"
+    >
+      <template #columnFormatter="{ prop, row }">
         <template v-if="prop === 'filename'">
           <span>{{ row.filename }}</span>
         </template>
       </template>
       <template #btnBarPrevBtn> </template>
       <template #btnCustom="scope">
-        <slot name="btnCustom"
-              :row="scope.row"></slot>
+        <slot name="btnCustom" :row="scope.row"></slot>
         <div v-if="scope.row.isdeleted === false">
-          <el-dropdown trigger="click"
-                       placement="bottom"
-                       class="selectButton">
-            <el-button type="text"
-                       class="el-dropdown-link">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
+          <el-dropdown trigger="click" placement="bottom" class="selectButton">
+            <el-button type="text" class="el-dropdown-link"> 更多<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <i class="el-icon-download"
-                   @click="btnDownloadOnClick(scope)">
-                  <span class="dropLink">
-                    下载
-                  </span>
+                <i class="el-icon-download" @click="btnDownloadOnClick(scope)">
+                  <span class="dropLink"> 下载 </span>
                 </i>
               </el-dropdown-item>
 
               <el-dropdown-item>
-                <i class="el-icon-delete"
-                   @click="btnDelOnClick(scope)">
-                  <span class="dropLink">
-                    删除
-                  </span>
+                <i class="el-icon-delete" @click="btnDelOnClick(scope)">
+                  <span class="dropLink"> 删除 </span>
                 </i>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -278,14 +264,21 @@ export default class FileUpload extends Vue {
       type: 'warning',
     })
       .then(() => {
-        this.$PROCRUD.crud(DML.DELETE, this.tableName, {}, {
-          id: row.id,
-        }).then((res: any) => {
-          if (res.code === 200) {
-            this.$message.success('删除成功');
-            this.tableReload();
-          }
-        });
+        this.$PROCRUD
+          .crud(
+            DML.DELETE,
+            this.tableName,
+            {},
+            {
+              id: row.id,
+            },
+          )
+          .then((res: any) => {
+            if (res.code === 200) {
+              this.$message.success('删除成功');
+              this.tableReload();
+            }
+          });
       })
       .catch(() => {
         this.$message({

@@ -36,7 +36,7 @@ axios({
 }).then((res) => {
   sessionStorage.setItem('token', res.data.token);
   new Vue({
-    render: h => h(App),
+    render: (h) => h(App),
     router,
   }).$mount('#app');
 });

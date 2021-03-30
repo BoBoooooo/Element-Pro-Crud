@@ -4,7 +4,7 @@
  * @Description: 基于echarts的柱状图组件
  -->
 <template>
-  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width ,padding: 0}">
+  <el-card shadow="hover" class="card" :body-style="{ height: height, width: width, padding: 0 }">
     <div slot="header">
       <span>{{ title }}</span>
     </div>
@@ -198,7 +198,7 @@ export default {
             barWidth: 30, // 柱图宽度
             name: this.yUnit,
             type: this.type,
-            data: this.data.map(item => item.value),
+            data: this.data.map((item) => item.value),
             itemStyle: {
               normal: {
                 lineStyle: {
@@ -282,9 +282,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.card{
+.card {
   /deep/ {
-    .el-card__header{
+    .el-card__header {
       padding: 5px 20px;
     }
   }

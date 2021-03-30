@@ -21,8 +21,7 @@
     </template>
     <template v-else>
       <!-- 高级查询表单 -->
-      <SeniorSearchFormCover v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns">
-      </SeniorSearchFormCover>
+      <SeniorSearchFormCover v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchFormCover>
     </template>
 
     <div
@@ -98,10 +97,10 @@ export default class SearchForm extends Vue {
 
   // 标签关闭事件
   handleClose(tag) {
-    this.paramsTips = this.paramsTips.filter(item => item.field !== tag.field);
+    this.paramsTips = this.paramsTips.filter((item) => item.field !== tag.field);
     this.$emit(
       'update:searchFormCondition',
-      this.paramsTips.map(item => ({
+      this.paramsTips.map((item) => ({
         field: item.field,
         value: item.value,
         operator: item.operator,
@@ -129,7 +128,7 @@ export default class SearchForm extends Vue {
   getParams() {
     let params: any = [];
     // 拿到所有字段
-    const props = this.seachableColumns.map(item => item.prop);
+    const props = this.seachableColumns.map((item) => item.prop);
     const str = props.toString();
     if (this.searchContent) {
       params = [
@@ -182,11 +181,11 @@ export default class SearchForm extends Vue {
         }
       }
     });
-    this.paramsTips = params.map(item => ({
+    this.paramsTips = params.map((item) => ({
       field: item.field,
       value: item.value,
       operator: item.operator,
-      label: this.seachableColumns.find(s => s.prop === item.field).label,
+      label: this.seachableColumns.find((s) => s.prop === item.field).label,
     }));
     this.$emit('update:searchFormCondition', params);
     this.$emit('click');
@@ -224,8 +223,8 @@ export default class SearchForm extends Vue {
     margin-left: 10px;
     /deep/.el-tag {
       margin-right: 5px;
-      height: 28px!important;
-      line-height: 28px!important;
+      height: 28px !important;
+      line-height: 28px !important;
     }
   }
 }

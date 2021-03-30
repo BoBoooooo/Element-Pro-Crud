@@ -27,7 +27,7 @@
           <router-link to="/form" tag="a"><h3>表单设计器</h3></router-link>
 
           <el-link target="_blank" :underline="false" href="https://github.com/BoBoooooo/Element-Pro-Crud" type="primary">
-            <img style="marign-top:10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
+            <img style="marign-top: 10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
           </el-link>
         </div>
       </el-header>
@@ -50,9 +50,7 @@
         <el-container class="container">
           <el-header
             ><el-tag effect="plain" type="info">ProTable</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
-            <el-button @click="handleGenerateJson('ProTable')" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
-              当前表格json
-            </el-button>
+            <el-button @click="handleGenerateJson('ProTable')" icon="el-icon-tickets" type="primary" class="json-btn" size="small"> 当前表格json </el-button>
           </el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
@@ -116,9 +114,7 @@
         <el-container class="container">
           <el-header
             ><el-tag effect="plain" type="info">CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
-            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small">
-              当前表格json
-            </el-button>
+            <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small"> 当前表格json </el-button>
           </el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
@@ -213,9 +209,7 @@
         <el-container class="container">
           <el-header>
             <el-tag effect="plain" type="info">GenerateForm渲染图表示例</el-tag>
-            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="primary" size="small">
-              当前表单JSON
-            </el-button>
+            <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="primary" size="small"> 当前表单JSON </el-button>
           </el-header>
           <el-main class="demo-actions">
             <el-row :gutter="10">
@@ -231,26 +225,16 @@
     </el-container>
     <!-- json预览Dialog start -->
     <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
-      <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+      <div id="jsoneditor" style="height: 400px; width: 100%">{{ jsonTemplate }}</div>
     </CusDialog>
     <!-- json预览Dialog end -->
     <!-- 侧边滚动导航区域 start -->
     <ul class="navs">
-      <li :class="{ active: active === 0 }" @click="scrollTo(0)">
-        表格设计器
-      </li>
-      <li :class="{ active: active === 1 }" @click="scrollTo(1)">
-        表单设计器
-      </li>
-      <li :class="{ active: active === 2 }" @click="scrollTo(2)">
-        ProTable
-      </li>
-      <li :class="{ active: active === 3 }" @click="scrollTo(3)">
-        CrudTable
-      </li>
-      <li :class="{ active: active === 4 }" @click="scrollTo(4)">
-        图表示例
-      </li>
+      <li :class="{ active: active === 0 }" @click="scrollTo(0)">表格设计器</li>
+      <li :class="{ active: active === 1 }" @click="scrollTo(1)">表单设计器</li>
+      <li :class="{ active: active === 2 }" @click="scrollTo(2)">ProTable</li>
+      <li :class="{ active: active === 3 }" @click="scrollTo(3)">CrudTable</li>
+      <li :class="{ active: active === 4 }" @click="scrollTo(4)">图表示例</li>
     </ul>
     <!-- 侧边滚动导航区域 end -->
   </div>
@@ -258,14 +242,10 @@
 
 <script>
 import { DML, crud } from '@/demo/api/crud';
-import {
-  getTables, getFormKey, getTableDetail, getFormDetail,
-} from '@/demo/api/plugin';
+import { getTables, getFormKey, getTableDetail, getFormDetail } from '@/demo/api/plugin';
 import CusDialog from '@/component/common/CusDialog.vue';
 
-import {
-  PersonCrudTable, PersonProTable, ChartScreen, chartData,
-} from '@/demo/component';
+import { PersonCrudTable, PersonProTable, ChartScreen, chartData } from '@/demo/component';
 import { proTableJson } from './data';
 
 export default {
@@ -321,13 +301,13 @@ export default {
 
   created() {
     crud(DML.SELECT, 'ad_codelist_type').then((res) => {
-      this.dictType = res.data.list.map(item => ({
+      this.dictType = res.data.list.map((item) => ({
         label: item.typeName,
         value: item.id,
       }));
     });
     getTables().then((res) => {
-      this.allTables = res.data.map(item => ({
+      this.allTables = res.data.map((item) => ({
         label: item.TABLE_NAME,
         value: item.TABLE_NAME,
       }));
@@ -344,7 +324,7 @@ export default {
     });
     this.initFormJson();
     crud(DML.SELECT, 'ad_codelist_type').then((res) => {
-      this.dictList = res.data.list.map(item => ({
+      this.dictList = res.data.list.map((item) => ({
         label: item.typeName,
         value: item.id,
       }));
@@ -498,8 +478,8 @@ h3 {
       margin-left: 10px;
       font-size: 14px;
       color: #6171cd;
-      &:hover{
-        color:#4d2afc;
+      &:hover {
+        color: #4d2afc;
       }
     }
   }
@@ -510,7 +490,7 @@ h3 {
   margin: 0 auto;
   padding-top: 60px;
   .el-header {
-    background: #FF9798;
+    background: #ff9798;
   }
   .demo-actions {
     text-align: left;

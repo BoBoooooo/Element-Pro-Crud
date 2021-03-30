@@ -1,9 +1,11 @@
 <template>
-  <div class="widget-form-container"
-  :class="{
-    'pad': deviceMode === 'pad',
-    'mobile': deviceMode ==='mobile'
-  }">
+  <div
+    class="widget-form-container"
+    :class="{
+      pad: deviceMode === 'pad',
+      mobile: deviceMode === 'mobile',
+    }"
+  >
     <div v-if="data.list.length == 0" class="form-empty"><SvgIcon icon-class="form_empty" class="form-empty-icon"></SvgIcon> 拖拽 或 点击 添加组件至此处!</div>
     <el-form :label-position="data.config.labelPosition" :label-width="data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'" :size="data.config.size" class="widget-form">
       <Draggable
@@ -20,7 +22,7 @@
         <transition-group name="fade" tag="div" class="widget-form-list">
           <template v-for="(element, index) in data.list">
             <template v-if="element.type == 'grid'">
-              <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative;">
+              <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative">
                 <el-row
                   class="widget-col widget-view"
                   type="flex"
@@ -97,10 +99,10 @@
                       valign="middle"
                       :style="{
                         width: col.options.width,
-                        height: col.options.height
+                        height: col.options.height,
                       }"
                       align="left"
-                      :class="{ active: selectWidget &&  selectWidget.key == col.key }"
+                      :class="{ active: selectWidget && selectWidget.key == col.key }"
                       class="widget-grid-table__td"
                     >
                       <Draggable
@@ -120,7 +122,7 @@
                       </Draggable>
                       <!-- td设置 -->
                       <div class="widget-td-setting" v-if="selectWidget && selectWidget.key == col.key">
-                         <el-dropdown size="mini" trigger="click" @command="handleTdSettingCommand($event, element, row, rowIndex, col, colIndex)">
+                        <el-dropdown size="mini" trigger="click" @command="handleTdSettingCommand($event, element, row, rowIndex, col, colIndex)">
                           <span class="el-dropdown-link">
                             <i class="el-icon-setting el-icon--right" title="详细设置"></i>
                           </span>
@@ -130,14 +132,14 @@
                             <el-dropdown-item command="top-row">上插入行</el-dropdown-item>
                             <el-dropdown-item command="bottom-row">下插入行</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
-                            <el-dropdown-item command="merge-right" :disabled="!row.columns[colIndex + 1]|| col.options.rowspan > 1">向右合并</el-dropdown-item>
+                            <el-dropdown-item command="merge-right" :disabled="!row.columns[colIndex + 1] || col.options.rowspan > 1">向右合并</el-dropdown-item>
                             <el-dropdown-item command="merge-bottom" :disabled="rowIndex + col.options.rowspan >= element.rows.length || col.options.colspan > 1">向下合并</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
                             <el-dropdown-item command="split-row" :disabled="col.options.rowspan === 1">拆分为行</el-dropdown-item>
                             <el-dropdown-item command="split-col" :disabled="col.options.colspan === 1">拆分为列</el-dropdown-item>
                             <el-divider class="widget-td-setting-divider"></el-divider>
-                            <el-dropdown-item command="remove-col" :disabled="col.options.colspan>1">删除当前列</el-dropdown-item>
-                            <el-dropdown-item command="remove-row" :disabled="row.columns.length !== element.options.sumColSpan ||col.options.rowspan>1">删除当前行</el-dropdown-item>
+                            <el-dropdown-item command="remove-col" :disabled="col.options.colspan > 1">删除当前列</el-dropdown-item>
+                            <el-dropdown-item command="remove-row" :disabled="row.columns.length !== element.options.sumColSpan || col.options.rowspan > 1">删除当前行</el-dropdown-item>
                           </el-dropdown-menu>
                         </el-dropdown>
                       </div>
@@ -193,18 +195,39 @@ export default {
     // 处理TD设置
     handleTdSettingCommand(command, table, row, rowIndex, col, colIndex) {
       switch (command) {
-        case 'left-col': this.handleColAdd(table, row, rowIndex, col, colIndex, 'left'); break;
-        case 'right-col': this.handleColAdd(table, row, rowIndex, col, colIndex, 'right'); break;
-        case 'top-row': this.handleRowAdd(table, row, rowIndex, 'top'); break;
-        case 'bottom-row': this.handleRowAdd(table, row, rowIndex, 'bottom'); break;
-        case 'merge-right': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'right'); break;
-        case 'merge-bottom': this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'bottom'); break;
-        case 'split-col': this.handleTdSplitToCol(table, row, rowIndex, col, colIndex); break;
-        case 'split-row': this.handleTdSplitToRow(table, row, rowIndex, col, colIndex); break;
-        case 'remove-col': this.handleTdRemove(table, row, rowIndex, col, colIndex, 'col'); break;
-        case 'remove-row': this.handleTdRemove(table, row, rowIndex, col, colIndex, 'row'); break;
+        case 'left-col':
+          this.handleColAdd(table, row, rowIndex, col, colIndex, 'left');
+          break;
+        case 'right-col':
+          this.handleColAdd(table, row, rowIndex, col, colIndex, 'right');
+          break;
+        case 'top-row':
+          this.handleRowAdd(table, row, rowIndex, 'top');
+          break;
+        case 'bottom-row':
+          this.handleRowAdd(table, row, rowIndex, 'bottom');
+          break;
+        case 'merge-right':
+          this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'right');
+          break;
+        case 'merge-bottom':
+          this.handleTdSpanMerge(table, row, rowIndex, col, colIndex, 'bottom');
+          break;
+        case 'split-col':
+          this.handleTdSplitToCol(table, row, rowIndex, col, colIndex);
+          break;
+        case 'split-row':
+          this.handleTdSplitToRow(table, row, rowIndex, col, colIndex);
+          break;
+        case 'remove-col':
+          this.handleTdRemove(table, row, rowIndex, col, colIndex, 'col');
+          break;
+        case 'remove-row':
+          this.handleTdRemove(table, row, rowIndex, col, colIndex, 'row');
+          break;
         // eslint-disable-next-line no-unused-expressions
-        default: () => this.$message('暂无此功能');
+        default:
+          this.$message('暂无此功能');
           break;
       }
     },
@@ -254,11 +277,11 @@ export default {
           // 判断该列的左侧是否有合并列
           const leftCols = row.columns.slice(0, colIndex);
           // 如果没有默认为当前列index
-          if (leftCols.every(_ => _.options.colspan === 1)) {
+          if (leftCols.every((_) => _.options.colspan === 1)) {
             relativeIndex = colIndex;
           } else {
             // 如果左侧存在合并列 通过各列colspan求和得到当前列的相对序号
-            relativeIndex = leftCols.map(_ => _.options.colspan).reduce((preValue, curValue) => preValue + curValue);
+            relativeIndex = leftCols.map((_) => _.options.colspan).reduce((preValue, curValue) => preValue + curValue);
           }
         }
         table.rows.forEach((_) => {
@@ -277,7 +300,7 @@ export default {
       }
 
       if (direction === 'row') {
-        if (row.columns.find(_ => _.options.rowspan > 1)) {
+        if (row.columns.find((_) => _.options.rowspan > 1)) {
           // 需要逐列拆分行
           for (let j = 0; j < row.columns.length; j += 1) {
             if (row.columns[j].options.rowspan > 1) {

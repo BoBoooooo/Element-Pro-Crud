@@ -40,9 +40,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({
   name: 'GenerateTabs',
@@ -52,37 +50,37 @@ import {
 })
 export default class GenerateTabs extends Vue {
   $refs!: {
-    tableForm: HTMLFormElement
-  }
+    tableForm: HTMLFormElement;
+  };
 
   @Prop()
-  models: any
+  models: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  widget!: any
+  widget!: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  remote: any
+  remote: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  formTableConfig: any
+  formTableConfig: any;
 
   @Prop({
     type: Object,
     default: null,
   })
-  readOnly: any
+  readOnly: any;
 
-  activeName = this.widget.items[0].name
+  activeName = this.widget.items[0].name;
 
   // 按钮点击
   btnOnClick(widget) {

@@ -8,26 +8,22 @@
   <el-container>
     <el-button type="primary" size="small" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
     <!-- 添加列 -->
-     <el-button type="primary" size="small" @click="addColumn('addColumn')">添加列</el-button>
-     <el-button type="primary" size="small" @click="addColumn('addColumnx5')">添加5列</el-button>
-     <el-button type="primary" size="small" @click="addColumn('addActionColumn')">添加操作列</el-button>
+    <el-button type="primary" size="small" @click="addColumn('addColumn')">添加列</el-button>
+    <el-button type="primary" size="small" @click="addColumn('addColumnx5')">添加5列</el-button>
+    <el-button type="primary" size="small" @click="addColumn('addActionColumn')">添加操作列</el-button>
     <!-- 自动设置 -->
     <el-dropdown @command="autoSet">
       <el-button size="small">快捷设置<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="generateTableByForm" v-if="formList.length > 0">
-          [请先设置表单]根据表单生成表格
-        </el-dropdown-item>
-        <el-dropdown-item command="autoSetSearchOption" v-if="formList.length > 0">
-          [请先设置表单]分析表单配置以设置表格高级搜索options
-        </el-dropdown-item>
+        <el-dropdown-item command="generateTableByForm" v-if="formList.length > 0"> [请先设置表单]根据表单生成表格 </el-dropdown-item>
+        <el-dropdown-item command="autoSetSearchOption" v-if="formList.length > 0"> [请先设置表单]分析表单配置以设置表格高级搜索options </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <el-select v-model="selectedForm" size="small" v-if="formList.length > 0" placeholder="请选择表单" filterable>
       <el-option v-for="(form, index) in formList" :key="index" :label="form.tableName" :value="form.tableName"></el-option>
     </el-select>
     <CusDialog :visible="jsonVisible" @on-close="jsonVisible = false" ref="jsonPreview" width="800px" form>
-      <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
+      <div id="jsoneditor" style="height: 400px; width: 100%">{{ jsonTemplate }}</div>
       <template slot="action">
         <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制JSON</el-button>
       </template>

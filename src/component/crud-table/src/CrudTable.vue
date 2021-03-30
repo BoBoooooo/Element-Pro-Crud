@@ -35,11 +35,11 @@
         </template>
         <!-- 列表头添加按钮 -->
         <template #_action_header v-if="view.btnAddOnColumnHeader">
-          <el-button icon="el-icon-plus" size="mini" type="primary" style="color:white" @click.stop="btnAdd"></el-button>
+          <el-button icon="el-icon-plus" size="mini" type="primary" style="color: white" @click.stop="btnAdd"></el-button>
         </template>
         <!-- 表格自定义列/表头插槽,动态传入 -->
-        <template :slot="slotName" slot-scope="scope"  v-for="(slotName) in Object.keys(slots).filter(key=> !['btnCustom','append','btnBarPrevBtn','dialogFooter'].includes(key))">
-          <slot :name="slotName"  :row="scope.row" :prop="scope.prop" :column="scope.column"></slot>
+        <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys(slots).filter((key) => !['btnCustom', 'append', 'btnBarPrevBtn', 'dialogFooter'].includes(key))">
+          <slot :name="slotName" :row="scope.row" :prop="scope.prop" :column="scope.column"></slot>
         </template>
         <template slot-scope="scope" slot="actionColumn">
           <!-- 操作列-添加按钮 -->
@@ -88,12 +88,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  columns, DataSource, DML, Params,
-} from '@/types/common';
-import VueCompositionApi, {
-  reactive, computed, ref, defineComponent, Ref, watch, PropType,
-} from '@vue/composition-api';
+import { columns, DataSource, DML, Params } from '@/types/common';
+import VueCompositionApi, { reactive, computed, ref, defineComponent, Ref, watch, PropType } from '@vue/composition-api';
 import GenerateFormDialog from './GenerateFormDialog.vue';
 import ProTable from '../../pro-table';
 import { CrudTableProps } from '../types/CrudTable.types';
@@ -119,7 +115,7 @@ export default defineComponent({
     },
     rowKey: {
       type: Function,
-      default: row => row.id,
+      default: (row) => row.id,
     },
     readOnly: {
       default: false,
@@ -255,12 +251,8 @@ export default defineComponent({
     },
   },
   emits: ['form-btn-on-click', 'form-change', 'selection-change'],
-  setup(props: CrudTableProps, {
-    listeners, attrs, emit, root, slots,
-  }) {
-    const {
-      $PROCRUD, $message, $confirm,
-    } = root;
+  setup(props: CrudTableProps, { listeners, attrs, emit, root, slots }) {
+    const { $PROCRUD, $message, $confirm } = root;
 
     // 当前行
     let currentRow = reactive<any>({});
@@ -308,7 +300,7 @@ export default defineComponent({
       }
       // 操作列是否隐藏
       if (!viewObj.actionColumn) {
-        tableConfig.columns = tableConfig.columns.filter(item => item.slotName !== 'actionColumn');
+        tableConfig.columns = tableConfig.columns.filter((item) => item.slotName !== 'actionColumn');
       }
 
       return viewObj;
@@ -326,7 +318,7 @@ export default defineComponent({
       tableConfig.name = propsColumns.name;
       tableConfig.position = propsColumns.position;
     } else {
-    // 初始化表格json
+      // 初始化表格json
       const promise = $PROCRUD.getTableDetail(props.tableDesignerName ? props.tableDesignerName : props.tableName);
       // 加载表格结构
       promise.then((res) => {
@@ -338,7 +330,7 @@ export default defineComponent({
         tableConfig.position = position;
         // 如果显示指明了操作列列宽
         if (props.actionColumnWidth) {
-          const actionColumn = tableConfig.columns.find(_ => _.slotName === 'actionColumn');
+          const actionColumn = tableConfig.columns.find((_) => _.slotName === 'actionColumn');
           if (actionColumn) {
             actionColumn.width = props.actionColumnWidth;
             actionColumn.minWidth = props.actionColumnWidth;
@@ -346,7 +338,6 @@ export default defineComponent({
         }
       });
     }
-
 
     // 懒加载
     const treeload = (tree, treeNode?: any, resolve?: any) => {
@@ -383,8 +374,8 @@ export default defineComponent({
       const requestObject = props.promiseForSelect
         ? props.promiseForSelect(axiosParams)
         : props.lazy
-          ? $PROCRUD.crud(DML.TREE_LAZY, props.tableName, axiosParams)
-          : $PROCRUD.crud(DML.SELECT, props.tableName, axiosParams);
+        ? $PROCRUD.crud(DML.TREE_LAZY, props.tableName, axiosParams)
+        : $PROCRUD.crud(DML.SELECT, props.tableName, axiosParams);
 
       const response = await requestObject;
       let result = response;
@@ -459,13 +450,13 @@ export default defineComponent({
           const promiseForDetail = props.promiseForDetail
             ? props.promiseForDetail(row.id)
             : $PROCRUD.crud(
-              DML.DETAIL,
-              props.tableName,
-              {},
-              {
-                id: row.id,
-              },
-            );
+                DML.DETAIL,
+                props.tableName,
+                {},
+                {
+                  id: row.id,
+                },
+              );
           // 请求后台detail接口获取表单数据
           promiseForDetail.then((res) => {
             dialogRef.value.showDialog({ id: row.id }, STATUS.UPDATE, res.data);
@@ -482,13 +473,13 @@ export default defineComponent({
           const promiseForDetail = props.promiseForDetail
             ? props.promiseForDetail(row.id)
             : $PROCRUD.crud(
-              DML.DETAIL,
-              props.tableName,
-              {},
-              {
-                id: row.id,
-              },
-            );
+                DML.DETAIL,
+                props.tableName,
+                {},
+                {
+                  id: row.id,
+                },
+              );
           // 请求后台detail接口获取表单数据
           promiseForDetail.then((res) => {
             dialogRef.value.showDialog({ id: row.id }, STATUS.DETAIL, res.data);
@@ -512,12 +503,12 @@ export default defineComponent({
           })
             .then(() => {
               const promiseForDels = props.promiseForDels
-                ? props.promiseForDels(selectedRows.value.map(item => item.id))
+                ? props.promiseForDels(selectedRows.value.map((item) => item.id))
                 : $PROCRUD.crud(
-                  DML.DELETES,
-                  props.tableName,
-                  selectedRows.value.map(item => item.id),
-                );
+                    DML.DELETES,
+                    props.tableName,
+                    selectedRows.value.map((item) => item.id),
+                  );
               promiseForDels.then(() => {
                 tableReload();
                 $message.success('批量删除成功');

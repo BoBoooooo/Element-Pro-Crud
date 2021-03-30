@@ -9,7 +9,9 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["plugin:vue/essential", "@vue/airbnb", "@vue/typescript"],
+  extends: ["plugin:vue/essential", "@vue/airbnb", "@vue/typescript",
+    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+],
   // 修改airbnb部分变态规则
   rules: {
     "max-len": ["error", { code: 200 }],

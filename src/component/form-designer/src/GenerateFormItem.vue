@@ -8,21 +8,23 @@
 感谢大佬!
 -->
 <template>
-  <el-form-item :rules="widget.rules || []"
-  :prop="formElement.includes(widget.type) ? widget.model : undefined"
-  :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
-  :class="widget.options.className">
+  <el-form-item
+    :rules="widget.rules || []"
+    :prop="formElement.includes(widget.type) ? widget.model : undefined"
+    :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
+    :class="widget.options.className"
+  >
     <template #label>
       <template v-if="widget.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
         <el-popover placement="top-start" title="输入提示" v-if="widget.options.tips" width="200" trigger="hover">
           <i class="el-icon el-icon-question" slot="reference"></i>
-          <div style="color:#8492a6" v-html="widget.options.tips"></div>
+          <div style="color: #8492a6" v-html="widget.options.tips"></div>
         </el-popover>
       </template>
     </template>
     <template v-if="widget.type === 'html'">
-      <div style="margin-left:10px" v-html="widget.options.html"></div>
+      <div style="margin-left: 10px" v-html="widget.options.html"></div>
     </template>
     <template v-if="widget.type === 'divider'">
       <el-divider :content-position="widget.options.align">{{ widget.name }}</el-divider>
@@ -68,11 +70,7 @@
     </template>
     <template v-if="widget.type == 'text'">
       <h3
-        style="
-          padding: 10px;
-          font-family: KaiTi, STKaiti;
-          margin: 0;
-        "
+        style="padding: 10px; font-family: KaiTi, STKaiti; margin: 0"
         :style="{
           'text-align': widget.options.align,
           'font-size': widget.options.fontSize,
@@ -231,7 +229,7 @@
         :separator="widget.options.separator == null ? '/' : widget.options.separator"
         :options="optionsList"
         filterable
-        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple,expandTrigger: 'hover' }"
+        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple, expandTrigger: 'hover' }"
       >
       </el-cascader>
     </template>
@@ -269,8 +267,8 @@
         :append-to-body="widget.options.appendToBody"
         :loadOptions="
           ({ action, parentNode, callback }) => {
-            if (parentNode.children) parentNode.children = []
-            callback()
+            if (parentNode.children) parentNode.children = [];
+            callback();
           }
         "
         valueConsistsOf="ALL"
@@ -301,20 +299,13 @@
       ></FileUpload>
     </template>
     <template v-if="widget.type === 'avatar'">
-     <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="models[widget.model]"></AvatarUpload>
+      <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="models[widget.model]"></AvatarUpload>
     </template>
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget" :models="models"></GenerateSubForm>
     </template>
     <template v-if="widget.type === 'tabs'">
-      <GenerateTabs
-        @selection-change="getTableSelection"
-        :models="models"
-        @chartOnClick="chartOnClick"
-        @btnOnClick="btnOnClick"
-        :formTableConfig="formTableConfig"
-        :widget="widget"
-      ></GenerateTabs>
+      <GenerateTabs @selection-change="getTableSelection" :models="models" @chartOnClick="chartOnClick" @btnOnClick="btnOnClick" :formTableConfig="formTableConfig" :widget="widget"></GenerateTabs>
     </template>
     <!-- 饼图组件 -->
     <template v-if="widget.type === 'chart-pie'">
@@ -341,9 +332,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { DML } from '@/types/common';
 import CrudTable from '@/component/crud-table/src/CrudTable.vue';
 import { isChinese } from '@/utils/utils';
@@ -374,47 +363,47 @@ import { formElement } from './componentsConfig';
 })
 export default class GenerateFormItem extends Vue {
   $refs!: {
-    table: HTMLFormElement
-    cascader: HTMLFormElement
-  }
+    table: HTMLFormElement;
+    cascader: HTMLFormElement;
+  };
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  widget: any
+  widget: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  models: any
+  models: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  remote: any
+  remote: any;
 
   @Prop({
     type: Object,
     default: () => ({}),
   })
-  formTableConfig: any
+  formTableConfig: any;
 
   @Prop({
     type: Boolean,
     default: false,
   })
-  readOnly!: boolean
+  readOnly!: boolean;
 
-  copyOption: any = [] // 备份一份初始选项
+  copyOption: any = []; // 备份一份初始选项
 
-  visible = false
+  visible = false;
 
-  normalizer: any
+  normalizer: any;
 
-  formElement = formElement
+  formElement = formElement;
 
   initData() {
     const { type, model } = this.widget;
@@ -472,7 +461,7 @@ export default class GenerateFormItem extends Vue {
             // 请求完成后再渲染组件
             this.visible = true;
           } else {
-            this.widget.options.remoteOptions = res.data.list.map(item => ({
+            this.widget.options.remoteOptions = res.data.list.map((item) => ({
               value: item.codeValue,
               label: item.codeName,
             }));
@@ -482,8 +471,8 @@ export default class GenerateFormItem extends Vue {
         });
     } else if (
       // 请求自定义方法
-      this.widget.options.remote === 'custom'
-      && this.remote[this.widget.options.remoteFunc]
+      this.widget.options.remote === 'custom' &&
+      this.remote[this.widget.options.remoteFunc]
     ) {
       // 请求自定义接口
       this.remote[this.widget.options.remoteFunc]((data) => {
@@ -494,7 +483,7 @@ export default class GenerateFormItem extends Vue {
           // 请求完成后再渲染组件
           this.visible = true;
         } else {
-          this.widget.options.remoteOptions = data.map(item => ({
+          this.widget.options.remoteOptions = data.map((item) => ({
             value: item[this.widget.options.props.value],
             label: item[this.widget.options.props.label],
             rightLabel: item[this.widget.options.props.rightLabel] || '',
@@ -670,14 +659,12 @@ export default class GenerateFormItem extends Vue {
           that.$refs.cascader.dropDownVisible = false;
         };
       });
-      document
-        .querySelectorAll('.el-cascader-panel .el-radio')
-        .forEach((el) => {
-          // eslint-disable-next-line func-names
-          (el as any).onclick = function () {
-            that.$refs.cascader.dropDownVisible = false;
-          };
-        });
+      document.querySelectorAll('.el-cascader-panel .el-radio').forEach((el) => {
+        // eslint-disable-next-line func-names
+        (el as any).onclick = function () {
+          that.$refs.cascader.dropDownVisible = false;
+        };
+      });
     }, 100);
   }
 

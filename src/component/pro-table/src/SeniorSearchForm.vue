@@ -37,9 +37,7 @@
 import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 import { diGuiTree } from '@/utils/utils';
 
-import {
-  Component, Vue, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({
   name: 'SeniorSearchForm',
@@ -98,9 +96,7 @@ export default class SeniorSearchForm extends Vue {
     const columns = diGuiTree()(this.columns);
 
     for (const column of columns) {
-      const {
-        type, label, prop, option,
-      } = column;
+      const { type, label, prop, option } = column;
       const input: any = {
         type: 'input',
         name: label,
@@ -171,7 +167,7 @@ export default class SeniorSearchForm extends Vue {
 .card >>> .el-card__header {
   background: #b7ddff !important;
 }
-.card{
-  border: none!important;
+.card {
+  border: none !important;
 }
 </style>

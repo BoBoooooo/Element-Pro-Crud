@@ -32,7 +32,6 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prettier": "prettier --write 'src/**/*.{ts,js,scss}'",
     "report": "cross-env IS_REPORT=true vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "lib": "vue-cli-service build --target lib --name ProCrud --dest lib src/index.ts",
     "deploy": "npm run lib && npm publish",
@@ -51,7 +50,6 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "axios": "^0.19.2",
     "babel-eslint": "^10.0.2",
-    "babel-plugin-component": "^1.1.1",
     "chai": "^4.2.0",
     "clipboard": "^2.0.1",
     "conventional-changelog-cli": "^2.1.0",
@@ -61,7 +59,9 @@
     "element-ui": "^2.13.2",
     "eslint": "^6.0.1",
     "eslint-plugin-import": "^2.18.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^5.2.3",
+    "eslint-plugin-prettier": "^3.3.1",
     "html-webpack-include-assets-plugin": "^2.0.0",
     "husky": "^3.0.9",
     "inquirer": "^6.5.2",
@@ -97,7 +97,6 @@
   "lint-staged": {
     "src/**/*.{js,vue,ts}": [
       "npm run lint",
-      "eslint --fix",
       "git add"
     ]
   },
