@@ -13,10 +13,10 @@ export interface InstallationOptions {}
  * Please do not invoke this method directly.
  * Call `Vue.use(ElementProCrud)` to install.
  */
-export function install (vue: typeof Vue, options: InstallationOptions): void
+export function install(vue: typeof Vue, options: InstallationOptions): void;
 
 /** ElementUI component common definition */
-export type Component = BaseComponent
+export type Component = BaseComponent;
 
 /** FormDesigner Component */
 export class FormDesigner extends ElFormDesigner {}

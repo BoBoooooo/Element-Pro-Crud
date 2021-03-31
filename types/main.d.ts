@@ -17,7 +17,7 @@ interface optionsType {
   getFormKey: Function;
   getFormDetail: Function;
   getTableDetail: Function;
-  crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise
+  crud: (dml: DML, tableName: string, data?: object, params?: object) => AxiosPromise;
 }
 /** ElementProCrud component common definition */
 // eslint-disable-next-line import/prefer-default-export

@@ -1,7 +1,5 @@
-import { BaseComponent } from './main'
-
+import { BaseComponent } from './main';
 
 /** GenerateForm Component */
-export declare class ElGenerateForm extends BaseComponent {
- 
-}
+// eslint-disable-next-line import/prefer-default-export
+export declare class ElGenerateForm extends BaseComponent {}
