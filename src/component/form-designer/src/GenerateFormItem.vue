@@ -229,7 +229,7 @@
         :separator="widget.options.separator == null ? '/' : widget.options.separator"
         :options="optionsList"
         filterable
-        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple, expandTrigger: 'hover' }"
+        :props="{ checkStrictly: widget.options.checkStrictly, multiple: widget.options.multiple, expandTrigger: 'hover', value: widget.options.props.value, label: widget.options.props.label }"
       >
       </el-cascader>
     </template>
