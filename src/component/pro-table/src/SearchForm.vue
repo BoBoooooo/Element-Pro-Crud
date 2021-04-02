@@ -6,39 +6,18 @@
  -->
 
 <template>
-  <div
-    class="search-form-container"
-    :style="{
-      float: searchMode === 'cover' ? 'none' : 'left',
-    }"
-  >
-    <template v-if="searchMode === 'popover'">
-      <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="mini" @change="changeEvent" v-model="searchContent" class="input"> </el-input>
-      <el-button size="mini" type="primary" icon="el-icon-search" @click="btnSearchOnClick()" class="tool-btn">查询</el-button>
-      <!-- 高级查询表单 -->
-      <SeniorSearchForm v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchForm>
-      <el-button size="mini" icon="el-icon-refresh" @click="clearEvent()" class="tool-btn">清空</el-button>
-    </template>
-    <template v-else>
-      <!-- 高级查询表单 -->
-      <SeniorSearchFormCover v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchFormCover>
-    </template>
-
-    <div
-      class="tips"
-      :style="{
-        float: searchMode === 'cover' ? 'right' : 'none',
-      }"
-    >
+  <div class="search-form-container">
+    <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="small" @change="changeEvent" v-model="searchContent" class="input"> </el-input>
+    <el-button size="small" type="primary" icon="el-icon-search" @click="btnSearchOnClick()" class="tool-btn">查询</el-button>
+    <!-- 高级查询表单 -->
+    <SeniorSearchForm v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchForm>
+    <el-button size="small" icon="el-icon-refresh" @click="clearEvent()" class="tool-btn">清空</el-button>
+    <div class="tips">
       <!-- 提示当前查询内容 -->
-      <template v-if="isArray">
-        <span v-if="paramsTips && paramsTips.length > 0">当前查询: </span>
+      <template v-if="paramsTips.length > 0">
         <el-tag v-for="(item, index) in paramsTips" size="small" effect="plain" :key="index" closable @close="handleClose(item)">
           {{ item.label + ':' + item.value }}
         </el-tag>
-      </template>
-      <template v-else>
-        <span v-if="paramsTips">当前查询: {{ paramsTips }}</span>
       </template>
     </div>
   </div>
@@ -47,150 +26,147 @@
 <script lang="ts">
 import { diGuiTree } from '@/utils/utils';
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { defineComponent, PropType, ref, reactive, computed } from '@vue/composition-api';
+import { columnConfig, searchParamsEntity } from '@/types/common';
 import SeniorSearchForm from './SeniorSearchForm.vue';
-import SeniorSearchFormCover from './SeniorSearchFormCover.vue';
 
-@Component({
+export default defineComponent({
   name: 'SearchForm',
   components: {
     SeniorSearchForm,
-    SeniorSearchFormCover,
   },
-})
-export default class SearchForm extends Vue {
-  // 远程数据方法
-  @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
+  emits: ['update:searchFormCondition', 'click'],
+  props: {
+    columns: {
+      type: Array as PropType<columnConfig[]>,
+      default: () => [],
+      required: true,
+    },
+    remoteFuncs: {
+      default: () => ({}),
+      type: Object,
+    },
+    showSeniorSearchFormButton: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props, { emit }) {
+    // 查询输入框内容
+    const searchContent = ref('');
 
-  // 是否显示高级查询按钮
-  @Prop({ default: true, type: Boolean }) showSeniorSearchFormButton!: boolean;
+    // 高级查询表单是否显示,手动控制
+    const triggleVisible = ref(false);
 
-  // 表格设计json
-  @Prop({
-    type: Array,
-    required: true,
-  })
-  columns: any;
+    // 查询tips
+    const paramsTips = ref<searchParamsEntity[]>([]);
 
-  // 查询模式
-  @Prop({
-    type: String,
-    default: 'popover',
-  })
-  searchMode!: string;
+    // 递归查询可检索字段
+    const seachableColumns = computed(() => {
+      return diGuiTree()(props.columns);
+    });
 
-  // 查询输入框内容
-  searchContent = '';
+    // 标签关闭事件
+    const handleClose = (tag) => {
+      paramsTips.value = (paramsTips.value as searchParamsEntity[]).filter((item) => item.field !== tag.field);
+      emit('update:searchFormCondition', paramsTips.value);
+      emit('click');
+    };
 
-  // 高级查询表单是否显示,手动控制
-  triggleVisible = false;
+    const clearEvent = () => {
+      searchContent.value = '';
+      paramsTips.value = [];
+      emit('update:searchFormCondition', []);
+      emit('clear');
+    };
 
-  // 查询tips
-  paramsTips: any = null;
+    // 查询按钮点击
+    const btnSearchOnClick = () => {
+      getParams();
+      emit('click');
+    };
 
-  get isArray() {
-    return Array.isArray(this.paramsTips);
-  }
+    /**
+     * 获取查询条件
+     */
+    const getParams = () => {
+      let params: any = [];
+      // 拿到所有字段
+      const props = seachableColumns.value.map((item) => item.prop);
+      const str = props.toString();
+      if (searchContent.value) {
+        params = [
+          {
+            field: str,
+            operator: 'orlike',
+            value: searchContent.value,
+          },
+        ];
+      }
+      emit('update:searchFormCondition', params);
+    };
 
-  get seachableColumns() {
-    return diGuiTree()(this.columns);
-  }
-
-  // 标签关闭事件
-  handleClose(tag) {
-    this.paramsTips = this.paramsTips.filter((item) => item.field !== tag.field);
-    this.$emit(
-      'update:searchFormCondition',
-      this.paramsTips.map((item) => ({
+    // 输入框change事件
+    const changeEvent = (val: string) => {
+      getParams();
+      emit('click');
+    };
+    // 获取高级查询组件中的查询条件
+    const getFetchParamsSearch = (data) => {
+      paramsTips.value = [];
+      triggleVisible.value = false;
+      const params: searchParamsEntity[] = [];
+      Object.keys(data).forEach((key) => {
+        if (key && data[key]) {
+          if (Array.isArray(data[key])) {
+            const [startDate, endDate] = data[key];
+            if (startDate) {
+              params.push({
+                field: key,
+                operator: 'egt',
+                value: startDate,
+              });
+            }
+            if (endDate) {
+              params.push({
+                field: key,
+                operator: 'elt',
+                value: endDate,
+              });
+            }
+          } else {
+            params.push({
+              field: key,
+              operator: 'like',
+              value: data[key],
+            });
+          }
+        }
+      });
+      paramsTips.value = params.map((item) => ({
         field: item.field,
         value: item.value,
         operator: item.operator,
-      })),
-    );
-    this.$emit('click');
-  }
+        label: seachableColumns.value.find((s) => s.prop === item.field)!.label,
+      }));
+      emit('update:searchFormCondition', params);
+      emit('click');
+    };
 
-  clearEvent() {
-    this.searchContent = '';
-    this.paramsTips = null;
-    this.$emit('update:searchFormCondition', []);
-    this.$emit('clear');
-  }
-
-  // 查询按钮点击
-  btnSearchOnClick() {
-    this.getParams();
-    this.$emit('click');
-  }
-
-  /**
-   * 获取查询条件
-   */
-  getParams() {
-    let params: any = [];
-    // 拿到所有字段
-    const props = this.seachableColumns.map((item) => item.prop);
-    const str = props.toString();
-    if (this.searchContent) {
-      params = [
-        {
-          field: str,
-          operator: 'orlike',
-          value: this.searchContent,
-        },
-      ];
-    }
-    this.$emit('update:searchFormCondition', params);
-  }
-
-  // 输入框change事件
-  changeEvent(val) {
-    this.getParams();
-    this.paramsTips = val;
-    this.$emit('click');
-  }
-
-  // 获取高级查询组件中的查询条件
-  getFetchParamsSearch(data) {
-    this.paramsTips = [];
-    this.triggleVisible = false;
-    const params: any = [];
-    Object.keys(data).forEach((key) => {
-      if (key && data[key]) {
-        if (Array.isArray(data[key])) {
-          const [startDate, endDate] = data[key];
-          if (startDate) {
-            params.push({
-              field: key,
-              operator: 'egt',
-              value: startDate,
-            });
-          }
-          if (endDate) {
-            params.push({
-              field: key,
-              operator: 'elt',
-              value: endDate,
-            });
-          }
-        } else {
-          params.push({
-            field: key,
-            operator: 'like',
-            value: data[key],
-          });
-        }
-      }
-    });
-    this.paramsTips = params.map((item) => ({
-      field: item.field,
-      value: item.value,
-      operator: item.operator,
-      label: this.seachableColumns.find((s) => s.prop === item.field).label,
-    }));
-    this.$emit('update:searchFormCondition', params);
-    this.$emit('click');
-  }
-}
+    return {
+      searchContent,
+      triggleVisible,
+      paramsTips,
+      seachableColumns,
+      handleClose,
+      clearEvent,
+      btnSearchOnClick,
+      getParams,
+      changeEvent,
+      getFetchParamsSearch,
+    };
+  },
+});
 </script>
 <style scoped>
 .input-with-select >>> .el-input-group__prepend {
@@ -206,13 +182,10 @@ export default class SearchForm extends Vue {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-form-container {
-  float: left;
+  flex: 1;
   /deep/.tool-btn {
     display: inline;
     margin-left: 10px;
-  }
-  /deep/.el-input__suffix {
-    top: -5px;
   }
   .input {
     display: inline-block;
@@ -223,8 +196,6 @@ export default class SearchForm extends Vue {
     margin-left: 10px;
     /deep/.el-tag {
       margin-right: 5px;
-      height: 28px !important;
-      line-height: 28px !important;
     }
   }
 }

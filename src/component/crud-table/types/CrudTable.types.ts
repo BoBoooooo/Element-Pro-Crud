@@ -7,7 +7,6 @@
 import { columns, DataSource, Params, fn, AnyObject } from '@/types/common';
 
 interface CrudTableProps {
-  searchMode: 'popover' | 'cover';
   visibleList: any;
   tableTitle: string;
   showPagination: boolean;

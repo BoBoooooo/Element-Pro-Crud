@@ -28,14 +28,14 @@
         </template>
         <template #btnBarPrevBtn>
           <!-- 批量删除按钮 -->
-          <el-button v-if="view.btnDel" @click="btnDeletesOnClick" type="danger" size="mini" icon="el-icon-delete">{{ text.multiDel }}</el-button>
+          <el-button v-if="view.btnDel" @click="btnDeletesOnClick" type="danger" size="small" icon="el-icon-delete">{{ text.multiDel }}</el-button>
           <!-- 添加按钮 -->
-          <el-button v-if="view.btnAdd" type="primary" icon="el-icon-plus" size="mini" @click.stop="btnAdd()">{{ text.add }}</el-button>
+          <el-button v-if="view.btnAdd" type="primary" icon="el-icon-plus" size="small" @click.stop="btnAdd()">{{ text.add }}</el-button>
           <slot name="btnBarPrevBtn" />
         </template>
         <!-- 列表头添加按钮 -->
         <template #_action_header v-if="view.btnAddOnColumnHeader">
-          <el-button icon="el-icon-plus" size="mini" type="primary" style="color: white" @click.stop="btnAdd"></el-button>
+          <el-button icon="el-icon-plus" size="small" type="primary" style="color: white" @click.stop="btnAdd"></el-button>
         </template>
         <!-- 表格自定义列/表头插槽,动态传入 -->
         <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys(slots).filter((key) => !['btnCustom', 'append', 'btnBarPrevBtn', 'dialogFooter'].includes(key))">
@@ -311,7 +311,6 @@ export default defineComponent({
       proTableRef.value.tableReload();
     };
     const { columns: propsColumns } = props;
-    console.log(propsColumns);
     // 如果外侧传入了columns则不发起请求
     if (propsColumns) {
       tableConfig.columns = propsColumns.columns;

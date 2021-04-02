@@ -83,17 +83,9 @@
                     <el-switch v-model="visibleList.seniorSearchBtn" inactive-text="高级查询"></el-switch>
                   </el-form>
                 </div>
-                <el-divider></el-divider>
-                <div class="form-container">
-                  <h4>查询表单</h4>
-                  <el-form :inline="true" size="mini" :model="visibleList">
-                    <el-switch v-model="searchMode" inactive-text="平铺高级查询"></el-switch>
-                  </el-form>
-                </div>
               </el-col>
               <el-col :span="20">
                 <PersonProTable
-                  :searchMode="searchMode ? 'cover' : 'popover'"
                   tableTitle="员工管理(多级表头示例)"
                   :size="size"
                   :columns="columns"
@@ -157,13 +149,6 @@
                 </div>
                 <el-divider></el-divider>
                 <div class="form-container">
-                  <h4>查询表单</h4>
-                  <el-form :inline="true" size="mini" :model="visibleList">
-                    <el-switch v-model="searchMode" inactive-text="平铺高级查询"></el-switch>
-                  </el-form>
-                </div>
-                <el-divider></el-divider>
-                <div class="form-container">
                   <h4>操作按钮名称</h4>
                   <el-form :inline="true" size="mini" :model="textMap">
                     <el-form-item label="新增按钮">
@@ -186,7 +171,6 @@
               </el-col>
               <el-col :span="20">
                 <PersonCrudTable
-                  :searchMode="searchMode ? 'cover' : 'popover'"
                   tableTitle="人员管理"
                   tableName="person"
                   :size="size"
@@ -292,7 +276,6 @@ export default {
       },
       showPagination: true,
       isMultiple: true,
-      searchMode: false,
       showHeader: true,
       showColumnIndex: false,
       size: '',

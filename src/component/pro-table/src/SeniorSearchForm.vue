@@ -22,13 +22,13 @@
       <div>
         <GenerateForm ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
         <div style="float: right">
-          <el-button size="mini" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
-          <el-button size="mini" style="margin-right: 10px" icon="el-icon-close" @click="resetForm">关闭</el-button>
+          <el-button size="small" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
+          <el-button size="small" style="margin-right: 10px" icon="el-icon-close" @click="resetForm">关闭</el-button>
         </div>
       </div>
     </el-card>
     <el-tooltip class="item" slot="reference" effect="dark" content="高级查询" placement="top">
-      <el-button type="primary" size="mini" class="tool-btn" icon="el-icon-s-help" @click="visible = true">高级查询</el-button>
+      <el-button type="primary" size="small" class="tool-btn" icon="el-icon-s-help" @click="visible = true">高级查询</el-button>
     </el-tooltip>
   </el-popover>
 </template>
@@ -96,7 +96,7 @@ export default class SeniorSearchForm extends Vue {
     const columns = diGuiTree()(this.columns);
 
     for (const column of columns) {
-      const { type, label, prop, option } = column;
+      const { label, prop, option } = column;
       const input: any = {
         type: 'input',
         name: label,

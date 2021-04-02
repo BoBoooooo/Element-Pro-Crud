@@ -6,39 +6,31 @@
 -->
 <template>
   <div class="ProTable">
-    <!-- 表格左侧标题 -->
-    <div
-      :class="{
-        'table-title-container': searchMode === 'popover',
-        'table-title-container-absolute': searchMode === 'cover',
-      }"
-      v-if="view.tableTitle && tableTitle"
-    >
-      <!-- 表格标题 -->
-      <h4 class="title">{{ tableTitle }}</h4>
+    <div class="pro-table-header">
+      <!-- 表格左侧标题 -->
+      <div class="table-title-container" v-if="view.tableTitle && tableTitle">
+        <!-- 表格标题 -->
+        <h4 class="title">{{ tableTitle }}</h4>
+      </div>
+      <!-- 查询区域 -->
+      <SearchForm
+        ref="searchForm"
+        v-if="view.searchForm"
+        :showSeniorSearchFormButton="view.seniorSearchBtn"
+        :columns="tableConfig.columns || []"
+        @click="fetchHandler(false, true)"
+        :searchFormCondition.sync="searchFormCondition"
+        :remoteFuncs="remoteFuncs"
+        :isLoading="loading"
+        @clear="fetchHandler(true)"
+      >
+      </SearchForm>
+      <!-- table右上角按钮 -->
+      <div class="btn-bar">
+        <slot name="btnBarPrevBtn" />
+      </div>
     </div>
-    <!-- table右上角按钮 -->
-    <div
-      class="btn-bar"
-      :class="{
-        'btn-bar-absolute': searchMode === 'cover',
-      }"
-    >
-      <slot name="btnBarPrevBtn" />
-    </div>
-    <SearchForm
-      ref="searchForm"
-      v-if="view.searchForm"
-      :searchMode="searchMode"
-      :showSeniorSearchFormButton="view.seniorSearchBtn"
-      :columns="tableConfig.columns || []"
-      @click="fetchHandler(false, true)"
-      :searchFormCondition.sync="searchFormCondition"
-      :remoteFuncs="remoteFuncs"
-      :isLoading="loading"
-      @clear="fetchHandler(true)"
-    >
-    </SearchForm>
+
     <!-- 表格主体 -->
     <el-table v-loading.lock="loading" v-bind="$attrs" v-on="tableListeners" :height="tableHeight" :max-height="maxHeight" ref="tableRefs" :row-key="rowKey" :data="tableData">
       <template slot="append">
@@ -105,11 +97,6 @@ export default defineComponent({
     Column,
   },
   props: {
-    // 查询模式
-    searchMode: {
-      type: String,
-      default: 'popover',
-    },
     visibleList: {
       default: () => ({}),
       type: Object,
@@ -145,7 +132,7 @@ export default defineComponent({
     // 高度minus
     maxHeightMinus: {
       type: Number,
-      default: 270,
+      default: 300,
     },
     // el-table height
     height: {
@@ -399,7 +386,6 @@ export default defineComponent({
       fetchHandler(true);
       // 自适应分页组件按钮;
       window.addEventListener('resize', resizeHandler);
-      console.log(slots);
     });
 
     onBeforeUnmount(() => {
@@ -447,6 +433,12 @@ export default defineComponent({
   background: white;
   padding: 10px;
   position: relative;
+  .pro-table-header {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   /deep/ {
     .el-table__empty-text {
       line-height: 10px;
@@ -484,7 +476,7 @@ export default defineComponent({
       text-align: right;
     }
     .btn-bar {
-      float: right;
+      align-self: flex-end;
       width: auto;
       text-align: right;
       & > div,

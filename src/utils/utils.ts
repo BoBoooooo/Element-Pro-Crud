@@ -6,6 +6,8 @@
  */
 // 判断是否含有中文
 // eslint-disable-next-line import/prefer-default-export
+import { columnConfig } from '../types/common';
+
 export function isChinese(temp) {
   const re = /[^\u4e00-\u9fa5]/;
   if (re.test(temp)) return false;
@@ -56,7 +58,7 @@ export function debounce(method, params) {
  * @param columns columns json
  */
 export function diGuiTree() {
-  const result: any = [];
+  const result: columnConfig[] = [];
   // eslint-disable-next-line no-shadow
   return function getProp(columns) {
     for (const column of columns) {

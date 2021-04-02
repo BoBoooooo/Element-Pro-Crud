@@ -8,7 +8,7 @@
 <template>
   <CrudTable ref="table" tableName="person" tableTitle="员工管理" fullHeight orderCondition="timestamp desc" :visibleList="visibleList" v-bind="$attrs" v-on="$listeners">
     <template #btnBarPrevBtn>
-      <el-button size="mini" @click="() => $alert('btnBarPrevBtn插槽可自定义功能按钮')">自定义功能按钮</el-button>
+      <el-button size="small" @click="() => $alert('btnBarPrevBtn插槽可自定义功能按钮')">自定义功能按钮</el-button>
     </template>
     <template #columnFormatter="{ row, prop }">
       <el-tag v-if="prop === 'jobno'">{{ row.jobno }}</el-tag>
