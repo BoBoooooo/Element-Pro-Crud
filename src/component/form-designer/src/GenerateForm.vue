@@ -149,6 +149,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { formElement } from './componentsConfig';
 import GenerateFormItem from './GenerateFormItem.vue';
 
 @Component({
@@ -342,7 +343,7 @@ export default class GenerateForm extends Vue {
     this.$emit('table-selections', tableSelections);
   }
 
-  generateModel(genList) {
+  generateModel(genList, initValue = true) {
     // 遍历设计的结构
     for (let i = 0; i < genList.length; i += 1) {
       if (genList[i].type === 'grid') {
@@ -356,14 +357,14 @@ export default class GenerateForm extends Vue {
       } else if (genList[i].type === 'td') {
         this.generateModel(genList[i].list);
       } else if (genList[i].type === 'form') {
-        this.generateModel(genList[i].tableColumns);
+        this.generateModel(genList[i].tableColumns, false);
       } else {
         // 获取当前组件
         const row = genList[i];
         // 如果是自定义组件,model值为slotName,不在model中赋属性值
-        if (Object.keys(this.value).indexOf(row.model) >= 0 && row.type !== 'blank') {
+        if (Object.keys(this.value).indexOf(row.model) >= 0 && formElement.includes(row.type)) {
           this.initFormValue(row);
-        } else {
+        } else if (formElement.includes(row.type) && initValue) {
           this.setDefaultValue(row);
         }
         // 组件option跟字段映射

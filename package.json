@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.9.2-11",
+  "version": "0.9.2-12",
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "main": "lib/ProCrud.umd.min.js",
   "files": [
@@ -115,7 +115,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1",
+    "@vue/composition-api": "^1.0.0-rc.6",
     "sortablejs": "^1.13.0"
   }
 }

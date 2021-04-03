@@ -679,4 +679,4 @@ export const elementComponentConfig = {
 };
 
 // 表单类组件枚举
-export const formElement = ['input', 'textarea', 'number', 'radio', 'checkbox', 'date', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'cascader', 'treeselect', 'richtext'];
+export const formElement = ['input', 'textarea', 'number', 'radio', 'checkbox', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'cascader', 'treeselect', 'richtext'];

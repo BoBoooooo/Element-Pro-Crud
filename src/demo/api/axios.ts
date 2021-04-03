@@ -71,7 +71,6 @@ service.interceptors.response.use(
   (error) => {
     // http状态码200以外的情况
     // 请检查网络链接或联系管理员
-    const msg = '请检查网络链接或联系管理员。';
     ElMessageBox.alert(error.response.data.message, '服务器异常', {
       confirmButtonText: '重试',
       type: 'warning',

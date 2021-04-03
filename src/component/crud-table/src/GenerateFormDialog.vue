@@ -44,8 +44,8 @@
 <script lang="ts">
 import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
-import { Component, Vue, Emit, Watch, Prop } from 'vue-property-decorator';
-import { DML } from '@/types/common';
+import { DML, fn } from '@/types/common';
+import { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect } from '@vue/composition-api';
 
 const STATUS = {
   CREATE: 0,
@@ -53,241 +53,259 @@ const STATUS = {
   DETAIL: 2,
 };
 
-@Component({
+export default defineComponent({
+  name: 'GenerateFormDialog',
   components: {
     GenerateForm,
   },
-  name: 'GenerateFormDialog',
-})
-export default class GenerateFormDialog extends Vue {
-  // 异步更新表单数据
-  @Prop({ default: () => ({}), type: Object }) formValuesAsync!: any;
+  emits: ['cancel', 'change', 'afterSave', 'btnOnClick'],
+  props: {
+    readOnly: {
+      default: false,
+      type: Boolean,
+    },
+    dialogAppendToBody: {
+      default: true,
+      type: Boolean,
+    },
+    dialogWidth: {
+      default: '80%',
+      type: String,
+    },
+    dialogFormDesignerName: {
+      type: String,
+      default: null,
+    },
+    visibleList: {
+      default: () => ({}),
+      type: Object,
+    },
+    tableName: {
+      type: String,
+      default: '',
+    },
+    textMap: {
+      default: () => ({}),
+      type: Object,
+    },
+    promiseForSave: {
+      default: null,
+      type: Function as PropType<fn>,
+    },
+    remoteFuncs: {
+      default: () => ({}),
+      type: Object,
+    },
+    dialogCloseOnClickModal: {
+      default: true,
+      type: Boolean,
+    },
+    dialogFullscreen: {
+      default: false,
+      type: Boolean,
+    },
+    rules: {
+      default: () => [],
+      type: Array,
+    },
+    formValuesAsync: {
+      default: () => ({}),
+      type: Object,
+    },
+    formTableConfig: {
+      default: () => ({}),
+      type: Object,
+    },
+  },
+  setup(props, { root, emit }) {
+    const { $PROCRUD, $message } = root;
 
-  // 子表tableConfig 详情看GenerateFormItem中解释
-  @Prop({ default: () => ({}), type: Object }) formTableConfig!: any;
+    const generateDialogForm: Ref<any> = ref(null);
 
-  // 设置只读
-  @Prop({ default: false, type: Boolean }) readOnly!: boolean;
+    // 对话框内文本框们填写的值
+    const formValues = ref({});
 
-  // 对话框内加载FormDesigner的表名
-  @Prop({
-    type: String,
-    default: null,
-  })
-  dialogFormDesignerName!: string;
+    // 对话框设计结构json
+    const formDesign = ref({});
 
-  // 内部元素显示控制
-  @Prop({ default: () => ({}), type: Object }) visibleList!: any;
+    // 对话框是否显示
+    const visible = ref(false);
 
-  // 按钮名字
-  @Prop({ default: () => ({}), type: Object }) textMap!: any;
+    // 保存按钮Loading状态
+    const btnSaveIsLoading = ref(false);
 
-  // 对话框宽度
-  @Prop({
-    type: String,
-    default: '80%',
-  })
-  dialogWidth!: string;
+    // 当前整个表单的entity
+    const entity = ref({});
 
-  // 表名
-  @Prop({
-    type: String,
-    default: '',
-  })
-  tableName!: string;
+    // 表单状态
+    const dialogStatus = ref(0);
 
-  // 表格参数
-  @Prop([Object, Array]) tableParams!: any;
+    // 表格参数
+    const dialogParams = ref({});
 
-  // 代理保存方法
-  @Prop({ default: null, type: Function }) promiseForSave!: any;
-
-  // 远程数据方法
-  @Prop({ default: () => ({}), type: Object }) remoteFuncs!: any;
-
-  // 弹出表单appendToBody
-  @Prop({ default: true, type: Boolean }) dialogAppendToBody!: boolean;
-
-  // 点击阴影弹框是否可以关闭
-  @Prop({ default: true, type: Boolean }) dialogCloseOnClickModal!: boolean;
-
-  // 表单是否全屏
-  @Prop({ default: false, type: Boolean }) dialogFullscreen!: boolean;
-
-  // 组件联动规则
-  @Prop({
-    type: Array,
-    default: () => [],
-  })
-  rules!: any[];
-
-  $refs!: {
-    generateDialogForm: HTMLFormElement;
-  };
-
-  // 对话框内文本框们填写的值
-  formValues: any = {};
-
-  // 对话框设计结构json
-  formDesign: any = {};
-
-  // 对话框是否显示
-  visible = false;
-
-  // 保存按钮Loading状态
-  btnSaveIsLoading = false;
-
-  // 当前整个表单的entity
-  entity = {};
-
-  // 表单状态
-  dialogStatus = 0;
-
-  // 表格参数
-  dialogParams: any = {};
-
-  // 对话框标题
-  get dialogTitle() {
-    let title = '';
-    switch (this.dialogStatus) {
-      case STATUS.CREATE:
-        title = this.textMap.add;
-        break;
-      case STATUS.UPDATE:
-        title = this.textMap.edit;
-        break;
-      case STATUS.DETAIL:
-        title = this.textMap.detail;
-        break;
-      default:
-        title = '';
-    }
-    return title;
-  }
-
-  get isReadOnly() {
-    return this.dialogStatus === STATUS.DETAIL || this.readOnly;
-  }
-
-  // 内部元素显示控制
-  get view() {
-    return {
-      ...this.visibleList,
-    };
-  }
-
-  /**
-   * 显示对话框，父元素调用
-   *
-   * @param {Object} param 对话框保存时的参数
-   * @param {Number} status 对话框状态[添加:0,编辑:1]，必须是STATUS枚举
-   * @param {Object} formValues 编辑时传入所有字段的默认值
-   */
-  showDialog(param = {}, status = STATUS.CREATE, formValues = {}) {
-    // 保存参数用于save方法
-    this.dialogParams = param;
-    this.dialogStatus = status;
-    // 请求对话框内的动态表单json
-    this.$PROCRUD.getFormDetail(this.dialogFormDesignerName ? this.dialogFormDesignerName : this.tableName).then((res) => {
-      this.formDesign = JSON.parse(res.data.formJson);
-      if (this.dialogStatus === STATUS.UPDATE) {
-        // 填写编辑框
-        this.formValues = { ...formValues };
-      } else {
-        // add 默认生成id
-        this.formValues = {
-          id: guid(),
-          ...formValues,
-        };
+    // 对话框标题
+    const dialogTitle = computed(() => {
+      let title = '';
+      switch (dialogStatus.value) {
+        case STATUS.CREATE:
+          title = props.textMap.add;
+          break;
+        case STATUS.UPDATE:
+          title = props.textMap.edit;
+          break;
+        case STATUS.DETAIL:
+          title = props.textMap.detail;
+          break;
+        default:
+          title = '';
       }
-      this.visible = true;
+      return title;
     });
-  }
 
-  // 保存按钮点击
-  btnSaveOnClick(prefill = {}) {
-    this.btnSaveIsLoading = true;
-    // 调用此方法验证表单数据和获取表单数据
-    this.$refs.generateDialogForm
-      .getData()
-      .then((formValue) => {
-        let type;
-        let msg;
-        // 如果select,radio,checkbox等多选情况返回数组的话，默认拼接成逗号分隔的字符串传给后台
-        Object.keys(formValue).forEach((k) => {
-          if (Array.isArray(formValue[k])) {
-            formValue[k] = formValue[k].toString();
-          }
-        });
-        // 根据对话框状态判断保存或编辑
-        if (this.dialogStatus === STATUS.CREATE) {
-          type = DML.INSERT;
-          msg = '添加成功';
-        } else {
-          type = DML.UPDATE;
-          msg = '编辑成功';
-        }
-        let promise;
-        // 如果有代理的保存方法
-        if (this.promiseForSave) {
-          promise = this.promiseForSave(formValue, type);
-        } else {
-          promise = this.$PROCRUD.crud(type, this.tableName, formValue);
-        }
+    const isReadOnly = computed(() => {
+      return dialogStatus.value === STATUS.DETAIL || props.readOnly;
+    });
 
-        promise.then((res) => {
-          if (res.code !== 200) {
-            this.$message({
-              type: 'error',
-              message: `保存失败，原因：${res.message}`,
-            });
-            this.btnSaveIsLoading = false;
-            return;
-          }
-          this.btnSaveIsLoading = false;
-          this.visible = false;
-          this.$message({
-            type: 'success',
-            message: msg,
-          });
-          this.$emit('afterSave', {
-            status: this.dialogStatus,
-            dialogParams: this.dialogParams,
-          });
-        });
-      })
-      .catch(() => {
-        this.btnSaveIsLoading = false;
-        // 数据校验失败
+    // 内部元素显示控制
+    const view = computed(() => ({
+      ...props.visibleList,
+    }));
+
+    /**
+     * 显示对话框，父元素调用
+     *
+     * @param {Object} param 对话框保存时的参数
+     * @param {Number} status 对话框状态[添加:0,编辑:1]，必须是STATUS枚举
+     * @param {Object} formValues 编辑时传入所有字段的默认值
+     */
+    const showDialog = (param = {}, status = STATUS.CREATE, values = {}) => {
+      // 保存参数用于save方法
+      dialogParams.value = param;
+      dialogStatus.value = status;
+      // 请求对话框内的动态表单json
+      $PROCRUD.getFormDetail(props.dialogFormDesignerName || props.tableName).then((res) => {
+        formDesign.value = JSON.parse(res.data.formJson);
+        if (dialogStatus.value === STATUS.UPDATE) {
+          // 填写编辑框
+          formValues.value = { ...values };
+        } else {
+          // add 默认生成id
+          formValues.value = {
+            id: guid(),
+            ...values,
+          };
+        }
+        visible.value = true;
       });
-  }
+    };
 
-  // 取消按钮点击
-  btnCancelOnClick() {
-    this.visible = false;
-    this.$emit('cancel');
-  }
+    // 保存按钮点击
+    const btnSaveOnClick = (prefill = {}) => {
+      btnSaveIsLoading.value = true;
+      // 调用此方法验证表单数据和获取表单数据
+      generateDialogForm.value
+        .getData()
+        .then((formValue) => {
+          let type;
+          let msg;
+          // 如果select,radio,checkbox等多选情况返回数组的话，默认拼接成逗号分隔的字符串传给后台
+          Object.keys(formValue).forEach((k) => {
+            if (Array.isArray(formValue[k])) {
+              formValue[k] = formValue[k].toString();
+            }
+          });
+          // 根据对话框状态判断保存或编辑
+          if (dialogStatus.value === STATUS.CREATE) {
+            type = DML.INSERT;
+            msg = '添加成功';
+          } else {
+            type = DML.UPDATE;
+            msg = '编辑成功';
+          }
+          let promise;
+          // 如果有代理的保存方法
+          if (props.promiseForSave) {
+            promise = props.promiseForSave(formValue, type);
+          } else {
+            promise = $PROCRUD.crud(type, props.tableName, formValue);
+          }
 
-  // 生成的按钮点击
-  btnOnClick(widget) {
-    this.$emit('btnOnClick', widget);
-  }
+          promise.then((res) => {
+            if (res.code !== 200) {
+              $message({
+                type: 'error',
+                message: `保存失败，原因：${res.message}`,
+              });
+              btnSaveIsLoading.value = false;
+              return;
+            }
+            btnSaveIsLoading.value = false;
+            visible.value = false;
+            $message({
+              type: 'success',
+              message: msg,
+            });
+            emit('afterSave', {
+              status: dialogStatus.value,
+              dialogParams: dialogParams.value,
+            });
+          });
+        })
+        .catch(() => {
+          btnSaveIsLoading.value = false;
+          // 数据校验失败
+        });
+    };
 
-  @Watch('entity', { deep: true })
-  onDataChange(value: any) {
-    // 抛出当前表单对象以及当前表单json
-    this.$emit('change', {
-      formEntity: value,
-      formDesign: this.formDesign,
+    // 取消按钮点击
+    const btnCancelOnClick = () => {
+      visible.value = false;
+      emit('cancel');
+    };
+
+    // 生成的按钮点击
+    const btnOnClick = (widget) => {
+      emit('btnOnClick', widget);
+    };
+
+    // 监听
+    watchEffect(() => {
+      // 抛出当前表单对象以及当前表单json
+      emit('change', {
+        formEntity: entity.value,
+        formDesign: formDesign.value,
+      });
     });
-  }
 
-  @Watch('formValuesAsync', { deep: true })
-  onValueChange(value: any) {
-    Object.keys(value).forEach((k) => {
-      // 异步赋值
-      this.$set(this.formValues, k, value[k]);
-    });
-  }
-}
+    // 监听
+    watch(
+      () => props.formValuesAsync,
+      (val) => {
+        // 抛出当前表单对象以及当前表单json
+        Object.keys(val).forEach((k) => {
+          // 异步赋值
+          set(formValues, k, val[k]);
+        });
+      },
+    );
+
+    return {
+      generateDialogForm,
+      formValues,
+      formDesign,
+      visible,
+      btnSaveIsLoading,
+      entity,
+      dialogStatus,
+      dialogParams,
+      isReadOnly,
+      view,
+      dialogTitle,
+      showDialog,
+      btnSaveOnClick,
+      btnCancelOnClick,
+      btnOnClick,
+    };
+  },
+});
 </script>
