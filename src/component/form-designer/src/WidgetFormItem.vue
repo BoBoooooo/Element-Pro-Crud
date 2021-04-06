@@ -11,7 +11,9 @@
   >
     <template #label>
       <template v-if="element.options.hiddenLabel ? '' : label">
-        <span v-html="label"></span>
+        <el-tooltip :content="label" placement="bottom" effect="dark">
+          <span v-html="label"></span>
+        </el-tooltip>
         <i v-if="element.options.tips" class="el-icon el-icon-question"></i>
       </template>
     </template>
