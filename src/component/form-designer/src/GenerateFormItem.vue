@@ -23,6 +23,14 @@
         </el-popover>
       </template>
     </template>
+    <el-form-item v-if="widget.type === 'blank'" :label-width="widget.options.hiddenLabel ? '0' : labelWidth" :prop="widget.model" :key="widget.key" v-show="!widget.hidden">
+      <template slot="label">
+        <template v-if="!widget.options.hiddenLabel">
+          <span>{{ widget.name }}</span>
+        </template>
+      </template>
+      <slot :name="widget.model" :model="models" :widget="widget"></slot>
+    </el-form-item>
     <template v-if="widget.type === 'html'">
       <div style="margin-left: 10px" v-html="widget.options.html"></div>
     </template>

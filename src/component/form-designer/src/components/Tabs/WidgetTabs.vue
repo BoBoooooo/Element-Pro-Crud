@@ -25,69 +25,9 @@
           @add="handleWidgetAdd"
         >
           <transition-group name="fade" tag="div" class="widget-col-list">
-            <template v-for="(element, index) in item.list">
-              <template v-if="element.type == 'grid'">
-                <div v-if="element && element.key" class="widget-grid-container data-grid" :key="element.key" style="position: relative">
-                  <el-row
-                    class="widget-col widget-view"
-                    type="flex"
-                    :class="{ active: selectWidget.key == element.key }"
-                    :gutter="element.options.gutter ? element.options.gutter : 0"
-                    :justify="element.options.justify"
-                    :align="element.options.align"
-                    @click.native.stop="handleSelectWidget(element)"
-                  >
-                    <el-col v-for="(col, colIndex) in element.columns" :key="colIndex" :span="col.span ? col.span : 0">
-                      <Draggable
-                        v-model="col.list"
-                        v-bind="{
-                          group: 'people',
-                          ghostClass: 'ghost',
-                          animation: 200,
-                          handle: '.drag-widget',
-                        }"
-                        :no-transition-on-drag="true"
-                        @add="handleWidgetColAdd($event, element, colIndex)"
-                      >
-                        <transition-group name="fade" tag="div" class="widget-col-list">
-                          <WidgetFormItem
-                            v-for="(el, i) in col.list"
-                            :key="el.key"
-                            :customListField="col.list"
-                            :element="el"
-                            :select.sync="selectWidget"
-                            :index="i"
-                            @click.native="handleSelectWidget(el)"
-                            :data="col"
-                          ></WidgetFormItem>
-                        </transition-group>
-                      </Draggable>
-                    </el-col>
-                    <div class="widget-view-action widget-col-action" v-if="selectWidget && selectWidget.key == element.key">
-                      <!-- 栅格布局自动加减 -->
-                      <template v-if="element.type === 'grid'">
-                        <i class="el-icon el-icon-circle-plus" @click.stop="handleGridAdd(element)"></i>
-                        <i class="el-icon el-icon-document-copy" @click.stop="handleGridClone(index)"></i>
-                      </template>
-                      <i class="el-icon el-icon-delete-solid" @click.stop="handleWidgetDelete(index)"></i>
-                    </div>
-
-                    <div class="drag-widget widget-view-drag widget-col-drag" v-if="selectWidget && selectWidget.key == element.key">
-                      <i class="el-icon el-icon-rank"></i>
-                    </div>
-                  </el-row>
-                </div>
-              </template>
-              <WidgetFormItem
-                v-else
-                :key="element.key"
-                :element="element"
-                :customListField="item.list"
-                :select.sync="selectWidget"
-                :index="index"
-                :data="data"
-                @click.native="handleSelectWidget(element)"
-              ></WidgetFormItem>
+            <template v-for="(el, i) in item.list">
+              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetLayout>
+              <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetFormItem>
             </template>
           </transition-group>
         </Draggable>
@@ -111,6 +51,7 @@ import Draggable from 'vuedraggable';
   components: {
     Draggable,
     WidgetFormItem: () => import('../../WidgetFormItem.vue'),
+    WidgetLayout: () => import('../../WidgetLayout.vue'),
   },
 })
 export default class WidgetTabs extends Vue {
@@ -217,12 +158,6 @@ export default class WidgetTabs extends Vue {
     const { newIndex, item, oldIndex } = evt;
     const { list } = currentTab;
     const newItem = list[newIndex];
-    // 防止布局元素的嵌套拖拽
-    if (['tabs', 'grid-table'].includes(newItem.type)) {
-      list.splice(newIndex, 1);
-      this.$message.warning('布局元素暂不支持嵌套');
-      return false;
-    }
     this.selectWidget = newItem;
     return null;
   }

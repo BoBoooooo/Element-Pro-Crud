@@ -168,6 +168,7 @@ $primary-background-color: #ecf5ff;
     background: #fff;
     height: 100%;
     padding-bottom: 20px;
+    overflow-x: hidden;
     // margin: 2px;
     .widget-col-list {
       min-height: 50px;
@@ -184,6 +185,7 @@ $primary-background-color: #ecf5ff;
       background-color: rgba(236, 245, 255, 0.3);
       margin: 2px;
       text-align: left;
+      cursor: pointer;
       .el-form-item__content {
         position: unset;
         min-height: 28px;
