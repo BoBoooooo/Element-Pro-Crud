@@ -27,7 +27,11 @@
       :entity.sync="entity"
       @btn-on-click="btnOnClick"
       :formTableConfig="formTableConfig"
-    />
+    >
+      <template :slot="slotName" v-for="slotName in Object.keys($scopedSlots)">
+        <slot :name="slotName" :entity="entity"></slot>
+      </template>
+    </GenerateForm>
     <el-row type="flex" justify="end" slot="footer">
       <slot name="dialogFooter"></slot>
       <template v-if="isReadOnly">

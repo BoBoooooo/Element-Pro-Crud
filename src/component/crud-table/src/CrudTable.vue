@@ -78,8 +78,8 @@
         :width="dialogWidth"
         @btnOnClick="formBtnOnClick"
       >
-        <template #dialogFooter>
-          <slot name="dialogFooter"></slot>
+        <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+          <slot :name="slotName" :entity="scope.entity"></slot>
         </template>
       </GenerateFormDialog>
     </div>
