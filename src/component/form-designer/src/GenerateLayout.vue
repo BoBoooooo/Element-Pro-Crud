@@ -20,15 +20,6 @@
       >
         <!-- 遍历生成该列所有组件 -->
         <template v-for="citem in col.list">
-          <!-- 如果一个元素的type是blank就加载插槽 -->
-          <el-form-item v-if="citem.type == 'blank'" :label-width="citem.options.hiddenLabel ? '0' : labelWidth(citem)" v-show="!citem.hidden" :prop="citem.model" :key="citem.key">
-            <template slot="label">
-              <template v-if="!citem.options.hiddenLabel">
-                <span>{{ citem.name }}</span>
-              </template>
-            </template>
-            <slot :name="citem.model" :widget="citem" :model="models"></slot>
-          </el-form-item>
           <GenerateLayout
             v-if="citem.type.includes('grid') || citem.type.includes('tabs')"
             :item="citem"
@@ -90,8 +81,8 @@
           }"
         >
           <GenerateLayout
-            v-if="citem.type.includes('grid') || citem.type.includes('tabs')"
-            :item="citem"
+            v-if="col.type.includes('grid') || col.type.includes('tabs')"
+            :item="col"
             :readOnly="readOnly"
             :models="models"
             :rules="rules"
@@ -99,7 +90,7 @@
             :formTableConfig="formTableConfig"
             :data="col"
             :deviceMode="deviceMode"
-            :key="citem.key"
+            :key="col.key"
           ></GenerateLayout>
           <GenerateFormItem
             v-else
@@ -214,12 +205,43 @@ export default defineComponent({
       return props.data.config && props.data.config.isTableClass && list.every((_) => _.hidden) && item.columns.length === 1;
     };
 
+    // 单元格中为input,select,textarea时会默认聚焦
+    const clickTdAutoFocus = (event, td) => {
+      // 判断单元格中是否有组件
+      if (td.list.length > 0) {
+        const dom = event.target;
+        const [target] = td.list;
+        // 当点击单元格时,聚焦组件
+        if (dom.tagName === 'TD') {
+          switch (target.type) {
+            case 'input':
+              dom.getElementsByTagName('INPUT')[0].focus();
+              break;
+            case 'select':
+              dom.getElementsByTagName('INPUT')[0].focus();
+              break;
+            case 'textarea':
+              dom.getElementsByTagName('TEXTAREA')[0].focus();
+              break;
+            default:
+              return false;
+          }
+        }
+        return false;
+      }
+      return false;
+    };
+
     return {
       getTableSelection,
       btnOnClick,
       chartOnClick,
       isNoBorder,
+      clickTdAutoFocus,
     };
   },
 });
 </script>
+<style lang="scss" scoped>
+@import './styles/grid-table-form.scss';
+</style>

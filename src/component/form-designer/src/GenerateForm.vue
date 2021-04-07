@@ -29,6 +29,7 @@
           :models="models"
           :key="index"
           :data="data"
+          v-on="$listeners"
           :item="item"
           :readOnly="readOnly"
           :rules="rules"
@@ -225,12 +226,6 @@ export default class GenerateForm extends Vue {
     field.rules = field.rules.filter((_) => !_.required);
   }
 
-  getTableSelection($event, item) {
-    const tableSelections = {};
-    tableSelections[item.model] = $event;
-    this.$emit('table-selections', tableSelections);
-  }
-
   generateModel(genList, initValue = true) {
     // 遍历设计的结构
     for (let i = 0; i < genList.length; i += 1) {
@@ -311,45 +306,6 @@ export default class GenerateForm extends Vue {
     });
   }
 
-  labelWidth(item) {
-    const { type, labelWidth } = item;
-    let label = 'text,comment'.includes(type) ? '0px' : labelWidth || undefined;
-    if (label) {
-      label = label.toString();
-      if (!label.includes('px')) {
-        label += 'px';
-      }
-    }
-    return label;
-  }
-
-  // 单元格中为input,select,textarea时会默认聚焦
-  clickTdAutoFocus(event, td) {
-    // 判断单元格中是否有组件
-    if (td.list.length > 0) {
-      const dom = event.target;
-      const [target] = td.list;
-      // 当点击单元格时,聚焦组件
-      if (dom.tagName === 'TD') {
-        switch (target.type) {
-          case 'input':
-            dom.getElementsByTagName('INPUT')[0].focus();
-            break;
-          case 'select':
-            dom.getElementsByTagName('INPUT')[0].focus();
-            break;
-          case 'textarea':
-            dom.getElementsByTagName('TEXTAREA')[0].focus();
-            break;
-          default:
-            return false;
-        }
-      }
-      return false;
-    }
-    return false;
-  }
-
   // 重置表单
   resetForm() {
     this.$refs.generateForm.resetFields();
@@ -371,22 +327,6 @@ export default class GenerateForm extends Vue {
   // 不经过验证直接获取表单内容
   getDataWithoutValidate() {
     return new Promise((resolve) => resolve(this.filterFormData()));
-  }
-
-  // 生成的按钮点击
-  btnOnClick(event) {
-    this.$emit('btn-on-click', {
-      event,
-      model: this.models,
-    });
-  }
-
-  // 图表点击
-  chartOnClick(chart) {
-    this.$emit('chart-on-click', {
-      chart,
-      model: this.models,
-    });
   }
 
   // 表单默认值回填单独拉出来封装
@@ -442,7 +382,6 @@ export default class GenerateForm extends Vue {
 </script>
 <style lang="scss" scoped>
 @import './styles/table-form.scss';
-@import './styles/grid-table-form.scss';
 
 .dev-module {
   position: absolute;
