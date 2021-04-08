@@ -13,7 +13,7 @@
       :gutter="element.options.gutter ? element.options.gutter : 0"
       :justify="element.options.justify"
       :align="element.options.align"
-      @click.native.stop="handleSelectWidget(index)"
+      @click.stop="handleSelectWidget(index)"
     >
       <el-col v-for="(col, colIndex) in element.columns" :key="colIndex" :span="col.span ? col.span : 0">
         <Draggable
@@ -29,7 +29,7 @@
         >
           <transition-group name="fade" tag="div" class="widget-col-list">
             <template v-for="(el, i) in col.list">
-              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetLayout>
+              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetLayout>
               <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetFormItem>
             </template>
           </transition-group>
@@ -54,7 +54,7 @@
     class="data-grid widget-grid-table-container widget-col widget-view"
     :key="element && element.key"
     :class="{ active: selectWidget && selectWidget.key == element.key }"
-    @click="handleSelectWidget(index)"
+    @click.stop="handleSelectWidget(index)"
   >
     <table
       class="widget-grid-table"
@@ -92,7 +92,7 @@
           >
             <transition-group name="fade" tag="div" class="widget-col-list">
               <template v-for="(el, i) in col.list">
-                <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetLayout>
+                <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetLayout>
                 <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetFormItem>
               </template>
             </transition-group>
@@ -145,6 +145,7 @@
 <script>
 import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
 import Draggable from 'vuedraggable';
+import { random, generateTd } from '@/utils/generator';
 import WidgetFormItem from './WidgetFormItem.vue';
 import WidgetTabs from './components/Tabs/WidgetTabs.vue';
 
@@ -188,20 +189,20 @@ export default defineComponent({
       grid.columns.push({
         span: 24,
         list: [],
-        key: `${grid}_${Math.ceil(Math.random() * 99999)}`,
+        key: `${grid}_${random()}`,
       });
     };
     const handleGridClone = (index) => {
       const grid = JSON.parse(JSON.stringify(props.data.list[index]));
       for (const col of grid.columns) {
         for (const row of col.list) {
-          row.key = `${row.type}_${Math.ceil(Math.random() * 99999)}`;
+          row.key = `${row.type}_${random()}`;
           row.model = row.key;
         }
       }
       const cloneData = {
         ...grid,
-        key: `grid_${Math.ceil(Math.random() * 99999)}`,
+        key: `grid_${random()}`,
       };
       props.data.list.splice(index + 1, 0, cloneData);
       nextTick(() => {
@@ -257,28 +258,12 @@ export default defineComponent({
           break;
       }
     };
-    const generateNewTd = () => {
-      const key = `td_${Math.ceil(Math.random() * 99999)}`;
-      return {
-        type: 'td',
-        options: {
-          colspan: 1,
-          rowspan: 1,
-          align: 'left',
-          valign: 'middle',
-          width: '',
-          height: '',
-        },
-        list: [],
-        key,
-        model: key,
-      };
-    };
+
     const handleTdSplitToRow = (table, row, rowIndex, col, colIndex) => {
       const { rowspan } = col.options;
       const rows = table.rows.slice(rowIndex + 1, rowIndex + rowspan);
       rows.forEach((_) => {
-        const newCol = generateNewTd();
+        const newCol = generateTd();
         _.columns.splice(colIndex, 0, newCol);
       });
       col.options.rowspan = 1;
@@ -286,7 +271,7 @@ export default defineComponent({
     const handleTdSplitToCol = (table, row, rowIndex, col, colIndex) => {
       const { colspan } = col.options;
       for (let i = 0; i < colspan - 1; i += 1) {
-        const newCol = generateNewTd();
+        const newCol = generateTd();
         row.columns.splice(colIndex, 0, newCol);
       }
       col.options.colspan = 1;
@@ -402,7 +387,7 @@ export default defineComponent({
       const { rows } = table;
       rows.forEach((_row, _index) => {
         const { columns } = _row;
-        const newCol = generateNewTd();
+        const newCol = generateTd();
         // 此处判断是左添加列还是右添加列
         if (direction === 'right') {
           // eslint-disable-next-line no-unused-expressions
@@ -419,7 +404,7 @@ export default defineComponent({
         columns: [],
       };
       for (let i = 0; i < table.options.sumColSpan; i += 1) {
-        const newCol = generateNewTd();
+        const newCol = generateTd();
         _row.columns.push(newCol);
       }
       // 此处判断是上方添加行还是下方添加行
@@ -436,16 +421,16 @@ export default defineComponent({
       const table = JSON.parse(JSON.stringify(props.data.list[index]));
       for (const row of table.rows) {
         for (const col of row.columns) {
-          col.key = `td_${Math.ceil(Math.random() * 99999)}`;
+          col.key = `td_${random()}`;
           for (const item of col.list) {
-            item.key = `${item.type}_${Math.ceil(Math.random() * 99999)}`;
+            item.key = `${item.type}_${random()}`;
             item.model = item.key;
           }
         }
       }
       const cloneData = {
         ...table,
-        key: `grid_${Math.ceil(Math.random() * 99999)}`,
+        key: `grid_${random()}`,
       };
       props.data.list.splice(index + 1, 0, cloneData);
       nextTick(() => {
@@ -460,7 +445,6 @@ export default defineComponent({
       handleGridClone,
       handleWidgetColAdd,
       handleTdSettingCommand,
-      generateNewTd,
       handleTdSplitToRow,
       handleTdSplitToCol,
       handleTdRemove,

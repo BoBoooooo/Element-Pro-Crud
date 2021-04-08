@@ -13,14 +13,14 @@
     <el-form
       ref="generateForm"
       :class="{
-        'table-form': data.config && data.config.isTableClass,
+        'table-form': data.config.isTableClass,
         pad: deviceMode === 'pad',
         mobile: deviceMode === 'mobile',
       }"
       class="form"
       :model="models"
-      :label-position="data.config && data.config.labelPosition"
-      :label-width="data.config && data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'"
+      :label-position="data.config.labelPosition"
+      :label-width="data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'"
       :size="data.config.size"
     >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
@@ -35,7 +35,6 @@
           :rules="rules"
           :remote="remote"
           :formTableConfig="formTableConfig"
-          :deviceMode="deviceMode"
         ></GenerateLayout>
       </template>
     </el-form>
@@ -382,14 +381,4 @@ export default class GenerateForm extends Vue {
 </script>
 <style lang="scss" scoped>
 @import './styles/table-form.scss';
-
-.dev-module {
-  position: absolute;
-  left: 20px;
-  top: 30px;
-  z-index: 2;
-}
-.no-border {
-  border: none !important;
-}
 </style>

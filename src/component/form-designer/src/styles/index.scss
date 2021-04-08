@@ -67,7 +67,7 @@ $primary-background-color: #ecf5ff;
   .el-main {
     padding: 0;
     position: relative;
-    background: white;
+    background: #fafafa;
   }
 }
 
@@ -135,12 +135,13 @@ $primary-background-color: #ecf5ff;
 
 .widget-form-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
   overflow: auto;
-  border: 1px dashed #999;
+  // border: 1px dashed #999;
+  box-shadow: 0 4px 12px #ebedf0;
   &.pad,
   &.mobile {
     margin: auto;
@@ -268,7 +269,7 @@ $primary-background-color: #ecf5ff;
         outline-offset: 0px;
 
         &.active {
-          outline: 1px solid $primary-color;
+          outline: 2px solid $primary-color;
           border: 1px solid $primary-color;
           outline-offset: 0;
         }
@@ -279,7 +280,7 @@ $primary-background-color: #ecf5ff;
       }
 
       &.active {
-        outline: 1px solid $primary-color;
+        outline: 2px solid $primary-color;
         border: 1px solid $primary-color;
       }
 
@@ -761,7 +762,7 @@ $primary-background-color: #ecf5ff;
     .widget-grid-table__td {
       padding: 4px;
       position: relative;
-      border: 2px inset rgba(0, 0, 0, 0.1);
+      // border: 2px inset rgba(0, 0, 0, 0.1);
       &.active {
         outline: 2px solid #e6a23c;
         border: 1px solid #e6a23c;

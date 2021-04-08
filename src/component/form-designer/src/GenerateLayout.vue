@@ -28,8 +28,6 @@
             :rules="rules"
             :remote="remote"
             :formTableConfig="formTableConfig"
-            :data="col"
-            :deviceMode="deviceMode"
             :key="citem.key"
           ></GenerateLayout>
           <!-- 正常组件通过GenerateFormItem生成 -->
@@ -80,36 +78,48 @@
             display: col.list.every((_) => _.hidden) ? 'none' : '',
           }"
         >
-          <GenerateLayout
-            v-if="col.type.includes('grid') || col.type.includes('tabs')"
-            :item="col"
-            :readOnly="readOnly"
-            :models="models"
-            :rules="rules"
-            :remote="remote"
-            :formTableConfig="formTableConfig"
-            :data="col"
-            :deviceMode="deviceMode"
-            :key="col.key"
-          ></GenerateLayout>
-          <GenerateFormItem
-            v-else
-            v-for="citem in col.list"
-            @selection-change="getTableSelection($event, citem)"
-            :key="citem.key"
-            :models="models"
-            :remote="remote"
-            :widget="citem"
-            :readOnly="readOnly"
-            @btnOnClick="btnOnClick"
-            @chartOnClick="chartOnClick"
-            v-show="!citem.hidden"
-            :formTableConfig="formTableConfig"
-          >
-          </GenerateFormItem>
+          <template v-for="citem in col.list">
+            <GenerateLayout
+              v-if="citem.type.includes('grid') || col.type.includes('tabs')"
+              :item="citem"
+              :readOnly="readOnly"
+              :models="models"
+              :rules="rules"
+              :remote="remote"
+              :formTableConfig="formTableConfig"
+              :key="citem.key"
+            ></GenerateLayout>
+            <GenerateFormItem
+              v-else
+              @selection-change="getTableSelection($event, citem)"
+              :key="citem.key"
+              :models="models"
+              :remote="remote"
+              :widget="citem"
+              :readOnly="readOnly"
+              @btnOnClick="btnOnClick"
+              @chartOnClick="chartOnClick"
+              v-show="!citem.hidden"
+              :formTableConfig="formTableConfig"
+            >
+            </GenerateFormItem>
+          </template>
         </td>
       </tr>
     </table>
+  </div>
+  <!-- tab布局 -->
+  <div v-else-if="item.type === 'tabs'">
+    <GenerateTabs
+      :widget="item"
+      :models="models"
+      :remote="remote"
+      :readOnly="readOnly"
+      @selection-change="getTableSelection"
+      @chartOnClick="chartOnClick"
+      @btnOnClick="btnOnClick"
+      :formTableConfig="formTableConfig"
+    ></GenerateTabs>
   </div>
   <!-- 普通行布局方式 -->
   <div v-else>
@@ -132,6 +142,7 @@
 <script>
 import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
 import Draggable from 'vuedraggable';
+import GenerateTabs from './components/Tabs/GenerateTabs.vue';
 import GenerateFormItem from './GenerateFormItem.vue';
 
 export default defineComponent({
@@ -140,6 +151,7 @@ export default defineComponent({
   components: {
     Draggable,
     GenerateFormItem,
+    GenerateTabs,
   },
   props: {
     item: {
@@ -170,10 +182,6 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
-    deviceMode: {
-      type: String,
-      default: 'pc',
-    },
   },
   setup(props, { root, emit }) {
     // const { $message } = root;
@@ -188,7 +196,7 @@ export default defineComponent({
     const btnOnClick = (event) => {
       emit('btn-on-click', {
         event,
-        model: models.value,
+        model: props.models,
       });
     };
 

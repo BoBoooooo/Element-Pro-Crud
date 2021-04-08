@@ -312,9 +312,6 @@
     <template v-if="widget.type === 'form'">
       <GenerateSubForm :widget="widget" :models="models"></GenerateSubForm>
     </template>
-    <template v-if="widget.type === 'tabs'">
-      <GenerateTabs @selection-change="getTableSelection" :models="models" @chartOnClick="chartOnClick" @btnOnClick="btnOnClick" :formTableConfig="formTableConfig" :widget="widget"></GenerateTabs>
-    </template>
     <!-- 饼图组件 -->
     <template v-if="widget.type === 'chart-pie'">
       <pieChart @click="chartOnClick" :height="widget.options.height" :data="widget.options.data" :title="widget.name" :hollow="widget.options.hollow" />
@@ -351,7 +348,6 @@ import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
 import Echarts from './components/Charts/Echarts.vue';
-import GenerateTabs from './components/Tabs/GenerateTabs.vue';
 import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
 import { formElement } from './componentsConfig';
 
@@ -363,7 +359,6 @@ import { formElement } from './componentsConfig';
     Echarts,
     pieChart,
     lineChart,
-    GenerateTabs,
     AvatarUpload,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },

@@ -252,6 +252,7 @@
 </template>
 
 <script>
+import { random } from '@/utils/generator';
 import Tinymce from './components/Tinymce'; // 富文本编辑器
 import lineChart from './components/Charts/lineChart.vue';
 import pieChart from './components/Charts/pieChart.vue';
@@ -319,7 +320,6 @@ export default {
     },
     handleWidgetDelete(index) {
       const field = this.customListField || this.data.list;
-
       if (field.length - 1 === index) {
         if (index === 0) {
           this.selectWidget = {};
@@ -329,29 +329,16 @@ export default {
       } else {
         this.selectWidget = field[index + 1];
       }
-      console.log(field);
-
       this.$nextTick(() => {
         field.splice(index, 1);
       });
     },
     handleWidgetClone(index) {
       const field = this.customListField || this.data.list;
-      let cloneData = {
-        ...field[index],
-        options: { ...field[index].options },
-        key: `${field[index].type}_${Math.ceil(Math.random() * 99999)}`,
+      const cloneData = {
+        ...JSON.parse(JSON.stringify(field[index])),
+        key: `${field[index].type}_${random()}`,
       };
-
-      if (field[index].type === 'radio' || field[index].type === 'checkbox') {
-        cloneData = {
-          ...cloneData,
-          options: {
-            ...cloneData.options,
-            options: cloneData.options.options.map((item) => ({ ...item })),
-          },
-        };
-      }
 
       field.splice(index, 0, cloneData);
 

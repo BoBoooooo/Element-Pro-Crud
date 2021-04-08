@@ -211,6 +211,7 @@ import Draggable from 'vuedraggable';
 import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
 import CusDialog from '@/component/common/CusDialog.vue';
+import { generateTd, random } from '@/utils/generator';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
@@ -323,7 +324,7 @@ export default {
         type = 'type',
         options: { remoteOptions },
       } = origin;
-      const key = `${type}_${Math.ceil(Math.random() * 99999)}`;
+      const key = `${type}_${random()}`;
       const cloneOrigin = JSON.parse(
         JSON.stringify({
           ...origin,
@@ -335,26 +336,13 @@ export default {
       if (remoteOptions) {
         cloneOrigin.options.remoteFunc = `func_${key}`;
       }
-
+      if (cloneOrigin.options.placeholder !== undefined) {
+        cloneOrigin.options.placeholder = `请填写${cloneOrigin.name}`;
+      }
       // 如果为表格布局,默认添加一个 <td></td>
       if (type === 'grid-table') {
-        const tdKey = `td_${Math.ceil(Math.random() * 99999)}`;
-        cloneOrigin.rows[0].columns.push({
-          type: 'td',
-          options: {
-            colspan: 1,
-            rowspan: 1,
-            align: 'left',
-            valign: 'top',
-            width: '',
-            height: '',
-          },
-          list: [],
-          key: tdKey,
-          model: tdKey,
-        });
+        cloneOrigin.rows[0].columns.push(generateTd());
       }
-
       return cloneOrigin;
     },
     // 返回当前表单设计器对象
@@ -423,8 +411,8 @@ export default {
             align: 'top',
             remoteFunc: 'func_1575516929000_36539',
           },
-          key: `1575516931000_${Math.random()}`,
-          model: '1575516929000_36539',
+          key: `grid_${random()}`,
+          model: `grid_${random()}`,
           rules: [],
         };
         const td = {

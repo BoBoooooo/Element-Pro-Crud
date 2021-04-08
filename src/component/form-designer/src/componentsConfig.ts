@@ -559,7 +559,7 @@ export const layoutComponents = [
     options: {
       type: '',
       hiddenLabel: true,
-      tabPosition: 'top',
+      position: 'top',
     },
   },
   {

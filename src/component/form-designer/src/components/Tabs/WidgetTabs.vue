@@ -26,7 +26,7 @@
         >
           <transition-group name="fade" tag="div" class="widget-col-list">
             <template v-for="(el, i) in item.list">
-              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetLayout>
+              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetLayout>
               <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetFormItem>
             </template>
           </transition-group>
@@ -87,37 +87,6 @@ export default class WidgetTabs extends Vue {
 
   selectWidget = this.select;
 
-  handleSelectWidget(element) {
-    this.selectWidget = element;
-  }
-
-  handleWidgetColAdd($event, row, colIndex) {
-    const { newIndex } = $event;
-    const { oldIndex } = $event;
-    const { item } = $event;
-    console.log(item.className);
-    // 防止布局元素的嵌套拖拽
-    if (item.className.indexOf('data-grid') >= 0) {
-      // 如果是列表中拖拽的元素需要还原到原来位置
-      if (item.tagName === 'DIV') {
-        this.data.list.splice(oldIndex, 0, row.columns[colIndex].list[newIndex]);
-      }
-      row.columns[colIndex].list.splice(newIndex, 1);
-      return false;
-    }
-    this.selectWidget = row.columns[colIndex].list[newIndex];
-    console.log(row.columns[colIndex].list[newIndex]);
-    return null;
-  }
-
-  handleGridAdd(grid) {
-    grid.columns.push({
-      span: 24,
-      list: [],
-      key: `${grid}_${Math.ceil(Math.random() * 99999)}`,
-    });
-  }
-
   handleWidgetDelete(index = this.index) {
     if (this.data.list.length - 1 === index) {
       if (index === 0) {
@@ -131,24 +100,6 @@ export default class WidgetTabs extends Vue {
 
     this.$nextTick(() => {
       this.data.list.splice(index, 1);
-    });
-  }
-
-  handleGridClone(index) {
-    const grid = JSON.parse(JSON.stringify(this.data.list[index]));
-    for (const col of grid.columns) {
-      for (const row of col.list) {
-        row.key = `${row.type}_${Math.ceil(Math.random() * 99999)}`;
-        row.model = row.key;
-      }
-    }
-    const cloneData = {
-      ...grid,
-      key: `grid_${Math.ceil(Math.random() * 99999)}`,
-    };
-    this.data.list.splice(index + 1, 0, cloneData);
-    this.$nextTick(() => {
-      this.selectWidget = this.data.list[index + 1];
     });
   }
 
