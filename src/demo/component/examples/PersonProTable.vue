@@ -22,7 +22,7 @@
 <script lang="ts">
 import { DataSource, DML, Params } from '@/types/common';
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { proTableJson } from './data';
+import { proTableJson } from '../data/index';
 
 @Component({
   name: 'PersonProTable',

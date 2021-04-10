@@ -10,7 +10,7 @@
       <!-- 顶部导航 start -->
       <el-header height="64px" class="top">
         <div class="logo">
-          <img src="https://pic.downk.cc/item/5ff7d31d3ffa7d37b3c8ece9.png" />
+          <img src="https://img.imgdb.cn/item/601a417c3ffa7d37b3d3b19a.png" />
           <h2>ElementProCrud</h2>
         </div>
         <div class="info">
@@ -24,8 +24,7 @@
             <h3>文档</h3>
           </el-link>
 
-          <router-link to="/form" tag="a"><h3>表单设计器</h3></router-link>
-
+          <a href="/#/form" target="blank"><h3>表单设计器</h3></a>
           <el-link target="_blank" :underline="false" href="https://github.com/BoBoooooo/Element-Pro-Crud" type="primary">
             <img style="marign-top: 10px" src="https://img.shields.io/github/stars/BoBoooooo/Element-Pro-Crud?style=social" />
           </el-link>
@@ -35,18 +34,26 @@
       <!-- demo区域 start -->
       <el-main class="content">
         <el-container class="container">
+          <el-header><el-tag effect="plain" type="info">表单设计器(FormDesigner)</el-tag></el-header>
+          <el-main>
+            <FormDesigner class="form-designer-container" ref="formDesigner" :dictType="dictType" :getFormKey="getTableFields"> </FormDesigner>
+          </el-main>
+        </el-container>
+
+        <el-container class="container">
+          <el-header><el-tag effect="plain" type="info">表单示例</el-tag></el-header>
+          <el-main style="padding: 10px">
+            <FormDemo></FormDemo>
+          </el-main>
+        </el-container>
+
+        <el-container class="container">
           <el-header><el-tag effect="plain" type="info">表格设计器(TableDesigner)</el-tag></el-header>
           <el-main style="padding: 10px">
             <TableDesigner :dictList="dictList" :formList="formList" ref="tableDesigner"></TableDesigner>
           </el-main>
         </el-container>
 
-        <el-container class="container">
-          <el-header><el-tag effect="plain" type="info">表单设计器(FormDesigner)</el-tag></el-header>
-          <el-main>
-            <FormDesigner ref="formDesigner" :dictType="dictType" :getFormKey="getTableFields"> </FormDesigner>
-          </el-main>
-        </el-container>
         <el-container class="container">
           <el-header
             ><el-tag effect="plain" type="info">ProTable</el-tag> (基于El-Table二次封装,托管分页，查询，表格。仅包含数据表格及搜索功能，增删改查封装见CrudTable)
@@ -214,11 +221,12 @@
     <!-- json预览Dialog end -->
     <!-- 侧边滚动导航区域 start -->
     <ul class="navs">
-      <li :class="{ active: active === 0 }" @click="scrollTo(0)">表格设计器</li>
-      <li :class="{ active: active === 1 }" @click="scrollTo(1)">表单设计器</li>
-      <li :class="{ active: active === 2 }" @click="scrollTo(2)">ProTable</li>
-      <li :class="{ active: active === 3 }" @click="scrollTo(3)">CrudTable</li>
-      <li :class="{ active: active === 4 }" @click="scrollTo(4)">图表示例</li>
+      <li :class="{ active: active === 0 }" @click="scrollTo(0)">表单设计器</li>
+      <li :class="{ active: active === 1 }" @click="scrollTo(1)">表单示例</li>
+      <li :class="{ active: active === 2 }" @click="scrollTo(2)">表格设计器</li>
+      <li :class="{ active: active === 3 }" @click="scrollTo(3)">ProTable</li>
+      <li :class="{ active: active === 4 }" @click="scrollTo(4)">CrudTable</li>
+      <li :class="{ active: active === 5 }" @click="scrollTo(5)">图表示例</li>
     </ul>
     <!-- 侧边滚动导航区域 end -->
   </div>
@@ -229,7 +237,7 @@ import { DML, crud } from '@/demo/api/crud';
 import { getTables, getFormKey, getTableDetail, getFormDetail } from '@/demo/api/plugin';
 import CusDialog from '@/component/common/CusDialog.vue';
 
-import { PersonCrudTable, PersonProTable, ChartScreen, chartData } from '@/demo/component';
+import { PersonCrudTable, PersonProTable, ChartScreen, chartData, FormDemo } from './examples';
 import { proTableJson } from './data';
 
 export default {
@@ -239,6 +247,7 @@ export default {
     PersonCrudTable,
     PersonProTable,
     ChartScreen,
+    FormDemo,
   },
   data() {
     return {
@@ -466,6 +475,11 @@ h3 {
       }
     }
   }
+}
+
+.form-designer-container {
+  height: 88vh !important;
+  overflow: auto;
 }
 
 .content {

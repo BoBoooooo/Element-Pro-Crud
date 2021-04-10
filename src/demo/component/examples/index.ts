@@ -8,4 +8,5 @@
 export { default as PersonCrudTable } from './PersonCrudTable.vue';
 export { default as PersonProTable } from './PersonProTable.vue';
 export { default as ChartScreen } from './ChartScreen.vue';
-export { default as chartData } from './data';
+export { default as chartData } from '../data';
+export { default as FormDemo } from './FormDemo.vue';

@@ -11,7 +11,7 @@
 
 <script>
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import data from './data';
+import data from '../data';
 
 @Component({
   name: 'ChartScreen',

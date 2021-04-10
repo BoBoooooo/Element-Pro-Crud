@@ -26,7 +26,7 @@ export default new VueRouter({
     },
     {
       path: '/form',
-      component: () => import('@/demo/component/FormGenerate.vue'),
+      component: () => import('@/demo/component/examples/FormGenerate.vue'),
       name: 'FormGenerate',
     },
     {
