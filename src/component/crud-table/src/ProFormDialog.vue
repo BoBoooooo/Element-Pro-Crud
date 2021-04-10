@@ -17,7 +17,7 @@
     :close-on-click-modal="dialogCloseOnClickModal"
   >
     <!-- 对话框内动态表单 -->
-    <GenerateForm
+    <ProForm
       ref="generateDialogForm"
       :value="formValues"
       :data="formDesign"
@@ -31,7 +31,7 @@
       <template :slot="slotName" v-for="slotName in Object.keys($scopedSlots)">
         <slot :name="slotName" :entity="entity"></slot>
       </template>
-    </GenerateForm>
+    </ProForm>
     <el-row type="flex" justify="end" slot="footer">
       <slot name="dialogFooter"></slot>
       <template v-if="isReadOnly">
@@ -46,10 +46,10 @@
 </template>
 
 <script lang="ts">
-import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
 import guid from '@/utils/generator';
 import { DML, fn } from '@/types/common';
 import { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect } from '@vue/composition-api';
+import ProForm from '@/component/pro-form/src/ProForm.vue';
 
 const STATUS = {
   CREATE: 0,
@@ -58,9 +58,9 @@ const STATUS = {
 };
 
 export default defineComponent({
-  name: 'GenerateFormDialog',
+  name: 'ProFormDialog',
   components: {
-    GenerateForm,
+    ProForm,
   },
   emits: ['cancel', 'change', 'afterSave', 'btnOnClick'],
   props: {

@@ -112,7 +112,7 @@
         </el-container>
         <el-container class="container">
           <el-header
-            ><el-tag effect="plain" type="info">CrudTable</el-tag> 基于ProTable + GenerateForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
+            ><el-tag effect="plain" type="info">CrudTable</el-tag> 基于ProTable + ProForm + El-Dialog 二次封装 （有批量操作按钮时会默认开启多选模式）
             <el-button @click="handleGenerateJson" icon="el-icon-tickets" type="primary" class="json-btn" size="small"> 当前表格json </el-button>
           </el-header>
           <el-main class="demo-actions">
@@ -199,7 +199,7 @@
 
         <el-container class="container">
           <el-header>
-            <el-tag effect="plain" type="info">GenerateForm渲染图表示例</el-tag>
+            <el-tag effect="plain" type="info">ProForm渲染图表示例</el-tag>
             <el-button @click="handleGenerateJson('chart')" icon="el-icon-tickets" class="json-btn" type="primary" size="small"> 当前表单JSON </el-button>
           </el-header>
           <el-main class="demo-actions">

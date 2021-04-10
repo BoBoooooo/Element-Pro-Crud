@@ -140,7 +140,7 @@
           <WidgetForm :deviceMode="deviceMode" v-if="currentMode === 'design'" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"></WidgetForm>
           <template v-else>
             <el-alert type="warning" :closable="false" style="margin-bottom: 15px">异步及依赖远端数据的组件需要结合代码!</el-alert>
-            <GenerateForm :deviceMode="deviceMode" :data="widgetForm" :value="widgetModels" ref="generateForm"> </GenerateForm>
+            <ProForm :deviceMode="deviceMode" :data="widgetForm" :value="widgetModels" ref="proForm"> </ProForm>
             <el-button size="small" style="float: right; margin-top: 15px" type="primary" @click="handleTest">获取表单数据</el-button>
           </template>
         </el-main>
@@ -212,10 +212,10 @@ import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
 import CusDialog from '@/component/common/CusDialog.vue';
 import { generateTd, random } from '@/utils/generator';
+import ProForm from '@/component/pro-form/src/ProForm';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域
-import GenerateForm from './GenerateForm.vue';
 import { basicComponents, layoutComponents, advanceComponents, chartComponents } from './componentsConfig';
 import WidgetForm from './WidgetForm.vue';
 // 导入左侧组件面板图标
@@ -235,7 +235,7 @@ export default {
     FormConfig,
     WidgetForm,
     CusDialog,
-    GenerateForm,
+    ProForm,
     Icon,
     SvgIcon,
   },
@@ -374,7 +374,7 @@ export default {
       }
     },
     // 自动生成表单,默认一行两列
-    autoGenerateFormByBackend(rows) {
+    autoProFormByBackend(rows) {
       const formJson = {
         list: [],
         config: {
@@ -479,7 +479,7 @@ export default {
     },
     // 预览点确定获取表单数据
     handleTest() {
-      this.$refs.generateForm.getData().then((data) => {
+      this.$refs.proForm.getData().then((data) => {
         this.$alert(data, '').catch(() => {});
       });
     },
@@ -517,7 +517,7 @@ export default {
     async handleGenerateKey() {
       this.formKeys.success = [];
       const res = await this.getFormKey(this.formKeys.tableName);
-      this.autoGenerateFormByBackend(res.data);
+      this.autoProFormByBackend(res.data);
       this.$message('生成成功');
       this.formVisible = false;
     },

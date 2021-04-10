@@ -1,6 +1,6 @@
 <!--
  * @file: 子表单
- * GenerateFormItem如果想拿到整个子表单所有行数据改写如下
+ * ProFormItem如果想拿到整个子表单所有行数据改写如下
  * <el-form :model="subTableForm"></el-form>
  * @author: BoBo
  * @copyright: BoBo
@@ -23,7 +23,7 @@
             <template v-if="readOnly || scope.row._mode === 'DETAIL'">
               <span>{{ scope.row[row.model] }}</span>
             </template>
-            <GenerateFormItem class="form-item" v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
+            <ProFormItem class="form-item" v-else :remote="remote" :models="inlineFormData" :widget="row" :readOnly="readOnly || row._mode === 'DETAIL' ? {} : null" />
           </template>
         </el-table-column>
         <el-table-column label="操作" header-align="center" min-width="100" v-if="!readOnly">
@@ -49,9 +49,9 @@ import { isChinese } from '@/utils/utils';
 import SvgIcon from '@/icons/SvgIcon.vue';
 
 @Component({
-  name: 'GenerateSubForm',
+  name: 'SubForm',
   components: {
-    GenerateFormItem: () => import('../../GenerateFormItem.vue'),
+    ProFormItem: () => import('../../ProFormItem.vue'),
     SvgIcon,
   },
 })

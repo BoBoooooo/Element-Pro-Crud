@@ -54,9 +54,9 @@ export default function (data, type = 'vue') {
   if (type == 'vue') {
     return `<template>
   <div>
-    <GenerateForm :data="jsonData" :remote="remoteFuncs" :value="editData" ref="generateForm">
+    <ProForm :data="jsonData" :remote="remoteFuncs" :value="editData" ref="proForm">
       ${blankTemplate}
-    </GenerateForm>
+    </ProForm>
     <el-button type="primary" @click="handleSubmit">提交</el-button>
   </div>
 </template>
@@ -74,7 +74,7 @@ export default function (data, type = 'vue') {
     },
     methods: {
       handleSubmit () {
-        this.$refs.generateForm.getData().then(data => {
+        this.$refs.proForm.getData().then(data => {
           // data check success
           // data - form data
         }).catch(e => {
@@ -96,9 +96,9 @@ export default function (data, type = 'vue') {
   </head>
   <body>
     <div id="app">
-      <generate-form :data="jsonData" :remote="remoteFuncs" :value="editData" ref="generateForm">
+      <pro-form :data="jsonData" :remote="remoteFuncs" :value="editData" ref="proForm">
         ${blankTemplate}
-      </generate-form>
+      </pro-form>
       <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     <!-- import Vue before Element -->
@@ -121,7 +121,7 @@ export default function (data, type = 'vue') {
         },
         methods: {
           handleSubmit () {
-            this.$refs.generateForm.getData().then(data => {
+            this.$refs.proForm.getData().then(data => {
               // data check success
               // data - form data
             }).catch(e => {

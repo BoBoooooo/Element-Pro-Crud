@@ -58,7 +58,7 @@
         </template>
       </ProTable>
       <!-- 新增、编辑、查看按钮 弹出 表单-->
-      <GenerateFormDialog
+      <ProFormDialog
         ref="dialogRef"
         :tableName="tableName"
         :dialogFormDesignerName="dialogFormDesignerName"
@@ -81,7 +81,7 @@
         <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
           <slot :name="slotName" :entity="scope.entity"></slot>
         </template>
-      </GenerateFormDialog>
+      </ProFormDialog>
     </div>
   </div>
 </template>
@@ -90,7 +90,7 @@
 import Vue from 'vue';
 import { columns, DataSource, DML, Params } from '@/types/common';
 import VueCompositionApi, { reactive, computed, ref, defineComponent, Ref, watch, PropType } from '@vue/composition-api';
-import GenerateFormDialog from './GenerateFormDialog.vue';
+import ProFormDialog from './ProFormDialog.vue';
 import ProTable from '../../pro-table';
 import { CrudTableProps } from '../types/CrudTable.types';
 
@@ -105,7 +105,7 @@ Vue.use(VueCompositionApi);
 export default defineComponent({
   name: 'CrudTable',
   components: {
-    GenerateFormDialog,
+    ProFormDialog,
     ProTable,
   },
   props: {

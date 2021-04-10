@@ -7,31 +7,32 @@
 
 import './icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
-import { FormDesigner, GenerateForm } from '@/component/form-designer';
+import FormDesigner from '@/component/form-designer';
 import ProTable from '@/component/pro-table';
 import TableDesigner from '@/component/table-designer';
+import ProForm from '@/component/pro-form';
 import CrudTable from './component/crud-table';
 
 // 以数组的结构保存组件，便于遍历
 const components = [
   {
-    name: 'CrudTable',
+    name: CrudTable.name,
     component: CrudTable,
   },
   {
-    name: 'ProTable',
+    name: ProTable.name,
     component: ProTable,
   },
   {
-    name: 'GenerateForm',
-    component: GenerateForm,
+    name: ProForm.name,
+    component: ProForm,
   },
   {
-    name: 'TableDesigner',
+    name: TableDesigner.name,
     component: TableDesigner,
   },
   {
-    name: 'FormDesigner',
+    name: FormDesigner.name,
     component: FormDesigner,
   },
 ];
@@ -57,6 +58,6 @@ export default {
   install,
   FormDesigner,
   ProTable,
-  GenerateForm,
+  ProForm,
   TableDesigner,
 };

@@ -9,7 +9,7 @@
   <el-tabs class="tabs" v-model="activeName" :tab-position="widget.options.position" :type="widget.options.type" style="width: 100%">
     <el-tab-pane :key="widget.name" v-for="widget in widget.items" :label="widget.label" :name="widget.name" lazy>
       <template v-for="(item, index) in widget.list">
-        <GenerateLayout :item="item" :key="index" v-on="$listeners" v-bind="$attrs"></GenerateLayout>
+        <ProLayout :item="item" :key="index" v-on="$listeners" v-bind="$attrs"></ProLayout>
       </template>
     </el-tab-pane>
   </el-tabs>
@@ -19,9 +19,9 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({
-  name: 'GenerateTabs',
+  name: 'Tabs',
   components: {
-    GenerateLayout: () => import('../../GenerateLayout.vue'),
+    ProLayout: () => import('../../ProLayout.vue'),
   },
 })
 export default class GenerateTabs extends Vue {

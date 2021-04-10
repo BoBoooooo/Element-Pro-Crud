@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <GenerateForm :data="data"></GenerateForm>
+  <ProForm :data="data"></ProForm>
 </template>
 
 <script>

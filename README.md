@@ -43,8 +43,8 @@ Vue.use(ElementProCrud)
 
 ```javascript
   import Vue from 'vue';
-  import { GenerateForm, ProTable, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
-  Vue.use(GenerateForm);
+  import { ProForm, ProTable, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
+  Vue.use(ProForm);
   Vue.use(ProTable);
   Vue.use(FormDesigner);
   Vue.use(TableDesigner);
@@ -91,7 +91,7 @@ Vue.use(ElementProCrud)
 
 ## 组件列表
 
-- `GenerateForm` 根据表单设计器 json 自动渲染表单
+- `ProForm` 根据表单设计器 json 自动渲染表单
 
 - `ProTable` 二次封装 el-table
 

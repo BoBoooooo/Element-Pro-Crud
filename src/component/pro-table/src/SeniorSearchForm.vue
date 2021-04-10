@@ -20,7 +20,7 @@
         <span>高级查询</span>
       </div>
       <div>
-        <GenerateForm ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
+        <ProForm ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
         <div style="float: right">
           <el-button size="small" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
           <el-button size="small" style="margin-right: 10px" icon="el-icon-close" @click="resetForm">关闭</el-button>
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import GenerateForm from '@/component/form-designer/src/GenerateForm.vue';
+import ProForm from '@/component/pro-form/src/ProForm.vue';
 import { diGuiTree } from '@/utils/utils';
 
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -42,7 +42,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 @Component({
   name: 'SeniorSearchForm',
   components: {
-    GenerateForm,
+    ProForm,
   },
 })
 export default class SeniorSearchForm extends Vue {
@@ -82,7 +82,7 @@ export default class SeniorSearchForm extends Vue {
   // 生成查询表单 待  重构!!!
   // 暂时默认时间类型的为起止范围查询
   // 输入框类型的为手动输入
-  autoGenerateFormByBackend() {
+  autoProFormByBackend() {
     this.visible = false;
     const formJson: any = {
       list: [],
@@ -158,7 +158,7 @@ export default class SeniorSearchForm extends Vue {
 
   @Watch('columns', { deep: true, immediate: true })
   onChange(val) {
-    this.autoGenerateFormByBackend();
+    this.autoProFormByBackend();
   }
 }
 </script>

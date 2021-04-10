@@ -3,7 +3,7 @@ import { BaseComponent } from './main';
 import { ElProTable } from './pro-table';
 import { ElFormDesigner } from './form-designer-dialog';
 import { ElTableDesigner } from './table-designer-dialog';
-import { ElGenerateForm } from './generate-form';
+import { ElProForm } from './pro-form';
 import { ElCrudTable } from './crud-table';
 
 export interface InstallationOptions {}
@@ -24,8 +24,8 @@ export class FormDesigner extends ElFormDesigner {}
 /** TableDesigner Component */
 export class TableDesigner extends ElTableDesigner {}
 
-/** GenerateForm Component */
-export class GenerateForm extends ElGenerateForm {}
+/** ProForm Component */
+export class ProForm extends ElProForm {}
 
 /** ProTable Component */
 export class ProTable extends ElProTable {}

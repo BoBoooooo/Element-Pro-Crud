@@ -13,7 +13,7 @@
       <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
         <!-- 遍历生成该列所有组件 -->
         <template v-for="citem in col.list">
-          <GenerateLayout
+          <ProLayout
             v-if="citem.type.includes('grid') || citem.type.includes('tabs')"
             :item="citem"
             :readOnly="readOnly"
@@ -22,9 +22,9 @@
             :remote="remote"
             :formTableConfig="formTableConfig"
             :key="citem.key"
-          ></GenerateLayout>
-          <!-- 正常组件通过GenerateFormItem生成 -->
-          <GenerateFormItem
+          ></ProLayout>
+          <!-- 正常组件通过ProFormItem生成 -->
+          <ProFormItem
             v-else-if="!citem.hidden"
             @selection-change="getTableSelection($event, citem)"
             :key="citem.key"
@@ -36,7 +36,7 @@
             @chartOnClick="chartOnClick"
             :formTableConfig="formTableConfig"
           >
-          </GenerateFormItem>
+          </ProFormItem>
         </template>
       </el-col>
     </el-row>
@@ -71,7 +71,7 @@
           }"
         >
           <template v-for="citem in col.list">
-            <GenerateLayout
+            <ProLayout
               v-if="citem.type.includes('grid') || col.type.includes('tabs')"
               :item="citem"
               :readOnly="readOnly"
@@ -80,8 +80,8 @@
               :remote="remote"
               :formTableConfig="formTableConfig"
               :key="citem.key"
-            ></GenerateLayout>
-            <GenerateFormItem
+            ></ProLayout>
+            <ProFormItem
               v-else-if="!citem.hidden"
               @selection-change="getTableSelection($event, citem)"
               :key="citem.key"
@@ -93,7 +93,7 @@
               @chartOnClick="chartOnClick"
               :formTableConfig="formTableConfig"
             >
-            </GenerateFormItem>
+            </ProFormItem>
           </template>
         </td>
       </tr>
@@ -101,7 +101,7 @@
   </div>
   <!-- tab布局 -->
   <div v-else-if="item.type === 'tabs'">
-    <GenerateTabs
+    <Tabs
       :widget="item"
       :models="models"
       :remote="remote"
@@ -110,11 +110,11 @@
       @chartOnClick="chartOnClick"
       @btnOnClick="btnOnClick"
       :formTableConfig="formTableConfig"
-    ></GenerateTabs>
+    ></Tabs>
   </div>
   <!-- 普通行布局方式 -->
   <div v-else>
-    <GenerateFormItem
+    <ProFormItem
       :key="item.key"
       :models="models"
       :remote="remote"
@@ -126,23 +126,23 @@
       v-if="!item.hidden"
       :formTableConfig="formTableConfig"
     >
-    </GenerateFormItem>
+    </ProFormItem>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
 import Draggable from 'vuedraggable';
-import GenerateTabs from './components/Tabs/GenerateTabs.vue';
-import GenerateFormItem from './GenerateFormItem.vue';
+import Tabs from './components/Tabs/index.vue';
+import ProFormItem from './ProFormItem.vue';
 
 export default defineComponent({
-  name: 'GenerateLayout',
+  name: 'ProLayout',
   emits: ['table-selections', 'btn-on-click', 'chart-on-click'],
   components: {
     Draggable,
-    GenerateFormItem,
-    GenerateTabs,
+    ProFormItem,
+    Tabs,
   },
   props: {
     item: {

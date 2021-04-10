@@ -47,7 +47,7 @@ export const basicComponents = [
     labelWidth: undefined,
     hidden: false,
     options: {
-      width: '',
+      width: '100%',
       required: false,
       defaultValue: 0,
       min: '',
@@ -85,7 +85,7 @@ export const basicComponents = [
       ],
       required: false,
       disabled: false,
-      width: '',
+      width: '100%',
       remote: 'static',
       remoteOptions: [],
       props: {
@@ -122,7 +122,7 @@ export const basicComponents = [
         },
       ],
       required: false,
-      width: '',
+      width: '100%',
       remote: false,
       remoteOptions: [],
       props: {
@@ -273,7 +273,7 @@ export const basicComponents = [
       step: 1,
       showInput: false,
       range: false,
-      width: '',
+      width: '100%',
     },
   },
   {

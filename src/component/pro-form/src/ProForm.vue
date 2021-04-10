@@ -11,7 +11,7 @@
 <template>
   <div class="table-form-wrapper">
     <el-form
-      ref="generateForm"
+      ref="proForm"
       :class="{
         pad: deviceMode === 'pad',
         mobile: deviceMode === 'mobile',
@@ -24,17 +24,7 @@
     >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="(item, index) in data.list">
-        <GenerateLayout
-          :models="models"
-          :key="index"
-          :data="data"
-          v-on="$listeners"
-          :item="item"
-          :readOnly="readOnly"
-          :rules="rules"
-          :remote="remote"
-          :formTableConfig="formTableConfig"
-        ></GenerateLayout>
+        <ProLayout :models="models" :key="index" :data="data" v-on="$listeners" :item="item" :readOnly="readOnly" :rules="rules" :remote="remote" :formTableConfig="formTableConfig"></ProLayout>
       </template>
     </el-form>
   </div>
@@ -43,18 +33,18 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { AnyObject } from '@/types/common';
-import { formElement } from './componentsConfig';
-import GenerateLayout from './GenerateLayout.vue';
+import { formElement } from '@/component/form-designer/src/componentsConfig';
+import ProLayout from './ProLayout.vue';
 
 @Component({
   components: {
-    GenerateLayout,
+    ProLayout,
   },
-  name: 'GenerateForm',
+  name: 'ProForm',
 })
-export default class GenerateForm extends Vue {
+export default class ProForm extends Vue {
   $refs!: {
-    generateForm: HTMLFormElement;
+    proForm: HTMLFormElement;
     FormDesigner: HTMLFormElement;
   };
 
@@ -316,7 +306,7 @@ export default class GenerateForm extends Vue {
   // 先验证再获取表单内容
   getData(original: boolean) {
     return new Promise((resolve, reject) => {
-      this.$refs.generateForm.validate((valid, obj) => {
+      this.$refs.proForm.validate((valid, obj) => {
         if (valid) {
           resolve(original ? JSON.parse(JSON.stringify(this.models)) : this.filterFormData());
         } else {
@@ -328,13 +318,13 @@ export default class GenerateForm extends Vue {
 
   // 重置表单
   resetForm() {
-    this.$refs.generateForm.resetFields();
+    this.$refs.proForm.resetFields();
   }
 
   // 校验表单
   validate() {
     return new Promise((resolve, reject) => {
-      this.$refs.generateForm.validate((valid, obj) => {
+      this.$refs.proForm.validate((valid, obj) => {
         if (valid) {
           resolve();
         } else {
@@ -373,8 +363,8 @@ export default class GenerateForm extends Vue {
    * 异步更新整个表单值
    */
   setFormValue(value) {
-    if (this.$refs.generateForm) {
-      this.$refs.generateForm.clearValidate();
+    if (this.$refs.proForm) {
+      this.$refs.proForm.clearValidate();
     }
     this.models = JSON.parse(JSON.stringify(value));
   }
@@ -414,8 +404,8 @@ export default class GenerateForm extends Vue {
     deep: true,
   })
   valueOnChange(val) {
-    if (this.$refs.generateForm) {
-      this.$refs.generateForm.clearValidate();
+    if (this.$refs.proForm) {
+      this.$refs.proForm.clearValidate();
     }
     this.models = { ...this.models, ...val };
   }
@@ -428,8 +418,8 @@ export default class GenerateForm extends Vue {
     // 组件值改变时检查是否需要联动其他组件
     if (this.rules.length > 0) {
       this.controlFieldHandler(val);
-      if (this.$refs.generateForm) {
-        this.$refs.generateForm.clearValidate();
+      if (this.$refs.proForm) {
+        this.$refs.proForm.clearValidate();
       }
     }
     this.$emit('update:entity', val);

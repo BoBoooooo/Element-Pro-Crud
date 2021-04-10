@@ -310,15 +310,15 @@
       <AvatarUpload :readOnly="readOnly" :widget="widget" v-model="models[widget.model]"></AvatarUpload>
     </template>
     <template v-if="widget.type === 'form'">
-      <GenerateSubForm :widget="widget" :models="models"></GenerateSubForm>
+      <SubForm :widget="widget" :models="models"></SubForm>
     </template>
     <!-- 饼图组件 -->
     <template v-if="widget.type === 'chart-pie'">
-      <pieChart @click="chartOnClick" :height="widget.options.height" :data="widget.options.data" :title="widget.name" :hollow="widget.options.hollow" />
+      <PieChart @click="chartOnClick" :height="widget.options.height" :data="widget.options.data" :title="widget.name" :hollow="widget.options.hollow" />
     </template>
     <!-- 柱状图组件 -->
     <template v-if="widget.type === 'chart-line'">
-      <lineChart
+      <LineChart
         :height="widget.options.height"
         @click="chartOnClick"
         :data="widget.options.data"
@@ -341,30 +341,24 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { DML } from '@/types/common';
 import CrudTable from '@/component/crud-table/src/CrudTable.vue';
 import { isChinese } from '@/utils/utils';
-import Tinymce from './components/Tinymce/index.vue'; // 富文本编辑器
-import FileUpload from './components/FileUpload/FileUpload.vue';
-import GenerateSubForm from './components/SubForm/GenerateSubForm.vue';
-// 高级查询单个查询内容
-import lineChart from './components/Charts/lineChart.vue';
-import pieChart from './components/Charts/pieChart.vue';
-import Echarts from './components/Charts/Echarts.vue';
-import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
-import { formElement } from './componentsConfig';
+import { formElement } from '@/component/form-designer/src/componentsConfig';
+import { AvatarUpload, Echarts, PieChart, LineChart, Tinymce, FileUpload } from '@/component/modules/index';
+import SubForm from './components/SubForm/index.vue';
 
 @Component({
   components: {
     Tinymce,
     FileUpload,
-    GenerateSubForm,
+    SubForm,
     Echarts,
-    pieChart,
-    lineChart,
+    PieChart,
+    LineChart,
     AvatarUpload,
     CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
-  name: 'GenerateFormItem',
+  name: 'ProFormItem',
 })
-export default class GenerateFormItem extends Vue {
+export default class ProFormItem extends Vue {
   $refs!: {
     table: HTMLFormElement;
     cascader: HTMLFormElement;

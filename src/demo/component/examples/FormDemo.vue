@@ -35,7 +35,7 @@
     </el-row>
     <el-row>
       <el-col :span="16">
-        <generate-form :data="jsonData" :remote="remoteFuncs" :value="value" ref="generateForm" :entity.sync="entity"> </generate-form>
+        <pro-form :data="jsonData" :remote="remoteFuncs" :value="value" ref="proForm" :entity.sync="entity"> </pro-form>
       </el-col>
       <el-col :span="8" class="button-container">
         <template v-for="(btn, index) in btnList">
@@ -153,7 +153,7 @@ export default {
     };
   },
   mounted() {
-    this.formApi = this.$refs.generateForm;
+    this.formApi = this.$refs.proForm;
     this.handleGenerateJson();
   },
   methods: {
@@ -172,7 +172,7 @@ export default {
       });
     },
     handleSubmit() {
-      this.$refs.generateForm
+      this.$refs.proForm
         .getData()
         .then((data) => {
           this.$alert(data, '');
@@ -198,7 +198,7 @@ export default {
 
     // 不经过验证直接获取表单内容
     getDataWithoutValidate() {
-      this.$refs.generateForm
+      this.$refs.proForm
         .getDataWithoutValidate()
         .then((data) => {
           this.$alert(data, '');
@@ -216,7 +216,7 @@ export default {
     },
     // 校验表单
     validate() {
-      this.$refs.generateForm
+      this.$refs.proForm
         .validate()
         .then(() => {
           this.$message('校验通过');

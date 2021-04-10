@@ -210,10 +210,10 @@
       <AvatarUpload :widget="element"></AvatarUpload>
     </template>
     <template v-if="element.type === 'chart-pie'">
-      <pieChart :data="element.options.data" :height="element.options.height" :title="element.name" :hollow="element.options.hollow" />
+      <PieChart :data="element.options.data" :height="element.options.height" :title="element.name" :hollow="element.options.hollow" />
     </template>
     <template v-if="element.type === 'chart-line'">
-      <lineChart
+      <LineChart
         :height="element.options.height"
         :data="element.options.data"
         :title="element.name"
@@ -253,11 +253,7 @@
 
 <script>
 import { random } from '@/utils/generator';
-import Tinymce from './components/Tinymce'; // 富文本编辑器
-import lineChart from './components/Charts/lineChart.vue';
-import pieChart from './components/Charts/pieChart.vue';
-import Echarts from './components/Charts/Echarts.vue';
-import AvatarUpload from './components/AvatarUpload/AvatarUpload.vue';
+import { AvatarUpload, Echarts, PieChart, LineChart, Tinymce } from '@/component/modules/index';
 import WidgetSubForm from './components/SubForm/WidgetSubForm.vue';
 
 export default {
@@ -286,8 +282,8 @@ export default {
   },
   components: {
     Tinymce,
-    pieChart,
-    lineChart,
+    PieChart,
+    LineChart,
     Echarts,
     AvatarUpload,
     WidgetSubForm,
