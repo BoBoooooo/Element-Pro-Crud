@@ -1,6 +1,6 @@
 {
   "name": "element-pro-crud",
-  "version": "0.9.3-1",
+  "version": "0.9.3-2",
   "author": "BoBo<BoBoooooo159@gmail.com>",
   "main": "lib/ProCrud.umd.min.js",
   "files": [

@@ -5,8 +5,7 @@ ProForm.install = function (Vue, options) {
   if (options) {
     Vue.prototype.$PROCRUD = options;
   }
-  console.log(ProForm.name);
-  Vue.component(ProForm.name, ProForm);
+  Vue.component('ProForm', ProForm);
 };
 
 export default ProForm;

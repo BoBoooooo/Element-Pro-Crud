@@ -24,7 +24,7 @@ const components = [
     component: ProTable,
   },
   {
-    name: ProForm.name,
+    name: 'ProForm',
     component: ProForm,
   },
   {
