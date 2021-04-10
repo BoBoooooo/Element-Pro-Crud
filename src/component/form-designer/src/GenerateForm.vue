@@ -13,7 +13,6 @@
     <el-form
       ref="generateForm"
       :class="{
-        'table-form': data.config.isTableClass,
         pad: deviceMode === 'pad',
         mobile: deviceMode === 'mobile',
       }"
@@ -43,6 +42,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { AnyObject } from '@/types/common';
 import { formElement } from './componentsConfig';
 import GenerateLayout from './GenerateLayout.vue';
 
@@ -286,48 +286,6 @@ export default class GenerateForm extends Vue {
     }
   }
 
-  // 先验证再获取表单内容
-  getData() {
-    return new Promise((resolve, reject) => {
-      this.$refs.generateForm.validate((valid) => {
-        if (valid) {
-          resolve(this.filterFormData());
-        } else {
-          // 校验失败时focus到文本框
-          // 注意此处没有考虑textarea的情况,多行文本会失败
-          setTimeout(() => {
-            const isError: any = document.getElementsByClassName('is-error');
-            isError[0].querySelector('input').focus();
-          }, 100);
-          reject(new Error('请检查必填项是否填写').message);
-        }
-      });
-    });
-  }
-
-  // 重置表单
-  resetForm() {
-    this.$refs.generateForm.resetFields();
-  }
-
-  // 校验表单
-  validate() {
-    return new Promise((resolve, reject) => {
-      this.$refs.generateForm.validate((valid) => {
-        if (valid) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    });
-  }
-
-  // 不经过验证直接获取表单内容
-  getDataWithoutValidate() {
-    return new Promise((resolve) => resolve(this.filterFormData()));
-  }
-
   // 表单默认值回填单独拉出来封装
   setDefaultValue(config) {
     // 如果时间选择器需要默认值,默认回填当前日期
@@ -351,6 +309,105 @@ export default class GenerateForm extends Vue {
       }
       this.models[config.model] = defaultValue;
     }
+  }
+
+  // ----全局api----
+
+  // 先验证再获取表单内容
+  getData(original: boolean) {
+    return new Promise((resolve, reject) => {
+      this.$refs.generateForm.validate((valid, obj) => {
+        if (valid) {
+          resolve(original ? JSON.parse(JSON.stringify(this.models)) : this.filterFormData());
+        } else {
+          reject(obj);
+        }
+      });
+    });
+  }
+
+  // 重置表单
+  resetForm() {
+    this.$refs.generateForm.resetFields();
+  }
+
+  // 校验表单
+  validate() {
+    return new Promise((resolve, reject) => {
+      this.$refs.generateForm.validate((valid, obj) => {
+        if (valid) {
+          resolve();
+        } else {
+          reject(obj);
+        }
+      });
+    });
+  }
+
+  // 不经过验证直接获取表单内容
+  getDataWithoutValidate(original: boolean) {
+    return new Promise((resolve) => resolve(original ? JSON.parse(JSON.stringify(this.models)) : this.filterFormData()));
+  }
+
+  /**
+   * 更新某个字段值
+   */
+  setFieldValue(field: string | AnyObject, value?) {
+    if (typeof field === 'object') {
+      Object.keys(field).forEach((key) => {
+        this.$set(this.models, key, field[key]);
+      });
+    } else {
+      this.$set(this.models, field, value);
+    }
+  }
+
+  /**
+   * 获取某个字段值
+   */
+  getFieldValue(field: string) {
+    return this.models[field];
+  }
+
+  /**
+   * 异步更新整个表单值
+   */
+  setFormValue(value) {
+    if (this.$refs.generateForm) {
+      this.$refs.generateForm.clearValidate();
+    }
+    this.models = JSON.parse(JSON.stringify(value));
+  }
+
+  // 统一封装字段状态改动
+  _changeFieldStatus(status: boolean, field: string | string[] | undefined, type) {
+    let _target: string[];
+    if (field) {
+      _target = typeof field === 'string' ? [field] : field;
+    } else {
+      _target = Object.keys(this.fieldMap);
+    }
+
+    _target.forEach((key) => {
+      switch (type) {
+        case 'hidden':
+          this.$set(this.fieldMap[key], 'hidden', status);
+          break;
+        case 'disabled':
+          this.$set(this.fieldMap[key].options, 'disabled', status);
+          break;
+        default:
+          console.error('设置失败');
+      }
+    });
+  }
+
+  disabled(status: boolean, field?: string | string[]) {
+    this._changeFieldStatus(status, field, 'disabled');
+  }
+
+  hidden(status: boolean, field?: string | string[]) {
+    this._changeFieldStatus(status, field, 'hidden');
   }
 
   @Watch('value', {
@@ -379,6 +436,3 @@ export default class GenerateForm extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-@import './styles/table-form.scss';
-</style>

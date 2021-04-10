@@ -256,8 +256,9 @@ export default defineComponent({
           });
         })
         .catch(() => {
-          btnSaveIsLoading.value = false;
           // 数据校验失败
+          btnSaveIsLoading.value = false;
+          $message.warning('表单校验失败,请检查');
         });
     };
 

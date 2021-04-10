@@ -90,7 +90,6 @@ export default class SeniorSearchForm extends Vue {
         labelWidth: 110,
         labelPosition: 'right',
         size: 'small',
-        isTableClass: false,
       },
     };
     const columns = diGuiTree()(this.columns);

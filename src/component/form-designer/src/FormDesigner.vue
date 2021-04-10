@@ -381,7 +381,6 @@ export default {
           labelWidth: 140,
           labelPosition: 'right',
           size: 'small',
-          isTableClass: false,
         },
       };
 

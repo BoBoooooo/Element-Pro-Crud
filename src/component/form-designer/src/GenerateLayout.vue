@@ -10,14 +10,7 @@
     <!-- 每一行元素与基于el-row和el-col生成 -->
     <el-row :key="item.key" type="flex" :gutter="item.options.gutter ? item.options.gutter : 0" :justify="item.options.justify" :align="item.options.align">
       <!-- 生成每一行中的每一列元素 -->
-      <el-col
-        v-for="(col, colIndex) in item.columns"
-        :key="colIndex"
-        :span="col.span"
-        :style="{
-          border: isNoBorder(col, item) ? 'none!important' : '',
-        }"
-      >
+      <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
         <!-- 遍历生成该列所有组件 -->
         <template v-for="citem in col.list">
           <GenerateLayout
@@ -32,7 +25,7 @@
           ></GenerateLayout>
           <!-- 正常组件通过GenerateFormItem生成 -->
           <GenerateFormItem
-            v-else
+            v-else-if="!citem.hidden"
             @selection-change="getTableSelection($event, citem)"
             :key="citem.key"
             :models="models"
@@ -41,7 +34,6 @@
             :readOnly="readOnly"
             @btnOnClick="btnOnClick"
             @chartOnClick="chartOnClick"
-            v-show="!citem.hidden"
             :formTableConfig="formTableConfig"
           >
           </GenerateFormItem>
@@ -90,7 +82,7 @@
               :key="citem.key"
             ></GenerateLayout>
             <GenerateFormItem
-              v-else
+              v-else-if="!citem.hidden"
               @selection-change="getTableSelection($event, citem)"
               :key="citem.key"
               :models="models"
@@ -99,7 +91,6 @@
               :readOnly="readOnly"
               @btnOnClick="btnOnClick"
               @chartOnClick="chartOnClick"
-              v-show="!citem.hidden"
               :formTableConfig="formTableConfig"
             >
             </GenerateFormItem>
@@ -132,7 +123,7 @@
       :readOnly="readOnly"
       @chartOnClick="chartOnClick"
       @btnOnClick="btnOnClick"
-      v-show="!item.hidden"
+      v-if="!item.hidden"
       :formTableConfig="formTableConfig"
     >
     </GenerateFormItem>
@@ -207,11 +198,6 @@ export default defineComponent({
         model: models.value,
       });
     };
-    // 若为表格布局并且当前栅格内只有一个元素并且为隐藏状态,隐藏边框线
-    const isNoBorder = (col, item) => {
-      const { list } = col;
-      return props.data.config && props.data.config.isTableClass && list.every((_) => _.hidden) && item.columns.length === 1;
-    };
 
     // 单元格中为input,select,textarea时会默认聚焦
     const clickTdAutoFocus = (event, td) => {
@@ -244,7 +230,6 @@ export default defineComponent({
       getTableSelection,
       btnOnClick,
       chartOnClick,
-      isNoBorder,
       clickTdAutoFocus,
     };
   },
