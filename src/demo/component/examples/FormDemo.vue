@@ -35,7 +35,7 @@
     </el-row>
     <el-row>
       <el-col :span="16">
-        <pro-form :data="jsonData" :remote="remoteFuncs" :value="value" ref="proForm" :entity.sync="entity"> </pro-form>
+        <pro-form @personname:input="change" @jobno:change="change" :data="jsonData" :remote="remoteFuncs" :value="value" ref="proForm" :entity.sync="entity"> </pro-form>
       </el-col>
       <el-col :span="8" class="button-container">
         <template v-for="(btn, index) in btnList">
@@ -157,6 +157,9 @@ export default {
     this.handleGenerateJson();
   },
   methods: {
+    change(data) {
+      console.log(data);
+    },
     handleGenerateJson() {
       this.jsonTemplate1 = JSON.stringify(this.entity, null, 2);
       this.jsonTemplate2 = JSON.stringify(this.value, null, 2);

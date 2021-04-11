@@ -46,6 +46,7 @@
         :readonly="readOnly || widget.options.readonly"
         :disabled="readOnly || widget.options.disabled"
         :style="{ width: widget.options.width }"
+        v-on="_$listeners"
       ></el-input>
       <el-input
         v-else
@@ -59,6 +60,7 @@
         :style="{ width: widget.options.width }"
         :suffix-icon="widget.options.suffix"
         :prefix-icon="widget.options.prefix"
+        v-on="_$listeners"
       >
         <span slot="prepend" v-if="widget.options.prepend">
           {{ widget.options.prepend }}
@@ -102,6 +104,7 @@
         :placeholder="widget.options.placeholder"
         :style="{ width: widget.options.width || '100%' }"
         filterable
+        v-on="_$listeners"
       >
         <el-option v-for="(item, index) in optionsList" :key="index" :value="item.value" :label="widget.options.showLabel || widget.options.remote ? item.label : item.value">
           <span style="float: left">{{ item.label || item.value }}</span>
@@ -112,6 +115,7 @@
     <template v-if="widget.type == 'textarea'">
       <el-input
         type="textarea"
+        v-on="_$listeners"
         :autosize="{ minRows: 5 }"
         v-model="models[widget.model]"
         :show-word-limit="widget.options.showWordLimit"
@@ -125,6 +129,7 @@
 
     <template v-if="widget.type == 'number'">
       <el-input-number
+        v-on="_$listeners"
         v-model="models[widget.model]"
         :style="{ width: widget.options.width }"
         :step="widget.options.step"
@@ -135,7 +140,7 @@
     </template>
 
     <template v-if="widget.type == 'radio'">
-      <el-radio-group v-model="models[widget.model]" :style="{ width: widget.options.width }" :disabled="readOnly || widget.options.disabled">
+      <el-radio-group v-on="_$listeners" v-model="models[widget.model]" :style="{ width: widget.options.width }" :disabled="readOnly || widget.options.disabled">
         <el-radio :style="{ display: widget.options.inline ? 'inline-block' : 'block' }" :label="item.value" v-for="(item, index) in optionsList" :key="index">
           <template v-if="widget.options.showLabel">{{ item.label }}</template>
         </el-radio>
@@ -143,7 +148,7 @@
     </template>
 
     <template v-if="widget.type == 'checkbox'">
-      <el-checkbox-group v-model="models[widget.model]" :style="{ width: widget.options.width }">
+      <el-checkbox-group v-on="_$listeners" v-model="models[widget.model]" :style="{ width: widget.options.width }">
         <template v-if="!widget.options.buttonStyle">
           <el-checkbox
             :style="{ display: widget.options.inline ? 'inline-block' : 'block' }"
@@ -164,6 +169,7 @@
 
     <template v-if="widget.type == 'time'">
       <el-time-picker
+        v-on="_$listeners"
         v-model="models[widget.model]"
         :is-range="widget.options.isRange"
         :placeholder="widget.options.placeholder"
@@ -182,6 +188,7 @@
 
     <template v-if="widget.type == 'date'">
       <el-date-picker
+        v-on="_$listeners"
         v-model="models[widget.model]"
         :type="widget.options.type"
         :placeholder="widget.options.placeholder"
@@ -201,19 +208,20 @@
     </template>
 
     <template v-if="widget.type == 'rate'">
-      <el-rate v-model="models[widget.model]" :max="widget.options.max" :disabled="readOnly || widget.options.disabled" :allow-half="widget.options.allowHalf"></el-rate>
+      <el-rate v-on="_$listeners" v-model="models[widget.model]" :max="widget.options.max" :disabled="readOnly || widget.options.disabled" :allow-half="widget.options.allowHalf"></el-rate>
     </template>
 
     <template v-if="widget.type == 'color'">
-      <el-color-picker v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled" :show-alpha="widget.options.showAlpha"></el-color-picker>
+      <el-color-picker v-on="_$listeners" v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled" :show-alpha="widget.options.showAlpha"></el-color-picker>
     </template>
 
     <template v-if="widget.type == 'switch'">
-      <el-switch v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled"> </el-switch>
+      <el-switch v-on="_$listeners" v-model="models[widget.model]" :disabled="readOnly || widget.options.disabled"> </el-switch>
     </template>
 
     <template v-if="widget.type == 'slider'">
       <el-slider
+        v-on="_$listeners"
         v-model="models[widget.model]"
         :min="widget.options.min"
         :max="widget.options.max"
@@ -227,9 +235,8 @@
     <template v-if="widget.type == 'cascader'">
       <el-cascader
         ref="cascader"
+        v-on="_$listeners"
         v-model="models[widget.model]"
-        @visible-change="elCascaderOnlick"
-        @expand-change="elCascaderOnlick"
         :disabled="readOnly || widget.options.disabled"
         :clearable="widget.options.clearable"
         :placeholder="widget.options.placeholder"
@@ -267,6 +274,7 @@
       <!-- 官网:https://vue-treeselect.js.org -->
       <treeselect
         v-model="models[widget.model]"
+        v-on="_$listeners"
         v-if="visible"
         :placeholder="widget.options.placeholder"
         :maxHeight="+widget.options.maxHeight"
@@ -636,33 +644,22 @@ export default class ProFormItem extends Vue {
     return obj;
   }
 
+  get _$listeners() {
+    const _l = {};
+    Object.keys(this.$listeners).forEach((k) => {
+      if (k.includes(this.widget.model)) {
+        _l[k.split(':')[1]] = this.$listeners[k];
+      }
+    });
+    return _l;
+  }
+
   diGuiTree(tree) {
     // 递归便利树结构
     tree.forEach((item) => {
       // eslint-disable-next-line no-unused-expressions
       item.children === '' || item.children === undefined || item.children === null ? delete item.children : this.diGuiTree(item.children);
     });
-  }
-
-  elCascaderOnlick() {
-    const that = this;
-    setTimeout(() => {
-      document.querySelectorAll('.el-cascader-node__label').forEach((el) => {
-        // eslint-disable-next-line func-names
-        (el as any).onclick = function () {
-          if (this.previousElementSibling) {
-            this.previousElementSibling.click();
-          }
-          that.$refs.cascader.dropDownVisible = false;
-        };
-      });
-      document.querySelectorAll('.el-cascader-panel .el-radio').forEach((el) => {
-        // eslint-disable-next-line func-names
-        (el as any).onclick = function () {
-          that.$refs.cascader.dropDownVisible = false;
-        };
-      });
-    }, 100);
   }
 
   // 按钮点击

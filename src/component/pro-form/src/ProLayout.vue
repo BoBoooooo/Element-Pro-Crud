@@ -22,6 +22,7 @@
             :remote="remote"
             :formTableConfig="formTableConfig"
             :key="citem.key"
+            v-on="$listeners"
           ></ProLayout>
           <!-- 正常组件通过ProFormItem生成 -->
           <ProFormItem
@@ -34,6 +35,7 @@
             :readOnly="readOnly"
             @btnOnClick="btnOnClick"
             @chartOnClick="chartOnClick"
+            v-on="$listeners"
             :formTableConfig="formTableConfig"
           >
           </ProFormItem>
@@ -90,6 +92,7 @@
               :widget="citem"
               :readOnly="readOnly"
               @btnOnClick="btnOnClick"
+              v-on="$listeners"
               @chartOnClick="chartOnClick"
               :formTableConfig="formTableConfig"
             >
@@ -109,6 +112,7 @@
       @selection-change="getTableSelection"
       @chartOnClick="chartOnClick"
       @btnOnClick="btnOnClick"
+      v-on="$listeners"
       :formTableConfig="formTableConfig"
     ></Tabs>
   </div>
@@ -124,6 +128,7 @@
       @chartOnClick="chartOnClick"
       @btnOnClick="btnOnClick"
       v-if="!item.hidden"
+      v-on="$listeners"
       :formTableConfig="formTableConfig"
     >
     </ProFormItem>
