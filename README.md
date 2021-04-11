@@ -26,7 +26,7 @@ ElementProCrud 快速搭建 CRUD 的利器
 npm i element-pro-crud -s
 ```
 
-完整引入
+引入方式
 
 ```javascript
 import Vue from 'vue';
@@ -38,7 +38,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 Vue.use(ElementProCrud)
 ```
-
+<!-- 
 按需引入
 
 ```javascript
@@ -53,7 +53,7 @@ Vue.use(ElementProCrud)
       getTableDetail: (tablename) => AxiosPromise(tableJSON);// 获取某个表格设计json
       crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise; // 通用CRUD封装
   })
-```
+``` -->
 
 ### CDN
 
