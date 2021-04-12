@@ -17,6 +17,8 @@ import externals from 'rollup-plugin-node-externals';
 import alias from '@rollup/plugin-alias';
 import { not_externals, isExternal } from './build/utils/isExternal';
 
+const { terser } = require('rollup-plugin-terser');
+
 const { join, resolve } = require('path');
 
 const OutputOptions = require('./build/output');
@@ -67,6 +69,7 @@ module.exports = {
       preventAssignment: true,
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
+    terser(),
     visualizer({
       open: true,
     }),
