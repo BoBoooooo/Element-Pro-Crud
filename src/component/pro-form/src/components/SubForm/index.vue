@@ -362,13 +362,13 @@ export default class GenerateSubForm extends Vue {
   .form-item {
     background: #f3fefa;
   }
-  /deep/.el-table__empty-text {
+  ::v-deep.el-table__empty-text {
     line-height: 10px;
     margin-bottom: 15px;
     color: rgba(0, 0, 0, 0.25) !important;
     font-size: 14px;
   }
-  /deep/.el-form-item__content {
+  ::v-deep.el-form-item__content {
     .el-select,
     .el-input {
       width: 100% !important;
@@ -384,7 +384,7 @@ export default class GenerateSubForm extends Vue {
     display: block;
     margin: 0 auto;
   }
-  /deep/.el-form-item__error {
+  ::v-deep.el-form-item__error {
     top: 23px;
     right: 28px;
     text-align: right;
