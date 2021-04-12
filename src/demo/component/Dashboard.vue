@@ -492,7 +492,7 @@ h3 {
   .demo-actions {
     text-align: left;
     padding: 20px;
-    /deep/ {
+    ::v-deep {
       .el-switch {
         margin-right: 10px;
       }
@@ -524,7 +524,7 @@ h3 {
 }
 
 .dialog {
-  /deep/ {
+  ::v-deep {
     .el-dialog__body {
       height: 100%;
       padding: 0;

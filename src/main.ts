@@ -7,7 +7,7 @@ import axios from '@/demo/api/axios';
 import * as pluginsApis from '@/demo/api/plugin';
 import { crud } from '@/demo/api/crud';
 // 导入ElementProCrud
-import plugin from './index';
+import plugin from './ProCrud.esm.min.js';
 
 Vue.use(plugin, {
   ...pluginsApis,

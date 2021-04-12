@@ -439,7 +439,7 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
   }
-  /deep/ {
+  ::v-deep {
     .el-table__empty-text {
       line-height: 10px;
       margin-bottom: 15px;

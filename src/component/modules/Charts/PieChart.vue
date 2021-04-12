@@ -65,7 +65,7 @@ export default {
         color: ['#82C7E4', '#A1AFFB', '#7190FF', '#163abe'],
         title: {
           // eslint-disable-next-line no-eval
-          text: `总数${eval(this.data.map((item) => item.value).join('+')) || 0}`,
+          text: `总数${this.data.map((item) => item.value).reduce((prev, curr) => prev + curr) || 0}`,
           top: '10%',
           left: '50%',
           textAlign: 'center',
@@ -224,7 +224,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .card {
-  /deep/ {
+  ::v-deep {
     .el-card__header {
       padding: 5px 20px;
     }

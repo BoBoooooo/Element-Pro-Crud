@@ -7,11 +7,11 @@
 
 import './icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 // 导入单个组件
-import FormDesigner from '@/component/form-designer';
-import ProTable from '@/component/pro-table';
-import TableDesigner from '@/component/table-designer';
-import ProForm from '@/component/pro-form';
-import CrudTable from './component/crud-table';
+import FormDesigner from '@/component/form-designer/index';
+import ProTable from '@/component/pro-table/index';
+import TableDesigner from '@/component/table-designer/index';
+import ProForm from '@/component/pro-form/index';
+import CrudTable from './component/crud-table/index';
 
 // 以数组的结构保存组件，便于遍历
 const components = [

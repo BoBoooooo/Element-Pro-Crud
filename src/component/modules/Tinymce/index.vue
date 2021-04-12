@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import editorImage from './components/editorImage';
+import editorImage from './components/editorImage.vue';
 import plugins from './plugins';
 import toolbar from './toolbar';
 

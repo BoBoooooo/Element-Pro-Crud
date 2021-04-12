@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "./../element-ui/types"
+      "element-ui/types"
     ],
     "paths": {
       "@/*": [

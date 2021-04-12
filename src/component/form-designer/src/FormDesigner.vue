@@ -212,7 +212,7 @@ import Icon from 'vue-awesome/components/Icon.vue';
 import Clipboard from 'clipboard';
 import CusDialog from '@/component/common/CusDialog.vue';
 import { generateTd, random } from '@/utils/generator';
-import ProForm from '@/component/pro-form/src/ProForm';
+import ProForm from '@/component/pro-form/src/ProForm.vue';
 import WidgetConfig from './WidgetConfig.vue';
 import FormConfig from './FormConfig.vue';
 // 最中心设计区域

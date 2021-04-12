@@ -183,7 +183,7 @@ export default defineComponent({
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-form-container {
   flex: 1;
-  /deep/.tool-btn {
+  ::v-deep.tool-btn {
     display: inline;
     margin-left: 10px;
   }
@@ -194,7 +194,7 @@ export default defineComponent({
   .tips {
     display: inline-block;
     margin-left: 10px;
-    /deep/.el-tag {
+    ::v-deep.el-tag {
       margin-right: 5px;
     }
   }
