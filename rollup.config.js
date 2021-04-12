@@ -72,6 +72,7 @@ module.exports = {
     terser(),
     visualizer({
       open: true,
+      gzipSize: true,
     }),
   ],
 };

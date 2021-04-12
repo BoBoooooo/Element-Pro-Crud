@@ -14,18 +14,12 @@ const banner = {
 const OutputOptions = () => {
   const baseOutputOptions = {
     globals,
-    entryFileNames: 'index.js',
     sourcemap: false,
     name: 'ProCrud',
     banner: getBanner(banner),
-    sourcemapExcludeSources: false,
   };
 
-  const miniOutputOptions = Object.assign({}, baseOutputOptions, {
-    plugins: [terser()],
-  });
-
-  return [baseOutputOptions, miniOutputOptions];
+  return [baseOutputOptions];
 };
 
 module.exports = OutputOptions;
