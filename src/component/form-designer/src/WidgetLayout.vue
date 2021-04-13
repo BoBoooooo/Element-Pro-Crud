@@ -13,7 +13,7 @@
       :gutter="element.options.gutter ? element.options.gutter : 0"
       :justify="element.options.justify"
       :align="element.options.align"
-      @click.stop="handleSelectWidget(index)"
+      @click.native.stop="handleSelectWidget"
     >
       <el-col v-for="(col, colIndex) in element.columns" :key="colIndex" :span="col.span ? col.span : 0">
         <Draggable
@@ -29,7 +29,7 @@
         >
           <transition-group name="fade" tag="div" class="widget-col-list">
             <template v-for="(el, i) in col.list">
-              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetLayout>
+              <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetLayout>
               <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="col" :key="el.key"></WidgetFormItem>
             </template>
           </transition-group>
@@ -54,7 +54,7 @@
     class="data-grid widget-grid-table-container widget-col widget-view"
     :key="element && element.key"
     :class="{ active: selectWidget && selectWidget.key == element.key }"
-    @click.stop="handleSelectWidget(index)"
+    @click.stop="handleSelectWidget"
   >
     <table
       class="widget-grid-table"
@@ -138,7 +138,7 @@
     </div>
   </div>
   <div v-else-if="element.type === 'tabs'">
-    <WidgetTabs v-if="element && element.key" :key="element.key" :element="element" :select.sync="selectWidget" :index="index" :data="data" @click.native.stop="handleSelectWidget(index)"></WidgetTabs>
+    <WidgetTabs v-if="element && element.key" :key="element.key" :element="element" :select.sync="selectWidget" :index="index" :data="data" @click.native.stop="handleSelectWidget"></WidgetTabs>
   </div>
 </template>
 
@@ -167,8 +167,7 @@ export default defineComponent({
       default: () => ({}),
     },
     data: {
-      type: Object,
-      default: () => ({}),
+      type: Object || Array,
     },
     index: {
       type: Number,
@@ -180,16 +179,14 @@ export default defineComponent({
 
     const selectWidget = ref({});
 
-    const handleSelectWidget = (index) => {
-      // console.log(`子项被点击`, index, props.data.list[index]);
-      selectWidget.value = props.data.list[index];
+    const handleSelectWidget = () => {
+      selectWidget.value = props.element;
     };
 
     const handleGridAdd = (grid) => {
       grid.columns.push({
         span: 24,
         list: [],
-        key: `${grid}_${random()}`,
       });
     };
     const handleGridClone = (index) => {
