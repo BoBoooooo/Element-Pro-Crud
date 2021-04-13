@@ -1,0 +1,8 @@
+{
+  "pro-crud":"/src/index.ts",
+  "pro-form": "./src/component/pro-form/index.ts",
+  "pro-table": "./src/component/pro-table/index.ts",
+  "crud-table": "./src/component/crud-table/index.ts",
+  "form-designer": "./src/component/form-designer/index.ts",
+  "table-designer": "./src/component/table-designer/index.ts"
+}
