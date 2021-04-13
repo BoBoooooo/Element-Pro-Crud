@@ -532,6 +532,7 @@ export const layoutComponents = [
     type: 'grid-table',
     name: '表格布局',
     icon: 'table',
+    beta: true,
     options: {
       borderWidth: 1,
       borderColor: '#999',
@@ -549,6 +550,7 @@ export const layoutComponents = [
     type: 'tabs',
     name: '标签页',
     icon: 'tags',
+    beta: true,
     items: [
       {
         name: '标签页1',

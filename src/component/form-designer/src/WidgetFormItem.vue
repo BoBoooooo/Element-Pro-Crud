@@ -312,7 +312,8 @@ export default {
   },
   methods: {
     handleSelectWidget(index) {
-      this.selectWidget = this.data.list[index];
+      const fieldList = this.customListField || this.data.list;
+      this.selectWidget = fieldList[index];
     },
     handleWidgetDelete(index) {
       const field = this.customListField || this.data.list;

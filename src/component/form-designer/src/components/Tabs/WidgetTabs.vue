@@ -27,7 +27,7 @@
           <transition-group name="fade" tag="div" class="widget-col-list">
             <template v-for="(el, i) in item.list">
               <WidgetLayout v-if="el.type.includes('grid') || el.type.includes('tabs')" :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetLayout>
-              <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="data" :key="el.key"></WidgetFormItem>
+              <WidgetFormItem v-else :element="el" :select.sync="selectWidget" :index="i" :data="data" :customListField="item.list" :key="el.key"></WidgetFormItem>
             </template>
           </transition-group>
         </Draggable>

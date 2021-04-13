@@ -117,8 +117,14 @@
               @click="addWidget(item)"
             >
               <div>
-                <Icon class="icon" :name="item.icon"></Icon>
-                <span>{{ item.name }}</span>
+                <el-badge value="beta" class="badge" v-if="item.beta">
+                  <Icon class="icon" :name="item.icon"></Icon>
+                  <span>{{ item.name }}</span></el-badge
+                >
+                <template v-else>
+                  <Icon class="icon" :name="item.icon"></Icon>
+                  <span>{{ item.name }}</span>
+                </template>
               </div>
             </li>
           </Draggable>
