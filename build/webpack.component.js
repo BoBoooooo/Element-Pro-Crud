@@ -14,7 +14,7 @@ const webpackConfig = {
   output: {
     path: path.resolve(process.cwd(), 'lib'),
     publicPath: '/dist/',
-    filename: '[name].umd.min.js',
+    filename: '[name].js',
     chunkFilename: '[id].js',
     libraryTarget: 'umd',
     library: 'ProCrud',
@@ -93,7 +93,7 @@ const webpackConfig = {
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: 'css/[name].css',
     }),
     new ProgressBarPlugin(),
     new webpack.BannerPlugin({
