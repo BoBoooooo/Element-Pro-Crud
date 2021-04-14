@@ -6,7 +6,12 @@ let externals = {};
 externals = [
   Object.assign({
     ace: 'ace',
-    'element-ui': 'ELEMENT', // 不打包element-ui
+    'element-ui': {
+      root: 'ELEMENT',
+      commonjs: 'element-ui',
+      commonjs2: 'element-ui',
+      amd: 'element-ui',
+    },
     vue: {
       root: 'Vue',
       commonjs: 'vue',
