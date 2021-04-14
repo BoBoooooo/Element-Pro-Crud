@@ -17,6 +17,7 @@ const webpackConfig = {
     filename: '[name].umd.min.js',
     chunkFilename: '[id].js',
     libraryTarget: 'umd',
+    library: 'ProCrud',
   },
   resolve: {
     extensions: ['.ts', '.js', '.vue', '.json'],
@@ -31,7 +32,7 @@ const webpackConfig = {
   },
   stats: 'none',
   optimization: {
-    minimize: true,
+    minimize: false,
   },
   module: {
     rules: [

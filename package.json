@@ -37,7 +37,8 @@
     "webpack": "webpack --config build/webpack.component.js",
     "deploy": "npm run lib && npm publish",
     "log": "conventional-changelog --config ./node_modules/vue-cli-plugin-commitlint/lib/log -i CHANGELOG.md -s -r 0",
-    "cz": "npm run log && git add . && git cz"
+    "cz": "npm run log && git add . && git cz",
+    "inspect": "vue-cli-service inspect >webpackConfig.txt"
   },
   "devDependencies": {
     "@types/ace": "0.0.42",
@@ -91,7 +92,7 @@
     "vue-loader": "^15.9.6",
     "vue-property-decorator": "^8.5.0",
     "vue-router": "3.4.3",
-    "vue-template-compiler": "2.6.11",
+    "vue-template-compiler": "^2.6.11",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",
     "webpack-bundle-analyzer": "^3.3.2",
