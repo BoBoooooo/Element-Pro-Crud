@@ -1,9 +1,8 @@
 <template>
-  <el-dialog class="cus-dialog-container" :title="title" :visible.sync="dialogVisible" :close-on-click-modal="false" append-to-body center :width="width" ref="elDialog" :id="id">
+  <el-dialog class="cus-dialog-container" close-on-click-modal :title="title" :visible.sync="dialogVisible" append-to-body center :width="width" ref="elDialog" :id="id">
     <span v-if="show">
       <slot></slot>
     </span>
-
     <span v-if="action" slot="footer" class="dialog-footer" v-loading="loading" :element-loading-text="loadingText">
       <slot name="action">
         <el-button @click="close">取消</el-button>

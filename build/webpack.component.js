@@ -32,7 +32,7 @@ const webpackConfig = {
   },
   stats: 'none',
   optimization: {
-    minimize: false,
+    minimize: true,
   },
   module: {
     rules: [
@@ -68,8 +68,21 @@ const webpackConfig = {
         loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
+        test: /\.svg$/,
+        include: path.resolve('src/icons'),
+        use: [
+          {
+            loader: 'svg-sprite-loader',
+            options: {
+              symbolId: 'icon-[name]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
         loader: 'url-loader',
+        exclude: path.resolve('src/icons'),
         query: {
           limit: 10000,
           name: path.posix.join('static', '[name].[hash:7].[ext]'),
@@ -83,9 +96,6 @@ const webpackConfig = {
       filename: '[name].css',
     }),
     new ProgressBarPlugin(),
-    // new BundleAnalyzerPlugin({
-    //   analyzerMode: 'static',
-    // }),
     new webpack.BannerPlugin({
       entryOnly: true, // 是否仅在入口包中输出 banner 信息
       // eslint-disable-next-line no-useless-concat
@@ -93,5 +103,12 @@ const webpackConfig = {
     }),
   ],
 };
+if (process.env.IS_REPORT) {
+  webpackConfig.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    }),
+  );
+}
 
 module.exports = webpackConfig;
