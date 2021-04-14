@@ -137,7 +137,6 @@
 
 <script>
 import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
-import Draggable from 'vuedraggable';
 import Tabs from './components/Tabs/index.vue';
 import ProFormItem from './ProFormItem.vue';
 
@@ -145,7 +144,6 @@ export default defineComponent({
   name: 'ProLayout',
   emits: ['table-selections', 'btn-on-click', 'chart-on-click'],
   components: {
-    Draggable,
     ProFormItem,
     Tabs,
   },
