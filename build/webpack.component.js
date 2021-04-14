@@ -45,12 +45,23 @@ const webpackConfig = {
           },
         },
       },
-      { test: /\.ts?$/, loader: 'ts-loader', exclude: /node_modules/ },
       {
-        test: /\.(js?|babel|es6)$/,
-        include: process.cwd(),
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true, // 关闭类型检查
+              appendTsSuffixTo: ['\\.vue$'], // 编译 vue中lang="ts"。
+              happyPackMode: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(scss|css)$/,
@@ -72,9 +83,9 @@ const webpackConfig = {
       filename: '[name].css',
     }),
     new ProgressBarPlugin(),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-    }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static',
+    // }),
     new webpack.BannerPlugin({
       entryOnly: true, // 是否仅在入口包中输出 banner 信息
       // eslint-disable-next-line no-useless-concat

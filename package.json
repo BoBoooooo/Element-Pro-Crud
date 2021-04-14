@@ -86,18 +86,17 @@
     "typescript": "~3.8.3",
     "vue": "2.6.11",
     "vue-awesome": "^3.5.4",
+    "vue-property-decorator": "^8.5.0",
     "vue-class-component": "^7.2.3",
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-commitlint": "^1.0.12",
     "vue-loader": "^15.9.6",
-    "vue-property-decorator": "^8.5.0",
     "vue-router": "3.4.3",
     "vue-template-compiler": "^2.6.11",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^4.6.0",
-    "webpack-node-externals": "^2.5.2"
+    "webpack-cli": "^4.6.0"
   },
   "husky": {
     "hooks": {
