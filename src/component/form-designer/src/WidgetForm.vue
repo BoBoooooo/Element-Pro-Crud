@@ -21,14 +21,14 @@
       >
         <transition-group name="fade" tag="div" class="widget-form-list">
           <template v-for="(element, index) in data.list">
-            <WidgetFormLayout
+            <WidgetLayout
               v-if="element && element.key && (element.type.includes('grid') || element.type.includes('tabs'))"
               :key="element.key"
               :element="element"
               :data="data"
               :select.sync="selectWidget"
               :index="index"
-            ></WidgetFormLayout>
+            ></WidgetLayout>
             <template v-else>
               <WidgetFormItem v-if="element && element.key" :key="element.key" :element="element" :select.sync="selectWidget" :index="index" :data="data"></WidgetFormItem>
             </template>
@@ -42,16 +42,13 @@
 <script>
 import Draggable from 'vuedraggable';
 import SvgIcon from '@/icons/SvgIcon.vue';
-import WidgetFormItem from './WidgetFormItem.vue';
+import Vue from 'vue';
 import WidgetTabs from './components/Tabs/WidgetTabs.vue';
-import WidgetFormLayout from './WidgetLayout.vue';
 
 export default {
   components: {
     Draggable,
-    WidgetFormItem,
     SvgIcon,
-    WidgetFormLayout,
   },
   // 这里的data从父组件接收和设计器实时对应的json
   props: ['data', 'select', 'deviceMode'],
