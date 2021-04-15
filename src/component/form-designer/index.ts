@@ -22,12 +22,9 @@ FormDesigner.install = function (Vue, options) {
 };
 
 // 定义 install 方法
-const install: any = (Vue, options = {}) => {
+const install: any = (Vue) => {
   if (install.installed) return;
   install.installed = true;
-  // 遍历并注册全局组件
-  // 全局挂载options
-  Vue.prototype.$PROCRUD = options;
   Vue.component(FormDesigner.name, FormDesigner);
 };
 

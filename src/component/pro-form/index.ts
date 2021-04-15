@@ -17,11 +17,9 @@ ProForm.install = function (Vue, options) {
   Vue.component('ProForm', ProForm);
 };
 // 定义 install 方法
-const install: any = (Vue, options = {}) => {
+const install: any = (Vue) => {
   if (install.installed) return;
   install.installed = true;
-  // 遍历并注册全局组件
-  Vue.prototype.$PROCRUD = options;
   Vue.component('ProForm', ProForm);
 };
 
