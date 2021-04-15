@@ -18,7 +18,7 @@ const webpackConfig = {
   },
   output: {
     path: path.resolve(process.cwd(), 'lib'),
-    publicPath: '/dist/',
+    publicPath: '/lib/',
     filename: '[name].js',
     chunkFilename: '[id].js',
     libraryTarget: 'umd',

@@ -32,7 +32,7 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "report": "cross-env IS_REPORT=true npm run webpack",
+    "report": "cross-env IS_REPORT=true npm run bundle",
     "log": "conventional-changelog --config ./node_modules/vue-cli-plugin-commitlint/lib/log -i CHANGELOG.md -s -r 0",
     "cz": "npm run log && git add . && git cz",
     "bundle": "webpack --config build/webpack.component.js",
