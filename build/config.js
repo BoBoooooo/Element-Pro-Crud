@@ -1,7 +1,4 @@
 const path = require('path');
-const fs = require('fs');
-
-let externals = {};
 
 externals = [
   Object.assign({

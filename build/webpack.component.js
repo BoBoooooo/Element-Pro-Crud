@@ -11,6 +11,11 @@ const { name, version, author, homepage } = require('../package');
 const webpackConfig = {
   mode: 'production',
   entry: Components,
+  stats: {
+    assets: true,
+    modules: false,
+    entrypoints: false,
+  },
   output: {
     path: path.resolve(process.cwd(), 'lib'),
     publicPath: '/dist/',
@@ -30,7 +35,6 @@ const webpackConfig = {
   performance: {
     hints: false,
   },
-  stats: 'none',
   optimization: {
     minimize: true,
   },
@@ -77,6 +81,7 @@ const webpackConfig = {
               symbolId: 'icon-[name]',
             },
           },
+          { loader: 'svgo-loader', options: {} },
         ],
       },
       {
