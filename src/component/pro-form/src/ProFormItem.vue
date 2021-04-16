@@ -362,7 +362,6 @@ import SubForm from './components/SubForm/index.vue';
     PieChart,
     LineChart,
     AvatarUpload,
-    CrudTable: () => import('@/component/crud-table/src/CrudTable.vue'),
   },
   name: 'ProFormItem',
 })

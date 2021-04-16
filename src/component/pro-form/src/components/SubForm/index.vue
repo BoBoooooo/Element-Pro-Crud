@@ -51,7 +51,6 @@ import SvgIcon from '@/icons/SvgIcon.vue';
 @Component({
   name: 'SubForm',
   components: {
-    ProFormItem: () => import('../../ProFormItem.vue'),
     SvgIcon,
   },
 })

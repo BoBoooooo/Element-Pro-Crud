@@ -1,4 +1,4 @@
-## [0.9.3-3](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.2...0.9.3-3) (2021-04-11)
+## [0.9.4-1](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.2...0.9.4-1) (2021-04-16)
 
 ### 🌟 新功能
 范围|描述|commitId
@@ -12,6 +12,7 @@
 --|--|--
  - | 调整目录结构,GenerateForm改名为ProForm | [76fea47](https://github.com/BoBoooooo/Element-Pro-Crud/commit/76fea47)
  - | btn-bar css perf | [82fc351](https://github.com/BoBoooooo/Element-Pro-Crud/commit/82fc351)
+ - | change /deep/ to ::v-deep | [c90dcf7](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c90dcf7)
  - | change code style | [4cc4af1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4cc4af1)
 
 
@@ -20,6 +21,7 @@
 --|--|--
  - | 修复表格布局下组件初始化bug [@0](https://github.com/0).9.2-6 | [5ee737f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5ee737f)
  - | 修复级联选择器自定义value,label别称bug [@0](https://github.com/0).9.2-10 | [b9f738d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b9f738d)
+ - | 修复嵌套布局时点击事件bug [@0](https://github.com/0).9.3-4 | [c6e9fca](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c6e9fca)
  - | 修复子表单初始化默认值不回填bug [@0](https://github.com/0).9.2-7 | [b89df0b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b89df0b)
  - | 修复子表单删除数据清空时数据刷新bug [@0](https://github.com/0).9.2-7 | [72d238e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/72d238e)
  - | CrudTable支持传入columns [@0](https://github.com/0).9.2-4 | [347ea93](https://github.com/BoBoooooo/Element-Pro-Crud/commit/347ea93)
@@ -37,6 +39,7 @@
 范围|描述|commitId
 --|--|--
  - | add prettier code formatter | [883f256](https://github.com/BoBoooooo/Element-Pro-Crud/commit/883f256)
+ - | remove dep | [f730cbf](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f730cbf)
 
 
 ### 🔙 撤销
@@ -72,6 +75,8 @@
 ### chore
 范围|描述|commitId
 --|--|--
+ - | update CHANGELOG | [892d946](https://github.com/BoBoooooo/Element-Pro-Crud/commit/892d946)
+ - | update crud version to 0.9.4 | [4a3e3be](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4a3e3be)
  - | update version to 0.9.2-1 | [a3064ef](https://github.com/BoBoooooo/Element-Pro-Crud/commit/a3064ef)
  - | update version to 0.9.2-15,refactor layout component | [6f25688](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6f25688)
  - | update version to 0.9.3 | [14b8e82](https://github.com/BoBoooooo/Element-Pro-Crud/commit/14b8e82)

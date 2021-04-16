@@ -20,9 +20,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({
   name: 'Tabs',
-  components: {
-    ProLayout: () => import('../../ProLayout.vue'),
-  },
 })
 export default class GenerateTabs extends Vue {
   @Prop({

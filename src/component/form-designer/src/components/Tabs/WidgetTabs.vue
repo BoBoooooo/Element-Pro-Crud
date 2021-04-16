@@ -50,8 +50,6 @@ import Draggable from 'vuedraggable';
   name: 'WidgetTabs',
   components: {
     Draggable,
-    WidgetFormItem: () => import('../../WidgetFormItem.vue'),
-    WidgetLayout: () => import('../../WidgetLayout.vue'),
   },
 })
 export default class WidgetTabs extends Vue {
