@@ -15,6 +15,7 @@ import postcss from 'rollup-plugin-postcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import externals from 'rollup-plugin-node-externals';
 import alias from '@rollup/plugin-alias';
+import svg from 'rollup-plugin-svg';
 import { not_externals, isExternal } from './build/utils/isExternal';
 
 const { terser } = require('rollup-plugin-terser');
@@ -42,6 +43,7 @@ module.exports = {
     vuePlugin({
       css: true,
     }),
+    svg(),
     postcss({
       minimize: true,
       extract: resolve('lib/ProCrud.css'),

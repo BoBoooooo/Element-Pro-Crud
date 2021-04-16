@@ -63,7 +63,6 @@ import { formElement } from '../../componentsConfig';
   name: 'WidgetSubForm',
   components: {
     Draggable,
-    WidgetFormItem: () => import('../../WidgetFormItem.vue'),
   },
 })
 export default class WidgetSubForm extends Vue {

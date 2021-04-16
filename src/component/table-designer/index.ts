@@ -9,4 +9,14 @@ TableDesigner.install = function (Vue, options) {
   Vue.component(TableDesigner.name, TableDesigner);
 };
 
+// 定义 install 方法
+const install: any = (Vue) => {
+  if (install.installed) return;
+  install.installed = true;
+  Vue.component(TableDesigner.name, TableDesigner);
+};
+
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
 export default TableDesigner;

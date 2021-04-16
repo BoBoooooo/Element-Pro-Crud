@@ -114,7 +114,7 @@ export default defineComponent({
       default: 'data.list',
     },
     rowKey: {
-      type: Function,
+      type: [Function, String],
       default: (row) => row.id,
     },
     readOnly: {
