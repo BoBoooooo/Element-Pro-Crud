@@ -1,4 +1,3 @@
-const { terser } = require('rollup-plugin-terser');
 const { author, license, name, version } = require('../package.json');
 const getBanner = require('./utils/getBanner');
 const { globals } = require('./common.var');

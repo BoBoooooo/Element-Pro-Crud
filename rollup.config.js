@@ -74,6 +74,7 @@ module.exports = {
     terser(),
     visualizer({
       open: true,
+      brotliSize: true,
       gzipSize: true,
     }),
   ],
