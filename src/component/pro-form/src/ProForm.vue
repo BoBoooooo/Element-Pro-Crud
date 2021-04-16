@@ -195,7 +195,7 @@ export default class ProForm extends Vue {
             break;
           case 'hidden':
             this.$set(field, 'hidden', false);
-            this.models[_.field] = _.value;
+            this.models[_.field] = _.value ? _.value : null;
             break;
           case 'required':
             this.setUnRequired(field);
