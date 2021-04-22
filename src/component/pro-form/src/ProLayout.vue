@@ -136,8 +136,11 @@
 </template>
 
 <script>
-import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
+import VueCompositionApi, { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
+import Vue from 'vue';
 import Tabs from './components/Tabs/index.vue';
+
+Vue.use(VueCompositionApi);
 
 export default defineComponent({
   name: 'ProLayout',

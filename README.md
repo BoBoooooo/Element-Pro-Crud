@@ -18,89 +18,152 @@ ElementProCrud 快速搭建 CRUD 的利器
 [表单设计器](http://server.boboooooo.top:9997/#/form)
 
 [集成示例demo](http://server.boboooooo.top:9998)
-## Install
+## Start
 
-### NPM
+你可以引入整个 ElementProCrud，或是根据需要仅引入部分组件。我们先介绍如何引入完整的 ElementProCrud。
+
+### 完整引入
+
+在 main.js 中写入以下内容：
 
 ```
 npm i element-pro-crud -s
 ```
 
-引入方式
-
 ```javascript
-import Vue from 'vue';
+import Vue from 'vue'
 import ElementProCrud from 'element-pro-crud'
 import ElementUI from 'element-ui'
-import 'element-pro-crud/lib/ProCrud.css'
+import 'element-pro-crud/lib/css/pro-crud.css'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 Vue.use(ElementProCrud)
 ```
-<!-- 
-按需引入
+
+以上代码便完成了 ElementProCrud 的引入。需要注意的是，样式文件需要单独引入。
+
+### 按需引入
+
+借助 babel-plugin-component，我们可以只引入需要的组件，以达到减小项目体积的目的。
+
+首先，安装 [babel-plugin-component](https://www.npmjs.com/package/babel-plugin-component)：
 
 ```javascript
-  import Vue from 'vue';
-  import { ProForm, ProTable, CrudTable, FormDesigner, TableDesigner } from 'element-pro-crud';
-  Vue.use(ProForm);
-  Vue.use(ProTable);
-  Vue.use(FormDesigner);
-  Vue.use(TableDesigner);
-  Vue.use(CrudTable, {
-      getFormDetail: (tablename) => AxiosPromise(formJSON);// 获取某个表单设计json
-      getTableDetail: (tablename) => AxiosPromise(tableJSON);// 获取某个表格设计json
-      crud: (dml: DML, tableName: string, data?: object, params?: object)=> AxiosPromise; // 通用CRUD封装
-  })
-``` -->
+npm install babel-plugin-component -D
+```
 
-### CDN
+然后，将 .babelrc 修改为：
+
+```javascript
+{
+  presets: ['@vue/cli-plugin-babel/preset'],
+  plugins: [
+    [
+      'component',
+      {
+        libraryName: 'element-pro-crud',
+        styleLibrary: {
+          name: 'css',
+          base: false,
+        },
+      },
+    ],
+  ],
+};
+```
+
+接下来，如果你只希望引入部分组件，比如 FormDesigner 和 ProForm main.js 中写入以下内容：
+
+```javascript
+import Vue from 'vue'
+import { ProForm, FormDesigner } from 'element-pro-crud'
+Vue.use(FormDesigner)
+Vue.use(ProForm)
+new Vue({
+  el: '#app',
+  render: h => h(App)
+})
+```
+
+### 全局配置
+
+在引入 ElementProCrud 时，可以传入一个全局配置对象。提供了获取表单表格 json 的 axios 请求方法以及通用 CRUD 请求。具体操作如下：
+
+```javascript
+{
+  getFormDetail: formName => AxiosPromise(formJSON) // 传入获取表单json的axios请求
+  getTableDetail: tableName => AxiosPromise(tableJSON) // 传入获取表格json的axios请求
+  crud: (dml: DML, tableName: string, data?: object, params?: object) =>
+    AxiosPromise // 通用CRUD请求封装
+}
+```
+
+详见各个组件教程文档。
+
+## CDN
+
+::: tip
+目前可以通过 [cdn.jsdelivr.net/npm/element-pro-crud/lib](https://cdn.jsdelivr.net/npm/element-pro-crud/lib/) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
+:::
+
+::: warning
+注意 cdn 引入组件名为`kebab-case`
+:::
+
+### 全局引入
 
 ```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <!-- 引入ProCrud CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/ProCrud.css" />
-    <!-- 引入ElementUI CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
-    />
-  </head>
-  <body>
-    <div id="app">
-      <form-designer ref="form"></form-designer>
-      <table-designer ref="table"></table-designer>
-    </div>
-  </body>
-  <!-- import Vue before Element -->
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <!-- import ElementUI -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <!-- import ElementProCrud -->
-  <script src="https://cdn.jsdelivr.net/npm/element-pro-crud@latest/lib/ProCrud.umd.js"></script>
-  
-  <script>
-    new Vue({
-      el: "#app"
-    });
-  </script>
-</html>
+<!-- import ElementProCrud CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/css/pro-crud.css" />
+<!-- import ElementUI CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import ElementUI -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- import ElementProCrud -->
+<script src="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/pro-crud.js"></script>
+```
+
+### 按需引入
+
+例如单独引入表单设计器
+
+```html
+<!-- import FormDesigner CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/css/form-designer.css" />
+<!-- import ElementUI CSS -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import ElementUI -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- import FormDesigner -->
+<script src="https://cdn.jsdelivr.net/npm/element-pro-crud/lib/form-designer.js"></script>
 ```
 
 ## 组件列表
 
-- `ProForm` 根据表单设计器 json 自动渲染表单
+| 组件名          | 说明         |
+| :-------------- | :----------- |
+| `ProForm`       | 表单生成器   |
+| `ProTable`      | 表格生成器   |
+| `CrudTable`     | 增删改查表格 |
+| `FormDesigner`  | 表单设计器   |
+| `TableDesigner` | 表格设计器   |
 
-- `ProTable` 二次封装 el-table
+## 第三方库
 
-- `CrudTable` 高级增删改查 CrudTable
-
-- `FormDesigner` 表单设计器
-
-- `TableDesigner` 表格设计器
-
+| 组件名         | 说明           | 版本号    | 说明                           | 引入方式(CDN 或者 NPM 引入均可)                                                           |
+| :------------- | :------------- | :-------- | :----------------------------- | :---------------------------------------------------------------------------------------- |
+| element-ui     | 饿了么 UI      | `^2.15.1` | 需在 element-pro-crud 之前引入 | https://unpkg.com/element-ui/lib/index.js                                                 |
+| ace            | 代码在线编辑器 | `^1.4.12` | 表单设计器/表格设计器使用      | https://cdn.bootcdn.net/ajax/libs/ace/test/ace.js                                         |
+| tinymce        | 富文本编辑器   | `^4.7.5`  | 表单设计器/表格设计器使用      | https://cdn.bootcdn.net/ajax/libs/tinymce/4.7.5/tinymce.min.js                            |
+| echarts        | echarts 图表   | `^5.0.1`  | 表单设计器/表格设计器使用      | https://cdn.bootcdn.net/ajax/libs/echarts/5.0.1/echarts.min.js                            |
+| vue-treeselect | 树形下拉框     | `^0.4.0`  | 表单设计器/表格设计器使用      | https://cdn.jsdelivr.net/npm/@riophae/vue-treeselect@0.4.0/dist/vue-treeselect.umd.min.js |
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)

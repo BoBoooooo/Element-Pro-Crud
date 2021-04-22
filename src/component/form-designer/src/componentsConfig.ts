@@ -156,7 +156,7 @@ export const basicComponents = [
     },
   },
   {
-    type: 'date',
+    type: 'time',
     name: '时间选择器',
     labelWidth: undefined,
     hidden: false,
