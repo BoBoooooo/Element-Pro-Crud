@@ -18,12 +18,12 @@
       }"
       class="form"
       :model="models"
-      :label-position="data.config.labelPosition"
-      :label-width="data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'"
-      :size="data.config.size"
+      :label-position="data && data.config && data.config.labelPosition"
+      :label-width="data && data.config && data.config.labelWidth ? data.config.labelWidth + 'px' : '140px'"
+      :size="data && data.config && data.config.size"
     >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
-      <template v-for="(item, index) in data.list">
+      <template v-for="(item, index) in (data && data.list) || []">
         <ProLayout :models="models" :key="index" :data="data" v-on="$listeners" :item="item" :readOnly="readOnly" :rules="rules" :remote="remote" :formTableConfig="formTableConfig"></ProLayout>
       </template>
     </el-form>
@@ -52,6 +52,7 @@ export default class ProForm extends Vue {
     type: Object,
     default: () => ({
       config: {},
+      list: [],
     }),
   })
   data: any;
@@ -115,7 +116,7 @@ export default class ProForm extends Vue {
   linkEffect: any = {};
 
   created() {
-    if (this.data.list) {
+    if (this.data && this.data.list) {
       // 根据数据结构生成给子组件的数据源
       this.generateModel(this.data.list);
     }
