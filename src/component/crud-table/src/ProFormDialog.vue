@@ -48,9 +48,11 @@
 <script lang="ts">
 import guid from '@/utils/generator';
 import { DML, fn } from '@/types/common';
-import { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect, h } from '@vue/composition-api';
+import VueCompositionApi, { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect, h } from '@vue/composition-api';
 import ProForm from '@/component/pro-form/src/ProForm.vue';
-import { VNode } from 'vue';
+import Vue, { VNode } from 'vue';
+
+Vue.use(VueCompositionApi);
 
 const STATUS = {
   CREATE: 0,

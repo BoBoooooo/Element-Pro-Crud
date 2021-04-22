@@ -62,8 +62,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api';
+import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
 import { columnConfig } from '@/types/common';
+import Vue from 'vue';
+
+Vue.use(VueCompositionApi);
 
 export default defineComponent({
   name: 'Column',

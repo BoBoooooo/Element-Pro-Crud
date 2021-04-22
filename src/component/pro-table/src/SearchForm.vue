@@ -26,9 +26,11 @@
 <script lang="ts">
 import { diGuiTree } from '@/utils/utils';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { defineComponent, PropType, ref, reactive, computed } from '@vue/composition-api';
+import VueCompositionApi, { defineComponent, PropType, ref, reactive, computed } from '@vue/composition-api';
 import { columnConfig, searchParamsEntity } from '@/types/common';
 import SeniorSearchForm from './SeniorSearchForm.vue';
+
+Vue.use(VueCompositionApi);
 
 export default defineComponent({
   name: 'SearchForm',

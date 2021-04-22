@@ -143,11 +143,14 @@
 </template>
 
 <script>
-import { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
+import Vue from 'vue';
+import VueCompositionApi, { defineComponent, ref, toRef, toRefs, watch, nextTick, watchEffect } from '@vue/composition-api';
 import Draggable from 'vuedraggable';
 import { random, generateTd } from '@/utils/generator';
 import WidgetFormItem from './WidgetFormItem.vue';
 import WidgetTabs from './components/Tabs/WidgetTabs.vue';
+
+Vue.use(VueCompositionApi);
 
 export default defineComponent({
   name: 'WidgetLayout',
