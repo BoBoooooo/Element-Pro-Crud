@@ -48,8 +48,9 @@
 <script lang="ts">
 import guid from '@/utils/generator';
 import { DML, fn } from '@/types/common';
-import { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect } from '@vue/composition-api';
+import { defineComponent, PropType, ref, Ref, reactive, computed, set, watch, watchEffect, h } from '@vue/composition-api';
 import ProForm from '@/component/pro-form/src/ProForm.vue';
+import { VNode } from 'vue';
 
 const STATUS = {
   CREATE: 0,
@@ -122,7 +123,7 @@ export default defineComponent({
     },
   },
   setup(props, { root, emit }) {
-    const { $PROCRUD, $message } = root;
+    const { $PROCRUD, $message, $notify } = root;
 
     const generateDialogForm: Ref<any> = ref(null);
 
@@ -255,10 +256,21 @@ export default defineComponent({
             });
           });
         })
-        .catch(() => {
+        .catch((e) => {
           // 数据校验失败
+          // 数据校验失败
+          const messages = Object.values(e)
+            .flat(1)
+            .map((_) => _.message);
+          const newDatas: VNode[] = [];
+          for (const i of messages) {
+            newDatas.push(h('p', {}, i));
+          }
+          $notify.error({
+            title: '表单校验失败,请检查',
+            message: h('div', { style: 'color: teal' }, newDatas),
+          });
           btnSaveIsLoading.value = false;
-          $message.warning('表单校验失败,请检查');
         });
     };
 

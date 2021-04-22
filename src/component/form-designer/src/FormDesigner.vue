@@ -485,9 +485,14 @@ export default {
     },
     // 预览点确定获取表单数据
     handleTest() {
-      this.$refs.proForm.getData().then((data) => {
-        this.$alert(data, '').catch(() => {});
-      });
+      this.$refs.proForm
+        .getData()
+        .then((data) => {
+          this.$alert(data, '').catch(() => {});
+        })
+        .catch((err) => {
+          this.$alert(JSON.stringify(err), '').catch(() => {});
+        });
     },
     // 生成json
     handleGenerateJson() {

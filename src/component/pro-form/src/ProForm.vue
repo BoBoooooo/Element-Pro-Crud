@@ -302,7 +302,6 @@ export default class ProForm extends Vue {
   }
 
   // ----全局api----
-
   // 先验证再获取表单内容
   getData(original: boolean) {
     return new Promise((resolve, reject) => {
@@ -310,6 +309,15 @@ export default class ProForm extends Vue {
         if (valid) {
           resolve(original ? JSON.parse(JSON.stringify(this.models)) : this.filterFormData());
         } else {
+          // 校验失败时focus到文本框
+          setTimeout(() => {
+            const isError: any = document.getElementsByClassName('is-error');
+            if (isError[0].querySelector('input')) {
+              isError[0].querySelector('input').focus();
+            } else if (isError[0].querySelector('textarea')) {
+              isError[0].querySelector('textarea').focus();
+            }
+          }, 100);
           reject(obj);
         }
       });
