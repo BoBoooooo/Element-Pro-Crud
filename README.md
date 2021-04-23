@@ -78,8 +78,9 @@ npm install babel-plugin-component -D
 ```javascript
 import Vue from 'vue'
 import { ProForm, FormDesigner } from 'element-pro-crud'
-Vue.use(FormDesigner)
+
 Vue.use(ProForm)
+Vue.use(FormDesigner)
 new Vue({
   el: '#app',
   render: h => h(App)
