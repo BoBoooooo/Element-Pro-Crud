@@ -1,6 +1,6 @@
 const globals = {
   vue: 'Vue',
-  ELEMENT: 'element-ui',
+  'element-ui': 'ELEMENT',
 };
 
 module.exports = {

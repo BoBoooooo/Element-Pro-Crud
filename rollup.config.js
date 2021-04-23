@@ -13,10 +13,8 @@ import vuePlugin from 'rollup-plugin-vue';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import postcss from 'rollup-plugin-postcss';
 import { visualizer } from 'rollup-plugin-visualizer';
-import externals from 'rollup-plugin-node-externals';
 import alias from '@rollup/plugin-alias';
 import svg from 'rollup-plugin-svg';
-import { not_externals, isExternal } from './build/utils/isExternal';
 
 const { terser } = require('rollup-plugin-terser');
 
@@ -24,16 +22,11 @@ const { join, resolve } = require('path');
 
 const OutputOptions = require('./build/output');
 
-const globals = {
-  vue: 'Vue',
-  ELEMENT: 'element-ui',
-};
-
 module.exports = {
   input: join(__dirname, '/src/index.ts'),
   output: OutputOptions(),
   // eslint-disable-next-line no-useless-escape
-  external: Object.keys(globals || {}).filter((v) => !/^[\.\/]/.test(v)),
+  external: ['vue', 'element-ui'],
   plugins: [
     // 路径别名
     alias({
@@ -48,20 +41,16 @@ module.exports = {
       minimize: true,
       extract: resolve('lib/ProCrud.css'),
     }),
-    externals({
-      devDeps: false,
-    }),
+    // externals({
+    //   devDeps: false,
+    // }),
     nodeResolve({
       extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       preferBuiltins: true,
       jsnext: true,
       module: true,
     }),
-    commonjs({
-      ignore: (name) => {
-        return isExternal(not_externals, name);
-      },
-    }),
+    commonjs(),
     babel({
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',

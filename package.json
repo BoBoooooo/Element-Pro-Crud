@@ -86,7 +86,6 @@
     "progress-bar-webpack-plugin": "^2.1.0",
     "right-pad": "^1.0.1",
     "rollup": "^2.44.0",
-    "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-svg": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import '@/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
+// import '@/icons/autoImportSvg'; // 自动导入src/icon目录下的svg图标
 import ProFormItem from '@/component/pro-form/src/ProFormItem.vue';
 import ProLayout from '@/component/pro-form/src/ProLayout.vue';
 import WidgetFormItem from './src/WidgetFormItem.vue';
