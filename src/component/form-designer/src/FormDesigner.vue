@@ -82,7 +82,7 @@
         <slot name="custom-btn"></slot>
       </div>
     </el-header>
-    <!-- 对话框 -->
+    <!-- 主体区域 -->
     <el-container style="height: calc(100% - 54px)">
       <!-- 左侧边栏 -->
       <el-aside style="width: 20%; max-width: 250px">

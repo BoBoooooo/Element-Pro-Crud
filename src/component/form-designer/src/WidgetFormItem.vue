@@ -198,7 +198,7 @@
       <h4 style="text-align: center; margin: 0">自定义插槽({{ element.model }})</h4>
     </template>
     <template v-if="element.type === 'treeselect'">
-      <treeselect v-model="element.options.defaultValue" :options="[]" />
+      <treeselect v-model="element.options.defaultValue" :options="[]" :placeholder="element.options.placeholder" />
     </template>
     <template v-if="element.type === 'richtext'">
       <Tinymce :height="400" v-model="element.options.defaultValue" />
