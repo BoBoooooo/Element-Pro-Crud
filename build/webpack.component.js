@@ -3,6 +3,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const Components = require('../components.json');
 const config = require('./config');
@@ -36,7 +37,12 @@ const webpackConfig = {
     hints: false,
   },
   optimization: {
-    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: true,
+      }),
+    ],
   },
   module: {
     rules: [
@@ -52,7 +58,7 @@ const webpackConfig = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: ['cache-loader', 'babel-loader?cacheDirectory=true'],
       },
       {
         test: /\.ts$/,
