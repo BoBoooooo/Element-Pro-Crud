@@ -34,6 +34,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { AnyObject } from '@/types/common';
 import { formElement } from '@/component/form-designer/src/componentsConfig';
+import dayjs from 'dayjs';
 import ProLayout from './ProLayout.vue';
 
 @Component({
@@ -280,11 +281,12 @@ export default class ProForm extends Vue {
   // 表单默认值回填单独拉出来封装
   setDefaultValue(config) {
     // 如果时间选择器需要默认值,默认回填当前日期
-    if (config.type === 'date') {
+    if (config.type === 'date' || config.type === 'time') {
       if (config.options.defaultValue) {
         const { format } = config.options;
-        if (format && format !== '') {
-          this.models[config.model] = this.dayjs().format(format.toUpperCase());
+        if (format) {
+          console.log(format);
+          this.models[config.model] = dayjs().format(config.type === 'time' ? format : format.toUpperCase());
         }
       } else {
         this.models[config.model] = null;

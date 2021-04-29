@@ -20,7 +20,7 @@
         <span>高级查询</span>
       </div>
       <div>
-        <ProForm ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
+        <ProForm v-if="visible" ref="generateDialogForm" :data="formDesign" :remote="remoteFuncs" :entity.sync="entity" />
         <div style="float: right">
           <el-button size="small" type="primary" icon="el-icon-search" @click="getSearchFormData()">查询</el-button>
           <el-button size="small" style="margin-right: 10px" icon="el-icon-close" @click="resetForm">关闭</el-button>

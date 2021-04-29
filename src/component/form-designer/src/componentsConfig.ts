@@ -163,7 +163,7 @@ export const basicComponents = [
     icon: 'clock',
     options: {
       hiddenLabel: false,
-      defaultValue: '',
+      defaultValue: false,
       readonly: false,
       disabled: false,
       editable: true,
@@ -172,7 +172,7 @@ export const basicComponents = [
       startPlaceholder: '',
       endPlaceholder: '',
       type: 'datetime',
-      format: 'yyyy-MM-dd hh:mm:ss',
+      format: 'hh:mm:ss',
       timestamp: false,
       required: false,
       width: '100%',
@@ -686,4 +686,4 @@ export const elementComponentConfig = {
 };
 
 // 表单类组件枚举
-export const formElement = ['input', 'textarea', 'number', 'radio', 'checkbox', 'date', 'rate', 'color', 'select', 'switch', 'slider', 'cascader', 'treeselect', 'richtext'];
+export const formElement = ['input', 'textarea', 'number', 'radio', 'checkbox', 'date', 'time', 'rate', 'color', 'select', 'switch', 'slider', 'cascader', 'treeselect', 'richtext'];

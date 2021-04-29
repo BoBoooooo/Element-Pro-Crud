@@ -228,6 +228,7 @@
             elementConfig.type == 'color' ||
             elementConfig.type == 'switch' ||
             elementConfig.type == 'date' ||
+            elementConfig.type == 'time' ||
             elementConfig.type == 'select' ||
             elementConfig.type == 'html')
         "
@@ -246,7 +247,7 @@
           >清空</el-button
         >
         <el-color-picker v-if="elementConfig.type == 'color'" v-model="elementConfig.options.defaultValue" :show-alpha="elementConfig.options.showAlpha"></el-color-picker>
-        <el-switch v-if="elementConfig.type == 'switch' || elementConfig.type == 'date'" v-model="elementConfig.options.defaultValue"></el-switch>
+        <el-switch v-else-if="elementConfig.type == 'switch' || elementConfig.type == 'date' || elementConfig.type == 'time'" v-model="elementConfig.options.defaultValue"></el-switch>
       </el-form-item>
       <el-form-item label="最多输入" v-if="elementConfig.options.maxLength !== undefined">
         <el-input v-model="elementConfig.options.maxLength" placeholder="请输入最大长度">

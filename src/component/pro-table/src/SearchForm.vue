@@ -105,6 +105,8 @@ export default defineComponent({
           },
         ];
       }
+      // 一键搜需要清空高级查询条件
+      paramsTips.value = [];
       emit('update:searchFormCondition', params);
     };
 
@@ -151,6 +153,7 @@ export default defineComponent({
         operator: item.operator,
         label: seachableColumns.value.find((s) => s.prop === item.field)!.label,
       }));
+      searchContent.value = '';
       emit('update:searchFormCondition', params);
       emit('click');
     };
