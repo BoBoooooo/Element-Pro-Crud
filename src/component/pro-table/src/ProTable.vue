@@ -371,7 +371,7 @@ export default defineComponent({
 
     // 清空已选择项
     const clearSelection = () => {
-      tableRefs.value.clearSelection();
+      tableRefs.value!.clearSelection();
     };
 
     // pageSize改变事件

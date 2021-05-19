@@ -7,8 +7,8 @@
 
 <template>
   <div class="search-form-container">
-    <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="small" @change="changeEvent" v-model="searchContent" class="input"> </el-input>
-    <el-button size="small" type="primary" icon="el-icon-search" @click="btnSearchOnClick()" class="tool-btn">查询</el-button>
+    <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="small" v-model="searchContent" class="input"> </el-input>
+    <el-button size="small" type="primary" icon="el-icon-search" @click="btnSearchOnClick" class="tool-btn">查询</el-button>
     <!-- 高级查询表单 -->
     <SeniorSearchForm v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchForm>
     <el-button size="small" icon="el-icon-refresh" @click="clearEvent()" class="tool-btn">清空</el-button>
@@ -110,11 +110,6 @@ export default defineComponent({
       emit('update:searchFormCondition', params);
     };
 
-    // 输入框change事件
-    const changeEvent = (val: string) => {
-      getParams();
-      emit('click');
-    };
     // 获取高级查询组件中的查询条件
     const getFetchParamsSearch = (data) => {
       paramsTips.value = [];
@@ -167,7 +162,6 @@ export default defineComponent({
       clearEvent,
       btnSearchOnClick,
       getParams,
-      changeEvent,
       getFetchParamsSearch,
     };
   },
