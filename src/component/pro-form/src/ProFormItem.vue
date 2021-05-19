@@ -8,12 +8,7 @@
 感谢大佬!
 -->
 <template>
-  <el-form-item
-    :rules="widget.rules || []"
-    :prop="formElement.includes(widget.type) ? widget.model : undefined"
-    :label-width="widget.options.hiddenLabel ? '0' : labelWidth"
-    :class="widget.options.className"
-  >
+  <el-form-item :rules="getRules" :prop="formElement.includes(widget.type) ? widget.model : undefined" :label-width="widget.options.hiddenLabel ? '0' : labelWidth" :class="widget.options.className">
     <template #label>
       <template v-if="widget.options.hiddenLabel ? '' : label">
         <span v-html="label"></span>
@@ -498,6 +493,18 @@ export default class ProFormItem extends Vue {
     } else if (this.widget.options.remote === 'custom') {
       this.visible = true;
     }
+  }
+
+  get getRules() {
+    const arr = this.widget.rules || [];
+    if (arr) {
+      arr.forEach((element) => {
+        if (element.pattern) {
+          element.pattern = new RegExp(this.widget.options.pattern);
+        }
+      });
+    }
+    return arr;
   }
 
   // 子表在只读模式下隐藏增删改按钮
