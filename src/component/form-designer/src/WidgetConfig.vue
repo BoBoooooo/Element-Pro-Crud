@@ -678,7 +678,7 @@ export default {
           // eslint-disable-next-line prefer-destructuring
           message = this.elementConfig.options.message;
         }
-        this.validator.pattern = { pattern: new RegExp(val), message };
+        this.validator.pattern = { pattern: new RegExp(val), message, trigger: 'blur' };
       } else {
         this.validator.pattern = null;
       }
