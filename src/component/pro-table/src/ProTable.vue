@@ -369,6 +369,11 @@ export default defineComponent({
       fetchHandler();
     };
 
+    // 清空已选择项
+    const clearSelection = () => {
+      tableRefs.value.clearSelection();
+    };
+
     // pageSize改变事件
     const handleSizeChange = (size) => {
       pagination.value.pageSize = size;
@@ -424,6 +429,7 @@ export default defineComponent({
       tableListeners,
       searchFormCondition,
       tableReload,
+      clearSelection,
     };
   },
 });

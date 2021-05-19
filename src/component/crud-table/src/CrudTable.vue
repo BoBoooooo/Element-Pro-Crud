@@ -310,6 +310,11 @@ export default defineComponent({
     const tableReload = () => {
       proTableRef.value.tableReload();
     };
+    // 清空已选择项
+    const clearSelection = () => {
+      proTableRef.value.clearSelection();
+    };
+
     const { columns: propsColumns } = props;
     // 如果外侧传入了columns则不发起请求
     if (propsColumns) {
@@ -619,6 +624,7 @@ export default defineComponent({
 
     return {
       tableReload,
+      clearSelection,
       ...handlerButtonMethods,
       currentRow,
       selectedRows,
