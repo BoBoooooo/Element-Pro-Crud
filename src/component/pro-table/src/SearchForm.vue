@@ -7,7 +7,7 @@
 
 <template>
   <div class="search-form-container">
-    <el-input placeholder="请输入查询内容" @clear="clearEvent" clearable size="small" v-model="searchContent" class="input"> </el-input>
+    <el-input placeholder="请输入查询内容" @clear="clearEvent" @keyup.enter.native="btnSearchOnClick" clearable size="small" v-model="searchContent" class="input"> </el-input>
     <el-button size="small" type="primary" icon="el-icon-search" @click="btnSearchOnClick" class="tool-btn">查询</el-button>
     <!-- 高级查询表单 -->
     <SeniorSearchForm v-if="showSeniorSearchFormButton" :remoteFuncs="remoteFuncs" @fetchSearch="getFetchParamsSearch" :columns="columns"> </SeniorSearchForm>
