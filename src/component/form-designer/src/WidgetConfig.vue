@@ -25,6 +25,16 @@
       <el-form-item label="显示文本" v-if="Object.keys(elementConfig.options).indexOf('text') >= 0">
         <el-input size="mini" v-model="elementConfig.options.text"></el-input>
       </el-form-item>
+      <el-form-item label="按钮类型" v-if="Object.keys(elementConfig.options).indexOf('btnType') >= 0">
+        <el-select size="mini" v-model="elementConfig.options.btnType">
+          <el-option value="primary" label="primary" />
+          <el-option value="sussess" label="sussess" />
+          <el-option value="warning" label="warning" />
+          <el-option value="danger" label="danger" />
+          <el-option value="info" label="info" />
+          <el-option value="text" label="text" />
+        </el-select>
+      </el-form-item>
       <el-form-item :label="elementConfig.type === 'html' ? 'HTML' : '图表数据'" v-if="elementConfig.type === 'html' || elementConfig.type.includes('chart-')">
         <el-button style="float: right" icon="el-icon-check" size="mini" @click="saveJson">保存修改</el-button>
         <div id="jsoneditor2" ref="jsoneditor2" style="height: 300px; width: 100%"></div>
