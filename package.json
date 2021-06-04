@@ -10,7 +10,7 @@
   "typings": "types/index.d.ts",
   "description": "二次封装Table,Form组件,配套表单,表格设计器,一键Crud",
   "private": false,
-  "license": "MIT",
+  "license": "LGPL",
   "keyword": "ElementUI,CRUD,el-table,el-form,表单设计器",
   "keywords": [
     "CRUD",
