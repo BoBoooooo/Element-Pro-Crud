@@ -163,6 +163,6 @@ new Vue({
 | vue-treeselect | 树形下拉框     | `^0.4.0`  | 表单设计器/表格设计器使用      | https://cdn.jsdelivr.net/npm/@riophae/vue-treeselect@0.4.0/dist/vue-treeselect.umd.min.js |
 ## License
 
-[LGPL](https://opensource.org/licenses/lgpl-license)
+[LGPL](https://opensource.org/licenses/LGPL-3.0)
 
 Copyright (c) 2020-present, BoBoooooo
