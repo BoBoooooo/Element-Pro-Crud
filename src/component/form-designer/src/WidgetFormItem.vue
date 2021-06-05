@@ -58,7 +58,7 @@
       <el-divider :content-position="element.options.align">{{ element.name }}</el-divider>
     </template>
     <template v-if="element.type === 'button'">
-      <el-button type="primary">{{ element.options.text }}</el-button>
+      <el-button :type="element.options.btnType">{{ element.options.text }}</el-button>
     </template>
     <template v-if="element.type === 'textarea'">
       <el-input

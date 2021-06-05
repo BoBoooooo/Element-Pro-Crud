@@ -71,7 +71,7 @@
       </el-input>
     </template>
     <template v-if="widget.type == 'button'">
-      <el-button type="primary" @click="btnOnClick(widget)">{{ widget.options.text }}</el-button>
+      <el-button :type="widget.options.btnType" @click="btnOnClick(widget)">{{ widget.options.text }}</el-button>
     </template>
     <template v-if="widget.type == 'text'">
       <h3

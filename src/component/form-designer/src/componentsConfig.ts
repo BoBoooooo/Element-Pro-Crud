@@ -437,6 +437,7 @@ export const advanceComponents = [
     options: {
       text: '确认',
       eventName: 'btnCallback',
+      btnType: 'primary',
       hiddenLabel: true,
     },
   },
