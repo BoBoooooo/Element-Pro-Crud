@@ -23,6 +23,8 @@
             :formTableConfig="formTableConfig"
             :key="citem.key"
             v-on="$listeners"
+          >
+            <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)"> <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot> </template
           ></ProLayout>
           <!-- 正常组件通过ProFormItem生成 -->
           <ProFormItem
@@ -38,6 +40,9 @@
             v-on="$listeners"
             :formTableConfig="formTableConfig"
           >
+            <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+              <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot>
+            </template>
           </ProFormItem>
         </template>
       </el-col>
@@ -82,6 +87,8 @@
               :remote="remote"
               :formTableConfig="formTableConfig"
               :key="citem.key"
+            >
+              <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)"> <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot> </template
             ></ProLayout>
             <ProFormItem
               v-else-if="!citem.hidden"
@@ -96,6 +103,9 @@
               @chartOnClick="chartOnClick"
               :formTableConfig="formTableConfig"
             >
+              <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+                <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot>
+              </template>
             </ProFormItem>
           </template>
         </td>
@@ -114,6 +124,8 @@
       @btnOnClick="btnOnClick"
       v-on="$listeners"
       :formTableConfig="formTableConfig"
+    >
+      <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)"> <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot> </template
     ></Tabs>
   </div>
   <!-- 普通行布局方式 -->
@@ -131,6 +143,9 @@
       v-on="$listeners"
       :formTableConfig="formTableConfig"
     >
+      <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+        <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot>
+      </template>
     </ProFormItem>
   </div>
 </template>

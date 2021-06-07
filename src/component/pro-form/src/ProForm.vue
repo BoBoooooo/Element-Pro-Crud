@@ -24,7 +24,11 @@
     >
       <!-- 遍历从父组件传入的data，data下有list和config两个属性，list下的每个对象是表示一行组件的集合 -->
       <template v-for="(item, index) in (data && data.list) || []">
-        <ProLayout :models="models" :key="index" :data="data" v-on="$listeners" :item="item" :readOnly="readOnly" :rules="rules" :remote="remote" :formTableConfig="formTableConfig"></ProLayout>
+        <ProLayout :models="models" :key="index" :data="data" v-on="$listeners" :item="item" :readOnly="readOnly" :rules="rules" :remote="remote" :formTableConfig="formTableConfig">
+          <template :slot="slotName" slot-scope="scope" v-for="slotName in Object.keys($scopedSlots)">
+            <slot :name="slotName" :model="scope.model" :widget="scope.widget"></slot>
+          </template>
+        </ProLayout>
       </template>
     </el-form>
   </div>
