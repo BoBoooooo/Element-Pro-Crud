@@ -27,8 +27,9 @@
       </el-form-item>
       <el-form-item label="按钮类型" v-if="Object.keys(elementConfig.options).indexOf('btnType') >= 0">
         <el-select size="mini" v-model="elementConfig.options.btnType">
+          <el-option value="" label="normal" />
           <el-option value="primary" label="primary" />
-          <el-option value="sussess" label="sussess" />
+          <el-option value="success" label="success" />
           <el-option value="warning" label="warning" />
           <el-option value="danger" label="danger" />
           <el-option value="info" label="info" />
