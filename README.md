@@ -4,7 +4,7 @@
 
 # 🎉 ElementProCrud 🎉
 
-ElementProCrud 快速搭建 CRUD 的利器
+ElementProCrud 快速搭建 CRUD 的利器 (抽空会考虑全面升级vue3版本)
 
 [![NPM Version](http://img.shields.io/npm/v/element-pro-crud.svg?style=flat)](https://www.npmjs.org/package/element-pro-crud)
 [![NPM Downloads](https://img.shields.io/npm/dm/element-pro-crud.svg?style=flat)](https://www.npmjs.org/package/element-pro-crud)
