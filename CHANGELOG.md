@@ -1,10 +1,90 @@
-## [0.9.4-1](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.2...0.9.4-1) (2021-04-16)
+## [0.9.4-14](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.4-5...0.9.4-14) (2022-01-25)
+
+### 🌟 新功能
+范围|描述|commitId
+--|--|--
+ - | 补充按钮类型选择 | [1ff2f2e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1ff2f2e)
+ - | 补充按钮默认样式和成功样式 | [ff55bbb](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ff55bbb)
+ - | add button type config [@0](https://github.com/0).9.4-13 | [627ed06](https://github.com/BoBoooooo/Element-Pro-Crud/commit/627ed06)
+ ProTable,CrudTable | 新增clearSelection方法 [@0](https://github.com/0).9.4-8 | [f825778](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f825778)
+
+
+### 🐛 Bug 修复
+范围|描述|commitId
+--|--|--
+ - | 修复一键搜清空重复请求bug [@0](https://github.com/0).9.4-9 | [6d9b27f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6d9b27f)
+ - | 修复正则表达式触发bug [@0](https://github.com/0).9.4-11 | [3847c1c](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3847c1c)
+ - | 修复自定义正则表达式无效bug [@0](https://github.com/0).9.4-7 | [50f1334](https://github.com/BoBoooooo/Element-Pro-Crud/commit/50f1334)
+ ProForm | 修复自定义插槽组件失效bug | [7296969](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7296969)
+
+
+### 📝 文档
+范围|描述|commitId
+--|--|--
+ - | LGPL-3.0 | [2969875](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2969875)
+ - | update doc | [02eabc3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/02eabc3)
+ - | update doc | [4510958](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4510958)
+
+
+### 📦 持续集成
+范围|描述|commitId
+--|--|--
+ - | CHANGE LICENSE TO LGPL | [1a29da6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1a29da6)
+ - | CHANGE TO MIT LICENSE | [7b6db9d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7b6db9d)
+ - | update babel eslint version | [0d2f57a](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0d2f57a)
+
+
+### 🚀 性能优化
+范围|描述|commitId
+--|--|--
+ - | 时间选择器新增默认值功能,高级查询表单交互几处细节优化 [@0](https://github.com/0).9.4-6 | [2c753b9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2c753b9)
+ - | 一键搜支持回车查询 [@0](https://github.com/0).9.4-12 | [efc8e42](https://github.com/BoBoooooo/Element-Pro-Crud/commit/efc8e42)
+ - | 优化自定义校验正则表达式部分逻辑 [@0](https://github.com/0).9.4-10 | [f9c43fb](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f9c43fb)
+
+
+### chore
+范围|描述|commitId
+--|--|--
+ - | add build cache | [758a8bd](https://github.com/BoBoooooo/Element-Pro-Crud/commit/758a8bd)
+ - | update version to 0.9.4-14 | [5683411](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5683411)
+
+
+范围|描述|commitId
+--|--|--
+ - | Update README.md | [2c1e260](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2c1e260)
+
+## [0.9.4-5](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.4-4...0.9.4-5) (2021-04-23)
+
+### 🎨 代码样式
+范围|描述|commitId
+--|--|--
+ - | 表单设计器颜色优化 | [d3f1c63](https://github.com/BoBoooooo/Element-Pro-Crud/commit/d3f1c63)
+
+
+### chore
+范围|描述|commitId
+--|--|--
+ - | update version to 0.9.4-5 | [b912d96](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b912d96)
+
+
+范围|描述|commitId
+--|--|--
+ - | Update README.md | [cb846fc](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cb846fc)
+
+## [0.9.4-4](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.4-3...0.9.4-4) (2021-04-22)
+
+### 🐛 Bug 修复
+范围|描述|commitId
+--|--|--
+ - | 修复按需引入composition-api未引入问题 [@0](https://github.com/0).9.4-4 | [da6b0d6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/da6b0d6)
+ - | 修复表单json为null或者空对象情况内部报undefined问题 | [2d715b2](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2d715b2)
+
+## [0.9.4-3](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.3...0.9.4-3) (2021-04-22)
 
 ### 🌟 新功能
 范围|描述|commitId
 --|--|--
  - | 支持事件注入(规则 field:eventName) | [be10ddd](https://github.com/BoBoooooo/Element-Pro-Crud/commit/be10ddd)
- CrudTable | 新增动态插槽,直接跟表单设计器自定义插槽联动 [@0](https://github.com/0).9.2-14 | [e9a10e8](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e9a10e8)
 
 
 ### 🎨 代码样式
@@ -13,6 +93,83 @@
  - | 调整目录结构,GenerateForm改名为ProForm | [76fea47](https://github.com/BoBoooooo/Element-Pro-Crud/commit/76fea47)
  - | btn-bar css perf | [82fc351](https://github.com/BoBoooooo/Element-Pro-Crud/commit/82fc351)
  - | change /deep/ to ::v-deep | [c90dcf7](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c90dcf7)
+
+
+### 🐛 Bug 修复
+范围|描述|commitId
+--|--|--
+ - | 修复嵌套布局时点击事件bug [@0](https://github.com/0).9.3-4 | [c6e9fca](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c6e9fca)
+ - | 修复组件联动恢复默认状态时赋值bug | [1b7922e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1b7922e)
+
+
+### 📝 文档
+范围|描述|commitId
+--|--|--
+ - | update README | [8dee9b7](https://github.com/BoBoooooo/Element-Pro-Crud/commit/8dee9b7)
+
+
+### 📦 持续集成
+范围|描述|commitId
+--|--|--
+ - | 单独umd包补充svg | [1e3bd0b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1e3bd0b)
+ - | add install func | [7d76409](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7d76409)
+ - | add svgo-loader , add webpack build stat | [4a8be06](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4a8be06)
+ - | change gitignore | [5cf9c90](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5cf9c90)
+ - | change webpack config | [402daeb](https://github.com/BoBoooooo/Element-Pro-Crud/commit/402daeb)
+ - | change webpack config | [b353b5f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b353b5f)
+ - | remove dep | [f730cbf](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f730cbf)
+ - | webpack bundle | [f300c51](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f300c51)
+ - | webpack config change | [45ba957](https://github.com/BoBoooooo/Element-Pro-Crud/commit/45ba957)
+ - | webpack config change | [7b9f4b5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7b9f4b5)
+ - | webpack config change | [d807dd8](https://github.com/BoBoooooo/Element-Pro-Crud/commit/d807dd8)
+
+
+### 🔙 撤销
+范围|描述|commitId
+--|--|--
+ - | 暂时移除按需引入方式 | [282c502](https://github.com/BoBoooooo/Element-Pro-Crud/commit/282c502)
+
+
+### 🔨 代码重构
+范围|描述|commitId
+--|--|--
+ - | 移除异步组件写法 [@0](https://github.com/0).9.4-beta.1 | [5229582](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5229582)
+
+
+### 🚀 性能优化
+范围|描述|commitId
+--|--|--
+ - | 修改row-key默认支持type类型 | [8fa65a0](https://github.com/BoBoooooo/Element-Pro-Crud/commit/8fa65a0)
+ - | 移除window环境下option传入 | [ec4a169](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ec4a169)
+ - | 优化表单必填校验提醒[@0](https://github.com/0).9.4-3 | [83b9ba5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/83b9ba5)
+ - | remove ProLayout vuedraggable | [3f4b05e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3f4b05e)
+
+
+### chore
+范围|描述|commitId
+--|--|--
+ - | beta v42 | [f99b87e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f99b87e)
+ - | some change | [68ac53a](https://github.com/BoBoooooo/Element-Pro-Crud/commit/68ac53a)
+ - | update CHANGELOG | [892d946](https://github.com/BoBoooooo/Element-Pro-Crud/commit/892d946)
+ - | update crud version to 0.9.4 | [4a3e3be](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4a3e3be)
+ - | update crud version to 0.9.4-1 | [62f4ec9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/62f4ec9)
+ - | update crud version to 0.9.4-2 | [7d1edfd](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7d1edfd)
+ - | update version to 0.9.3-1 | [1083fd6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1083fd6)
+ - | update version to 0.9.3-2 | [042ab51](https://github.com/BoBoooooo/Element-Pro-Crud/commit/042ab51)
+ - | update version to 0.9.3-3 | [9cde249](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9cde249)
+ - | update version to 0.9.3-43 | [cb445af](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cb445af)
+
+## [0.9.3](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.2...0.9.3) (2021-04-10)
+
+### 🌟 新功能
+范围|描述|commitId
+--|--|--
+ CrudTable | 新增动态插槽,直接跟表单设计器自定义插槽联动 [@0](https://github.com/0).9.2-14 | [e9a10e8](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e9a10e8)
+
+
+### 🎨 代码样式
+范围|描述|commitId
+--|--|--
  - | change code style | [4cc4af1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4cc4af1)
 
 
@@ -21,7 +178,6 @@
 --|--|--
  - | 修复表格布局下组件初始化bug [@0](https://github.com/0).9.2-6 | [5ee737f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5ee737f)
  - | 修复级联选择器自定义value,label别称bug [@0](https://github.com/0).9.2-10 | [b9f738d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b9f738d)
- - | 修复嵌套布局时点击事件bug [@0](https://github.com/0).9.3-4 | [c6e9fca](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c6e9fca)
  - | 修复子表单初始化默认值不回填bug [@0](https://github.com/0).9.2-7 | [b89df0b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b89df0b)
  - | 修复子表单删除数据清空时数据刷新bug [@0](https://github.com/0).9.2-7 | [72d238e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/72d238e)
  - | CrudTable支持传入columns [@0](https://github.com/0).9.2-4 | [347ea93](https://github.com/BoBoooooo/Element-Pro-Crud/commit/347ea93)
@@ -39,13 +195,6 @@
 范围|描述|commitId
 --|--|--
  - | add prettier code formatter | [883f256](https://github.com/BoBoooooo/Element-Pro-Crud/commit/883f256)
- - | remove dep | [f730cbf](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f730cbf)
-
-
-### 🔙 撤销
-范围|描述|commitId
---|--|--
- - | 暂时移除按需引入方式 | [282c502](https://github.com/BoBoooooo/Element-Pro-Crud/commit/282c502)
 
 
 ### 🔨 代码重构
@@ -61,28 +210,23 @@
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
- - | 调整demo目录结构,新增表单示例formDemo | [ac46da5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ac46da5)
- - | form-designer css change [@0](https://github.com/0).9.2-13 | [6cf9cac](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6cf9cac)
  @0.9.2-10 | 移除popover属性,优化查询区域布局,composition-api重构searchForm | [8bc815e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/8bc815e)
  - | 表格布局支持级联动态隐藏 [@0](https://github.com/0).9.2-9 | [f947fb6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f947fb6)
+ - | 调整demo目录结构,新增表单示例formDemo | [ac46da5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ac46da5)
  - | 移除treeselect引用,减小umd包大小,更新至0.9.2-5 | [2e160e1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2e160e1)
  - | 优化表格设计器样式,移除lodash [@0](https://github.com/0).9.2-1 | [ba74705](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ba74705)
  - | 优化平铺查询模式下自定义按钮显示位置 | [805bbff](https://github.com/BoBoooooo/Element-Pro-Crud/commit/805bbff)
  - | 优化CrudTable插槽传入方式,修复 [@0](https://github.com/0).9.2-2 | [7853c58](https://github.com/BoBoooooo/Element-Pro-Crud/commit/7853c58)
  - | 只读模式下操作列默认隐藏 | [082a0a8](https://github.com/BoBoooooo/Element-Pro-Crud/commit/082a0a8)
+ - | form-designer css change [@0](https://github.com/0).9.2-13 | [6cf9cac](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6cf9cac)
 
 
 ### chore
 范围|描述|commitId
 --|--|--
- - | update CHANGELOG | [892d946](https://github.com/BoBoooooo/Element-Pro-Crud/commit/892d946)
- - | update crud version to 0.9.4 | [4a3e3be](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4a3e3be)
  - | update version to 0.9.2-1 | [a3064ef](https://github.com/BoBoooooo/Element-Pro-Crud/commit/a3064ef)
  - | update version to 0.9.2-15,refactor layout component | [6f25688](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6f25688)
  - | update version to 0.9.3 | [14b8e82](https://github.com/BoBoooooo/Element-Pro-Crud/commit/14b8e82)
- - | update version to 0.9.3-1 | [1083fd6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1083fd6)
- - | update version to 0.9.3-2 | [042ab51](https://github.com/BoBoooooo/Element-Pro-Crud/commit/042ab51)
- - | update version to 0.9.3-3 | [9cde249](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9cde249)
 
 ## [0.9.2](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.1...0.9.2) (2021-03-20)
 
@@ -95,6 +239,7 @@
 ### 🐛 Bug 修复
 范围|描述|commitId
 --|--|--
+ @0.9.1-1 | 修复device-btn样式丢失bug | [9c2915e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9c2915e)
  - | 修复删除提示bug [@0](https://github.com/0).9.1-6 | [05635ef](https://github.com/BoBoooooo/Element-Pro-Crud/commit/05635ef)
  - | 修复自定义错误提示语未及时更新bug/修复组件单独设置labelWidth失效bug/修复 [@0](https://github.com/0).9.1-11 | [3b71cb1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3b71cb1)
  - | 修复子表单编辑后无法还原之前表单数据bug [@0](https://github.com/0).9.1-7 | [d1c38a7](https://github.com/BoBoooooo/Element-Pro-Crud/commit/d1c38a7)
@@ -102,7 +247,6 @@
  - | 修复子表单宽度自适应bug | [27e2e36](https://github.com/BoBoooooo/Element-Pro-Crud/commit/27e2e36)
  - | 修复子表单行数据取消后无法还原原始数据bug [@0](https://github.com/0).9.1-8 | [3fc26a5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3fc26a5)
  - | 修复子表单bug [@0](https://github.com/0).9.1-3 | [f810d9c](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f810d9c)
- @0.9.1-1 | 修复device-btn样式丢失bug | [9c2915e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9c2915e)
 
 
 ### 🔨 代码重构
@@ -114,11 +258,11 @@
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
+ @0.9.1-5 | 布局组件支持嵌套子表单组件 | [b36c533](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b36c533)
+ - | 更新文档地址 | [3f9892b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3f9892b)
  - | 优化表格布局添加行列逻辑 | [88210a9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/88210a9)
  - | 优化表格布局样式,几处细节修复 | [e32ebf1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e32ebf1)
  - | 优化子表单数据为空的情况下显示效果 [@0](https://github.com/0).9.1-10 | [3a6aa60](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3a6aa60)
- @0.9.1-5 | 布局组件支持嵌套子表单组件 | [b36c533](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b36c533)
- - | 更新文档地址 | [3f9892b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3f9892b)
 
 ## [0.9.1](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.9.0...0.9.1) (2021-03-12)
 
@@ -148,12 +292,12 @@
 ### 🌟 新功能
 范围|描述|commitId
 --|--|--
+ @0.8.8-7 | 新增表格布局,合并后删除行列逻辑待优化 | [6c2c3c6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6c2c3c6)
  @0.8.9 | 优化GenerateFormItem内部绑定逻辑 | [0d615ab](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0d615ab)
  - | 表单设计器新增背景 | [57fe30d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/57fe30d)
  - | 表格布局时新增单元格点击事件,支持默认选中input,select,textarea | [1a741bb](https://github.com/BoBoooooo/Element-Pro-Crud/commit/1a741bb)
  - | 新增pc,mobile,pad3种设备切换预览表单 | [51f0472](https://github.com/BoBoooooo/Element-Pro-Crud/commit/51f0472)
  - | 左侧附件支持鼠标点击形式添加至画布区域 | [df1906d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/df1906d)
- @0.8.8-7 | 新增表格布局,合并后删除行列逻辑待优化 | [6c2c3c6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6c2c3c6)
  - | update version to 0.8.8-2 | [123e5b9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/123e5b9)
 
 
@@ -193,15 +337,15 @@
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
+ @0.8.8-15 | 优化表格布局向下合并逻辑,修复ace初始化bug | [e6e57f2](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e6e57f2)
+ @0.8.8-4 | 优化组件联动规则,联动前先重置原先已联动组件 | [26b5599](https://github.com/BoBoooooo/Element-Pro-Crud/commit/26b5599)
  - | 表单设计器默认选中表单属性 | [aeb4fb5](https://github.com/BoBoooooo/Element-Pro-Crud/commit/aeb4fb5)
  - | 表格布局时优化组件联动隐藏边框线1px问题 [@0](https://github.com/0).8.8-5 | [59937b4](https://github.com/BoBoooooo/Element-Pro-Crud/commit/59937b4)
  - | 调整表格设计器代码 | [79fe40f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/79fe40f)
  - | 删除当前行优化判断,包含合并行情况不允许删除 | [3872efe](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3872efe)
  - | 优化组件联动hidden属性赋值方式 [@0](https://github.com/0).8.8-3 | [bdc9d4c](https://github.com/BoBoooooo/Element-Pro-Crud/commit/bdc9d4c)
- - | some change | [026e19f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/026e19f)
- @0.8.8-15 | 优化表格布局向下合并逻辑,修复ace初始化bug | [e6e57f2](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e6e57f2)
  - | 组件联动支持多选情况 | [17fa57b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/17fa57b)
- @0.8.8-4 | 优化组件联动规则,联动前先重置原先已联动组件 | [26b5599](https://github.com/BoBoooooo/Element-Pro-Crud/commit/26b5599)
+ - | some change | [026e19f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/026e19f)
 
 
 ### chore
@@ -214,9 +358,9 @@
 ### 🌟 新功能
 范围|描述|commitId
 --|--|--
- GenerateForm | 新增Prop rules 支持组件联动 | [45011e3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/45011e3)
  - | 表单设计器单独页面,新增vue-router | [421e35b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/421e35b)
  - | 表单设计器新增布局模式/预览模式切换 | [bf473ff](https://github.com/BoBoooooo/Element-Pro-Crud/commit/bf473ff)
+ GenerateForm | 新增Prop rules 支持组件联动 | [45011e3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/45011e3)
 
 
 ### 🎨 代码样式
@@ -248,15 +392,15 @@
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
+ 0.8.7-5 | 表单设计器数据来源"字典"通过prop单独引入 | [3ec7495](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3ec7495)
  - | 插件更新至0.8.7-1,修复富文本宽度不撑满容器问题 | [aafc965](https://github.com/BoBoooooo/Element-Pro-Crud/commit/aafc965)
  - | 富文本宽度改为100% | [2f6210e](https://github.com/BoBoooooo/Element-Pro-Crud/commit/2f6210e)
  - | 优化树形下拉框预览效果 | [b30ac1d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/b30ac1d)
+ cascader | 优化级联选择器交互 | [f9e8638](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f9e8638)
  - | remove abandoned option | [86045b9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/86045b9)
  - | some change 优化表单设计器 | [4c6ff60](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4c6ff60)
  - | update dashboard | [6d50243](https://github.com/BoBoooooo/Element-Pro-Crud/commit/6d50243)
- 0.8.7-5 | 表单设计器数据来源"字典"通过prop单独引入 | [3ec7495](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3ec7495)
  - | update version to 0.8.7-3 | [06b33e1](https://github.com/BoBoooooo/Element-Pro-Crud/commit/06b33e1)
- cascader | 优化级联选择器交互 | [f9e8638](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f9e8638)
 
 ## [0.8.7](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.8.6...0.8.7) (2021-02-04)
 
@@ -440,10 +584,10 @@
 ### 🌟 新功能
 范围|描述|commitId
 --|--|--
- CrudTable | 查询区域支持平铺弹出两种模式 | [0a571ce](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0a571ce)
- CrudTable | 新增columns属性 | [9b60405](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9b60405)
  - | 新增导入json,生成代码,生成json,引入ace-editor | [f3a7eeb](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f3a7eeb)
  - | 引入tinymce富文本js | [97a95e4](https://github.com/BoBoooooo/Element-Pro-Crud/commit/97a95e4)
+ CrudTable | 查询区域支持平铺弹出两种模式 | [0a571ce](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0a571ce)
+ CrudTable | 新增columns属性 | [9b60405](https://github.com/BoBoooooo/Element-Pro-Crud/commit/9b60405)
 
 
 ### 🎨 代码样式
@@ -477,6 +621,7 @@
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
+ 0.8.0-1 | update README | [03ddf40](https://github.com/BoBoooooo/Element-Pro-Crud/commit/03ddf40)
  - | 版本升级至0.8.2 | [c2f0a9a](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c2f0a9a)
  - | 表格设计器优化 | [e69f99f](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e69f99f)
  - | 表格设计器自动设置菜单顺序调整 | [c40677d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c40677d)
@@ -488,7 +633,6 @@
  - | 优化表格设计器 | [f00f025](https://github.com/BoBoooooo/Element-Pro-Crud/commit/f00f025)
  - | 优化操作列隐藏宽度 | [0e00cec](https://github.com/BoBoooooo/Element-Pro-Crud/commit/0e00cec)
  - | 优化高级查询表单代码 | [a5b4ca7](https://github.com/BoBoooooo/Element-Pro-Crud/commit/a5b4ca7)
- 0.8.0-1 | update README | [03ddf40](https://github.com/BoBoooooo/Element-Pro-Crud/commit/03ddf40)
  CrudTable | CurdTable组件优化,修改操作列判断逻辑,修改自定义column插槽默认命名 | [5508992](https://github.com/BoBoooooo/Element-Pro-Crud/commit/5508992)
 
 
@@ -677,9 +821,9 @@
 范围|描述|commitId
 --|--|--
  - | 更新版本至0.3.3 | [e1c919b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/e1c919b)
- CrudTable | tableTitle默认隐藏 | [75d4f57](https://github.com/BoBoooooo/Element-Pro-Crud/commit/75d4f57)
  - | 优化调试逻辑 | [30d8c1d](https://github.com/BoBoooooo/Element-Pro-Crud/commit/30d8c1d)
  - | 组件代码优化 | [4023818](https://github.com/BoBoooooo/Element-Pro-Crud/commit/4023818)
+ CrudTable | tableTitle默认隐藏 | [75d4f57](https://github.com/BoBoooooo/Element-Pro-Crud/commit/75d4f57)
 
 ## [0.3.2](https://github.com/BoBoooooo/Element-Pro-Crud/compare/0.3.1...0.3.2) (2020-11-27)
 
@@ -759,6 +903,13 @@
  - | update version to 0.1.0-1 | [070beed](https://github.com/BoBoooooo/Element-Pro-Crud/commit/070beed)
 
 
+### 🔨 代码重构
+范围|描述|commitId
+--|--|--
+ - | 调整目录结构,加入types声明文件 | [ab896f3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ab896f3)
+ - | refactor some details | [742f6a6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/742f6a6)
+
+
 ### 🚀 性能优化
 范围|描述|commitId
 --|--|--
@@ -785,6 +936,12 @@
  - | version update to 0.2.5 | [211ab70](https://github.com/BoBoooooo/Element-Pro-Crud/commit/211ab70)
 
 
+### chore
+范围|描述|commitId
+--|--|--
+ - | 由于是umd打包发布,依赖全部并入devDependencies | [cf2ece3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cf2ece3)
+
+
 范围|描述|commitId
 --|--|--
  - | 0.1.6 | [44bae78](https://github.com/BoBoooooo/Element-Pro-Crud/commit/44bae78)
@@ -794,17 +951,4 @@
  - | Create .npmrc | [3ecfee9](https://github.com/BoBoooooo/Element-Pro-Crud/commit/3ecfee9)
  - | Update README.md | [c69ba5b](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c69ba5b)
  - | [feat](bobo-npm-plugin-test): 初始化项目,结合bobo-npm-plugin-test发布 | [c003a89](https://github.com/BoBoooooo/Element-Pro-Crud/commit/c003a89)
-
-
-### 🔨 代码重构
-范围|描述|commitId
---|--|--
- - | 调整目录结构,加入types声明文件 | [ab896f3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/ab896f3)
- - | refactor some details | [742f6a6](https://github.com/BoBoooooo/Element-Pro-Crud/commit/742f6a6)
-
-
-### chore
-范围|描述|commitId
---|--|--
- - | 由于是umd打包发布,依赖全部并入devDependencies | [cf2ece3](https://github.com/BoBoooooo/Element-Pro-Crud/commit/cf2ece3)
 
