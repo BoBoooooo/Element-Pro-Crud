@@ -161,6 +161,16 @@ new Vue({
 | tinymce        | 富文本编辑器   | `^4.7.5`  | 表单设计器/表格设计器使用      | https://cdn.bootcdn.net/ajax/libs/tinymce/4.7.5/tinymce.min.js                            |
 | echarts        | echarts 图表   | `^5.0.1`  | 表单设计器/表格设计器使用      | https://cdn.bootcdn.net/ajax/libs/echarts/5.0.1/echarts.min.js                            |
 | vue-treeselect | 树形下拉框     | `^0.4.0`  | 表单设计器/表格设计器使用      | https://cdn.jsdelivr.net/npm/@riophae/vue-treeselect@0.4.0/dist/vue-treeselect.umd.min.js |
+
+
+## 本地开发
+``` 
+yarn
+
+yarn start
+```
+
+
 ## License
 
 [LGPL](https://opensource.org/licenses/LGPL-3.0)
