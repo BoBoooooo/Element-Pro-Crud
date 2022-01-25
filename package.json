@@ -72,11 +72,11 @@
     "lint-staged": "^9.2.0",
     "longest": "^2.0.1",
     "mini-css-extract-plugin": "^1.4.1",
-    "node-sass": "^4.12.0",
     "path": "^0.12.7",
     "prettier": "^2.2.1",
     "progress-bar-webpack-plugin": "^2.1.0",
     "right-pad": "^1.0.1",
+    "sass": "^1.49.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^2.0.0",
     "svg-sprite-loader": "^4.1.6",
@@ -92,7 +92,7 @@
     "vue-loader": "^15.9.6",
     "vue-property-decorator": "^8.5.0",
     "vue-router": "3.4.3",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "2.6.11",
     "vuedraggable": "^2.23.2",
     "webpack": "^4.35.3",
     "webpack-bundle-analyzer": "^3.3.2",
@@ -125,7 +125,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.6",
+    "@vue/composition-api": "1.0.0-rc.6",
     "sortablejs": "^1.13.0"
   }
 }

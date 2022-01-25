@@ -75,7 +75,16 @@ const webpackConfig = {
       },
       {
         test: /\.(scss|css)$/,
-        loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        loaders: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
