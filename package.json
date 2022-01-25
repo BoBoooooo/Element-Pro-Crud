@@ -55,6 +55,8 @@
     "cache-loader": "^4.1.0",
     "chai": "^4.2.0",
     "clipboard": "^2.0.1",
+    "commitizen": "^4.2.4",
+    "commitlint": "^16.1.0",
     "conventional-changelog-cli": "^2.1.0",
     "core-js": "2.6.5",
     "cross-env": "^7.0.2",
