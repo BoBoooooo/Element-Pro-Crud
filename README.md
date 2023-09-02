@@ -16,11 +16,6 @@ ElementProCrud 快速搭建 CRUD 的利器 (抽空会考虑全面升级vue3版�
 
 **域名&服务器已过期...暂时没法访问，抱歉**
 
-[在线 demo](http://server.boboooooo.top:9997)
-
-[表单设计器](http://server.boboooooo.top:9997/#/form)
-
-[集成示例demo](http://server.boboooooo.top:9998)
 ## Start
 
 你可以引入整个 ElementProCrud，或是根据需要仅引入部分组件。我们先介绍如何引入完整的 ElementProCrud。
